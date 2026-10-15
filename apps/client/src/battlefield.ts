@@ -61,16 +61,16 @@ export class Battlefield {
     this.scene.clearColor = new Color4(.08, .15, .16, 1);
     this.scene.fogMode = Scene.FOGMODE_EXP2; this.scene.fogDensity = .004;
     this.scene.fogColor = new Color3(.2, .34, .34);
-    this.camera = new ArcRotateCamera('camera', Math.PI / 2, .66, 48, new Vector3(0, 0, -3), this.scene);
+    this.camera = new ArcRotateCamera('camera', Math.PI / 2, 0.68, 40, new Vector3(0, 0, 2), this.scene);
     this.camera.inputs.clear();
     this.camera.alpha = Math.PI / 2;
-    this.camera.beta = .66;
-    this.camera.lowerBetaLimit = .66;
-    this.camera.upperBetaLimit = .66;
+    this.camera.beta = 0.68;
+    this.camera.lowerBetaLimit = 0.68;
+    this.camera.upperBetaLimit = 0.68;
     this.camera.lowerAlphaLimit = Math.PI / 2;
     this.camera.upperAlphaLimit = Math.PI / 2;
     this.camera.lowerRadiusLimit = 16;
-    this.camera.upperRadiusLimit = 90;
+    this.camera.upperRadiusLimit = 80;
     const light = new HemisphericLight('sky', new Vector3(-.4, 1, -.3), this.scene);
     light.intensity = 1.45; light.groundColor = new Color3(.15, .1, .2);
     this.palette = new VisualMaterials(this.scene);
@@ -490,13 +490,15 @@ export class Battlefield {
     this.actors.clear(); this.effects.clear(); this.eventId = 0; this.zone = 0; this.hasSnapshot = false; this.selected.clear(); this.groundEffects = []; this.summonedPlants = []; this.soulLinks = [];
   }
   pan(dx: number, dy: number): void {
-    const lookDirX = Math.cos(this.camera.alpha);
-    const lookDirZ = Math.sin(this.camera.alpha);
+    const lookDirX = -Math.cos(this.camera.alpha);
+    const lookDirZ = -Math.sin(this.camera.alpha);
     const rightDirX = -Math.sin(this.camera.alpha);
     const rightDirZ = Math.cos(this.camera.alpha);
     const factor = (this.camera.radius / 1000) * 1.8;
-    this.camera.target.x += (-rightDirX * dx - lookDirX * dy) * factor;
-    this.camera.target.z += (-rightDirZ * dx - lookDirZ * dy) * factor;
+    const nextX = this.camera.target.x + (-rightDirX * dx + lookDirX * dy) * factor;
+    const nextZ = this.camera.target.z + (-rightDirZ * dx + lookDirZ * dy) * factor;
+    this.camera.target.x = Math.max(-55, Math.min(55, nextX));
+    this.camera.target.z = Math.max(-45, Math.min(38, nextZ));
   }
 
   rotate(deltaAlpha: number, deltaBeta: number): void {
@@ -520,17 +522,19 @@ export class Battlefield {
   }
 
   resetCamera(lane?: number): void {
-    this.camera.setTarget(new Vector3(lane === undefined ? 0 : laneCenters(this.laneCount)[lane] ?? 0, 0, -3));
-    this.camera.radius = lane === undefined ? [0, 42, 48, 56, 64][this.laneCount] ?? 52 : 36;
-    this.camera.alpha = Math.PI / 2; this.camera.beta = .66;
+    const x = lane === undefined ? 0 : laneCenters(this.laneCount)[lane] ?? 0;
+    this.camera.setTarget(new Vector3(x, 0, 2));
+    this.camera.radius = lane === undefined ? [0, 40, 46, 54, 62][this.laneCount] ?? 48 : 34;
+    this.camera.alpha = Math.PI / 2;
+    this.camera.beta = 0.68;
     debug('battlefield.camera', { lanes: this.laneCount, lane, radius: this.camera.radius });
   }
   private render(): void {
     const dt = Math.min(.05, this.engine.getDeltaTime() / 1000); this.time += dt;
 
     let moveX = 0, moveZ = 0;
-    const lookDirX = Math.cos(this.camera.alpha);
-    const lookDirZ = Math.sin(this.camera.alpha);
+    const lookDirX = -Math.cos(this.camera.alpha);
+    const lookDirZ = -Math.sin(this.camera.alpha);
     const rightDirX = -Math.sin(this.camera.alpha);
     const rightDirZ = Math.cos(this.camera.alpha);
 
@@ -559,8 +563,10 @@ export class Battlefield {
     if (len > 0) {
       const speed = Math.max(30, this.camera.radius * 1.5);
       const step = speed * dt / len;
-      this.camera.target.x += moveX * step;
-      this.camera.target.z += moveZ * step;
+      const nextX = this.camera.target.x + moveX * step;
+      const nextZ = this.camera.target.z + moveZ * step;
+      this.camera.target.x = Math.max(-55, Math.min(55, nextX));
+      this.camera.target.z = Math.max(-45, Math.min(38, nextZ));
     }
 
     const cameraFacing = this.camera.position.subtract(this.camera.target);
