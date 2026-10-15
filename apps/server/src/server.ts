@@ -91,7 +91,7 @@ export async function startServer(port = 2567, host = '0.0.0.0'): Promise<Runnin
   app.use(express.static(clientDist, {
     index: false,
     setHeaders: (res, filePath) => {
-      if (filePath.endsWith('.html')) {
+      if (filePath.endsWith('.html') || filePath.endsWith('.json')) {
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.setHeader('Pragma', 'no-cache');
         res.setHeader('Expires', '0');

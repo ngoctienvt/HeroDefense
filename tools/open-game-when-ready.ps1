@@ -7,7 +7,7 @@ param(
 )
 
 $healthUrl = 'http://127.0.0.1:{0}/health' -f $Port
-$gameUrl = 'http://localhost:{0}/' -f $Port
+$gameUrl = 'http://localhost:{0}/?t={1}' -f $Port, [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
 $deadline = (Get-Date).AddSeconds(60)
 while ((Get-Date) -lt $deadline) {
   try {
@@ -15,7 +15,7 @@ while ((Get-Date) -lt $deadline) {
     if ($health.ok -eq $true) {
       try {
         Start-Process $gameUrl
-        Add-Content -LiteralPath $LogPath -Value "[$(Get-Date -Format o)] Browser opened."
+        Add-Content -LiteralPath $LogPath -Value "[$(Get-Date -Format o)] Browser opened: $gameUrl"
         exit 0
       } catch {
         Add-Content -LiteralPath $LogPath -Value "[$(Get-Date -Format o)] Browser could not open: $($_.Exception.Message)"

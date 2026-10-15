@@ -28,16 +28,11 @@ if errorlevel 1 (
   goto failed
 )
 
-rem Reopen an existing game instead of launching another server on the same port.
-powershell -NoProfile -Command "try { $url='http://127.0.0.1:'+$env:PORT+'/'; $health=Invoke-RestMethod ($url+'health') -TimeoutSec 2; $page=Invoke-WebRequest $url -UseBasicParsing -TimeoutSec 2; if ($health.ok -eq $true -and $page.Content.Contains('<div id=')) { Start-Process ('http://localhost:'+$env:PORT+'/'); exit 0 } } catch {}; exit 1"
-if not errorlevel 1 (
-  echo Game already running. Browser opened at http://localhost:%PORT%/
-  echo [%date% %time%] Reopened existing game.>>"%LAUNCH_LOG%"
-  exit /b 0
-)
+rem Stop previous server on the same port so we always rebuild and run the latest code.
+powershell -NoProfile -Command "$p=[int]$env:PORT; $c=Get-NetTCPConnection -LocalPort $p -State Listen -ErrorAction SilentlyContinue; if ($c) { Write-Host 'Closing old server on port' $p '...'; $c | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; Start-Sleep -Milliseconds 600 }"
 powershell -NoProfile -Command "if (Get-NetTCPConnection -LocalPort ([int]$env:PORT) -State Listen -ErrorAction SilentlyContinue) { exit 1 }"
 if errorlevel 1 (
-  echo Port %PORT% is in use by another program. Close it and try again.
+  echo Port %PORT% is in use and could not be freed. Close the old process and try again.
   goto failed
 )
 
