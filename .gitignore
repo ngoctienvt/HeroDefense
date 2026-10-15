@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.npm-cache/
+
+# Build outputs
+dist/
+build/
+.vite/
+
+# Runtime logs and artifacts
+logs/
+artifacts/
+*.log
+
+# Agent & temporary runtimes
+.agentkit-runtime/
+.claude/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Large binary maps (exceeds GitHub 100MB limit; catalog data extracted in content/data)
+*.w3x
+*.w3m
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/

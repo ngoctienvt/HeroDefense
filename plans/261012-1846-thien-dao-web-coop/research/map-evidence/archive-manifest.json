@@ -1,0 +1,155 @@
+[
+  {
+    "archive_path": "war3map.j",
+    "block_index": 98,
+    "archive_absolute_byte_offset": 136487473,
+    "stored_bytes": 77243,
+    "unpacked_bytes": 423300,
+    "flags": "0x80000200",
+    "sha256_unpacked": "aa879ca95af5d300f1c0394ce32473f77dc6d7a4c9d089fedd3ed7966b90517b"
+  },
+  {
+    "archive_path": "war3map.w3i",
+    "block_index": 103,
+    "archive_absolute_byte_offset": 5782641,
+    "stored_bytes": 310,
+    "unpacked_bytes": 553,
+    "flags": "0x80000200",
+    "sha256_unpacked": "64407d838ed442556ed97e8f383d7ea6b204caae70e228f7089732850078cf8a"
+  },
+  {
+    "archive_path": "war3map.w3e",
+    "block_index": 102,
+    "archive_absolute_byte_offset": 5727138,
+    "stored_bytes": 55503,
+    "unpacked_bytes": 304084,
+    "flags": "0x80000200",
+    "sha256_unpacked": "4961bf77fa4045f3fb8a1637c33331af368bba41ab0f0a5fbf655741ff469b3a"
+  },
+  {
+    "archive_path": "war3map.w3a",
+    "block_index": 101,
+    "archive_absolute_byte_offset": 5725726,
+    "stored_bytes": 1412,
+    "unpacked_bytes": 13872,
+    "flags": "0x80000200",
+    "sha256_unpacked": "b0cd9c2c8a450f31894e7b2fbd76a7f6e34757736d4c617abd8305fa37ed1d29"
+  },
+  {
+    "archive_path": "war3map.doo",
+    "block_index": 97,
+    "archive_absolute_byte_offset": 5640901,
+    "stored_bytes": 9958,
+    "unpacked_bytes": 50324,
+    "flags": "0x80000200",
+    "sha256_unpacked": "5352bb62c1cb4b4125eba7337f53d57779a9f56637a3ee78fbf9ec7c796047fe"
+  },
+  {
+    "archive_path": "war3map.wpm",
+    "block_index": 104,
+    "archive_absolute_byte_offset": 5782951,
+    "stored_bytes": 5895,
+    "unpacked_bytes": 688144,
+    "flags": "0x80000200",
+    "sha256_unpacked": "081b75a74d63e67def4bcba7503118c42bd12ebfb9e5f545641cbc6d5c2b4e35"
+  },
+  {
+    "archive_path": "units\\UnitData.slk",
+    "block_index": 93,
+    "archive_absolute_byte_offset": 5562967,
+    "stored_bytes": 12725,
+    "unpacked_bytes": 216115,
+    "flags": "0x80000200",
+    "sha256_unpacked": "5eade7e4de0060fc9381cd334feda5da96e715df11f9bedcad7bf806624e4fb6"
+  },
+  {
+    "archive_path": "units\\UnitBalance.slk",
+    "block_index": 92,
+    "archive_absolute_byte_offset": 5536666,
+    "stored_bytes": 26301,
+    "unpacked_bytes": 362274,
+    "flags": "0x80000200",
+    "sha256_unpacked": "4cb68da1f342d550113630de7bac7be99f82f45311e52900520ab7f8dd994267"
+  },
+  {
+    "archive_path": "units\\UnitAbilities.slk",
+    "block_index": 91,
+    "archive_absolute_byte_offset": 5526700,
+    "stored_bytes": 9966,
+    "unpacked_bytes": 47366,
+    "flags": "0x80000200",
+    "sha256_unpacked": "b908c3cd3292ebd034d6b74b75826eadd326f7f7d1ee58db8d46487cba0e34b6"
+  },
+  {
+    "archive_path": "units\\UnitUI.slk",
+    "block_index": 94,
+    "archive_absolute_byte_offset": 5575692,
+    "stored_bytes": 37184,
+    "unpacked_bytes": 438501,
+    "flags": "0x80000200",
+    "sha256_unpacked": "197019d0420b948490c7c169cfe3ea04c7d53ee3d6c00772cb1f18680598604e"
+  },
+  {
+    "archive_path": "units\\ItemData.slk",
+    "block_index": 64,
+    "archive_absolute_byte_offset": 5501957,
+    "stored_bytes": 7017,
+    "unpacked_bytes": 84740,
+    "flags": "0x80000200",
+    "sha256_unpacked": "9caf7daf0bcae5ac0620f67ebbef7e2e4e5b9fb84638ed7ed434e12fbf4b6bc8"
+  },
+  {
+    "archive_path": "units\\AbilityData.slk",
+    "block_index": 45,
+    "archive_absolute_byte_offset": 5319131,
+    "stored_bytes": 30895,
+    "unpacked_bytes": 268513,
+    "flags": "0x80000200",
+    "sha256_unpacked": "d8d43beab39dc9b9294019131258981a701b80160ecbd204027ae120154aab6f"
+  },
+  {
+    "archive_path": "units\\CampaignUnitStrings.txt",
+    "block_index": 49,
+    "archive_absolute_byte_offset": 5423477,
+    "stored_bytes": 48747,
+    "unpacked_bytes": 384538,
+    "flags": "0x80000200",
+    "sha256_unpacked": "5f555c1c5f0f0b9433489ceaae4bdf83b6bbb14a461e1f6cbb1210454e7cb8db"
+  },
+  {
+    "archive_path": "units\\CampaignAbilityStrings.txt",
+    "block_index": 47,
+    "archive_absolute_byte_offset": 5350026,
+    "stored_bytes": 73451,
+    "unpacked_bytes": 442306,
+    "flags": "0x80000200",
+    "sha256_unpacked": "b45c3cce81397a4a364475fde638ef458b0e693ee077accb7a15e889f225c98c"
+  },
+  {
+    "archive_path": "units\\ItemStrings.txt",
+    "block_index": 66,
+    "archive_absolute_byte_offset": 5508974,
+    "stored_bytes": 17726,
+    "unpacked_bytes": 81367,
+    "flags": "0x80000200",
+    "sha256_unpacked": "7347f4babcb1865ac5f71d6c57cc339f3c43df142057c949160a1f865509ec5b"
+  },
+  {
+    "archive_path": "war3mapSkin.txt",
+    "block_index": 1499,
+    "archive_absolute_byte_offset": 136487169,
+    "stored_bytes": 304,
+    "unpacked_bytes": 1539,
+    "flags": "0x80000200",
+    "sha256_unpacked": "5983c52d9e09014a23a5799160e4460c325e43218e83d676855f29ac8df55643"
+  },
+  {
+    "archive_path": "war3mapMisc.txt",
+    "block_index": 1498,
+    "archive_absolute_byte_offset": 136486648,
+    "stored_bytes": 521,
+    "unpacked_bytes": 1259,
+    "flags": "0x80000200",
+    "sha256_unpacked": "785ebb0ca0fd1bca5c44cbcda526df97decc70640f0a91ab33122dbce9f14656"
+  }
+]

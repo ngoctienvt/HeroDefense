@@ -1,0 +1,37 @@
+{
+  "schema": "generate2dsprite.master_run.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "command": "prompt",
+  "created": "2026-10-15T02:35:35.259Z",
+  "name": "pangu-tier6",
+  "class": "hero",
+  "finish": "hd",
+  "facing": "front",
+  "key": "#FF00FF",
+  "prompt": {
+    "path": "prompt.txt",
+    "sha256": "41ec6b60b9bc357c2a06593743b67cc1120f1f2e7dc55012ad59aff7a2d1d8cb",
+    "bytes": 3521
+  },
+  "spec": {
+    "path": "spec.json",
+    "sha256": "3cbbeddf8304b6001fd0674421580ab95b96b0c82fe7c8e82d43ae2fd65842a3",
+    "bytes": 2663
+  },
+  "references": [
+    {
+      "role": "style",
+      "ordinal": "FIRST",
+      "path": "../heroic-wukong-concept.png",
+      "sha256": "6969d7c96c6a84aea9e4f72ee28c2bb7c9174cd8fadf7b208ca4f86ad87190e7",
+      "bytes": 2885028
+    }
+  ],
+  "media": null,
+  "takes": [],
+  "status": "ok",
+  "warnings": []
+}

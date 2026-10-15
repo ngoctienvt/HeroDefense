@@ -1,0 +1,140 @@
+{
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": "not disclosed",
+  "estimateUsd": null,
+  "styleReference": "assets/sprites/pangu-topdown/source/south-master.png",
+  "directions": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "actions": {
+    "idle": 1,
+    "walk": 4,
+    "attack": 4
+  },
+  "heroes": [
+    {
+      "id": "h001",
+      "name": "Thiên Lý Nhãn",
+      "identity": "adult celestial marksman, vigilant brow gemstone, black topknot, wing-crested gold helmet, ivory gold shoulder plates, navy tunic, short crimson cape, golden recurved bow and quiver",
+      "weapon": "bow"
+    },
+    {
+      "id": "h002",
+      "name": "Thuận Phong Nhĩ",
+      "identity": "adult celestial scout with distinctive long ears, swept black hair and jade ear ornaments, emerald and bronze light armor, teal short cloak, leaf-shaped recurved bow and compact quiver; lean heroic build",
+      "weapon": "bow"
+    },
+    {
+      "id": "h003",
+      "name": "Quỷ Sai",
+      "identity": "fearsome male underworld officer, pale grey skin, angular dark horned helmet, smoky black and burgundy armor with amber trims, broad shoulders, torn red short cape, oversized black iron crescent scythe with ember-red cutting edge",
+      "weapon": "scythe"
+    },
+    {
+      "id": "h004",
+      "name": "Thiên Binh",
+      "identity": "disciplined adult celestial soldier, silver and gold crested helmet, broad ivory shoulder plates, navy blue armor cloth, cobalt short cape, long oversized silver spear with gold socket and blue tassel",
+      "weapon": "spear"
+    },
+    {
+      "id": "h005",
+      "name": "Xạ Nhân",
+      "identity": "rugged adult earth archer, dark hair tied low, ochre hood worn back, bronze and sandstone armor plates, mustard brown cape, oversized heavy darkwood bow with carved stone tips, stone arrow quiver",
+      "weapon": "bow"
+    },
+    {
+      "id": "h006",
+      "name": "Tiên Nữ",
+      "identity": "adult elegant celestial maiden, long black hair in high jade hairpin knot, ivory and pale jade flowing dress with restrained gold edging, short mint shoulder drapes, large lotus-topped jade staff, slim heroic six-head proportions, no wings",
+      "weapon": "staff"
+    },
+    {
+      "id": "h007",
+      "name": "Quy Thừa Tướng",
+      "identity": "anthropomorphic elderly turtle chancellor, sturdy broad turtle body upright on two legs, moss green skin, heavy blue-green shell on back, wise face and white moustache, dark teal official hat and navy robe with gold trim, sturdy turquoise shell shield and short bronze mace",
+      "weapon": "mace"
+    },
+    {
+      "id": "h008",
+      "name": "Thổ Hành Tôn",
+      "identity": "short powerful adult earth warrior with compact muscular heroic anatomy, large hands and feet, auburn beard, brown head wrap, sandstone and bronze armor, ochre split waistcloth, oversized iron pick-hammer with stone-cracking pointed head; clearly adult, no chibi baby face",
+      "weapon": "hammer"
+    },
+    {
+      "id": "h009",
+      "name": "Kim Tra",
+      "identity": "majestic adult heavy celestial guardian, gold and ivory armor with huge bell-shaped shoulder plates, topknot under lotus gold helmet, dark red cape, jade belt, oversized gold broadsword and circular bell-embossed shield",
+      "weapon": "swordshield"
+    },
+    {
+      "id": "h00A",
+      "name": "Mộc Tra",
+      "identity": "athletic adult celestial twin-sword warrior, black high topknot, jade crown, emerald and pale bronze armor, ivory cloth and short green cloak, two oversized curved hook swords with leaf-shaped gold-jade blades",
+      "weapon": "twinswords"
+    },
+    {
+      "id": "h00B",
+      "name": "Thiết Phiến",
+      "identity": "regal adult female Iron Fan princess, jet black hair in twin swept buns and jade-gold crown, ivory and dark teal fitted armor robe, terracotta red waist sash, elegant heroic proportions, enormous banana-leaf fan with jade ribs and bronze rim; no tiny ornate texture",
+      "weapon": "fan"
+    },
+    {
+      "id": "h00C",
+      "name": "Hồng Hài Nhi",
+      "identity": "young fire prince Red Boy, mischievous youthful face with mature athletic warrior proportions rather than toddler chibi, red hair in two flame knots, compact muscular body, crimson and gold armor bracers and waist plates, red trousers, huge red-gold fire spear",
+      "weapon": "spear"
+    },
+    {
+      "id": "h00D",
+      "name": "Lã Động Tân",
+      "identity": "adult Taoist sword immortal, handsome angular face with black moustache and short beard, black high hair knot under white-gold Taoist crown, ivory navy robes with large vermilion panels, oversized straight bronze-gold sword, compact back sword scabbard",
+      "weapon": "sword"
+    },
+    {
+      "id": "h00E",
+      "name": "Cự Linh Thần",
+      "identity": "colossal muscular adult giant guardian with square jaw and short black beard, gold and dark iron heavy armor, massive shoulders, red waist drape, oversized paired square-headed bronze war hammers, broad six-head heroic anatomy; no halo",
+      "weapon": "twinhammers"
+    },
+    {
+      "id": "h00F",
+      "name": "Mẫu Đơn Tiên Tử",
+      "identity": "adult peony flower fairy, black hair in elegant bun, gold-jade floral crown, ivory and coral peony petal layered dress with jade sash, light mint ribbons, large gold-jade peony staff with pink flower head, graceful heroic proportions; no wings",
+      "weapon": "staff"
+    },
+    {
+      "id": "h00G",
+      "name": "Hà Bá",
+      "identity": "adult river god with blue-grey skin, long white hair and flowing moustache, jade and gold river crown, navy and turquoise broad armor plates, pale blue waist drape, oversized river trident with curved turquoise blades, broad powerful body; no water effects",
+      "weapon": "trident"
+    },
+    {
+      "id": "h00H",
+      "name": "Vô Thường",
+      "identity": "single adult underworld reaper officer, pale face, tall BLACK official hat without writing, black navy and ivory robe, broad dark shoulder plates, white sash and dark red tassels, oversized hooked soul-chain sickle held compactly with chain loop visible, no companion character",
+      "weapon": "chain"
+    },
+    {
+      "id": "h00I",
+      "name": "Mạnh Bà",
+      "identity": "elderly female keeper of the river of forgetting, silver hair in a neat low bun with jade pin, wise angular face, navy and pale teal layered robes with gold belt, large bronze soup ladle staff and small rounded jade kettle held near waist, strong readable silhouette",
+      "weapon": "ladle"
+    },
+    {
+      "id": "h03O",
+      "name": "Nhiếp Tiểu Thiến",
+      "identity": "adult spectral maiden musician, long flowing black hair with silver hairpin, pale porcelain skin, ivory and deep indigo robe with long pale-blue sash, portable darkwood pipa lute with silver trim held across torso, poised heroic six-head proportions, no glow cloud",
+      "weapon": "lute"
+    },
+    {
+      "id": "h03P",
+      "name": "Bảo Quả Tử",
+      "identity": "adult youthful male sacred fruit cultivator, chestnut topknot with green leaf crown, jade-green and cream robes with large gold shoulder accents, ochre belt, oversized twisted wooden staff bearing one golden sacred fruit and large green leaves, small gourd pouch",
+      "weapon": "staff"
+    }
+  ]
+}

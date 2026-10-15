@@ -1,0 +1,4216 @@
+{
+  "provenance": {
+    "generatedBy": "tools/map-extraction/extract-content.ts",
+    "source": "ThienDao v2.1.w3x",
+    "sourceSha256": "ddc4be147dc7afd262be6193b94f1f06f786e7222c4ea7dd444feeda63f9a8e8",
+    "adaptedCombat": true,
+    "abilityDesigns": "content/hero-abilities.ts",
+    "evidenceHashes": {
+      "war3map.j": "aa879ca95af5d300f1c0394ce32473f77dc6d7a4c9d089fedd3ed7966b90517b",
+      "script-table-decoded.txt": "c76cb245e90a67e50403a9af745484447147a03f45d6ec2f2c3562daf0270baf",
+      "units_CampaignAbilityStrings.txt": "b45c3cce81397a4a364475fde638ef458b0e693ee077accb7a15e889f225c98c",
+      "roster-evidence.json": "d26b2b0ac76dca13f1f4123d63314fe301e7dc504ce48055a5234ff8b7913c2f",
+      "units_UnitBalance.slk": "4cb68da1f342d550113630de7bac7be99f82f45311e52900520ab7f8dd994267"
+    }
+  },
+  "heroes": [
+    {
+      "id": "h001",
+      "index": 1,
+      "name": "Thiên Lý Nhãn",
+      "faction": 1,
+      "tier": 1,
+      "element": 1,
+      "role": "ranger",
+      "hp": 220,
+      "attack": 55,
+      "armor": 3,
+      "range": 8.5,
+      "interval": 0.85,
+      "speed": 3.6,
+      "ability": null,
+      "trait": {
+        "name": "Thiên Nhãn Thấu Thị",
+        "description": "Đánh thường xuyên 4 Giáp; phát thứ tư liên tiếp vào cùng mục tiêu phá 2 Giáp trong 3 giây."
+      },
+      "source": {
+        "scriptLine": 6911,
+        "rawcode": "h001",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h002",
+      "index": 2,
+      "name": "Thuận Phong Nhĩ",
+      "faction": 1,
+      "tier": 1,
+      "element": 2,
+      "role": "ranger",
+      "hp": 220,
+      "attack": 48,
+      "armor": 3,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": null,
+      "trait": {
+        "name": "Phong Âm Cộng Hưởng",
+        "description": "Đòn bắn nảy sang một quái gần nhất trong 4 đơn vị với 50% sát thương; cả hai bị chậm 15% trong 1,5 giây."
+      },
+      "source": {
+        "scriptLine": 6912,
+        "rawcode": "h002",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h003",
+      "index": 3,
+      "name": "Quỷ Sai",
+      "faction": 1,
+      "tier": 1,
+      "element": 4,
+      "role": "warrior",
+      "hp": 650,
+      "attack": 52,
+      "armor": 6,
+      "range": 1.8,
+      "interval": 1,
+      "speed": 4.2,
+      "ability": null,
+      "trait": {
+        "name": "Quỷ Liêm Âm Hỏa",
+        "description": "Mỗi đòn gây thiêu đốt bằng 40% Công trong 2 giây; quái đang cháy chết sẽ nổ 30 sát thương trong bán kính 2."
+      },
+      "source": {
+        "scriptLine": 6913,
+        "rawcode": "h003",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h004",
+      "index": 4,
+      "name": "Thiên Binh",
+      "faction": 1,
+      "tier": 1,
+      "element": 1,
+      "role": "warrior",
+      "hp": 680,
+      "attack": 50,
+      "armor": 7,
+      "range": 2,
+      "interval": 1.05,
+      "speed": 4,
+      "ability": null,
+      "trait": {
+        "name": "Trường Thương Phá Giáp",
+        "description": "25% cơ hội chí mạng 150% sát thương; mũi thương quét thêm tối đa hai quái sát mục tiêu trong bán kính 2."
+      },
+      "source": {
+        "scriptLine": 6914,
+        "rawcode": "h004",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h005",
+      "index": 5,
+      "name": "Xạ Nhân",
+      "faction": 1,
+      "tier": 1,
+      "element": 5,
+      "role": "ranger",
+      "hp": 240,
+      "attack": 58,
+      "armor": 4,
+      "range": 7.5,
+      "interval": 1.05,
+      "speed": 3.5,
+      "ability": null,
+      "trait": {
+        "name": "Trọng Tiễn Chấn Động",
+        "description": "Mỗi phát thứ ba làm choáng 0,4 giây và đẩy mục tiêu lùi 0,5 đơn vị."
+      },
+      "source": {
+        "scriptLine": 6915,
+        "rawcode": "h005",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h006",
+      "index": 6,
+      "name": "Tiên Nữ",
+      "faction": 1,
+      "tier": 1,
+      "element": 2,
+      "role": "mage",
+      "hp": 190,
+      "attack": 54,
+      "armor": 2,
+      "range": 7,
+      "interval": 1.2,
+      "speed": 3.4,
+      "ability": null,
+      "trait": {
+        "name": "Linh Hoa Tán Lộc",
+        "description": "Đòn đánh lan 35% sát thương cho quái trong bán kính 2,2; hồi 15 HP cho đồng minh thấp máu nhất trong 6 đơn vị."
+      },
+      "source": {
+        "scriptLine": 6916,
+        "rawcode": "h006",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h007",
+      "index": 7,
+      "name": "Quy Thừa Tướng",
+      "faction": 1,
+      "tier": 1,
+      "element": 3,
+      "role": "guardian",
+      "hp": 1450,
+      "attack": 32,
+      "armor": 12,
+      "range": 1.8,
+      "interval": 1.25,
+      "speed": 3,
+      "ability": null,
+      "trait": {
+        "name": "Huyền Quy Hàn Giáp",
+        "description": "Chặn tối đa 5 quái, giảm cố định 10 sát thương nhận vào; kẻ đánh cận chiến bị chậm di chuyển và đánh 20% trong 2 giây."
+      },
+      "source": {
+        "scriptLine": 6917,
+        "rawcode": "h007",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h008",
+      "index": 8,
+      "name": "Thổ Hành Tôn",
+      "faction": 1,
+      "tier": 1,
+      "element": 5,
+      "role": "warrior",
+      "hp": 720,
+      "attack": 48,
+      "armor": 8,
+      "range": 1.8,
+      "interval": 1,
+      "speed": 4.4,
+      "ability": null,
+      "trait": {
+        "name": "Độn Thổ Xung Kích",
+        "description": "Lướt nhanh khi tiếp cận mục tiêu mới; mỗi đòn thứ tư nứt đất trong bán kính 2,5, gây 130% Công và tự tăng 4 Giáp trong 3 giây."
+      },
+      "source": {
+        "scriptLine": 6918,
+        "rawcode": "h008",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h009",
+      "index": 9,
+      "name": "Kim Tra",
+      "faction": 2,
+      "tier": 2,
+      "element": 1,
+      "role": "guardian",
+      "hp": 2400,
+      "attack": 65,
+      "armor": 16,
+      "range": 1.8,
+      "interval": 1.15,
+      "speed": 3,
+      "ability": {
+        "id": "web-h009",
+        "name": "Kim Quang Hộ Thể Trận",
+        "description": "Tạo khiên 2,2× Công + 10% Máu tối đa cho bản thân và đồng minh thấp máu nhất trong bán kính 5; khiên phản 35% sát thương cận chiến xuyên giáp.",
+        "kind": "shield",
+        "cooldown": 10,
+        "power": 2.2,
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 5,
+          "maxTargets": 2,
+          "reflect": 0.35
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Kim Cang Phản Kích",
+        "description": "Chặn 6 quái; đòn đánh có 20% cơ hội phá 3 Giáp."
+      },
+      "source": {
+        "scriptLine": 6919,
+        "rawcode": "h009",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00A",
+      "index": 10,
+      "name": "Mộc Tra",
+      "faction": 2,
+      "tier": 2,
+      "element": 2,
+      "role": "warrior",
+      "hp": 1250,
+      "attack": 92,
+      "armor": 10,
+      "range": 2,
+      "interval": 0.95,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h00A",
+        "name": "Ngô Câu Mộc Khí Trảm",
+        "description": "Quét kiếm khí gây 230% Công trong bán kính 3,8; trói 1,8 giây và gây độc 30 sát thương mỗi giây trong 3 giây.",
+        "kind": "cleave",
+        "cooldown": 8.5,
+        "power": 2.3,
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.8,
+          "status": "root",
+          "statusSeconds": 1.8,
+          "statusStrength": 1
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Song Kiếm Ngô Câu",
+        "description": "Mỗi đòn đánh hồi cho bản thân 8 HP."
+      },
+      "source": {
+        "scriptLine": 6920,
+        "rawcode": "h00A",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00B",
+      "index": 11,
+      "name": "Thiết Phiến",
+      "faction": 2,
+      "tier": 2,
+      "element": 5,
+      "role": "ranger",
+      "hp": 420,
+      "attack": 98,
+      "armor": 5,
+      "range": 8.5,
+      "interval": 0.9,
+      "speed": 3.8,
+      "ability": {
+        "id": "web-h00B",
+        "name": "Ba Tiêu Cuồng Phong Toàn",
+        "description": "Lốc cát đá nảy qua 4 quái trong tầm 5,5, gây 210% Công, đẩy lùi 1,8 đơn vị và làm chậm 35% trong 3 giây.",
+        "kind": "chain",
+        "cooldown": 10,
+        "power": 2.1,
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 4,
+          "jumpRange": 5.5,
+          "knockback": 1.8,
+          "status": "slow",
+          "statusSeconds": 3,
+          "statusStrength": 0.35
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Ba Tiêu Trọng Phong",
+        "description": "Đòn đánh đẩy lùi 0,2 đơn vị khi mục tiêu ở gần dưới 4 đơn vị."
+      },
+      "source": {
+        "scriptLine": 6921,
+        "rawcode": "h00B",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00C",
+      "index": 12,
+      "name": "Hồng Hài Nhi",
+      "faction": 2,
+      "tier": 2,
+      "element": 4,
+      "role": "warrior",
+      "hp": 1180,
+      "attack": 96,
+      "armor": 9,
+      "range": 2.2,
+      "interval": 1,
+      "speed": 4.3,
+      "ability": {
+        "id": "web-h00C",
+        "name": "Tam Muội Chân Hỏa Thương",
+        "description": "Quét lửa gây 250% Công trong bán kính 4; thiêu đốt thêm 120% Công thành sát thương chuẩn trong 4 giây.",
+        "kind": "cleave",
+        "cooldown": 9,
+        "power": 2.5,
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4,
+          "status": "burn",
+          "statusSeconds": 4,
+          "statusStrength": 0.48
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Thương Lửa Tam Muội",
+        "description": "Đòn đánh gây thêm 15% sát thương khi quái đang bị thiêu đốt."
+      },
+      "source": {
+        "scriptLine": 6922,
+        "rawcode": "h00C",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00D",
+      "index": 13,
+      "name": "Lã Động Tân",
+      "faction": 2,
+      "tier": 2,
+      "element": 4,
+      "role": "mage",
+      "hp": 360,
+      "attack": 110,
+      "armor": 4,
+      "range": 7.5,
+      "interval": 1.2,
+      "speed": 3.5,
+      "ability": {
+        "id": "web-h00D",
+        "name": "Thuần Dương Vạn Kiếm Quyết",
+        "description": "Cự kiếm rơi xuống mục tiêu, nổ 235% Công trong bán kính 4,2 và để lại kiếm hỏa 2,5 giây.",
+        "kind": "nova",
+        "cooldown": 9.5,
+        "power": 2.35,
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4.2,
+          "groundBurnSeconds": 2.5
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Phi Kiếm Thuần Dương",
+        "description": "20% cơ hội phóng thêm kiếm hỏa gây 50% sát thương."
+      },
+      "source": {
+        "scriptLine": 6923,
+        "rawcode": "h00D",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00E",
+      "index": 14,
+      "name": "Cự Linh Thần",
+      "faction": 2,
+      "tier": 2,
+      "element": 1,
+      "role": "guardian",
+      "hp": 2550,
+      "attack": 68,
+      "armor": 17,
+      "range": 2,
+      "interval": 1.25,
+      "speed": 3,
+      "ability": {
+        "id": "web-h00E",
+        "name": "Cự Linh Thiết Bích Trấn",
+        "description": "Dựng tường kim khí: tạo khiên cho đồng minh trong bán kính 4,5, tăng 6 Giáp và giảm 25% sát thương nhận trong 4 giây.",
+        "kind": "shield",
+        "cooldown": 12,
+        "power": 2,
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 4.5,
+          "status": "ward",
+          "statusSeconds": 4,
+          "statusStrength": 0.25,
+          "bonusArmor": 6
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Cự Linh Song Chùy",
+        "description": "Chặn 7 quái; đòn bổ búa chấn động quái trong bán kính 1,5."
+      },
+      "source": {
+        "scriptLine": 6924,
+        "rawcode": "h00E",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00F",
+      "index": 15,
+      "name": "Mẫu Đơn Tiên Tử",
+      "faction": 2,
+      "tier": 2,
+      "element": 2,
+      "role": "support",
+      "hp": 620,
+      "attack": 75,
+      "armor": 6,
+      "range": 7,
+      "interval": 1.15,
+      "speed": 3.8,
+      "ability": {
+        "id": "web-h00F",
+        "name": "Bách Hoa Hồi Xuân Khúc",
+        "description": "Hồi 200% Công cho tối đa 3 đồng minh thấp máu nhất trong bán kính 7,5 và tăng 25% tốc đánh trong 4 giây.",
+        "kind": "heal",
+        "cooldown": 10.5,
+        "power": 2,
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 7.5,
+          "maxTargets": 3,
+          "status": "haste",
+          "statusSeconds": 4,
+          "statusStrength": 0.25
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Hương Hoa Lan Tỏa",
+        "description": "Đồng minh gần nhất được tăng 8% tốc độ đánh khi ở trong vùng ảnh hưởng."
+      },
+      "source": {
+        "scriptLine": 6925,
+        "rawcode": "h00F",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00G",
+      "index": 16,
+      "name": "Hà Bá",
+      "faction": 2,
+      "tier": 2,
+      "element": 3,
+      "role": "mage",
+      "hp": 380,
+      "attack": 105,
+      "armor": 4,
+      "range": 7,
+      "interval": 1.25,
+      "speed": 3.4,
+      "ability": {
+        "id": "web-h00G",
+        "name": "Hoàng Hà Cuộn Sóng",
+        "description": "Xoáy nước đánh vào nơi quái đông nhất: gây 215% Công trong bán kính 4,5, hút về tâm và làm chậm 55% trong 3,5 giây.",
+        "kind": "nova",
+        "cooldown": 10,
+        "power": 2.15,
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4.5,
+          "pull": 0.7,
+          "status": "slow",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.55
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Thủy Cầu Thấm Ướt",
+        "description": "Đòn đánh làm chậm quái 15% trong 1,5 giây."
+      },
+      "source": {
+        "scriptLine": 6926,
+        "rawcode": "h00G",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00H",
+      "index": 17,
+      "name": "Vô Thường",
+      "faction": 2,
+      "tier": 2,
+      "element": 5,
+      "role": "ranger",
+      "hp": 410,
+      "attack": 102,
+      "armor": 5,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h00H",
+        "name": "Hắc Bạch Tỏa Hồn Xích",
+        "description": "Xích âm phủ nảy qua 4 quái gây 220% Công; giảm 4 Giáp và làm chậm 40% trong 3 giây.",
+        "kind": "chain",
+        "cooldown": 9.5,
+        "power": 2.2,
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 4,
+          "status": "sunder",
+          "statusSeconds": 3,
+          "statusStrength": 4,
+          "secondary": {
+            "status": "slow",
+            "seconds": 3,
+            "strength": 0.4
+          }
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Xích Câu Hồn",
+        "description": "Đòn đánh gây thêm 20% sát thương khi mục tiêu còn dưới 40% Máu."
+      },
+      "source": {
+        "scriptLine": 6927,
+        "rawcode": "h00H",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00I",
+      "index": 18,
+      "name": "Mạnh Bà",
+      "faction": 2,
+      "tier": 2,
+      "element": 3,
+      "role": "ranger",
+      "hp": 400,
+      "attack": 94,
+      "armor": 5,
+      "range": 8,
+      "interval": 0.95,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h00I",
+        "name": "Vong Xuyên Mê Hồn Thang",
+        "description": "Canh Vong Xuyên nảy qua 5 quái gây 195% Công; chậm di chuyển 60% và tốc đánh 30% trong 4 giây.",
+        "kind": "chain",
+        "cooldown": 11,
+        "power": 1.95,
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 5,
+          "status": "slow",
+          "statusSeconds": 4,
+          "statusStrength": 0.6
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Vong Xuyên Thủy Tiễn",
+        "description": "Đòn đánh làm giảm 15% sức Công của quái trong 2 giây."
+      },
+      "source": {
+        "scriptLine": 6928,
+        "rawcode": "h00I",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00J",
+      "index": 19,
+      "name": "Trư Bát Giới",
+      "faction": 3,
+      "tier": 3,
+      "element": 3,
+      "role": "guardian",
+      "hp": 2790,
+      "attack": 55,
+      "armor": 14,
+      "range": 1.8,
+      "interval": 1.2,
+      "speed": 3,
+      "ability": {
+        "id": "web-h00J",
+        "heroId": "h00J",
+        "name": "Bát Giới Hộ Pháp",
+        "description": "Dựng giáp cho đồng đội quanh mình.",
+        "fantasy": "Trư Bát Giới che đội hình bằng thân pháp vững chắc.",
+        "kind": "shield",
+        "cooldown": 11,
+        "power": 1.9,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 3.5,
+          "status": "ward",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2116,
+          "scriptLine": 6931,
+          "rawcode": "h00J",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6931,
+        "rawcode": "h00J",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00K",
+      "index": 20,
+      "name": "Sa Ngộ Tịnh",
+      "faction": 3,
+      "tier": 3,
+      "element": 1,
+      "role": "support",
+      "hp": 640,
+      "attack": 66,
+      "armor": 6,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h00K",
+        "heroId": "h00K",
+        "name": "Sa Tăng Tịnh Tâm",
+        "description": "Hồi máu một đồng đội thấp máu.",
+        "fantasy": "Sa Ngộ Tịnh giữ lòng kiên định giữa giao tranh.",
+        "kind": "heal",
+        "cooldown": 8.5,
+        "power": 2.1,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "single"
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2125,
+          "scriptLine": 6932,
+          "rawcode": "h00K",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6932,
+        "rawcode": "h00K",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00L",
+      "index": 21,
+      "name": "Tiểu Bạch Long",
+      "faction": 3,
+      "tier": 3,
+      "element": 2,
+      "role": "ranger",
+      "hp": 408,
+      "attack": 86,
+      "armor": 5,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h00L",
+        "heroId": "h00L",
+        "name": "Bạch Long Phá Lãng",
+        "description": "Thủy tiễn nối nhiều kẻ địch.",
+        "fantasy": "Tiểu Bạch Long lao theo đường nước cuộn.",
+        "kind": "chain",
+        "cooldown": 9,
+        "power": 2.05,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 3,
+          "status": "slow",
+          "statusSeconds": 2,
+          "statusStrength": 0.18
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2135,
+          "scriptLine": 6933,
+          "rawcode": "h00L",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6933,
+        "rawcode": "h00L",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00M",
+      "index": 22,
+      "name": "Tinh Vệ",
+      "faction": 3,
+      "tier": 3,
+      "element": 5,
+      "role": "ranger",
+      "hp": 408,
+      "attack": 86,
+      "armor": 5,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h00M",
+        "heroId": "h00M",
+        "name": "Tinh Vệ Điền Hải",
+        "description": "Mưa đá nhỏ nối qua bầy địch.",
+        "fantasy": "Tinh Vệ không ngừng mang đá lấp biển.",
+        "kind": "chain",
+        "cooldown": 7.5,
+        "power": 1.6,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 5
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2145,
+          "scriptLine": 6934,
+          "rawcode": "h00M",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6934,
+        "rawcode": "h00M",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00N",
+      "index": 23,
+      "name": "Chung Quỳ",
+      "faction": 3,
+      "tier": 3,
+      "element": 4,
+      "role": "mage",
+      "hp": 320,
+      "attack": 95,
+      "armor": 4,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h00N",
+        "heroId": "h00N",
+        "name": "Chung Quỳ Trấn Quỷ",
+        "description": "Ấn pháp nổ quanh địch và thiêu âm khí.",
+        "fantasy": "Chung Quỳ vẽ phù chú áp chế tà ảnh.",
+        "kind": "nova",
+        "cooldown": 11.5,
+        "power": 2.25,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3,
+          "status": "burn",
+          "statusSeconds": 3,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2154,
+          "scriptLine": 6935,
+          "rawcode": "h00N",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6935,
+        "rawcode": "h00N",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00O",
+      "index": 24,
+      "name": "Phán Quan",
+      "faction": 3,
+      "tier": 3,
+      "element": 5,
+      "role": "warrior",
+      "hp": 1287,
+      "attack": 82,
+      "armor": 8,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h00O",
+        "heroId": "h00O",
+        "name": "Phán Quan Đoạn Án",
+        "description": "Một nhát chém mạnh kết án kẻ địch.",
+        "fantasy": "Phán Quan hạ bút trước khi hành hình.",
+        "kind": "cleave",
+        "cooldown": 8.5,
+        "power": 2.55,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "single"
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2164,
+          "scriptLine": 6936,
+          "rawcode": "h00O",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6936,
+        "rawcode": "h00O",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00P",
+      "index": 25,
+      "name": "Ngưu Ma Vương",
+      "faction": 3,
+      "tier": 3,
+      "element": 1,
+      "role": "warrior",
+      "hp": 1287,
+      "attack": 82,
+      "armor": 8,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h00P",
+        "heroId": "h00P",
+        "name": "Ngưu Vương Chấn Địa",
+        "description": "Giẫm đất quét vùng rộng và làm chậm.",
+        "fantasy": "Ngưu Ma Vương xô vỡ tuyến phòng thủ.",
+        "kind": "cleave",
+        "cooldown": 12,
+        "power": 2.3,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.2,
+          "status": "slow",
+          "statusSeconds": 2.4,
+          "statusStrength": 0.27
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2173,
+          "scriptLine": 6937,
+          "rawcode": "h00P",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6937,
+        "rawcode": "h00P",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00Q",
+      "index": 26,
+      "name": "Long Vương",
+      "faction": 3,
+      "tier": 3,
+      "element": 3,
+      "role": "mage",
+      "hp": 320,
+      "attack": 95,
+      "armor": 4,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h00Q",
+        "heroId": "h00Q",
+        "name": "Long Cung Triều Tịch",
+        "description": "Sóng rồng bùng nổ trên vùng lớn.",
+        "fantasy": "Long Vương gọi thủy triều của Long Cung.",
+        "kind": "nova",
+        "cooldown": 12,
+        "power": 2.2,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4.1,
+          "status": "slow",
+          "statusSeconds": 2,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2182,
+          "scriptLine": 6938,
+          "rawcode": "h00Q",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6938,
+        "rawcode": "h00Q",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00R",
+      "index": 27,
+      "name": "Tôn Ngộ Không",
+      "faction": 4,
+      "tier": 4,
+      "element": 5,
+      "role": "warrior",
+      "hp": 1612,
+      "attack": 99,
+      "armor": 9,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h00R",
+        "heroId": "h00R",
+        "name": "Như Ý Thiên Quân",
+        "description": "Gậy Như Ý quét địch sát nhau.",
+        "fantasy": "Tôn Ngộ Không phóng đại gậy theo ý niệm.",
+        "kind": "cleave",
+        "cooldown": 7,
+        "power": 2.65,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 2.8
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2191,
+          "scriptLine": 6942,
+          "rawcode": "h00R",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": true
+      },
+      "source": {
+        "scriptLine": 6942,
+        "rawcode": "h00R",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00S",
+      "index": 28,
+      "name": "Đường Tăng",
+      "faction": 4,
+      "tier": 4,
+      "element": 2,
+      "role": "mage",
+      "hp": 400,
+      "attack": 114,
+      "armor": 5,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h00S",
+        "heroId": "h00S",
+        "name": "Chân Kinh Phật Quang",
+        "description": "Phật quang tỏa quanh địch, làm chậm.",
+        "fantasy": "Đường Tăng tụng kinh thành vòng sáng trấn áp.",
+        "kind": "nova",
+        "cooldown": 12.5,
+        "power": 2.1,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4,
+          "status": "slow",
+          "statusSeconds": 2.5,
+          "statusStrength": 0.45
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2200,
+          "scriptLine": 6943,
+          "rawcode": "h00S",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6943,
+        "rawcode": "h00S",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00T",
+      "index": 29,
+      "name": "Lôi Chấn Tử",
+      "faction": 4,
+      "tier": 4,
+      "element": 5,
+      "role": "mage",
+      "hp": 400,
+      "attack": 114,
+      "armor": 5,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h00T",
+        "heroId": "h00T",
+        "name": "Lôi Dực Thiên Kích",
+        "description": "Sấm sét đánh vùng rộng, để lại bỏng điện.",
+        "fantasy": "Lôi Chấn Tử vỗ cánh gọi lôi đình.",
+        "kind": "nova",
+        "cooldown": 11,
+        "power": 2.35,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.5,
+          "status": "burn",
+          "statusSeconds": 2.5,
+          "statusStrength": 0.25
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2212,
+          "scriptLine": 6944,
+          "rawcode": "h00T",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6944,
+        "rawcode": "h00T",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00U",
+      "index": 30,
+      "name": "Dương Tiễn",
+      "faction": 4,
+      "tier": 4,
+      "element": 1,
+      "role": "warrior",
+      "hp": 1612,
+      "attack": 99,
+      "armor": 9,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h00U",
+        "heroId": "h00U",
+        "name": "Tam Tiêm Phá Vọng",
+        "description": "Mũi kích xuyên tuyến gần mục tiêu.",
+        "fantasy": "Dương Tiễn đọc chuyển động rồi tung Tam Tiêm Đao.",
+        "kind": "cleave",
+        "cooldown": 8,
+        "power": 2.45,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 2.35
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2221,
+          "scriptLine": 6945,
+          "rawcode": "h00U",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6945,
+        "rawcode": "h00U",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00V",
+      "index": 31,
+      "name": "Na Tra",
+      "faction": 4,
+      "tier": 4,
+      "element": 4,
+      "role": "warrior",
+      "hp": 1612,
+      "attack": 99,
+      "armor": 9,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h00V",
+        "heroId": "h00V",
+        "name": "Phong Hỏa Luân Trảm",
+        "description": "Lửa quét quanh Na Tra và thiêu địch.",
+        "fantasy": "Na Tra xoay Phong Hỏa Luân vào giữa trận.",
+        "kind": "cleave",
+        "cooldown": 9,
+        "power": 2.4,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 2.75,
+          "status": "burn",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.23
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2230,
+          "scriptLine": 6946,
+          "rawcode": "h00V",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6946,
+        "rawcode": "h00V",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00W",
+      "index": 32,
+      "name": "Lý Tịnh",
+      "faction": 4,
+      "tier": 4,
+      "element": 1,
+      "role": "guardian",
+      "hp": 3488,
+      "attack": 66,
+      "armor": 15,
+      "range": 1.8,
+      "interval": 1.2,
+      "speed": 3,
+      "ability": {
+        "id": "web-h00W",
+        "heroId": "h00W",
+        "name": "Bảo Tháp Trấn Yêu",
+        "description": "Tháp vàng che chắn vùng đồng minh.",
+        "fantasy": "Lý Tịnh giương bảo tháp giữ đội hình.",
+        "kind": "shield",
+        "cooldown": 12.5,
+        "power": 2.2,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 4.2,
+          "status": "ward",
+          "statusSeconds": 4.5,
+          "statusStrength": 0.26
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2239,
+          "scriptLine": 6947,
+          "rawcode": "h00W",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6947,
+        "rawcode": "h00W",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00X",
+      "index": 33,
+      "name": "Đát Kỷ",
+      "faction": 4,
+      "tier": 4,
+      "element": 2,
+      "role": "ranger",
+      "hp": 510,
+      "attack": 104,
+      "armor": 6,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h00X",
+        "heroId": "h00X",
+        "name": "Hồ Mị Huyễn Tiễn",
+        "description": "Ảo tiễn lan qua địch và làm chúng chậm.",
+        "fantasy": "Đát Kỷ mê hoặc bằng bóng hồ ly.",
+        "kind": "chain",
+        "cooldown": 10.5,
+        "power": 2,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 4,
+          "status": "slow",
+          "statusSeconds": 3,
+          "statusStrength": 0.29
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2248,
+          "scriptLine": 6948,
+          "rawcode": "h00X",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6948,
+        "rawcode": "h00X",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00Y",
+      "index": 34,
+      "name": "Ngũ Đạo Tướng Quân",
+      "faction": 4,
+      "tier": 4,
+      "element": 3,
+      "role": "support",
+      "hp": 800,
+      "attack": 79,
+      "armor": 7,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h00Y",
+        "heroId": "h00Y",
+        "name": "Ngũ Đạo Luân Hồi",
+        "description": "Hồi máu vùng rộng cho đồng đội.",
+        "fantasy": "Ngũ Đạo Tướng Quân xoay vòng sinh tức.",
+        "kind": "heal",
+        "cooldown": 13,
+        "power": 1.8,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 4,
+          "status": "haste",
+          "statusSeconds": 2.5,
+          "statusStrength": 0.18
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2258,
+          "scriptLine": 6949,
+          "rawcode": "h00Y",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6949,
+        "rawcode": "h00Y",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h00Z",
+      "index": 35,
+      "name": "Ứng Long",
+      "faction": 4,
+      "tier": 4,
+      "element": 3,
+      "role": "ranger",
+      "hp": 510,
+      "attack": 104,
+      "armor": 6,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h00Z",
+        "heroId": "h00Z",
+        "name": "Ứng Long Vũ Tiễn",
+        "description": "Mũi tên nước nối qua nhiều địch.",
+        "fantasy": "Ứng Long bay cao gọi mưa vào chiến trường.",
+        "kind": "chain",
+        "cooldown": 8.5,
+        "power": 2.2,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 5,
+          "status": "slow",
+          "statusSeconds": 1.8,
+          "statusStrength": 0.18
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2267,
+          "scriptLine": 6950,
+          "rawcode": "h00Z",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6950,
+        "rawcode": "h00Z",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h010",
+      "index": 36,
+      "name": "Xích Tùng Tử",
+      "faction": 4,
+      "tier": 4,
+      "element": 4,
+      "role": "support",
+      "hp": 800,
+      "attack": 79,
+      "armor": 7,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h010",
+        "heroId": "h010",
+        "name": "Xích Tùng Cam Lộ",
+        "description": "Cam lộ chữa lành và thúc bước đồng đội.",
+        "fantasy": "Xích Tùng Tử rải sương hồi sinh cây cỏ.",
+        "kind": "heal",
+        "cooldown": 10.5,
+        "power": 1.95,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 3.3,
+          "status": "haste",
+          "statusSeconds": 3.8,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2276,
+          "scriptLine": 6951,
+          "rawcode": "h010",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6951,
+        "rawcode": "h010",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h011",
+      "index": 37,
+      "name": "Hình Thiên",
+      "faction": 5,
+      "tier": 5,
+      "element": 4,
+      "role": "warrior",
+      "hp": 1931,
+      "attack": 115,
+      "armor": 10,
+      "range": 2,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h011",
+        "heroId": "h011",
+        "name": "Hình Thiên Bất Khuất",
+        "description": "Rìu chiến quét rộng dù bị vây.",
+        "fantasy": "Hình Thiên tiếp tục chiến đấu bằng ý chí.",
+        "kind": "cleave",
+        "cooldown": 8,
+        "power": 2.8,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.1
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2286,
+          "scriptLine": 6955,
+          "rawcode": "h011",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6955,
+        "rawcode": "h011",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h012",
+      "index": 38,
+      "name": "Đấu Chiến Thắng Phật",
+      "faction": 5,
+      "tier": 5,
+      "element": 5,
+      "role": "warrior",
+      "hp": 1931,
+      "attack": 115,
+      "armor": 10,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h012",
+        "heroId": "h012",
+        "name": "Đấu Chiến Kim Cang",
+        "description": "Gậy pháp quét sát địch, thiêu linh lực.",
+        "fantasy": "Đấu Chiến Thắng Phật kết hợp thần lực và gậy.",
+        "kind": "cleave",
+        "cooldown": 9.5,
+        "power": 2.7,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 2.9,
+          "status": "burn",
+          "statusSeconds": 2.5,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2295,
+          "scriptLine": 6956,
+          "rawcode": "h012",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6956,
+        "rawcode": "h012",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h013",
+      "index": 39,
+      "name": "Kim Thiền Tử",
+      "faction": 5,
+      "tier": 5,
+      "element": 2,
+      "role": "mage",
+      "hp": 480,
+      "attack": 134,
+      "armor": 6,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h013",
+        "heroId": "h013",
+        "name": "Kim Thiền Giải Nghiệp",
+        "description": "Phật âm nổ quanh địch và giảm tốc.",
+        "fantasy": "Kim Thiền Tử giải nghiệp bằng một tiếng chuông.",
+        "kind": "nova",
+        "cooldown": 10,
+        "power": 2.15,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.8,
+          "status": "slow",
+          "statusSeconds": 3,
+          "statusStrength": 0.5
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2304,
+          "scriptLine": 6957,
+          "rawcode": "h013",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6957,
+        "rawcode": "h013",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h014",
+      "index": 40,
+      "name": "Thủy Mẫu",
+      "faction": 5,
+      "tier": 5,
+      "element": 3,
+      "role": "guardian",
+      "hp": 4185,
+      "attack": 77,
+      "armor": 16,
+      "range": 4,
+      "interval": 1.2,
+      "speed": 3,
+      "ability": {
+        "id": "web-h014",
+        "heroId": "h014",
+        "name": "Thủy Mẫu Hải Mạc",
+        "description": "Màn nước tạo giáp rộng cho đồng minh.",
+        "fantasy": "Thủy Mẫu dựng một bức màn thủy triều.",
+        "kind": "shield",
+        "cooldown": 10.5,
+        "power": 2.1,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 3.9,
+          "status": "ward",
+          "statusSeconds": 4,
+          "statusStrength": 0.25
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2316,
+          "scriptLine": 6958,
+          "rawcode": "h014",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": true
+      },
+      "source": {
+        "scriptLine": 6958,
+        "rawcode": "h014",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h015",
+      "index": 41,
+      "name": "Thái Bạch Kim Tinh",
+      "faction": 5,
+      "tier": 5,
+      "element": 1,
+      "role": "support",
+      "hp": 960,
+      "attack": 93,
+      "armor": 8,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h015",
+        "heroId": "h015",
+        "name": "Thái Bạch Hộ Tinh",
+        "description": "Tinh quang chữa một đồng đội nguy cấp.",
+        "fantasy": "Thái Bạch Kim Tinh dẫn sao lành tới chiến binh.",
+        "kind": "heal",
+        "cooldown": 9,
+        "power": 2.4,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "single",
+          "status": "haste",
+          "statusSeconds": 2,
+          "statusStrength": 0.14
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2325,
+          "scriptLine": 6959,
+          "rawcode": "h015",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6959,
+        "rawcode": "h015",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h016",
+      "index": 42,
+      "name": "Kim Sí Đại Bằng",
+      "faction": 5,
+      "tier": 5,
+      "element": 1,
+      "role": "warrior",
+      "hp": 1931,
+      "attack": 115,
+      "armor": 10,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h016",
+        "heroId": "h016",
+        "name": "Đại Bằng Kim Vũ",
+        "description": "Cánh vàng chém quét vùng lớn.",
+        "fantasy": "Kim Sí Đại Bằng sà xuống bằng sức gió.",
+        "kind": "cleave",
+        "cooldown": 8.5,
+        "power": 2.75,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.3
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2335,
+          "scriptLine": 6960,
+          "rawcode": "h016",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6960,
+        "rawcode": "h016",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h017",
+      "index": 43,
+      "name": "Hậu Nghệ",
+      "faction": 5,
+      "tier": 5,
+      "element": 4,
+      "role": "ranger",
+      "hp": 612,
+      "attack": 122,
+      "armor": 7,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h017",
+        "heroId": "h017",
+        "name": "Hậu Nghệ Truy Nhật",
+        "description": "Tên lửa nối dài qua nhiều mục tiêu.",
+        "fantasy": "Hậu Nghệ bắn theo vệt mặt trời.",
+        "kind": "chain",
+        "cooldown": 9.5,
+        "power": 2.65,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 5,
+          "status": "burn",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.22
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2344,
+          "scriptLine": 6961,
+          "rawcode": "h017",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6961,
+        "rawcode": "h017",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h018",
+      "index": 44,
+      "name": "Hằng Nga",
+      "faction": 5,
+      "tier": 5,
+      "element": 3,
+      "role": "support",
+      "hp": 960,
+      "attack": 93,
+      "armor": 8,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h018",
+        "heroId": "h018",
+        "name": "Hằng Nga Nguyệt Lộ",
+        "description": "Ánh trăng hồi máu vùng lớn.",
+        "fantasy": "Hằng Nga rót sương trăng dịu lên chiến trường.",
+        "kind": "heal",
+        "cooldown": 12.5,
+        "power": 2.15,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 4.2,
+          "status": "haste",
+          "statusSeconds": 2.5,
+          "statusStrength": 0.16
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2353,
+          "scriptLine": 6962,
+          "rawcode": "h018",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6962,
+        "rawcode": "h018",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h019",
+      "index": 45,
+      "name": "Khương Tử Nha",
+      "faction": 5,
+      "tier": 5,
+      "element": 5,
+      "role": "mage",
+      "hp": 480,
+      "attack": 134,
+      "armor": 6,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h019",
+        "heroId": "h019",
+        "name": "Khương Công Phong Thần",
+        "description": "Phong ấn nổ vùng trung bình và giảm tốc.",
+        "fantasy": "Khương Tử Nha đặt một đạo thần phù.",
+        "kind": "nova",
+        "cooldown": 10.5,
+        "power": 2.4,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.6,
+          "status": "slow",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.3
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2363,
+          "scriptLine": 6963,
+          "rawcode": "h019",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6963,
+        "rawcode": "h019",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01A",
+      "index": 46,
+      "name": "Tây Vương Mẫu",
+      "faction": 5,
+      "tier": 5,
+      "element": 2,
+      "role": "ranger",
+      "hp": 612,
+      "attack": 122,
+      "armor": 7,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h01A",
+        "heroId": "h01A",
+        "name": "Vương Mẫu Bàn Đào",
+        "description": "Đào tiên thành đạn nối qua địch.",
+        "fantasy": "Tây Vương Mẫu lấy linh khí từ vườn đào.",
+        "kind": "chain",
+        "cooldown": 11,
+        "power": 2.4,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 4,
+          "status": "slow",
+          "statusSeconds": 2.2,
+          "statusStrength": 0.19
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2373,
+          "scriptLine": 6964,
+          "rawcode": "h01A",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6964,
+        "rawcode": "h01A",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01B",
+      "index": 47,
+      "name": "Bàn Cổ",
+      "faction": 6,
+      "tier": 6,
+      "element": 1,
+      "role": "warrior",
+      "hp": 2255,
+      "attack": 132,
+      "armor": 11,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h01B",
+        "heroId": "h01B",
+        "name": "Bàn Cổ Khai Thiên",
+        "description": "Một nhát khai thiên quét vùng rất rộng.",
+        "fantasy": "Bàn Cổ rạch đường phân chia trời đất.",
+        "kind": "cleave",
+        "cooldown": 13,
+        "power": 3.15,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.9
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2382,
+          "scriptLine": 6968,
+          "rawcode": "h01B",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6968,
+        "rawcode": "h01B",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01C",
+      "index": 48,
+      "name": "Nữ Oa",
+      "faction": 6,
+      "tier": 6,
+      "element": 3,
+      "role": "support",
+      "hp": 1120,
+      "attack": 106,
+      "armor": 9,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h01C",
+        "heroId": "h01C",
+        "name": "Nữ Oa Bổ Thiên",
+        "description": "Ánh ngũ sắc hồi máu cả vùng rộng.",
+        "fantasy": "Nữ Oa vá lại sinh khí cho đồng minh.",
+        "kind": "heal",
+        "cooldown": 13.5,
+        "power": 2.5,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 4.5,
+          "status": "ward",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2391,
+          "scriptLine": 6969,
+          "rawcode": "h01C",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6969,
+        "rawcode": "h01C",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01D",
+      "index": 49,
+      "name": "Phục Hy",
+      "faction": 6,
+      "tier": 6,
+      "element": 1,
+      "role": "ranger",
+      "hp": 714,
+      "attack": 139,
+      "armor": 8,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h01D",
+        "heroId": "h01D",
+        "name": "Phục Hy Bát Quái",
+        "description": "Quái đồ bắn nối qua năm mục tiêu.",
+        "fantasy": "Phục Hy tính đường đi bằng quẻ tượng.",
+        "kind": "chain",
+        "cooldown": 10,
+        "power": 2.85,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 5,
+          "status": "slow",
+          "statusSeconds": 2.5,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2401,
+          "scriptLine": 6970,
+          "rawcode": "h01D",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6970,
+        "rawcode": "h01D",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01E",
+      "index": 50,
+      "name": "Thần Nông",
+      "faction": 6,
+      "tier": 6,
+      "element": 2,
+      "role": "support",
+      "hp": 1120,
+      "attack": 106,
+      "armor": 9,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h01E",
+        "heroId": "h01E",
+        "name": "Thần Nông Bách Thảo",
+        "description": "Thảo dược hồi máu và thúc bước đồng đội.",
+        "fantasy": "Thần Nông phối dược từ trăm loài cỏ.",
+        "kind": "heal",
+        "cooldown": 11,
+        "power": 2.35,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 3.7,
+          "status": "haste",
+          "statusSeconds": 4,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2410,
+          "scriptLine": 6971,
+          "rawcode": "h01E",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6971,
+        "rawcode": "h01E",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01F",
+      "index": 51,
+      "name": "Hiên Viên",
+      "faction": 6,
+      "tier": 6,
+      "element": 5,
+      "role": "warrior",
+      "hp": 2255,
+      "attack": 132,
+      "armor": 11,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h01F",
+        "heroId": "h01F",
+        "name": "Hiên Viên Kiếm Quyết",
+        "description": "Kiếm khí quét trước mặt với lực mạnh.",
+        "fantasy": "Hiên Viên mở đường bằng kiếm hoàng đế.",
+        "kind": "cleave",
+        "cooldown": 9,
+        "power": 3,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.1
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2420,
+          "scriptLine": 6972,
+          "rawcode": "h01F",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6972,
+        "rawcode": "h01F",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01G",
+      "index": 52,
+      "name": "Cộng Công",
+      "faction": 6,
+      "tier": 6,
+      "element": 3,
+      "role": "mage",
+      "hp": 560,
+      "attack": 153,
+      "armor": 7,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h01G",
+        "heroId": "h01G",
+        "name": "Cộng Công Nộ Hải",
+        "description": "Hồng thủy nổ rộng và ghìm chân địch.",
+        "fantasy": "Cộng Công dâng dòng nước va vào trận địa.",
+        "kind": "nova",
+        "cooldown": 12,
+        "power": 2.85,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4.3,
+          "status": "slow",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.35
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2429,
+          "scriptLine": 6973,
+          "rawcode": "h01G",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6973,
+        "rawcode": "h01G",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01H",
+      "index": 53,
+      "name": "Chúc Dung",
+      "faction": 6,
+      "tier": 6,
+      "element": 4,
+      "role": "warrior",
+      "hp": 2255,
+      "attack": 132,
+      "armor": 11,
+      "range": 1.8,
+      "interval": 1.05,
+      "speed": 4.2,
+      "ability": {
+        "id": "web-h01H",
+        "heroId": "h01H",
+        "name": "Chúc Dung Phần Thiên",
+        "description": "Hỏa quyền quét rộng và thiêu cháy.",
+        "fantasy": "Chúc Dung đưa thần hỏa vào từng cú đánh.",
+        "kind": "cleave",
+        "cooldown": 10,
+        "power": 2.95,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.2,
+          "status": "burn",
+          "statusSeconds": 4,
+          "statusStrength": 0.3
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2439,
+          "scriptLine": 6974,
+          "rawcode": "h01H",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6974,
+        "rawcode": "h01H",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01I",
+      "index": 54,
+      "name": "Khoa Phụ",
+      "faction": 6,
+      "tier": 6,
+      "element": 2,
+      "role": "guardian",
+      "hp": 4883,
+      "attack": 89,
+      "armor": 17,
+      "range": 1.8,
+      "interval": 1.2,
+      "speed": 3,
+      "ability": {
+        "id": "web-h01I",
+        "heroId": "h01I",
+        "name": "Khoa Phụ Trục Nhật",
+        "description": "Che chắn tuyến đầu và tăng nhịp chạy.",
+        "fantasy": "Khoa Phụ bền bỉ đuổi theo mặt trời.",
+        "kind": "shield",
+        "cooldown": 11.5,
+        "power": 2.5,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 3.6,
+          "status": "haste",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2448,
+          "scriptLine": 6975,
+          "rawcode": "h01I",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6975,
+        "rawcode": "h01I",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01J",
+      "index": 55,
+      "name": "Hậu Thổ",
+      "faction": 6,
+      "tier": 6,
+      "element": 5,
+      "role": "ranger",
+      "hp": 714,
+      "attack": 139,
+      "armor": 8,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h01J",
+        "heroId": "h01J",
+        "name": "Hậu Thổ Trấn Sơn",
+        "description": "Thổ tiễn nối địch và giữ chúng chậm.",
+        "fantasy": "Hậu Thổ nén đất thành đường bắn nặng.",
+        "kind": "chain",
+        "cooldown": 9.5,
+        "power": 2.7,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 4,
+          "status": "slow",
+          "statusSeconds": 3.2,
+          "statusStrength": 0.31
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2457,
+          "scriptLine": 6976,
+          "rawcode": "h01J",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6976,
+        "rawcode": "h01J",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h01K",
+      "index": 56,
+      "name": "Chúc Long",
+      "faction": 6,
+      "tier": 6,
+      "element": 4,
+      "role": "mage",
+      "hp": 560,
+      "attack": 153,
+      "armor": 7,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h01K",
+        "heroId": "h01K",
+        "name": "Chúc Long Nhật Dạ",
+        "description": "Ánh nhật nguyệt nổ và đốt địch.",
+        "fantasy": "Chúc Long đổi ngày đêm trong nháy mắt.",
+        "kind": "nova",
+        "cooldown": 12.5,
+        "power": 3,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4.1,
+          "status": "burn",
+          "statusSeconds": 4,
+          "statusStrength": 0.27
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 2467,
+          "scriptLine": 6977,
+          "rawcode": "h01K",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6977,
+        "rawcode": "h01K",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03O",
+      "index": 57,
+      "name": "Nhiếp Tiểu Thiến",
+      "faction": 2,
+      "tier": 2,
+      "element": 3,
+      "role": "support",
+      "hp": 600,
+      "attack": 78,
+      "armor": 6,
+      "range": 6.5,
+      "interval": 1.15,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h03O",
+        "name": "U Lan Minh Khúc",
+        "description": "Hồi 210% Công cho đồng minh trong bán kính 7; lượng hồi dư chuyển thành khiên sương tồn tại 5 giây.",
+        "kind": "heal",
+        "cooldown": 9.5,
+        "power": 2.1,
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 7,
+          "overhealShield": true
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Tiếng Đàn U Oán",
+        "description": "Chuyển 20% sát thương đòn đánh thành máu cho đồng minh tuyến trước."
+      },
+      "source": {
+        "scriptLine": 6929,
+        "rawcode": "h03O",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03P",
+      "index": 58,
+      "name": "Bảo Quả Tử",
+      "faction": 2,
+      "tier": 2,
+      "element": 2,
+      "role": "mage",
+      "hp": 370,
+      "attack": 108,
+      "armor": 4,
+      "range": 7,
+      "interval": 1.25,
+      "speed": 3.4,
+      "ability": {
+        "id": "web-h03P",
+        "name": "Linh Quả Bạo Liệt",
+        "description": "Thần quả nổ gây 230% Công trong bán kính 4,2; bào tử độc rút 100% Công và giảm 25% Giáp trong 3,5 giây.",
+        "kind": "nova",
+        "cooldown": 10,
+        "power": 2.3,
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4.2,
+          "status": "burn",
+          "statusSeconds": 3.5,
+          "statusStrength": 0.4347826086956522,
+          "secondary": {
+            "status": "sunder",
+            "seconds": 3.5,
+            "strength": 0.25
+          }
+        },
+        "provenance": "original"
+      },
+      "trait": {
+        "name": "Hạt Giống Ký Sinh",
+        "description": "Đòn đánh gây độc 15 sát thương mỗi giây trong 2 giây."
+      },
+      "source": {
+        "scriptLine": 6930,
+        "rawcode": "h03P",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03Q",
+      "index": 59,
+      "name": "Trầm Hương",
+      "faction": 3,
+      "tier": 3,
+      "element": 1,
+      "role": "mage",
+      "hp": 320,
+      "attack": 95,
+      "armor": 4,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h03Q",
+        "heroId": "h03Q",
+        "name": "Trầm Hương Khai Sơn",
+        "description": "Rìu phép nổ vùng nhỏ và làm chậm.",
+        "fantasy": "Trầm Hương dồn lòng quyết tâm vào nhát bổ núi.",
+        "kind": "nova",
+        "cooldown": 9.5,
+        "power": 2.3,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 2.9,
+          "status": "slow",
+          "statusSeconds": 2,
+          "statusStrength": 0.4
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3213,
+          "scriptLine": 6939,
+          "rawcode": "h03Q",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6939,
+        "rawcode": "h03Q",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03R",
+      "index": 60,
+      "name": "Khổng Tước",
+      "faction": 3,
+      "tier": 3,
+      "element": 2,
+      "role": "support",
+      "hp": 640,
+      "attack": 66,
+      "armor": 6,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h03R",
+        "heroId": "h03R",
+        "name": "Khổng Tước Ngũ Sắc",
+        "description": "Lông ngũ sắc chữa lành vùng rộng.",
+        "fantasy": "Khổng Tước xòe đuôi bảo hộ đồng đội.",
+        "kind": "heal",
+        "cooldown": 12,
+        "power": 2.15,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 4.1,
+          "status": "ward",
+          "statusSeconds": 3,
+          "statusStrength": 0.17
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3223,
+          "scriptLine": 6940,
+          "rawcode": "h03R",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6940,
+        "rawcode": "h03R",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03S",
+      "index": 61,
+      "name": "Triệu Công Minh",
+      "faction": 3,
+      "tier": 3,
+      "element": 4,
+      "role": "guardian",
+      "hp": 2790,
+      "attack": 55,
+      "armor": 14,
+      "range": 1.8,
+      "interval": 1.2,
+      "speed": 3,
+      "ability": {
+        "id": "web-h03S",
+        "heroId": "h03S",
+        "name": "Công Minh Kim Tiền",
+        "description": "Tiền đồng tạo giáp cho một đồng đội.",
+        "fantasy": "Triệu Công Minh ném kim tiền thành phù hộ.",
+        "kind": "shield",
+        "cooldown": 9.5,
+        "power": 2.3,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "single",
+          "status": "ward",
+          "statusSeconds": 4,
+          "statusStrength": 0.23
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3233,
+          "scriptLine": 6941,
+          "rawcode": "h03S",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6941,
+        "rawcode": "h03S",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03T",
+      "index": 62,
+      "name": "Tịnh Đàn Sứ Giả",
+      "faction": 4,
+      "tier": 4,
+      "element": 3,
+      "role": "guardian",
+      "hp": 3488,
+      "attack": 66,
+      "armor": 15,
+      "range": 1.8,
+      "interval": 1.2,
+      "speed": 3,
+      "ability": {
+        "id": "web-h03T",
+        "heroId": "h03T",
+        "name": "Tịnh Đàn Thiên Hộ",
+        "description": "Linh quang dựng giáp cho tuyến gần.",
+        "fantasy": "Tịnh Đàn Sứ Giả nhận phần hộ trì đồng đội.",
+        "kind": "shield",
+        "cooldown": 11,
+        "power": 2.2,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 3.8,
+          "status": "ward",
+          "statusSeconds": 3.8,
+          "statusStrength": 0.22
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3242,
+          "scriptLine": 6952,
+          "rawcode": "h03T",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6952,
+        "rawcode": "h03T",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03U",
+      "index": 63,
+      "name": "Kim Thân La Hán",
+      "faction": 4,
+      "tier": 4,
+      "element": 1,
+      "role": "support",
+      "hp": 800,
+      "attack": 79,
+      "armor": 7,
+      "range": 6.5,
+      "interval": 1.2,
+      "speed": 3.9,
+      "ability": {
+        "id": "web-h03U",
+        "heroId": "h03U",
+        "name": "Kim Thân Từ Quang",
+        "description": "Từ quang chữa một đồng đội suy yếu.",
+        "fantasy": "Kim Thân La Hán nhường sức bền cho người bên cạnh.",
+        "kind": "heal",
+        "cooldown": 9,
+        "power": 2.25,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "single",
+          "status": "ward",
+          "statusSeconds": 2.5,
+          "statusStrength": 0.2
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3251,
+          "scriptLine": 6953,
+          "rawcode": "h03U",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6953,
+        "rawcode": "h03U",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03V",
+      "index": 64,
+      "name": "Bát Bộ Thiên Long",
+      "faction": 4,
+      "tier": 4,
+      "element": 2,
+      "role": "ranger",
+      "hp": 510,
+      "attack": 104,
+      "armor": 6,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h03V",
+        "heroId": "h03V",
+        "name": "Bát Bộ Long Ảnh",
+        "description": "Long ảnh nối qua nhiều địch và làm chậm.",
+        "fantasy": "Bát Bộ Thiên Long triệu bóng rồng hộ pháp.",
+        "kind": "chain",
+        "cooldown": 9.5,
+        "power": 2.4,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 5,
+          "status": "slow",
+          "statusSeconds": 2.3,
+          "statusStrength": 0.21
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3261,
+          "scriptLine": 6954,
+          "rawcode": "h03V",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6954,
+        "rawcode": "h03V",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03W",
+      "index": 65,
+      "name": "Điện Mẫu",
+      "faction": 5,
+      "tier": 5,
+      "element": 4,
+      "role": "ranger",
+      "hp": 612,
+      "attack": 122,
+      "armor": 7,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h03W",
+        "heroId": "h03W",
+        "name": "Điện Mẫu Lôi Tiễn",
+        "description": "Điện tiễn nhảy qua bầy địch, để lại bỏng.",
+        "fantasy": "Điện Mẫu thả tia chớp từ lòng bàn tay.",
+        "kind": "chain",
+        "cooldown": 8,
+        "power": 2.7,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 6,
+          "status": "burn",
+          "statusSeconds": 2.4,
+          "statusStrength": 0.24
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3271,
+          "scriptLine": 6965,
+          "rawcode": "h03W",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6965,
+        "rawcode": "h03W",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03X",
+      "index": 66,
+      "name": "Phong Bá",
+      "faction": 5,
+      "tier": 5,
+      "element": 1,
+      "role": "mage",
+      "hp": 480,
+      "attack": 134,
+      "armor": 6,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h03X",
+        "heroId": "h03X",
+        "name": "Phong Bá Cuồng Phong",
+        "description": "Lốc gió nổ lớn và giảm tốc địch.",
+        "fantasy": "Phong Bá đổi hướng gió giữa trận.",
+        "kind": "nova",
+        "cooldown": 10.5,
+        "power": 2.5,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 4,
+          "status": "slow",
+          "statusSeconds": 3.4,
+          "statusStrength": 0.32
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3280,
+          "scriptLine": 6966,
+          "rawcode": "h03X",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6966,
+        "rawcode": "h03X",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03Y",
+      "index": 67,
+      "name": "Lục Nhĩ Mỹ Hầu",
+      "faction": 5,
+      "tier": 5,
+      "element": 2,
+      "role": "guardian",
+      "hp": 4185,
+      "attack": 77,
+      "armor": 16,
+      "range": 1.8,
+      "interval": 1.2,
+      "speed": 3,
+      "ability": {
+        "id": "web-h03Y",
+        "heroId": "h03Y",
+        "name": "Lục Nhĩ Thính Giới",
+        "description": "Âm giới dựng giáp cho đồng đội gần.",
+        "fantasy": "Lục Nhĩ Mỹ Hầu nghe trước nguy hiểm sắp đến.",
+        "kind": "shield",
+        "cooldown": 10.5,
+        "power": 2.35,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 3.5,
+          "status": "ward",
+          "statusSeconds": 3,
+          "statusStrength": 0.19
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3289,
+          "scriptLine": 6967,
+          "rawcode": "h03Y",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6967,
+        "rawcode": "h03Y",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h03Z",
+      "index": 68,
+      "name": "Tương Thần",
+      "faction": 6,
+      "tier": 6,
+      "element": 5,
+      "role": "guardian",
+      "hp": 4883,
+      "attack": 89,
+      "armor": 17,
+      "range": 1.8,
+      "interval": 1.2,
+      "speed": 3,
+      "ability": {
+        "id": "web-h03Z",
+        "heroId": "h03Z",
+        "name": "Tương Thần Thiết Quan",
+        "description": "Quan tài đá che chắn cả nhóm gần.",
+        "fantasy": "Tương Thần khóa sức mạnh trong lớp đá cổ.",
+        "kind": "shield",
+        "cooldown": 12,
+        "power": 2.75,
+        "provenance": "original",
+        "effect": {
+          "target": "allies",
+          "shape": "radius",
+          "radius": 4.2,
+          "status": "ward",
+          "statusSeconds": 5,
+          "statusStrength": 0.28
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3298,
+          "scriptLine": 6978,
+          "rawcode": "h03Z",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6978,
+        "rawcode": "h03Z",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h040",
+      "index": 69,
+      "name": "Trương Đạo Lăng",
+      "faction": 6,
+      "tier": 6,
+      "element": 1,
+      "role": "mage",
+      "hp": 560,
+      "attack": 153,
+      "armor": 7,
+      "range": 7,
+      "interval": 1.35,
+      "speed": 3.3,
+      "ability": {
+        "id": "web-h040",
+        "heroId": "h040",
+        "name": "Đạo Lăng Thiên Phù",
+        "description": "Thiên phù nổ lớn, làm chậm yêu tà.",
+        "fantasy": "Trương Đạo Lăng vẽ bùa trừ tà trên không.",
+        "kind": "nova",
+        "cooldown": 11.5,
+        "power": 2.8,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "radius",
+          "radius": 3.7,
+          "status": "slow",
+          "statusSeconds": 3.2,
+          "statusStrength": 0.29
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3307,
+          "scriptLine": 6979,
+          "rawcode": "h040",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6979,
+        "rawcode": "h040",
+        "adapted": true
+      }
+    },
+    {
+      "id": "h041",
+      "index": 70,
+      "name": "Phượng Hoàng",
+      "faction": 6,
+      "tier": 6,
+      "element": 4,
+      "role": "ranger",
+      "hp": 714,
+      "attack": 139,
+      "armor": 8,
+      "range": 8,
+      "interval": 0.9,
+      "speed": 3.6,
+      "ability": {
+        "id": "web-h041",
+        "heroId": "h041",
+        "name": "Phượng Hoàng Niết Hỏa",
+        "description": "Lông lửa nối địch và thiêu rực chúng.",
+        "fantasy": "Phượng Hoàng rải tàn lửa của vòng tái sinh.",
+        "kind": "chain",
+        "cooldown": 11.5,
+        "power": 2.9,
+        "provenance": "original",
+        "effect": {
+          "target": "enemy",
+          "shape": "chain",
+          "jumps": 6,
+          "status": "burn",
+          "statusSeconds": 4,
+          "statusStrength": 0.28
+        },
+        "evidence": {
+          "status": "unverified",
+          "rosterLine": 3317,
+          "scriptLine": 6980,
+          "rawcode": "h041",
+          "note": "Danh tính/role từ pK và A027; chưa nối được rawcode với trigger kỹ năng. Thiết kế mới cho bản web; số liệu là cân bằng web."
+        },
+        "sample": false
+      },
+      "source": {
+        "scriptLine": 6980,
+        "rawcode": "h041",
+        "adapted": true
+      }
+    }
+  ],
+  "craftRecipes": [
+    {
+      "heroId": "h009",
+      "ingredients": [
+        "h007",
+        "h007",
+        "h008"
+      ],
+      "sourceIndex": 9
+    },
+    {
+      "heroId": "h00A",
+      "ingredients": [
+        "h004",
+        "h008",
+        "h002"
+      ],
+      "sourceIndex": 10
+    },
+    {
+      "heroId": "h00B",
+      "ingredients": [
+        "h005",
+        "h005",
+        "h006"
+      ],
+      "sourceIndex": 11
+    },
+    {
+      "heroId": "h00C",
+      "ingredients": [
+        "h004",
+        "h008",
+        "h003"
+      ],
+      "sourceIndex": 12
+    },
+    {
+      "heroId": "h00D",
+      "ingredients": [
+        "h001",
+        "h002",
+        "h005"
+      ],
+      "sourceIndex": 13
+    },
+    {
+      "heroId": "h00E",
+      "ingredients": [
+        "h004",
+        "h004",
+        "h007"
+      ],
+      "sourceIndex": 14
+    },
+    {
+      "heroId": "h00F",
+      "ingredients": [
+        "h006",
+        "h006",
+        "h001"
+      ],
+      "sourceIndex": 15
+    },
+    {
+      "heroId": "h00G",
+      "ingredients": [
+        "h001",
+        "h002",
+        "h007"
+      ],
+      "sourceIndex": 16
+    },
+    {
+      "heroId": "h00H",
+      "ingredients": [
+        "h003",
+        "h003",
+        "h001"
+      ],
+      "sourceIndex": 17
+    },
+    {
+      "heroId": "h00I",
+      "ingredients": [
+        "h005",
+        "h006",
+        "h003"
+      ],
+      "sourceIndex": 18
+    },
+    {
+      "heroId": "h00J",
+      "ingredients": [
+        "h00E",
+        "h009",
+        "h00A"
+      ],
+      "sourceIndex": 19
+    },
+    {
+      "heroId": "h00K",
+      "ingredients": [
+        "h00F",
+        "h00G",
+        "h009"
+      ],
+      "sourceIndex": 20
+    },
+    {
+      "heroId": "h00L",
+      "ingredients": [
+        "h00H",
+        "h00B",
+        "h00I"
+      ],
+      "sourceIndex": 21
+    },
+    {
+      "heroId": "h00M",
+      "ingredients": [
+        "h00B",
+        "h00F",
+        "h03P"
+      ],
+      "sourceIndex": 22
+    },
+    {
+      "heroId": "h00N",
+      "ingredients": [
+        "h00H",
+        "h00D",
+        "h00C"
+      ],
+      "sourceIndex": 23
+    },
+    {
+      "heroId": "h00O",
+      "ingredients": [
+        "h00A",
+        "h00I",
+        "h00C"
+      ],
+      "sourceIndex": 24
+    },
+    {
+      "heroId": "h00P",
+      "ingredients": [
+        "h00C",
+        "h00E",
+        "h00G"
+      ],
+      "sourceIndex": 25
+    },
+    {
+      "heroId": "h00Q",
+      "ingredients": [
+        "h00G",
+        "h00D",
+        "h00B"
+      ],
+      "sourceIndex": 26
+    },
+    {
+      "heroId": "h00R",
+      "ingredients": [
+        "h00P",
+        "h00J",
+        "h00H"
+      ],
+      "sourceIndex": 27
+    },
+    {
+      "heroId": "h00S",
+      "ingredients": [
+        "h00Q",
+        "h03Q",
+        "h00C"
+      ],
+      "sourceIndex": 28
+    },
+    {
+      "heroId": "h00T",
+      "ingredients": [
+        "h00N",
+        "h00M",
+        "h03O"
+      ],
+      "sourceIndex": 29
+    },
+    {
+      "heroId": "h00U",
+      "ingredients": [
+        "h00O",
+        "h00P",
+        "h009"
+      ],
+      "sourceIndex": 30
+    },
+    {
+      "heroId": "h00V",
+      "ingredients": [
+        "h00O",
+        "h00Q",
+        "h00I"
+      ],
+      "sourceIndex": 31
+    },
+    {
+      "heroId": "h00W",
+      "ingredients": [
+        "h00J",
+        "h00J",
+        "h002"
+      ],
+      "sourceIndex": 32
+    },
+    {
+      "heroId": "h00X",
+      "ingredients": [
+        "h00M",
+        "h00M",
+        "h006"
+      ],
+      "sourceIndex": 33
+    },
+    {
+      "heroId": "h00Y",
+      "ingredients": [
+        "h00K",
+        "h00N",
+        "h00B"
+      ],
+      "sourceIndex": 34
+    },
+    {
+      "heroId": "h00Z",
+      "ingredients": [
+        "h00L",
+        "h00Q",
+        "h00E"
+      ],
+      "sourceIndex": 35
+    },
+    {
+      "heroId": "h010",
+      "ingredients": [
+        "h00K",
+        "h03R",
+        "h00D"
+      ],
+      "sourceIndex": 36
+    },
+    {
+      "heroId": "h011",
+      "ingredients": [
+        "h00U",
+        "h00V",
+        "h00N"
+      ],
+      "sourceIndex": 37
+    },
+    {
+      "heroId": "h012",
+      "ingredients": [
+        "h00R",
+        "h00R",
+        "h00L"
+      ],
+      "sourceIndex": 38
+    },
+    {
+      "heroId": "h013",
+      "ingredients": [
+        "h00S",
+        "h00S",
+        "h00L"
+      ],
+      "sourceIndex": 39
+    },
+    {
+      "heroId": "h014",
+      "ingredients": [
+        "h00W",
+        "h00W",
+        "h00F"
+      ],
+      "sourceIndex": 40
+    },
+    {
+      "heroId": "h015",
+      "ingredients": [
+        "h010",
+        "h00Y",
+        "h03Q"
+      ],
+      "sourceIndex": 41
+    },
+    {
+      "heroId": "h016",
+      "ingredients": [
+        "h00U",
+        "h00T",
+        "h00Q"
+      ],
+      "sourceIndex": 42
+    },
+    {
+      "heroId": "h017",
+      "ingredients": [
+        "h00Z",
+        "h00V",
+        "h00K"
+      ],
+      "sourceIndex": 43
+    },
+    {
+      "heroId": "h018",
+      "ingredients": [
+        "h010",
+        "h00X",
+        "h00O"
+      ],
+      "sourceIndex": 44
+    },
+    {
+      "heroId": "h019",
+      "ingredients": [
+        "h00T",
+        "h00S",
+        "h03S"
+      ],
+      "sourceIndex": 45
+    },
+    {
+      "heroId": "h01A",
+      "ingredients": [
+        "h00X",
+        "h00Z",
+        "h00M"
+      ],
+      "sourceIndex": 46
+    },
+    {
+      "heroId": "h01B",
+      "ingredients": [
+        "h011",
+        "h012",
+        "h00Y"
+      ],
+      "sourceIndex": 47
+    },
+    {
+      "heroId": "h01C",
+      "ingredients": [
+        "h015",
+        "h018",
+        "h00V"
+      ],
+      "sourceIndex": 48
+    },
+    {
+      "heroId": "h01D",
+      "ingredients": [
+        "h01A",
+        "h017",
+        "h00W"
+      ],
+      "sourceIndex": 49
+    },
+    {
+      "heroId": "h01E",
+      "ingredients": [
+        "h015",
+        "h018",
+        "h00Z"
+      ],
+      "sourceIndex": 50
+    },
+    {
+      "heroId": "h01F",
+      "ingredients": [
+        "h012",
+        "h016",
+        "h010"
+      ],
+      "sourceIndex": 51
+    },
+    {
+      "heroId": "h01G",
+      "ingredients": [
+        "h013",
+        "h019",
+        "h00U"
+      ],
+      "sourceIndex": 52
+    },
+    {
+      "heroId": "h01H",
+      "ingredients": [
+        "h016",
+        "h011",
+        "h03T"
+      ],
+      "sourceIndex": 53
+    },
+    {
+      "heroId": "h01I",
+      "ingredients": [
+        "h014",
+        "h014",
+        "h00P"
+      ],
+      "sourceIndex": 54
+    },
+    {
+      "heroId": "h01J",
+      "ingredients": [
+        "h01A",
+        "h03W",
+        "h00R"
+      ],
+      "sourceIndex": 55
+    },
+    {
+      "heroId": "h01K",
+      "ingredients": [
+        "h013",
+        "h019",
+        "h03V"
+      ],
+      "sourceIndex": 56
+    },
+    {
+      "heroId": "h03O",
+      "ingredients": [
+        "h002",
+        "h002",
+        "h003"
+      ],
+      "sourceIndex": 57
+    },
+    {
+      "heroId": "h03P",
+      "ingredients": [
+        "h001",
+        "h006",
+        "h008"
+      ],
+      "sourceIndex": 58
+    },
+    {
+      "heroId": "h03Q",
+      "ingredients": [
+        "h03P",
+        "h00D",
+        "h00A"
+      ],
+      "sourceIndex": 59
+    },
+    {
+      "heroId": "h03R",
+      "ingredients": [
+        "h03O",
+        "h00F",
+        "h00I"
+      ],
+      "sourceIndex": 60
+    },
+    {
+      "heroId": "h03S",
+      "ingredients": [
+        "h03P",
+        "h00E",
+        "h00H"
+      ],
+      "sourceIndex": 61
+    },
+    {
+      "heroId": "h03T",
+      "ingredients": [
+        "h00J",
+        "h03S",
+        "h009"
+      ],
+      "sourceIndex": 62
+    },
+    {
+      "heroId": "h03U",
+      "ingredients": [
+        "h00K",
+        "h00K",
+        "h03O"
+      ],
+      "sourceIndex": 63
+    },
+    {
+      "heroId": "h03V",
+      "ingredients": [
+        "h00L",
+        "h03Q",
+        "h00G"
+      ],
+      "sourceIndex": 64
+    },
+    {
+      "heroId": "h03W",
+      "ingredients": [
+        "h03U",
+        "h00Z",
+        "h03R"
+      ],
+      "sourceIndex": 65
+    },
+    {
+      "heroId": "h03X",
+      "ingredients": [
+        "h03V",
+        "h00X",
+        "h00P"
+      ],
+      "sourceIndex": 66
+    },
+    {
+      "heroId": "h03Y",
+      "ingredients": [
+        "h00R",
+        "h00Y",
+        "h03S"
+      ],
+      "sourceIndex": 67
+    },
+    {
+      "heroId": "h03Z",
+      "ingredients": [
+        "h03Y",
+        "h011",
+        "h03T"
+      ],
+      "sourceIndex": 68
+    },
+    {
+      "heroId": "h040",
+      "ingredients": [
+        "h03X",
+        "h017",
+        "h03U"
+      ],
+      "sourceIndex": 69
+    },
+    {
+      "heroId": "h041",
+      "ingredients": [
+        "h03W",
+        "h016",
+        "h00X"
+      ],
+      "sourceIndex": 70
+    }
+  ],
+  "synergies": [
+    {
+      "id": 1,
+      "name": "Hỏa Diệm Sơn",
+      "description": "- Ngưu Ma Vương tấn công trong phạm vi xung quanh gây 150% công vật lý\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00B",
+        "h00C",
+        "h00P"
+      ],
+      "thresholds": [
+        2,
+        3
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6871
+    },
+    {
+      "id": 2,
+      "name": "Trần Đường Quan",
+      "description": "- Lý Tịnh hồi phục 50% sinh lực khi kết thúc Kim Chung Tráo\n- Na Tra tấn công gây sát thương phạm vi nhỏ\nBản web: tăng sinh lực theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h009",
+        "h00A",
+        "h00V",
+        "h00W"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4
+      ],
+      "bonus": "health",
+      "amount": 0.08,
+      "sourceLine": 6872
+    },
+    {
+      "id": 3,
+      "name": "U Minh",
+      "description": "- Ngũ Đạo Tướng Quân tấn công cùng lúc 5 mục tiêu, Phược Hồn hồi phục 4% sinh lực và tăng 3% tốc độ đánh, tối đa 48%\nBản web: tăng tốc độ đánh theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00H",
+        "h00I",
+        "h00N",
+        "h00O",
+        "h00Y"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "bonus": "speed",
+      "amount": 0.08,
+      "sourceLine": 6873
+    },
+    {
+      "id": 4,
+      "name": "Thỉnh Kinh",
+      "description": "- Tôn Ngộ Không tỉ lệ phát động Như Ý Côn +15%\n- Đường Tăng thi triển Khẩn Cô Chú giảm 10% sinh lực mục tiêu\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00J",
+        "h00K",
+        "h00L",
+        "h00R",
+        "h00S"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6874
+    },
+    {
+      "id": 5,
+      "name": "Hậu Tây Du Ký",
+      "description": "- Đấu Chiến Thắng Phật tỉ lệ phát động Như Ý Côn +20%\n- Kim Thiền Tử thi triển Khẩn Cô Chú giảm 15% sinh lực mục tiêu\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h03T",
+        "h03U",
+        "h03V",
+        "h012",
+        "h013"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6875
+    },
+    {
+      "id": 6,
+      "name": "Tiên Tử",
+      "description": "- Hằng Nga thi triển Nguyệt Quang Tịnh Hóa lập tức hồi phục 30% sinh lực phe mình\n- Nữ Oa hồi phục đầy sinh pháp lực mục tiêu\nBản web: tăng hồi phục theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00F",
+        "h00M",
+        "h018",
+        "h01C"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4
+      ],
+      "bonus": "regen",
+      "amount": 0.015,
+      "sourceLine": 6876
+    },
+    {
+      "id": 7,
+      "name": "Lưỡng Tình Tương Duyệt",
+      "description": "- Hậu Nghệ tấn công đồng thời 5 mục tiêu\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h017",
+        "h018"
+      ],
+      "thresholds": [
+        2
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6877
+    },
+    {
+      "id": 8,
+      "name": "Phong Thần Diễn Nghĩa",
+      "description": "- Lôi Chấn Tử thi triển Thiên Lôi lên 10 mục tiêu, công phép +20%\n- Dương Tiễn và Na Tra có 35% tấn công 2 lần\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00T",
+        "h00U",
+        "h00V",
+        "h019"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6878
+    },
+    {
+      "id": 9,
+      "name": "Yêu Linh",
+      "description": "- Kim Sí Đại Bằng thi triển Tật Phong trúng mục tiêu hồi phục 6% sinh lực, bạo kích +5%\n- Kỹ năng Đát Kỷ hồi phục 20% sinh lực\nBản web: tăng hồi phục theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00P",
+        "h03R",
+        "h00X",
+        "h016"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4
+      ],
+      "bonus": "regen",
+      "amount": 0.015,
+      "sourceLine": 6879
+    },
+    {
+      "id": 10,
+      "name": "Phật Quang Phổ Chiếu",
+      "description": "- Đấu Chiến Thắng Phật, Kim Thiền Tử, Kim Sí Đại Bằng miễn nhiễm choáng\nBản web: tăng giáp theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h012",
+        "h013",
+        "h016"
+      ],
+      "thresholds": [
+        2,
+        3
+      ],
+      "bonus": "armor",
+      "amount": 3,
+      "sourceLine": 6880
+    },
+    {
+      "id": 11,
+      "name": "Thiên Đình",
+      "description": "- Tây Vương Mẫu tấn công đồng thời 5 mục tiêu\n- Thái Bạch Kim Tinh thi triển Tứ Tượng Luân Hồi tăng 10% phòng thủ cho mục tiêu\nBản web: tăng giáp theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00E",
+        "h03S",
+        "h015",
+        "h01A",
+        "h01J"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "bonus": "armor",
+      "amount": 3,
+      "sourceLine": 6881
+    },
+    {
+      "id": 12,
+      "name": "Nữ Thần",
+      "description": "- Nữ Oa khi sinh lực dưới 50% hồi phục đầy [CD: 45s]\n- Hậu Thổ tấn công gây 500% công vật lý diện rộng và choáng 2s [CD: 20s]\nBản web: tăng sinh lực theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h014",
+        "h01A",
+        "h01C",
+        "h01J"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4
+      ],
+      "bonus": "health",
+      "amount": 0.08,
+      "sourceLine": 6882
+    },
+    {
+      "id": 13,
+      "name": "Long Tộc Huyết Mạch",
+      "description": "- Chúc Long khiến kẻ địch trúng Nghiệp Hỏa tỉ lệ 15% giảm thêm 1000 sinh lực\n- Ứng Long tạo thêm 6 lần Băng Phong Bạo\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00L",
+        "h00Q",
+        "h00Z",
+        "h01K"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6883
+    },
+    {
+      "id": 14,
+      "name": "Chân Hỏa",
+      "description": "- Chúc Dung tỉ lệ Hỏa Lưu Tinh +20%, chuyển hóa 130% sát thương thành công phép\n- Hộ thuẫn của Xích Tùng Tử miễn nhiễm khống chế\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00C",
+        "h00V",
+        "h010",
+        "h01H"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6884
+    },
+    {
+      "id": 15,
+      "name": "Thủy Thần",
+      "description": "- Thủy Mẫu, Cộng Công bị tấn công tỉ lệ 35% phản kích kẻ địch gây 125% công phép\nBản web: tăng giáp theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00G",
+        "h014",
+        "h01G"
+      ],
+      "thresholds": [
+        2,
+        3
+      ],
+      "bonus": "armor",
+      "amount": 3,
+      "sourceLine": 6885
+    },
+    {
+      "id": 16,
+      "name": "Đạo Vô Nhai",
+      "description": "- Thiên Kiếp của Khương Tử Nha gây 900% công phép\n- Phục Hy hấp thụ và hồi phục 40% sinh lực khi Khương Tử nha thi triển Thiên Kiếp\nBản web: tăng hồi phục theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00D",
+        "h019",
+        "h01D"
+      ],
+      "thresholds": [
+        2,
+        3
+      ],
+      "bonus": "regen",
+      "amount": 0.015,
+      "sourceLine": 6886
+    },
+    {
+      "id": 17,
+      "name": "Viêm Đế Huyết Mạch",
+      "description": "- Mộc Linh biến mất hồi phục 50% cho Thần Nông\n- Tinh Vệ tấn công 6 mục tiêu, tốc độ +12%, xuyên phá +100%\nBản web: tăng tốc độ đánh theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00M",
+        "h01E"
+      ],
+      "thresholds": [
+        2
+      ],
+      "bonus": "speed",
+      "amount": 0.08,
+      "sourceLine": 6887
+    },
+    {
+      "id": 18,
+      "name": "Hoàng Thiên Ứng Long",
+      "description": "- Hiên Viên Hoàng Đế thi triển Kinh Thiên Nhất Kiếm với tỉ lệ bạo kích 100%, sát thương bạo kích +30%\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00Z",
+        "h01F"
+      ],
+      "thresholds": [
+        2
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6888
+    },
+    {
+      "id": 19,
+      "name": "Trục Nhật",
+      "description": "- Hậu Nghệ thi triển Bách Bộ Xuyên Dương khiến mục tiêu bị thiêu đốt mỗi giây 150% công phép trong 5s, pháp lực tiêu hao giảm 50\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h017",
+        "h01I"
+      ],
+      "thresholds": [
+        2
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6889
+    },
+    {
+      "id": 20,
+      "name": "Chiến Phủ Hồng Hoang",
+      "description": "- Bàn Cổ lực tấn công Khai Thiên tăng 25%, bỏ qua né tránh kẻ địch\n- Hình Thiên mở rộng phạm vi Chiến Ý Vĩnh Hằng\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h011",
+        "h01B"
+      ],
+      "thresholds": [
+        2
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6890
+    },
+    {
+      "id": 21,
+      "name": "Bảo Liên Đăng",
+      "description": "- Trầm Hương thi triển tuyệt kỹ khiến Dương Tiễn tăng 30% phòng thủ tấn công trong 15s\nBản web: tăng giáp theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h03Q",
+        "h00U"
+      ],
+      "thresholds": [
+        2
+      ],
+      "bonus": "armor",
+      "amount": 3,
+      "sourceLine": 6891
+    },
+    {
+      "id": 22,
+      "name": "Tứ Hầu Hỗn Thế",
+      "description": "- Tôn Ngộ Không, Đấu Chiến Thắng Phật phân thân nhận tất cả thuộc tính bản thể\n- Lục Nhĩ Mỹ Hầu miễn nhiễm khống chế\nBản web: tăng sinh lực theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00R",
+        "h012",
+        "h03Y"
+      ],
+      "thresholds": [
+        2,
+        3
+      ],
+      "bonus": "health",
+      "amount": 0.08,
+      "sourceLine": 6892
+    },
+    {
+      "id": 23,
+      "name": "Phong Vũ Lôi Điện",
+      "description": "- Sát thương kỹ năng cả 4 nhân vật tăng 10%\n- Điện Mẫu tấn công cộng dồn điện tích khiến uy lực Cuồng Phong của Phong Bá tăng thêm 5% [Max 50%]\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00Q",
+        "h00T",
+        "h03W",
+        "h03X"
+      ],
+      "thresholds": [
+        2,
+        3,
+        4
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6893
+    },
+    {
+      "id": 24,
+      "name": "Thiên Địa Nhân Đạo",
+      "description": "- Trương Đạo Lăng tăng phạm vi Thần Lôi Phù, tỉ lệ bạo kích 30%\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h015",
+        "h019",
+        "h040"
+      ],
+      "thresholds": [
+        2,
+        3
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6894
+    },
+    {
+      "id": 25,
+      "name": "Âm Khí Trùng Thiên",
+      "description": "- Tương Thần tấn công Thi Binh tăng 550, sinh lực tăng 5500, miễn nhiễm khống chế\n- Chúc Long thi triển Hỏa Long đốt cháy 13% HP địch\nBản web: tăng sinh lực theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h00Y",
+        "h01K",
+        "h03Z"
+      ],
+      "thresholds": [
+        2,
+        3
+      ],
+      "bonus": "health",
+      "amount": 0.08,
+      "sourceLine": 6895
+    },
+    {
+      "id": 26,
+      "name": "Tam Đại Thần Điểu",
+      "description": "- Phượng Hoàng Chân Hỏa tỉ lệ 30% liên kích 2 lần\n- Kim Sí Đại Bằng bị tấn công cộng dồn 5% sát thương gia tăng cho Tật Phong\nBản web: tăng tốc độ đánh theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h03R",
+        "h016",
+        "h041"
+      ],
+      "thresholds": [
+        2,
+        3
+      ],
+      "bonus": "speed",
+      "amount": 0.08,
+      "sourceLine": 6896
+    },
+    {
+      "id": 27,
+      "name": "Thần Hỏa",
+      "description": "- Chúc Dung tăng phạm vi sát thương Hỏa Lưu Tinh\n- Phượng Hoàng kích hoạt Thiên Hỏa Phượng Vũ liên tiếp gây 180% công phép diện rộng [CD: 35s]\nBản web: tăng công kích theo mỗi mốc Tiên Duyên.",
+      "members": [
+        "h01H",
+        "h041"
+      ],
+      "thresholds": [
+        2
+      ],
+      "bonus": "attack",
+      "amount": 0.08,
+      "sourceLine": 6897
+    }
+  ],
+  "formations": [
+    {
+      "id": 1,
+      "name": "Tam Tài Trận",
+      "description": "[ Tam Tài Trận ]: sát thương gây ra +5%/cấp",
+      "bonus": "attack",
+      "amount": 0.05
+    },
+    {
+      "id": 2,
+      "name": "Tứ Tượng Trận",
+      "description": "[ Tứ Tượng Trận ]: sát thương hứng chịu -5%/cấp",
+      "bonus": "armor",
+      "amount": 3
+    },
+    {
+      "id": 3,
+      "name": "Ngũ Hành Trận",
+      "description": "[ Ngũ Hành Trận ]: sát thương bạo kích +5%/cấp",
+      "bonus": "attack",
+      "amount": 0.05
+    },
+    {
+      "id": 4,
+      "name": "Lục Hợp Trận",
+      "description": "[ Lục Hợp Trận ]: tỉ lệ bạo kích +5%/cấp",
+      "bonus": "speed",
+      "amount": 0.05
+    },
+    {
+      "id": 5,
+      "name": "Thất Tinh Trận",
+      "description": "[ Thất Tinh Trận ]: tỉ lệ xuyên phá +5%/cấp",
+      "bonus": "attack",
+      "amount": 0.05
+    },
+    {
+      "id": 6,
+      "name": "Bát Quái Trận",
+      "description": "[ Bát Quái Trận ]: tỉ lệ chống đỡ +5%/cấp",
+      "bonus": "health",
+      "amount": 0.05
+    },
+    {
+      "id": 7,
+      "name": "Cửu Cung Trận",
+      "description": "[ Cửu Cung Trận ]: tỉ lệ chính xác +5%/cấp",
+      "bonus": "attack",
+      "amount": 0.05
+    },
+    {
+      "id": 8,
+      "name": "Thập Tuyệt Trận",
+      "description": "[ Thập Tuyệt Trận ]: tỉ lệ né tránh +5%/cấp",
+      "bonus": "armor",
+      "amount": 3
+    }
+  ],
+  "difficulties": [
+    {
+      "id": "normal",
+      "name": "Bình Thường",
+      "waves": 45,
+      "attack": 1,
+      "health": 1
+    },
+    {
+      "id": "nightmare",
+      "name": "Ác Mộng",
+      "waves": 45,
+      "attack": 1.1,
+      "health": 1.3
+    },
+    {
+      "id": "hell",
+      "name": "Địa Ngục",
+      "waves": 45,
+      "attack": 1.2,
+      "health": 1.6
+    },
+    {
+      "id": "supreme",
+      "name": "Tối Thượng",
+      "waves": 60,
+      "attack": 1.2,
+      "health": 1.6
+    }
+  ],
+  "dungeons": [
+    {
+      "id": 1,
+      "name": "Huyết Lâm",
+      "boss": "Thụ Yêu",
+      "wave": 5
+    },
+    {
+      "id": 2,
+      "name": "Thủy Vực",
+      "boss": "Quy Vương",
+      "wave": 10
+    },
+    {
+      "id": 3,
+      "name": "Thạch Lâm",
+      "boss": "Thạch Cơ Nương Nương",
+      "wave": 15
+    },
+    {
+      "id": 4,
+      "name": "Tiên Môn",
+      "boss": "Lục Áp Đạo Quân",
+      "wave": 20
+    },
+    {
+      "id": 5,
+      "name": "Lưỡng Giới",
+      "boss": "Kim Giác và Ngân Giác",
+      "wave": 25
+    },
+    {
+      "id": 6,
+      "name": "Bất Chu Thiên Quan",
+      "boss": "Ma Gia Tứ Tướng",
+      "wave": 30
+    },
+    {
+      "id": 7,
+      "name": "Tinh Không",
+      "boss": "Đế Giang",
+      "wave": 35
+    },
+    {
+      "id": 8,
+      "name": "Ngũ Hành Linh Giới",
+      "boss": "Ngũ Hành Linh Giới",
+      "wave": 40,
+      "supremeOnly": true
+    }
+  ]
+}

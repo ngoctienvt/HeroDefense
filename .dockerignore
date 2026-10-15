@@ -1,0 +1,11 @@
+node_modules
+dist
+.git
+.npm-cache
+.agentkit-runtime
+logs
+artifacts
+plans
+*.w3x
+.env
+.env.*

@@ -1,0 +1,31 @@
+{
+  "schema": "generate2dsprite.master_spec.v1",
+  "name": "pangu-tier6-left",
+  "subject": "Pangu, the primordial creator titan, full body",
+  "identity": "A majestic, colossal Chinese mythic creator titan with broad heroic shoulders and powerful limbs. Long flowing cosmic silver hair and beard, luminous gold eyes, rugged stone-like skin marked with a few bold golden celestial cracks. Bare muscular upper body, ancient matte gold bracers and waist armor with restrained multicolored jade accents. A large circular stone-and-gold creation halo is mounted behind his shoulders. He holds one immense double-sided Khai Thien axe with both hands: one broad half of its blade is golden sunlight, the other dark starry stone. A few large angular rocks hover close to his feet. The whole design is formed from big readable shapes with restrained detail.",
+  "pose": "Static neutral idle facing left, both feet planted, axe held with both hands at rest",
+  "facing": "left",
+  "facing_parts": "face, gaze, chest, knees and boots",
+  "view": "orthographic left profile full-body sprite view",
+  "class": "hero",
+  "finish": "hd",
+  "key": "magenta",
+  "genre": "a stylized Chinese mythology hero defense game",
+  "pronoun": "he",
+  "style_ref": {
+    "path": "heroic-wukong-concept.png",
+    "what": "the earlier Wukong concept, for its hand-painted cel-shaded materials, strong heroic shape language and controlled colors only",
+    "do_not_copy": "its character identity, monkey features, gold staff, pose, top-down camera angle, stone courtyard, miniature duplicate or environmental background"
+  },
+  "extra_bans": [
+    "second character",
+    "miniature inset",
+    "stone courtyard",
+    "floor",
+    "cast shadow",
+    "attack effect",
+    "soft glow crossing the key background"
+  ],
+  "opaque_parts": "hair, beard, halo, axe, body and floating rocks",
+  "extra": "The axe blade may be brilliant through hard-edged opaque golden shapes, not transparent bloom. Space-splitting marks belong inside or directly attached to the blade silhouette. Keep the halo and rocks compact enough that every part fits comfortably inside the canvas margins. Preserve an unmistakable front-facing idle stance and one single character."
+}

@@ -1,0 +1,1227 @@
+[
+  {
+    "id": "h001",
+    "index": 1,
+    "group": 1,
+    "element": 1,
+    "script_line": 6911,
+    "strings": {
+      "line": 1945,
+      "Art": "war3mapImported\\HeroIcon_1.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SpiritOfVengeanceMissile\\SpiritOfVengeanceMissile.mdl",
+      "Missilespeed": "1000,1500",
+      "Name": "|cff7fff00Thiên Lý Nhãn|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h002",
+    "index": 2,
+    "group": 1,
+    "element": 2,
+    "script_line": 6912,
+    "strings": {
+      "line": 1955,
+      "Art": "war3mapImported\\HeroIcon_2.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SpiritOfVengeanceMissile\\SpiritOfVengeanceMissile.mdl",
+      "Missilespeed": "1000,1500",
+      "Name": "|cff7fff00Thuận Phong Nhĩ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h003",
+    "index": 3,
+    "group": 1,
+    "element": 4,
+    "script_line": 6913,
+    "strings": {
+      "line": 1965,
+      "Art": "war3mapImported\\HeroIcon_3.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff7fff00Quỷ Sai|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h004",
+    "index": 4,
+    "group": 1,
+    "element": 1,
+    "script_line": 6914,
+    "strings": {
+      "line": 1974,
+      "Art": "war3mapImported\\HeroIcon_4.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff7fff00Thiên Binh|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h005",
+    "index": 5,
+    "group": 1,
+    "element": 5,
+    "script_line": 6915,
+    "strings": {
+      "line": 1983,
+      "Art": "war3mapImported\\HeroIcon_5.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\Arrow\\ArrowMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cff7fff00Xạ Nhân|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h006",
+    "index": 6,
+    "group": 1,
+    "element": 2,
+    "script_line": 6916,
+    "strings": {
+      "line": 1993,
+      "Art": "war3mapImported\\HeroIcon_6.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff7fff00Tiên Nữ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h007",
+    "index": 7,
+    "group": 1,
+    "element": 3,
+    "script_line": 6917,
+    "strings": {
+      "line": 2002,
+      "Art": "war3mapImported\\HeroIcon_7.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff7fff00Quy Thừa Tướng|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h008",
+    "index": 8,
+    "group": 1,
+    "element": 5,
+    "script_line": 6918,
+    "strings": {
+      "line": 2011,
+      "Art": "war3mapImported\\HeroIcon_8.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff7fff00Thổ Hành Tôn|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h009",
+    "index": 9,
+    "group": 2,
+    "element": 1,
+    "script_line": 6919,
+    "strings": {
+      "line": 2020,
+      "Art": "war3mapImported\\HeroIcon_9.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff0fdfffKim Tra|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00A",
+    "index": 10,
+    "group": 2,
+    "element": 2,
+    "script_line": 6920,
+    "strings": {
+      "line": 2029,
+      "Art": "war3mapImported\\HeroIcon_10.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff0fdfffMộc Tra|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00B",
+    "index": 11,
+    "group": 2,
+    "element": 5,
+    "script_line": 6921,
+    "strings": {
+      "line": 2038,
+      "Art": "war3mapImported\\HeroIcon_11.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\DragonHawkMissile\\DragonHawkMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cff0fdfffThiết Phiến|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00C",
+    "index": 12,
+    "group": 2,
+    "element": 4,
+    "script_line": 6922,
+    "strings": {
+      "line": 2048,
+      "Art": "war3mapImported\\HeroIcon_12.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff0fdfffHồng Hài Nhi|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00D",
+    "index": 13,
+    "group": 2,
+    "element": 4,
+    "script_line": 6923,
+    "strings": {
+      "line": 2057,
+      "Art": "war3mapImported\\HeroIcon_13.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SerpentWardMissile\\SerpentWardMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cff0fdfffLã Động Tân|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00E",
+    "index": 14,
+    "group": 2,
+    "element": 1,
+    "script_line": 6924,
+    "strings": {
+      "line": 2067,
+      "Art": "war3mapImported\\HeroIcon_14.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cff0fdfffCự Linh Thần|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00F",
+    "index": 15,
+    "group": 2,
+    "element": 2,
+    "script_line": 6925,
+    "strings": {
+      "line": 2076,
+      "Art": "war3mapImported\\HeroIcon_15.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\BansheeMissile\\BansheeMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cff0fdfffMẫu Đơn Tiên Tử|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00G",
+    "index": 16,
+    "group": 2,
+    "element": 3,
+    "script_line": 6926,
+    "strings": {
+      "line": 2086,
+      "Art": "war3mapImported\\HeroIcon_16.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SpiritOfVengeanceMissile\\SpiritOfVengeanceMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cff0fdfffHà Bá|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00H",
+    "index": 17,
+    "group": 2,
+    "element": 5,
+    "script_line": 6927,
+    "strings": {
+      "line": 2096,
+      "Art": "war3mapImported\\HeroIcon_17.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\VoidWalkerMissile\\VoidWalkerMissile.mdl",
+      "Missilespeed": "1000,1500",
+      "Name": "|cff0fdfffVô Thường|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00I",
+    "index": 18,
+    "group": 2,
+    "element": 3,
+    "script_line": 6928,
+    "strings": {
+      "line": 2106,
+      "Art": "war3mapImported\\HeroIcon_18.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\DruidoftheTalonMissile\\DruidoftheTalonMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cff0fdfffMạnh Bà|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03O",
+    "index": 57,
+    "group": 2,
+    "element": 3,
+    "script_line": 6929,
+    "strings": {
+      "line": 3193,
+      "Art": "war3mapImported\\HeroIcon_57.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\BansheeMissile\\BansheeMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cff0fdfffNhiếp Tiểu Thiến|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03P",
+    "index": 58,
+    "group": 2,
+    "element": 2,
+    "script_line": 6930,
+    "strings": {
+      "line": 3203,
+      "Art": "war3mapImported\\HeroIcon_58.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\BloodElfMissile\\BloodElfMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cff0fdfffBảo Quả Tử|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00J",
+    "index": 19,
+    "group": 3,
+    "element": 3,
+    "script_line": 6931,
+    "strings": {
+      "line": 2116,
+      "Art": "war3mapImported\\HeroIcon_19.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffdb70dbTrư Bát Giới|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00K",
+    "index": 20,
+    "group": 3,
+    "element": 1,
+    "script_line": 6932,
+    "strings": {
+      "line": 2125,
+      "Art": "war3mapImported\\HeroIcon_20.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\WingedSerpentMissile\\WingedSerpentMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffdb70dbSa Ngộ Tịnh|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00L",
+    "index": 21,
+    "group": 3,
+    "element": 2,
+    "script_line": 6933,
+    "strings": {
+      "line": 2135,
+      "Art": "war3mapImported\\HeroIcon_21.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SpiritOfVengeanceMissile\\SpiritOfVengeanceMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffdb70dbTiểu Bạch Long|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00M",
+    "index": 22,
+    "group": 3,
+    "element": 5,
+    "script_line": 6934,
+    "strings": {
+      "line": 2145,
+      "Art": "war3mapImported\\HeroIcon_22.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffdb70dbTinh Vệ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00N",
+    "index": 23,
+    "group": 3,
+    "element": 4,
+    "script_line": 6935,
+    "strings": {
+      "line": 2154,
+      "Art": "war3mapImported\\HeroIcon_23.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SerpentWardMissile\\SerpentWardMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffdb70dbChung Quỳ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00O",
+    "index": 24,
+    "group": 3,
+    "element": 5,
+    "script_line": 6936,
+    "strings": {
+      "line": 2164,
+      "Art": "war3mapImported\\HeroIcon_24.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffdb70dbPhán Quan|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00P",
+    "index": 25,
+    "group": 3,
+    "element": 1,
+    "script_line": 6937,
+    "strings": {
+      "line": 2173,
+      "Art": "war3mapImported\\HeroIcon_25.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffdb70dbNgưu Ma Vương|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00Q",
+    "index": 26,
+    "group": 3,
+    "element": 3,
+    "script_line": 6938,
+    "strings": {
+      "line": 2182,
+      "Art": "war3mapImported\\HeroIcon_26.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffdb70dbLong Vương|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03Q",
+    "index": 59,
+    "group": 3,
+    "element": 1,
+    "script_line": 6939,
+    "strings": {
+      "line": 3213,
+      "Art": "war3mapImported\\HeroIcon_59.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SpiritOfVengeanceMissile\\SpiritOfVengeanceMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffdb70dbTrầm Hương|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03R",
+    "index": 60,
+    "group": 3,
+    "element": 2,
+    "script_line": 6940,
+    "strings": {
+      "line": 3223,
+      "Art": "war3mapImported\\HeroIcon_60.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\IllidanMissile\\IllidanMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffdb70dbKhổng Tước|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03S",
+    "index": 61,
+    "group": 3,
+    "element": 4,
+    "script_line": 6941,
+    "strings": {
+      "line": 3233,
+      "Art": "war3mapImported\\HeroIcon_61.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffdb70dbTriệu Công Minh|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00R",
+    "index": 27,
+    "group": 4,
+    "element": 5,
+    "script_line": 6942,
+    "strings": {
+      "line": 2191,
+      "Art": "war3mapImported\\HeroIcon_27.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffff00Tôn Ngộ Không|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00S",
+    "index": 28,
+    "group": 4,
+    "element": 2,
+    "script_line": 6943,
+    "strings": {
+      "line": 2200,
+      "Art": "war3mapImported\\HeroIcon_28.blp",
+      "Hotkey": "F",
+      "Missilearc": "0.1",
+      "Missileart": "Abilities\\Weapons\\BansheeMissile\\BansheeMissile.mdl",
+      "MissileHoming": "1",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffff00Đường Tăng|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00T",
+    "index": 29,
+    "group": 4,
+    "element": 5,
+    "script_line": 6944,
+    "strings": {
+      "line": 2212,
+      "Art": "war3mapImported\\HeroIcon_29.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffff00Lôi Chấn Tử|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00U",
+    "index": 30,
+    "group": 4,
+    "element": 1,
+    "script_line": 6945,
+    "strings": {
+      "line": 2221,
+      "Art": "war3mapImported\\HeroIcon_30.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffff00Dương Tiễn|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00V",
+    "index": 31,
+    "group": 4,
+    "element": 4,
+    "script_line": 6946,
+    "strings": {
+      "line": 2230,
+      "Art": "war3mapImported\\HeroIcon_31.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffff00Na Tra|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00W",
+    "index": 32,
+    "group": 4,
+    "element": 1,
+    "script_line": 6947,
+    "strings": {
+      "line": 2239,
+      "Art": "war3mapImported\\HeroIcon_32.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffff00Lý Tịnh|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00X",
+    "index": 33,
+    "group": 4,
+    "element": 2,
+    "script_line": 6948,
+    "strings": {
+      "line": 2248,
+      "Art": "war3mapImported\\HeroIcon_33.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SludgeMissile\\SludgeMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffff00Đát Kỷ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00Y",
+    "index": 34,
+    "group": 4,
+    "element": 3,
+    "script_line": 6949,
+    "strings": {
+      "line": 2258,
+      "Art": "war3mapImported\\HeroIcon_34.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffff00Ngũ Đạo Tướng Quân|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h00Z",
+    "index": 35,
+    "group": 4,
+    "element": 3,
+    "script_line": 6950,
+    "strings": {
+      "line": 2267,
+      "Art": "war3mapImported\\HeroIcon_35.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffff00Ứng Long|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h010",
+    "index": 36,
+    "group": 4,
+    "element": 4,
+    "script_line": 6951,
+    "strings": {
+      "line": 2276,
+      "Art": "war3mapImported\\HeroIcon_36.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\PhoenixMissile\\Phoenix_Missile_mini.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffff00Xích Tùng Tử|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03T",
+    "index": 62,
+    "group": 4,
+    "element": 3,
+    "script_line": 6952,
+    "strings": {
+      "line": 3242,
+      "Art": "war3mapImported\\HeroIcon_62.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffff00Tịnh Đàn Sứ Giả|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03U",
+    "index": 63,
+    "group": 4,
+    "element": 1,
+    "script_line": 6953,
+    "strings": {
+      "line": 3251,
+      "Art": "war3mapImported\\HeroIcon_63.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\WingedSerpentMissile\\WingedSerpentMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffff00Kim Thân La Hán|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03V",
+    "index": 64,
+    "group": 4,
+    "element": 2,
+    "script_line": 6954,
+    "strings": {
+      "line": 3261,
+      "Art": "war3mapImported\\HeroIcon_64.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\SpiritOfVengeanceMissile\\SpiritOfVengeanceMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffff00Bát Bộ Thiên Long|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h011",
+    "index": 37,
+    "group": 5,
+    "element": 4,
+    "script_line": 6955,
+    "strings": {
+      "line": 2286,
+      "Art": "war3mapImported\\HeroIcon_37.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Hình Thiên|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h012",
+    "index": 38,
+    "group": 5,
+    "element": 5,
+    "script_line": 6956,
+    "strings": {
+      "line": 2295,
+      "Art": "war3mapImported\\HeroIcon_38.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Đấu Chiến Thắng Phật|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h013",
+    "index": 39,
+    "group": 5,
+    "element": 2,
+    "script_line": 6957,
+    "strings": {
+      "line": 2304,
+      "Art": "war3mapImported\\HeroIcon_39.blp",
+      "Hotkey": "F",
+      "Missilearc": "0.1",
+      "Missileart": "Abilities\\Weapons\\BansheeMissile\\BansheeMissile.mdl",
+      "MissileHoming": "1",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffa500Kim Thiền Tử|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h014",
+    "index": 40,
+    "group": 5,
+    "element": 3,
+    "script_line": 6958,
+    "strings": {
+      "line": 2316,
+      "Art": "war3mapImported\\HeroIcon_40.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Thủy Mẫu|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h015",
+    "index": 41,
+    "group": 5,
+    "element": 1,
+    "script_line": 6959,
+    "strings": {
+      "line": 2325,
+      "Art": "war3mapImported\\HeroIcon_41.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\FaerieDragonMissile\\FaerieDragonMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffa500Thái Bạch Kim Tinh|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h016",
+    "index": 42,
+    "group": 5,
+    "element": 1,
+    "script_line": 6960,
+    "strings": {
+      "line": 2335,
+      "Art": "war3mapImported\\HeroIcon_42.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Kim Sí Đại Bằng|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h017",
+    "index": 43,
+    "group": 5,
+    "element": 4,
+    "script_line": 6961,
+    "strings": {
+      "line": 2344,
+      "Art": "war3mapImported\\HeroIcon_43.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Hậu Nghệ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h018",
+    "index": 44,
+    "group": 5,
+    "element": 3,
+    "script_line": 6962,
+    "strings": {
+      "line": 2353,
+      "Art": "war3mapImported\\HeroIcon_44.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\DragonHawkMissile\\DragonHawkMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffa500Hằng Nga|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h019",
+    "index": 45,
+    "group": 5,
+    "element": 5,
+    "script_line": 6963,
+    "strings": {
+      "line": 2363,
+      "Art": "war3mapImported\\HeroIcon_45.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\AvengerMissile\\AvengerMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cffffa500Khương Tử Nha|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01A",
+    "index": 46,
+    "group": 5,
+    "element": 2,
+    "script_line": 6964,
+    "strings": {
+      "line": 2373,
+      "Art": "war3mapImported\\HeroIcon_46.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Tây Vương Mẫu|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03W",
+    "index": 65,
+    "group": 5,
+    "element": 4,
+    "script_line": 6965,
+    "strings": {
+      "line": 3271,
+      "Art": "war3mapImported\\HeroIcon_65.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Điện Mẫu|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03X",
+    "index": 66,
+    "group": 5,
+    "element": 1,
+    "script_line": 6966,
+    "strings": {
+      "line": 3280,
+      "Art": "war3mapImported\\HeroIcon_66.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Phong Bá|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03Y",
+    "index": 67,
+    "group": 5,
+    "element": 2,
+    "script_line": 6967,
+    "strings": {
+      "line": 3289,
+      "Art": "war3mapImported\\HeroIcon_67.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cffffa500Lục Nhĩ Mỹ Hầu|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01B",
+    "index": 47,
+    "group": 6,
+    "element": 1,
+    "script_line": 6968,
+    "strings": {
+      "line": 2382,
+      "Art": "war3mapImported\\HeroIcon_47.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cfff85555Bàn Cổ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01C",
+    "index": 48,
+    "group": 6,
+    "element": 3,
+    "script_line": 6969,
+    "strings": {
+      "line": 2391,
+      "Art": "war3mapImported\\HeroIcon_48.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\ZigguratFrostMissile\\ZigguratFrostMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cfff85555Nữ Oa|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01D",
+    "index": 49,
+    "group": 6,
+    "element": 1,
+    "script_line": 6970,
+    "strings": {
+      "line": 2401,
+      "Art": "war3mapImported\\HeroIcon_49.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cfff85555Phục Hy|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01E",
+    "index": 50,
+    "group": 6,
+    "element": 2,
+    "script_line": 6971,
+    "strings": {
+      "line": 2410,
+      "Art": "war3mapImported\\HeroIcon_50.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\MurgulMagicMissile\\MurgulMagicMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cfff85555Thần Nông|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01F",
+    "index": 51,
+    "group": 6,
+    "element": 5,
+    "script_line": 6972,
+    "strings": {
+      "line": 2420,
+      "Art": "war3mapImported\\HeroIcon_51.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cfff85555Hiên Viên|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01G",
+    "index": 52,
+    "group": 6,
+    "element": 3,
+    "script_line": 6973,
+    "strings": {
+      "line": 2429,
+      "Art": "war3mapImported\\HeroIcon_52.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\WaterElementalMissile\\WaterElementalMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cfff85555Cộng Công|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01H",
+    "index": 53,
+    "group": 6,
+    "element": 4,
+    "script_line": 6974,
+    "strings": {
+      "line": 2439,
+      "Art": "war3mapImported\\HeroIcon_53.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cfff85555Chúc Dung|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01I",
+    "index": 54,
+    "group": 6,
+    "element": 2,
+    "script_line": 6975,
+    "strings": {
+      "line": 2448,
+      "Art": "war3mapImported\\HeroIcon_54.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cfff85555Khoa Phụ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01J",
+    "index": 55,
+    "group": 6,
+    "element": 5,
+    "script_line": 6976,
+    "strings": {
+      "line": 2457,
+      "Art": "war3mapImported\\HeroIcon_55.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\AncientProtectorMissile\\AncientProtectorMissile.mdl",
+      "Missilespeed": "1050,1500",
+      "Name": "|cfff85555Hậu Thổ|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h01K",
+    "index": 56,
+    "group": 6,
+    "element": 4,
+    "script_line": 6977,
+    "strings": {
+      "line": 2467,
+      "Art": "war3mapImported\\HeroIcon_56.blp",
+      "Hotkey": "F",
+      "Missileart": "Abilities\\Weapons\\RedDragonBreath\\RedDragonMissile.mdl",
+      "Missilespeed": "1000,1500",
+      "Name": "|cfff85555Chúc Long|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h03Z",
+    "index": 68,
+    "group": 6,
+    "element": 5,
+    "script_line": 6978,
+    "strings": {
+      "line": 3298,
+      "Art": "war3mapImported\\HeroIcon_68.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cfff85555Tương Thần|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h040",
+    "index": 69,
+    "group": 6,
+    "element": 1,
+    "script_line": 6979,
+    "strings": {
+      "line": 3307,
+      "Art": "war3mapImported\\HeroIcon_69.blp",
+      "Hotkey": "F",
+      "Missileart": "war3mapImported\\Effect_TDLattack.mdl",
+      "Missilespeed": "1000,1500",
+      "Name": "|cfff85555Trương Đạo Lăng|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  },
+  {
+    "id": "h041",
+    "index": 70,
+    "group": 6,
+    "element": 4,
+    "script_line": 6980,
+    "strings": {
+      "line": 3317,
+      "Art": "war3mapImported\\HeroIcon_70.blp",
+      "Hotkey": "F",
+      "Missilespeed": "1500,1500",
+      "Name": "|cfff85555Phượng Hoàng|r",
+      "Specialart": "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl",
+      "Tip": "Train |cffffcc00F|rootman",
+      "Ubertip": "Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+    }
+  }
+]

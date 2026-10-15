@@ -1,0 +1,2140 @@
+[afac]
+Art=ReplaceableTextures\CommandButtons\BTNAlleriaFlute.blp
+Description=Nearby units' missile attacks do more damage.
+Name=Alleria's Flute of Accuracy
+Tip=Purchase Alleria's Flute of Accuracy
+Ubertip=Increases nearby ranged units' damage by 10%. |nDoes not stack with Trueshot Aura.
+
+[ajen]
+Art=ReplaceableTextures\CommandButtons\BTNJanggo.blp
+Description=Nearby units move and attack more swiftly.
+Name=Ancient Janggo of Endurance
+Tip=Purchase Ancient Janggo of Endurance
+Ubertip=Grants the Hero and friendly nearby units increased attack rate and movement speed. |nDoes not stack with Endurance Aura.
+
+[amrc]
+Art=ReplaceableTextures\CommandButtons\BTNAmulet.blp
+Description=Can be used to teleport units to the user.
+Hotkey=R
+Name=Amulet of Recall
+Tip=Purchase Amulet of |cffffcc00R|recall
+Ubertip=Teleports 12 of the player's units within the targeted area to the location of the Hero when used.
+
+[anfg]
+Art=ReplaceableTextures\CommandButtons\BTNClayFigurine.blp
+Description=Boosts Intelligence by 1.
+Name=Ancient Figurine
+Tip=Purchase Ancient Figurine
+Ubertip=Increases the Intelligence of the Hero by 1 when carried.
+
+[ankh]
+Art=ReplaceableTextures\CommandButtons\BTNAnkh.blp
+Description=Allows reincarnation upon death.
+Hotkey=A
+Name=Ankh of Reincarnation
+Tip=Purchase |cffffcc00A|rnkh of Reincarnation
+Ubertip=Automatically brings the Hero back to life with 500 hit points when the Hero wearing the Ankh dies.
+
+[arsc]
+Art=ReplaceableTextures\CommandButtons\BTNBansheeAdept.blp
+Description="Restores hit points, mana and increases armor to nearby units."
+Hotkey=A
+Name=Arcane Scroll
+Tip=Purchase |cffffcc00A|rrcane Scroll
+Ubertip="A powerful scroll that restores 150 hit points, 100 mana, and grants 2 bonus armor to nearby friendly units."
+
+[arsh]
+Art=ReplaceableTextures\CommandButtons\BTNArcaniteArmor.blp
+Description=Increases armor and reduces damage from ranged attacks.
+Hotkey=A
+Name=Arcanite Shield
+Tip=Purchase |cffffcc00A|rrcanite Shield
+Ubertip=Reduces damage from ranged attacks to 70%. Also increases the Hero's armor by 5 when worn.
+
+[asbl]
+Art=ReplaceableTextures\CommandButtons\BTNDaggerOfEscape.blp
+Description=Increases attack damage.
+Hotkey=A
+Name=Assassin's Blade
+Tip=Purchase |cffffcc00A|rssassin's Blade
+Ubertip="Adds 5 bonus damage to the attack of the Hero when carried. The Hero's attacks also deal 4 damage per second, and slow the movement speed and attack rate of the enemy."
+
+[axas]
+Art=ReplaceableTextures\CommandButtons\BTNWitchDoctorMaster.blp
+Description=|cffff8c00Artifact|r|nThis intricate staff has many names carved into it.
+Hotkey=A
+Name=Ancestral Staff
+Tip=Purchase |cffffcc00A|rncestral Staff
+Ubertip=|cffff8c00Artifact|r|nSummons 2 Troll Berserkers to fight for you. Also grants the Hero and friendly nearby units increased attack rate and movement speed.|n|cffffcc00History|r|n|cffffdeadNames of generations of Witch Doctors are carved into this staff. The wielder can call upon them for wisdom and guidance in times of peril.|r
+
+[azhr]
+Art=ReplaceableTextures\CommandButtons\BTNHeartOfAszune.blp
+Description=The magical amulet Heart of Aszune.
+Name=Heart of Aszune
+Tip=Purchase Heart of Aszune
+Ubertip=Legends say that the imprisoned spirit of Aszune seeks out her heart to this very day.
+
+[belv]
+Art=ReplaceableTextures\CommandButtons\BTNBoots.blp
+Description=Provides a bonus to Agility.
+Hotkey=E
+Name=Boots of Quel'Thalas +6
+Tip=Purchase Boots of Qu|cffffcc00e|rl'Thalas
+Ubertip=Increases the Agility of the Hero by 6 when worn.
+
+[bfhr]
+Art=ReplaceableTextures\CommandButtons\BTNPhilosophersStone.blp
+Description=|cff8b00ffUnique|r|nThe heart of Bloodfeather.
+Hotkey=B
+Name=Bloodfeather's Heart
+Tip=Purchase |cffffcc00B|rloodfeather's Heart
+Ubertip=|cff8b00ffUnique|r|nIncreases the Hero's agility by 10 when worn.
+
+[bgst]
+Art=ReplaceableTextures\CommandButtons\BTNBelt.blp
+Description=Provides a bonus to Strength.
+Hotkey=B
+Name=Belt of Giant Strength +6
+Tip=Purchase |cffffcc00B|relt of Giant Strength
+Ubertip=Increases the Strength of the Hero by 6 when worn.
+
+[blba]
+Art=ReplaceableTextures\CommandButtons\BTNArmorGolem.blp
+Description=Increases armor.
+Hotkey=A
+Name=Bladebane Armor
+Tip=Purchase Bladebane |cffffcc00A|rrmor
+Ubertip=Grants nearby units 1 bonus defense. Enhances the Hero's armor by 7.
+
+[brac]
+Art=ReplaceableTextures\CommandButtons\BTNRunedBracers.blp
+Description=Reduces Magic damage to Hero.
+Hotkey=R
+Name=Runed Bracers
+Tip=Purchase |cffffcc00R|runed Bracers
+Ubertip=Reduces Magic damage dealt to the Hero by 33%.
+
+[brag]
+Art=ReplaceableTextures\CommandButtons\BTNRingPurple.blp
+Description=Boosts Agility by 1.
+Name=Bracer of Agility
+Tip=Purchase Bracer of Agility
+Ubertip=Increases the Agility of the Hero by 1 when worn.
+
+[bspd]
+Art=ReplaceableTextures\CommandButtons\BTNBootsOfSpeed.blp
+Description=Increases movement rate.
+Hotkey=S
+Name=Boots of Speed
+Tip=Purchase Boots of |cffffcc00S|rpeed
+Ubertip=Increases the movement speed of the Hero when worn.
+
+[btst]
+Art=ReplaceableTextures\CommandButtons\BTNOrcBattleStandard.blp
+Description=Thrall's Battle Standard.
+Name=Battle Standard
+Tip=Purchase Battle Standard
+Ubertip="The Battle Standard of Thrall's Orcs, carry it with pride."
+
+[bzbe]
+Art=ReplaceableTextures\CommandButtons\BTNVialEmpty.blp
+Description=This is an empty vial.
+Name=Empty Vial
+Tip=Purchase Empty Vial
+Ubertip=A special vial adept at containing the magical healing waters of a Fountain of Life.
+
+[bzbf]
+Art=ReplaceableTextures\CommandButtons\BTNVialFull.blp
+Description=This vial is full of healing waters.
+Name=Full Vial
+Tip=Purchase Full Vial
+Ubertip=A special vial adept at containing the magical healing waters of a Fountain of Life.
+
+[ccmd]
+Art=ReplaceableTextures\CommandButtons\BTNScepterOfMastery.blp
+Description=Allows mind control of non-Hero units.
+Hotkey=C
+Name=Scepter of Mastery
+Tip=Purchase S|cffffcc00c|repter of Mastery
+Ubertip=Transfers control of the targeted non-Hero unit to the player who uses the Scepter. The transfer of control is permanent. |nCannot be used on Heroes or on creeps higher than level 5. |nContains 3 charges.
+
+[ches]
+Art=ReplaceableTextures\CommandButtons\BTNCheese.blp
+Description=It's the Cheese!
+Name=Cheese
+Tip=Purchase the Cheese
+Ubertip=Cheese cheese cheese cheese!
+
+[ciri]
+Art=ReplaceableTextures\CommandButtons\BTNRobeOfTheMagi.blp
+Description=Provides a bonus to Intelligence.
+Hotkey=R
+Name=Robe of the Magi +6
+Tip=Purchase |cffffcc00R|robe of the Magi
+Ubertip=Increases the Intelligence of the Hero by 6 when worn.
+
+[ckng]
+Art=ReplaceableTextures\CommandButtons\BTNHelmutPurple.blp
+Description="Provides a +5 bonus to Agility, Strength, and Intelligence."
+Hotkey=K
+Name=Crown of Kings +5
+Tip=Purchase Crown of |cffffcc00K|rings
+Ubertip="Increases the Strength, Intelligence, and Agility of the Hero by 5 when worn."
+
+[clfm]
+Art=ReplaceableTextures\CommandButtons\BTNCloakOfFlames.blp
+Description=Surrounds the Hero with damaging flames.
+Name=Cloak of Flames
+Tip=Purchase Cloak of Flames
+Ubertip=Engulfs the Hero in fire which deals 10 damage per second to nearby enemy land units. |nDoes not stack with Immolation.
+
+[clsd]
+Art=ReplaceableTextures\CommandButtons\BTNCloak.blp
+Description=Provides the Shadowmeld ability.
+Hotkey=C
+Name=Cloak of Shadows
+Tip=Purchase |cffffcc00C|rloak of Shadows
+Ubertip="Provides the Hero with invisibility at night when worn. An invisible Hero is untargetable by the enemy unless detected. If the Hero moves, attacks, uses an ability, or casts a spell, the invisibility effect is lost."
+
+[cnhn]
+Art=ReplaceableTextures\CommandButtons\BTNHornOfCenarius.blp
+Description=This is the Horn of Cenarius.
+Name=Horn of Cenarius
+Tip=Purchase Horn of Cenarius
+Ubertip="This ancient relic of the Night Elves is said to hold the power to call the spirits of all Night Elves. It imbues its owner with 200 hit points, and a 2 hit point per second regeneration bonus."
+
+[cnob]
+Art=ReplaceableTextures\CommandButtons\BTNCirclet.blp
+Description="Provides a +2 bonus to Strength, Agility and Intelligence."
+Hotkey=C
+Name=Circlet of Nobility
+Tip=Purchase |cffffcc00C|rirclet of Nobility
+Ubertip="Increases the Strength, Agility and Intelligence of the Hero by 2 when worn."
+
+[cosl]
+Art=ReplaceableTextures\CommandButtons\BTNUsedSoulGem.blp
+Description=|cffff8c00Artifact|r|nA bright glowing orb that instills peace.
+Hotkey=C
+Name=Celestial Orb of Souls
+Tip=Purchase |cffffcc00C|relestial Orb of Souls
+Ubertip="|cffff8c00Artifact|r|nBrings 6 of your nearby dead units back to life. |n|cffffcc00History|r|n|cffffdeadCrafted by the Titans as gifts to their favored creations, the Celestial Orb of Souls channels the powers of the light to bring back to life those who have recently fallen.|r"
+
+[crdt]
+Art=ReplaceableTextures\CommandButtons\BTNRevenant.blp
+Description=|cffff8c00Artifact|r|nA simple crown with the emblem of an unfamiliar Paladin order on it.
+Hotkey=D
+Name=Crown of the Deathlord
+Tip=Purchase Crown of the |cffffcc00D|reathlord
+Ubertip="|cffff8c00Artifact|r|nGrants the ability to fire bolts of pain that deal 250 damage. Also increases the Hero's hit points by 150 and mana by 100 when worn.|n|cffffcc00History|r|n|cffffdeadThe Deathlords are rumored to have been mighty Paladins once. One of their order turned from the light when he slaughtered his own family, believing they were impure.|r"
+
+[crys]
+Art=ReplaceableTextures\CommandButtons\BTNCrystalBall.blp
+Description=Permits the viewing of distant areas.
+Hotkey=C
+Name=Crystal Ball
+Tip=Purchase |cffffcc00C|rrystal Ball
+Ubertip=Reveals a targeted area. Invisible units are also revealed by the Crystal Ball's effect. |nLasts 10 seconds.
+
+[desc]
+Art=ReplaceableTextures\CommandButtons\BTNDaggerOfEscape.blp
+Description=Teleports the Hero a short distance.
+Hotkey=E
+Name=Kelen's Dagger of Escape
+Tip=Purchase Dagger of |cffffcc00E|rscape
+Ubertip=Allows the Hero to teleport a short distance.
+
+[dkfw]
+Art=ReplaceableTextures\CommandButtons\BTNBarrel.blp
+Description=A keg filled to the brim with the strongest drink available this side of Khaz Modan!
+Hotkey=K
+Name=Keg of Thunderwater
+Tip=Purchase |cffffcc00K|reg of Thunderwater
+Ubertip=A keg filled to the brim with the strongest drink available this side of Khaz Modan!
+
+[dphe]
+Art=ReplaceableTextures\CommandButtons\BTNThunderLizardEgg.blp
+Description=A rare egg of a Thunder Hawk.
+Hotkey=H
+Name=Thunder Phoenix Egg
+Tip=Purchase Thunder P|cffffcc00h|roenix Egg
+Ubertip=A rare egg of a Thunder Hawk.
+
+[drph]
+Art=ReplaceableTextures\CommandButtons\BTNDust.blp
+Description=Boosts Intelligence by 1.
+Name=Druid Pouch
+Tip=Purchase Druid Pouch
+Ubertip=Increases the Intelligence of the Hero by 1 when carried.
+
+[dsum]
+Art=ReplaceableTextures\CommandButtons\BTNDarkSummoning.blp
+Description=Summons your units to your Hero.
+Hotkey=D
+Name=Diamond of Summoning
+Tip=Purchase |cffffcc00D|riamond of Summoning
+Ubertip=Teleports 12 of the player's units within the targeted area to the location of the Hero when used.
+
+[dthb]
+Art=ReplaceableTextures\CommandButtons\BTNManaFlareOff.blp
+Description=An exotic plant well known for its unstable and dangerous properties.
+Hotkey=T
+Name=Thunderbloom Bulb
+Tip=Purchase |cffffcc00T|rhunderbloom Bulb
+Ubertip=An exotic plant well known for its unstable and dangerous properties.
+
+[dtsb]
+Art=ReplaceableTextures\CommandButtons\BTNSorceressMaster.blp
+Description="|cffff8c00Artifact|r|nA seemingly simple spellbook, handed down from a master Farseer, Drek'thar."
+Hotkey=D
+Name=Drek'thar's Spellbook
+Tip=Purchase |cffffcc00D|rrek'thar's Spellbook
+Ubertip=|cffff8c00Artifact|r|nGrants the ability to portal to your home town. Also reduces spell damage by 33% and increases the Hero's mana by 75 while equipped.|n|cffffcc00History|r|n|cffffdeadDrek'Thar's old spellbook is filled with pages stolen from Kirin Tor mages that were slain in battle.|r
+
+[dust]
+Art=ReplaceableTextures\CommandButtons\BTNDustOfAppearance.blp
+Buttonpos=3
+Description=Reveals invisible units.
+Hotkey=D
+Name=Dust of Appearance
+Tip=Purchase |cffffcc00D|rust of Appearance
+Ubertip=Reveals enemy invisible units in an area around the Hero. |nContains 2 charges. |nLasts 20 seconds.
+
+[engs]
+Art=ReplaceableTextures\CommandButtons\BTNEnchantedGemstone.blp
+Description=This is an enchanted gemstone.
+Name=Enchanted Gemstone
+Tip=Purchase Enchanted Gemstone
+Ubertip="This artifact of the Kelani Magi is said to hold the power to make constructs out of pure energy. When the Kelani fell to ruin, the Razormane Quillboars were quick to scavenge and covet these beautiful and powerful objects."
+
+[envl]
+Art=ReplaceableTextures\CommandButtons\BTNVialFull.blp
+Description=Regenerates health and mana.
+Hotkey=E
+Name=Enchanted Vial
+Tip=Purchase |cffffcc00E|rnchanted Vial
+Ubertip=Regenerates 200 hit points and 75 mana of the Hero over 30 seconds. |nContains 5 charges.
+
+[esaz]
+Art=ReplaceableTextures\CommandButtons\BTNHeartOfAszune.blp
+Description=A powerful Night Elf artifact.
+Hotkey=E
+Name=Essence of Aszune
+Tip=Purchase |cffffcc00E|rssence of Aszune
+Ubertip="Legends speak of an intelligent Orc who found the Heart of Aszune. This is the essence of her heart, precious to the Night Elves. It has the power to heal the Hero that wields it. This item is permanent."
+
+[evtl]
+Art=ReplaceableTextures\CommandButtons\BTNTalisman.blp
+Description=Makes the Hero harder to hit.
+Name=Talisman of Evasion
+Tip=Purchase Talisman of Evasion
+Ubertip=Causes attacks against the wearer to miss 15% of the time. |nDoes not stack with Evasion or Drunken Brawler.
+
+[fgdg]
+Art=ReplaceableTextures\CommandButtons\BTNDoomGuard.blp
+Description=Summons a Doom Guard.
+Name=Demonic Figurine
+Tip=Purchase Demonic Figurine
+Ubertip=Summons a Doom Guard to fight for you. |nLasts 180 seconds.
+
+[fgfh]
+Art=ReplaceableTextures\CommandButtons\BTNFelHound.blp
+Description=Summons a Fel Stalker.
+Name=Spiked Collar
+Tip=Purchase Spiked Collar
+Ubertip=Summons a Fel Stalker to fight for you. |nLasts 180 seconds.
+
+[fgrd]
+Art=ReplaceableTextures\CommandButtons\BTNRedDragon.blp
+Description=Summons a Red Drake.
+Hotkey=E
+Name=Red Drake Egg
+Tip=Purchase Drake |cffffcc00E|rgg
+Ubertip=Summons a Red Drake to fight for you. |nLasts 180 seconds.
+
+[fgrg]
+Art=ReplaceableTextures\CommandButtons\BTNRockGolem.blp
+Description=Summons a Rock Golem.
+Name=Stone Token
+Tip=Purchase Stone Token
+Ubertip=Summons a Rock Golem to fight for you. |nLasts 180 seconds.
+
+[fgsk]
+Art=ReplaceableTextures\CommandButtons\BTNBookOfTheDead.blp
+Description=Summons skeletons.
+Name=Book of the Dead
+Tip=Purchase Book of the Dead
+Ubertip=Summons 4 Skeleton Warriors and 4 Skeleton Archers to fight for you. |nLasts 120 seconds.
+
+[fgun]
+Art=ReplaceableTextures\CommandButtons\BTNFlare.blp
+Description=Reveals an area on the map.
+Hotkey=F
+Name=Flare Gun
+Tip=Purchase |cffffcc00F|rlare Gun
+Ubertip=Reveals a target area on the map. |nContains 3 charges.
+
+[flag]
+Art=ReplaceableTextures\CommandButtons\BTNHumanCaptureFlag.blp
+Description=Can be captured in special scenarios.
+Name=Human Flag
+Tip=Purchase Human Flag
+Ubertip=An object that is often captured in special scenarios as a win condition.
+
+[frgd]
+Art=ReplaceableTextures\CommandButtons\BTNThoriumMelee.blp
+Description=Increases attack damage.
+Hotkey=F
+Name=Frostguard
+Tip=Purchase |cffffcc00F|rrostguard
+Ubertip=Adds 5 bonus cold damage to the attack of a Hero and 5 bonus armor when carried. The Hero's attacks also slow the movement speed and attack rate of the enemy.
+
+[frhg]
+Art=ReplaceableTextures\CommandButtons\BTNAdvancedUnholyStrength.blp
+Description=Fiery gauntlets that increase armor and attack rate.
+Hotkey=F
+Name=Firehand Gauntlets
+Tip=Purchase |cffffcc00F|rirehand Gauntlets
+Ubertip=Increases armor by 5 and attack rate by 20% when worn.
+
+[fwss]
+Art=ReplaceableTextures\CommandButtons\BTNGrimWard.blp
+Description=A powerful Undead artifact.
+Hotkey=F
+Name=Frost Wyrm Skull Shield
+Tip=Purchase |cffffcc00F|rrost Wyrm Skull Shield
+Ubertip="This ancient Frost Wyrm skull has been equipped with handles, turning it into a powerful shield. Increases armor by 2 when worn and reduces Magic damage dealt to the Hero by 33%."
+
+[gcel]
+Art=ReplaceableTextures\CommandButtons\BTNGlove.blp
+Description=Increases attack speed.
+Name=Gloves of Haste
+Tip=Purchase Gloves of Haste
+Ubertip=Increases the attack speed of the Hero by 15% when worn.
+
+[gemt]
+Art=ReplaceableTextures\CommandButtons\BTNGem.blp
+Description=Permits invisible units to be seen.
+Hotkey=G
+Name=Gem of True Seeing
+Tip=Purchase |cffffcc00G|rem of True Seeing
+Ubertip=Allows the Hero to detect hidden or invisible units in the Hero's line of sight when carried.
+
+[gfor]
+Art=ReplaceableTextures\CommandButtons\BTNGlyph.blp
+Description=Improves building armor and hit points.
+Hotkey=F
+Name=Glyph of Fortification
+Tip=Purchase Glyph of |cffffcc00F|rortification
+Ubertip=Increases the armor and hit points of your buildings.
+
+[gldo]
+Art=ReplaceableTextures\CommandButtons\BTNUsedSoulGem.blp
+Description=Attacks also do fire damage.
+Hotkey=K
+Name=Orb of Kil'jaeden
+Tip=Purchase Orb of |cffffcc00K|ril'jaeden
+Ubertip=Adds 6 bonus fire damage to the attack of a Hero when carried. The Hero's attacks also become ranged when attacking air and do splash damage to nearby enemy units.
+
+[glsk]
+Art=ReplaceableTextures\CommandButtons\BTNGuldanSkull.blp
+Description=This is the Skull of Gul'dan.
+Name=Skull of Gul'dan
+Tip=Purchase Skull of Gul'dan
+Ubertip="Once a powerful user of Demonic magics, the Demons answered his calls, and found a greater use for his head."
+
+[gmfr]
+Art=ReplaceableTextures\CommandButtons\BTNGem.blp
+Description=A Gem Fragment from a powerful ring.
+Hotkey=G
+Name=Gem Fragment
+Tip=Purchase |cffffcc00G|rem Fragment
+Ubertip=A fragment of a gem from a powerful ring.
+
+[gobm]
+Art=ReplaceableTextures\CommandButtons\BTNGoblinLandMine.blp
+Description=Explosive mines.
+Hotkey=L
+Name=Goblin Land Mines
+Tip=Purchase Goblin |cffffcc00L|rand Mines
+Ubertip="Places a hidden land mine at a target point. Enemy units that move near the land mine will activate the mine, destroying the mine and causing area of effect damage to nearby units. |nContains 3 charges."
+
+[gold]
+Art=ReplaceableTextures\CommandButtons\BTNChestOfGold.blp
+Description=Gives gold to player.
+Name=Gold Coins
+Tip=Purchase Gold Coins
+Ubertip=Gives 250 gold to the player when used.
+
+[gomn]
+Art=ReplaceableTextures\CommandButtons\BTNGlyph.blp
+Description=Reveals the entire map.
+Hotkey=O
+Name=Glyph of Omniscience
+Tip=Purchase Glyph of |cffffcc00O|rmniscience
+Ubertip=Reveals the entire map for 5 seconds when used.
+
+[gopr]
+Art=ReplaceableTextures\CommandButtons\BTNGlyph.blp
+Description=A glyph.
+Name=Glyph of Purification
+Tip=Purchase Glyph of Purification
+Ubertip="Created by ancient druids, this glyph has the power to heal the land."
+
+[grsl]
+Art=ReplaceableTextures\CommandButtons\BTNNecromancerMaster.blp
+Description=|cff87ceebUnique Consumable|r|nPermanently increases hit points.
+Hotkey=G
+Name=Grimoire of Souls
+Tip=Purchase |cffffcc00G|rrimoire of Souls
+Ubertip=|cff87ceebUnique Consumable|r|nThis powerful book permanently increases the hit points of the Hero by 20 each time it is used. |nContains 10 charges.
+
+[gsou]
+Art=ReplaceableTextures\CommandButtons\BTNSoulGem.blp
+Description=Allows the theft of a Hero's soul.
+Hotkey=G
+Name=Soul Gem
+Tip=Purchase Soul |cffffcc00G|rem
+Ubertip="Traps the targeted enemy Hero inside the Soul Gem when used. The enemy Hero is returned to play when the bearer of the Soul Gem is killed. While an enemy Hero is trapped, the bearer of the Soul Gem is revealed to the enemy through the Fog of War."
+
+[guvi]
+Art=ReplaceableTextures\CommandButtons\BTNGlyph.blp
+Description=Improves night vision.
+Hotkey=U
+Name=Glyph of Ultravision
+Tip=Purchase Glyph of |cffffcc00U|rltravision
+Ubertip=Gives all of your units the ability to see as far at night as they do during the day.
+
+[gvsm]
+Art=ReplaceableTextures\CommandButtons\BTNSpellSteal.blp
+Description=|cff8b00ffUnique|r|nThese gloves have a highly magical nature.
+Hotkey=S
+Name=Gloves of Spell Mastery
+Tip=Purchase Gloves of |cffffcc00S|rpell Mastery
+Ubertip=|cff8b00ffUnique|r|nGrants the ability to control summoned units. Also increases the intelligence of the Hero by 6 when worn.
+
+[hbth]
+Art=ReplaceableTextures\CommandButtons\BTNUnholyAura.blp
+Description=|cff8b00ffUnique|r|nThis helm makes you crave combat.
+Hotkey=B
+Name=Helm of Battlethirst
+Tip=Purchase Helm of |cffffcc00B|rattlethirst
+Ubertip="|cff8b00ffUnique|r|nGrants the ability to go Berserk, causing the Hero to attack 50% faster but take 50% more damage. Also increases strength and agility by 4 when worn."
+
+[hcun]
+Art=ReplaceableTextures\CommandButtons\BTNHoodOfCunning.blp
+Description=Provides bonuses to Agility and Intelligence.
+Name=Hood of Cunning
+Tip=Purchase Hood of Cunning
+Ubertip=Increases the Agility and Intelligence of the Hero by 4 when worn.
+
+[hlst]
+Art=ReplaceableTextures\CommandButtons\BTNHealthStone.blp
+Description="Provides faster regeneration, and can be consumed for hit points."
+Name=Health Stone
+Tip=Purchase Health Stone
+Ubertip=Increases the life regeneration rate of the Hero by 1 hit points per second when worn. Can be consumed for 500 health.
+
+[horl]
+Art=ReplaceableTextures\CommandButtons\BTNGlyph.blp
+Description=A sacred shaman artifact.
+Hotkey=S
+Name=Sacred Relic
+Tip=Purchase |cffffcc00S|racred Relic
+Ubertip="A powerful artifact, sacred to the orc shaman. |nGrants the Hero and friendly nearby units increased attack rate and movement speed. |nDoes not stack with Endurance Aura."
+
+[hslv]
+Art=ReplaceableTextures\CommandButtons\BTNHealingSalve.blp
+Description=Regenerates lost hit points over time.
+Hotkey=H
+Name=Healing Salve
+Tip=Purchase |cffffcc00H|realing Salve
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates a target unit's hit points by 400 over 45 seconds when used. |nContains 3 charges.
+
+[hval]
+Art=ReplaceableTextures\CommandButtons\BTNHelmOfValor.blp
+Description=Provides bonuses to Strength and Agility.
+Name=Helm of Valor
+Tip=Purchase Helm of Valor
+Ubertip=Increases the Strength and Agility of the Hero by 4 when worn.
+
+[infs]
+Art=ReplaceableTextures\CommandButtons\BTNInfernalStone.blp
+Description=Brings down an Infernal Demon.
+Name=Inferno Stone
+Tip=Purchase Inferno Stone
+Ubertip="Calls an Infernal down from the sky, dealing 50 damage and stunning enemy land units for 4 seconds in an area. The Infernal lasts 180 seconds."
+
+[iwbr]
+Art=ReplaceableTextures\CommandButtons\BTNNatureTouchGrow.blp
+Description=Boosts Strength by 1.
+Name=Ironwood Branch
+Tip=Purchase Ironwood Branch
+Ubertip=Increases the Strength of the Hero by 1 when carried.
+
+[jdrn]
+Art=ReplaceableTextures\CommandButtons\BTNRingJadeFalcon.blp
+Description=Boosts Agility by 1.
+Name=Jade Ring
+Tip=Purchase Jade Ring
+Ubertip=Increases the Agility of the Hero by 1 when worn.
+
+[jpnt]
+Art=ReplaceableTextures\CommandButtons\BTNScrollOfProtection.blp
+Description=A note to Jaina Proudmoore.
+Hotkey=J
+Name=Note to Jaina Proudmoore
+Tip=Purchase Note to |cffffcc00J|raina Proudmoore
+Ubertip="A note from Thrall, for Jaina Proudmoore."
+
+[k3m1]
+Art=ReplaceableTextures\CommandButtons\BTN3M1.blp
+Description=This is one part of the Key of Three Moons.
+Name=Mooncrystal
+Tip=Purchase Mooncrystal
+Ubertip="Cut from the emerald Eye of Jennala, it opens the mind of the Gate Keeper."
+
+[k3m2]
+Art=ReplaceableTextures\CommandButtons\BTN3M2.blp
+Description=This is two parts of the Key of Three Moons.
+Name=Partial Key of the Three Moons
+Tip=Purchase Partial Key of Three Moons
+Ubertip="Cut from the amethyst Stone of Hannalee, it opens the heart of the Gate Keeper."
+
+[k3m3]
+Art=ReplaceableTextures\CommandButtons\BTN3M3.blp
+Description=This is the complete Key of Three Moons.
+Name=Key of Three Moons
+Tip=Purchase Key of Three Moons
+Ubertip="Cut from the sapphire Body of Enulaia, it opens the soul of the Gate Keeper."
+
+[kgal]
+Art=ReplaceableTextures\CommandButtons\BTNBarrel.blp
+Description=Increases hit point and mana regeneration.
+Hotkey=K
+Name=Keg of Ale
+Tip=Purchase |cffffcc00K|reg of Ale
+Ubertip=Increases hit point and mana regeneration.
+
+[klmm]
+Art=ReplaceableTextures\CommandButtons\BTNSpiritWalkerAdeptTraining.blp
+Description=|cffff8c00Artifact|r|nA slender crescent axe that smells of blood and salt.
+Hotkey=K
+Name=Killmaim
+Tip=Purchase |cffffcc00K|rillmaim
+Ubertip="|cffff8c00Artifact|r|nIncreases the attack damage of the Hero by 20 when carried. Also causes the Hero's attacks to steal life.|n|cffffcc00History|r|n|cffffdeadWhen Dethorin found his lady, Allurana, in the arms of another, he went to the Barrens and cried out. An axe burst forth from the sands as if in answer. Dethorin slew Allurana and her lover, then hurled the axe with all his might into the deep dark sea.|r"
+
+[kpin]
+Art=ReplaceableTextures\CommandButtons\BTNPipeOfInsight.blp
+Description=Nearby units regain mana more swiftly.
+Name=Khadgar's Pipe of Insight
+Tip=Purchase Khadgar's Pipe of Insight
+Ubertip=Grants the Hero and friendly nearby units a bonus to mana regeneration. |nDoes not stack with Brilliance Aura.
+
+[ktrm]
+Art=ReplaceableTextures\CommandButtons\BTNUrnOfKelThuzad.blp
+Description=This urn contains the remains of King Terenas.
+Name=Urn of King Terenas
+Tip=Purchase Urn of King Terenas
+Ubertip="Formerly the container of King Terenas' ashes, this magically enchanted Urn was chosen by Tichondrius to preserve Kel'Thuzad's remains."
+
+[kybl]
+Art=ReplaceableTextures\CommandButtons\BTNBloodKey.blp
+Description=A bloody key.
+Name=Blood Key
+Tip=Purchase Blood Key
+Ubertip=This key is covered in blood.
+
+[kygh]
+Art=ReplaceableTextures\CommandButtons\BTNGhostKey.blp
+Description=A ghostly key.
+Name=Ghost Key
+Tip=Purchase Ghost Key
+Ubertip=This key is rather insubstantial.
+
+[kymn]
+Art=ReplaceableTextures\CommandButtons\BTNMoonKey.blp
+Description=A faintly glowing key.
+Name=Moon Key
+Tip=Purchase Moon Key
+Ubertip=This key glows faintly.
+
+[kysn]
+Art=ReplaceableTextures\CommandButtons\BTNSunKey.blp
+Description=A glowing key.
+Name=Sun Key
+Tip=Purchase Sun Key
+Ubertip=This key glows brightly.
+
+[ledg]
+Art=ReplaceableTextures\CommandButtons\BTNSorceressMaster.blp
+Description=A ledger.
+Name=Gerard's Lost Ledger
+Tip=Purchase Gerard's Lost Ledger
+Ubertip=This Ledger looks to be full of boring facts and figures.
+
+[lgdh]
+Art=ReplaceableTextures\CommandButtons\BTNHornOfDoom.blp
+Description=Nearby units heal and move more swiftly.
+Name=Legion Doom-Horn
+Tip=Purchase Legion Doom-Horn
+Ubertip=Grants the Hero and friendly nearby units increased life regeneration and movement speed. |nDoes not stack with Unholy Aura.
+
+[lhst]
+Art=ReplaceableTextures\CommandButtons\BTNLionHorn.blp
+Description=Generates a protective aura around the Hero.
+Name=The Lion Horn of Stormwind
+Tip=Purchase the Lion Horn of Stormwind
+Ubertip=Grants the Hero and friendly nearby units 1 bonus armor. |nDoes not stack with Devotion Aura.
+
+[lmbr]
+Art=ReplaceableTextures\CommandButtons\BTNBundleOfLumber.blp
+Description=Gives lumber to player.
+Name=Bundle of Lumber
+Tip=Purchase Bundle of Lumber
+Ubertip=Gives 250 lumber to the player when used.
+
+[lnrn]
+Art=ReplaceableTextures\CommandButtons\BTNRingLionHead.blp
+Description=Boosts Agility by 1.
+Name=Lion's Ring
+Tip=Purchase Lion's Ring
+Ubertip=Increases the Agility of the Hero by 1 when worn.
+
+[lure]
+Art=ReplaceableTextures\CommandButtons\BTNMonsterLure.blp
+Description=Draws nearby creeps to ward.
+Hotkey=L
+Name=Monster Lure
+Tip=Purchase Monster |cffffcc00L|rure
+Ubertip=Creates a ward that draws nearby creeps to it.
+
+[manh]
+Art=ReplaceableTextures\CommandButtons\BTNManual.blp
+Description=Permanent +50 hit points.
+Name=Manual of Health
+Tip=Purchase Manual of Health
+Ubertip=Permanently increases the hit points of the Hero by 50 when used.
+
+[mcou]
+Art=ReplaceableTextures\CommandButtons\BTNMedalionOfCourage.blp
+Description=Provides bonuses to Strength and Intelligence.
+Name=Medallion of Courage
+Tip=Purchase Medallion of Courage
+Ubertip=Increases the Strength and Intelligence of the Hero by 4 when worn.
+
+[mcri]
+Art=ReplaceableTextures\CommandButtons\BTNMechanicalCritter.blp
+Buttonpos=2
+Description=Creates a mechanical critter.
+Hotkey=E
+Name=Mechanical Critter
+Tip=Purchase M|cffffcc00e|rchanical Critter
+Ubertip=Creates a player-controlled critter that can be used to scout enemies.
+
+[mgtk]
+Art=ReplaceableTextures\CommandButtons\BTNBlood&GhostKey.blp
+Description=A key chain.
+Hotkey=K
+Name=Magic Key Chain
+Tip=Purchase Magic |cffffcc00K|rey Chain
+Ubertip=This magical chain of keys can open many doors.
+
+[mlst]
+Art=ReplaceableTextures\CommandButtons\BTNHammer.blp
+Description=Boosts Strength by 1.
+Name=Maul of Strength
+Tip=Purchase Maul of Strength
+Ubertip=Increases the Strength of the Hero by 1 when carried.
+
+[mnsf]
+Art=ReplaceableTextures\CommandButtons\BTNBrilliance.blp
+Description=Increases mana.
+Hotkey=M
+Name=Mindstaff
+Tip=Purchase |cffffcc00M|rindstaff
+Ubertip=Increases the mana of the Hero by 200. Also grants the Hero and friendly nearby units a bonus to mana regeneration.
+
+[mnst]
+Art=ReplaceableTextures\CommandButtons\BTNManaStone.blp
+Description="Provides faster mana regeneration, and can be consumed for mana."
+Name=Mana Stone
+Tip=Purchase Mana Stone
+Ubertip=Increases the mana regeneration rate of the Hero by 25% when worn. Can be consumed for 300 mana.
+
+[modt]
+Art=ReplaceableTextures\CommandButtons\BTNMaskOfDeath.blp
+Description=This mask causes the Hero's attacks to drain life.
+Name=Mask of Death
+Tip=Purchase Mask of Death
+Ubertip="While wearing this mask, a Hero will recover hit points equal to 50% of the attack damage dealt to an enemy unit."
+
+[moon]
+Art=ReplaceableTextures\CommandButtons\BTNMoonStone.blp
+Description=Makes it night time.
+Hotkey=N
+Name=Moonstone
+Tip=Purchase Moo|cffffcc00n|rstone
+Ubertip=Causes an eclipse that blocks out the sun and creates an artificial night. |nLasts 30 seconds.
+
+[mort]
+Art=ReplaceableTextures\CommandButtons\BTNSpy.blp
+Description=A letter for Thrall.
+Hotkey=M
+Name=Mogrin's Report
+Tip=Purchase |cffffcc00M|rogrin's Report
+Ubertip="The letter is magically sealed. On the front, written in large scrawling letters is the word Thrall."
+
+[nflg]
+Art=ReplaceableTextures\CommandButtons\BTNNightElfCaptureFlag.blp
+Description=Can be captured in special scenarios.
+Name=Night Elf Flag
+Tip=Purchase Night Elf Flag
+Ubertip=An object that is often captured in special scenarios as a win condition.
+
+[nspi]
+Art=ReplaceableTextures\CommandButtons\BTNNecklace.blp
+Description=Grants immunity to magic.
+Name=Necklace of Spell Immunity
+Tip=Purchase Necklace of Spell Immunity
+Ubertip=Renders the Hero invulnerable to magic.
+
+[ocor]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfCorruption.blp
+Buttonpos=,2
+Description=Attacks reduce armor.
+Hotkey=B
+Name=Orb of Corruption
+Requires=unp2
+Tip=Purchase Or|cffffcc00b|r of Corruption
+Ubertip=Adds 5 bonus damage to the attack of a Hero when carried. The Hero's attacks also become ranged when attacking air and reduce the armor of enemy units for 5 seconds.
+
+[odef]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Attacks can create Dark Minions.
+Hotkey=B
+Name=Orb of Darkness
+Tip=Purchase Or|cffffcc00b|r of Darkness
+Ubertip=Adds 6 bonus damage to the attack of a Hero when carried. The Hero's attack also becomes ranged when attacking air and will create a Dark Minion when it is the killing blow on an enemy unit. The Dark Minion lasts 80 seconds.
+
+[ofir]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfFire.blp
+Buttonpos=,2
+Description=Attacks also do fire damage.
+Hotkey=F
+Name=Orb of Fire
+Requires=hcas
+Tip=Purchase Orb of |cffffcc00F|rire
+Ubertip=Adds 5 bonus fire damage to the attack of a Hero when carried. The Hero's attacks also become ranged when attacking air and do splash damage to nearby enemy units.
+
+[oflg]
+Art=ReplaceableTextures\CommandButtons\BTNOrcCaptureFlag.blp
+Description=Can be captured in special scenarios.
+Name=Orc Flag
+Tip=Purchase Orc Flag
+Ubertip=An object that is often captured in special scenarios as a win condition.
+
+[ofro]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfFrost.blp
+Description=Attacks cause Frost Shock.
+Hotkey=R
+Name=Orb of Frost
+Tip=Purchase Orb of F|cffffcc00r|rost
+Ubertip=Adds 6 bonus cold damage to the attack of a Hero when carried. The Hero's attacks also become ranged when attacking air and slow the movement speed and attack rate of the enemy for 3 seconds.
+
+[oli2]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfLightning.blp
+Buttonpos=,2
+Description=Attacks cause lightning damage.
+Hotkey=L
+Name=Orb of Lightning
+Requires=ofrt
+Tip=Purchase Orb of |cffffcc00L|rightning
+Ubertip="Adds 5 bonus damage to the attack of a Hero when carried. The Hero's attacks also become ranged when attacking air, and have a chance to dispel magic and slow the movement speed of the enemy for 3 seconds. |n|cffffcc00Deals 150 bonus damage to summoned units."
+
+[olig]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfLightning.blp
+Buttonpos=2,2
+Description=Attacks cause lightning damage.
+Hotkey=L
+Name=Orb of Lightning
+Requires=ofrt
+Tip=Purchase Orb of |cffffcc00L|rightning
+Ubertip="Adds 6 bonus damage to the attack of a Hero when carried. The Hero's attacks also become ranged when attacking air, dispel magic and slow the movement speed of the enemy for 3 seconds. |n|cffffcc00Deals 35 bonus damage to summoned units."
+
+[oslo]
+Art=ReplaceableTextures\CommandButtons\BTNOrbofSlowness.blp
+Description=Attacks can slow enemies.
+Hotkey=S
+Name=Orb of Slow
+Tip=Purchase Orb of |cffffcc00S|rlow
+Ubertip="Adds 6 bonus damage to the attack of a Hero when carried. The Hero's attacks also become ranged when attacking air, and have a chance to slow a target enemy unit's movement speed by 60% and attack rate by 25% for 60 seconds."
+
+[oven]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfVenom.blp
+Buttonpos=,2
+Description=Attacks cause poison damage.
+Hotkey=V
+Name=Orb of Venom
+Requires=etoe
+Tip=Purchase Orb of |cffffcc00V|renom
+Ubertip=Adds 5 bonus damage to the attack of a Hero when carried. The Hero's attacks also become ranged when attacking air and poison enemy units for 8 seconds.
+
+[pams]
+Art=ReplaceableTextures\CommandButtons\BTNSnazzyPotion.blp
+Buttonpos=1,2
+Description=Renders Hero immune to magic.
+Hotkey=A
+Name=Anti-magic Potion
+Requires=etoe
+Tip=Purchase |cffffcc00A|rnti-magic Potion
+Ubertip=Gives the Hero immunity to magical spells for 15 seconds.
+
+[pclr]
+Art=ReplaceableTextures\CommandButtons\BTNPotionOfClarity.blp
+Buttonpos=1,2
+Description=Regenerates mana over time.
+Hotkey=Y
+Name=Clarity Potion
+Requires=etoe
+Tip=Purchase Clarit|cffffcc00y|r Potion
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates the Hero's mana by 200 over 45 seconds when used.
+
+[pdiv]
+Art=ReplaceableTextures\CommandButtons\BTNPotionOfDivinity.blp
+Description=Turns Hero invulnerable.
+Hotkey=D
+Name=Potion of Divinity
+Tip=Purchase Potion of |cffffcc00D|rivinity
+Ubertip=Turns the Hero invulnerable for 25 seconds.
+
+[penr]
+Art=ReplaceableTextures\CommandButtons\BTNPendantOfEnergy.blp
+Description=Provides additional mana.
+Name=Pendant of Energy
+Tip=Purchase Pendant of Energy
+Ubertip=Increases the mana capacity of the Hero by 150 when worn.
+
+[pghe]
+Art=ReplaceableTextures\CommandButtons\BTNPotionGreen.blp
+Description=Restores lost hit points.
+Hotkey=R
+Name=Potion of Greater Healing
+Tip=Purchase Potion of G|cffffcc00r|reater Healing
+Ubertip=Heals 500 hit points when used.
+
+[pgin]
+Art=ReplaceableTextures\CommandButtons\BTNGreaterInvisibility.blp
+Description=Renders Hero temporarily invisible.
+Hotkey=I
+Name=Potion of Greater Invisibility
+Tip=Purchase Potion of Greater |cffffcc00I|rnvisibility
+Ubertip="|cff87ceebNon-Combat Consumable|r|nRenders the Hero invisible for 180 seconds when used. An invisible Hero is untargetable by the enemy unless detected. If the Hero attacks, uses an ability, or casts a spell, the invisibility effect is lost."
+
+[pgma]
+Art=ReplaceableTextures\CommandButtons\BTNPotionBlueBig.blp
+Description=Restores lost mana.
+Hotkey=M
+Name=Potion of Greater Mana
+Tip=Purchase Potion of Greater |cffffcc00M|rana
+Ubertip=Restores 300 mana when used.
+
+[phea]
+Art=ReplaceableTextures\CommandButtons\BTNPotionGreenSmall.blp
+Buttonpos=,1
+Description=Restores lost hit points.
+Hotkey=P
+Name=Potion of Healing
+Requires=TWN2
+Tip=Purchase |cffffcc00P|rotion of Healing
+Ubertip=Heals 250 hit points when used.
+
+[phlt]
+Art=ReplaceableTextures\CommandButtons\BTNUndeadShrine.blp
+Description="The phattest lewt, definitely."
+Name=Phat Lewt
+Tip=Purchase Phat Lewt
+Ubertip=There is no phatter lewt than this.
+
+[pinv]
+Art=ReplaceableTextures\CommandButtons\BTNLesserInvisibility.blp
+Description=Renders Hero temporarily invisible.
+Hotkey=I
+Name=Potion of Invisibility
+Tip=Purchase Potion of |cffffcc00I|rnvisibility
+Ubertip="|cff87ceebNon-Combat Consumable|r|nRenders the Hero invisible for 120 seconds when used. An invisible Hero is untargetable by the enemy unless detected. If the Hero attacks, uses an ability, or casts a spell, the invisibility effect is lost."
+
+[plcl]
+Art=ReplaceableTextures\CommandButtons\BTNLesserClarityPotion.blp
+Buttonpos=1
+Description=Regenerates mana over time.
+Hotkey=C
+Name=Lesser Clarity Potion
+Tip=Purchase Lesser |cffffcc00C|rlarity Potion
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates the Hero's mana by 100 over 30 seconds when used.
+
+[pman]
+Art=ReplaceableTextures\CommandButtons\BTNPotionBlueSmall.blp
+Buttonpos=1,1
+Description=Restores lost mana.
+Hotkey=M
+Name=Potion of Mana
+Requires=TWN2
+Tip=Purchase Potion of |cffffcc00M|rana
+Ubertip=Restores 150 mana when used.
+
+[pmna]
+Art=ReplaceableTextures\CommandButtons\BTNPendantOfMana.blp
+Description=Provides additional mana.
+Name=Pendant of Mana
+Tip=Purchase Pendant of Mana
+Ubertip=Increases the mana capacity of the Hero by 250 when worn.
+
+[pnvl]
+Art=ReplaceableTextures\CommandButtons\BTNLesserInvulneralbility.blp
+Buttonpos=2,2
+Description=Renders Hero temporarily invulnerable.
+Hotkey=N
+Name=Potion of Lesser Invulnerability
+Tip=Purchase Potion of Lesser I|cffffcc00n|rvulnerability
+Ubertip=Makes the Hero invulnerable to damage for 7 seconds when used. An invulnerable Hero may not be the target of spells or effects.
+
+[pnvu]
+Art=ReplaceableTextures\CommandButtons\BTNGreaterInvulneralbility.blp
+Description=Renders Hero temporarily invulnerable.
+Hotkey=I
+Name=Potion of Invulnerability
+Tip=Purchase Potion of |cffffcc00I|rnvulnerability
+Ubertip=Makes the Hero invulnerable to damage for 15 seconds when used. An invulnerable Hero may not be the target of spells or effects.
+
+[pomn]
+Art=ReplaceableTextures\CommandButtons\BTNPotionOfOmniscience.blp
+Description=Reveals the entire map.
+Hotkey=O
+Name=Potion of Omniscience
+Tip=Purchase Potion of |cffffcc00O|rmniscience
+Ubertip=Reveals the entire map for 5 seconds when used.
+
+[pres]
+Art=ReplaceableTextures\CommandButtons\BTNPotionOfRestoration.blp
+Description=Restores lost hit points and mana.
+Hotkey=R
+Name=Potion of Restoration
+Tip=Purchase Potion of |cffffcc00R|restoration
+Ubertip=Restores 500 hit points and 200 mana of the Hero when used.
+
+[prvt]
+Art=ReplaceableTextures\CommandButtons\BTNPeriapt.blp
+Buttonpos=1
+Description=Increases the hit points of the Hero.
+Hotkey=V
+Name=Periapt of Vitality
+Tip=Purchase Periapt of |cffffcc00V|ritality
+Ubertip=Increases the hit points of the Hero by 150 when worn.
+
+[pspd]
+Art=ReplaceableTextures\CommandButtons\BTNPotionRed.blp
+Description=Provides Hero with a temporary speed increase.
+Hotkey=S
+Name=Potion of Speed
+Tip=Purchase Potion of |cffffcc00S|rpeed
+Ubertip=Increases the movement speed of the Hero by 60% for 45 seconds.
+
+[rag1]
+Art=ReplaceableTextures\CommandButtons\BTNSlippersOfAgility.blp
+Description=Boosts Agility by 3.
+Hotkey=A
+Name=Slippers of Agility +3
+Tip=Purchase Slippers of |cffffcc00A|rgility +3
+Ubertip=Increases the Agility of the Hero by 3 when worn.
+
+[ram1]
+Art=ReplaceableTextures\CommandButtons\BTNRingJadeFalcon.blp
+Description=A powerful artifact with a shattered gem.
+Hotkey=R
+Name=Ring of the Archmagi
+Tip=Purchase |cffffcc00R|ring of the Archmagi
+Ubertip="A powerful artifact with a sliver of a fragmented gem inset. Increases the Strength, Agility and Intelligence of the Hero by 1."
+
+[ram2]
+Art=ReplaceableTextures\CommandButtons\BTNRingJadeFalcon.blp
+Description=A powerful artifact with a fragmented gem.
+Hotkey=R
+Name=Ring of the Archmagi
+Tip=Purchase |cffffcc00R|ring of the Archmagi
+Ubertip="A powerful artifact with a part of a fragmented gem inset. Increases the Strength, Agility and Intelligence of the Hero by 2."
+
+[ram3]
+Art=ReplaceableTextures\CommandButtons\BTNRingJadeFalcon.blp
+Description=A powerful artifact with a nearly intact gem.
+Hotkey=R
+Name=Ring of the Archmagi
+Tip=Purchase |cffffcc00R|ring of the Archmagi
+Ubertip="A powerful artifact with most of a fragmented gem inset. Increases the Strength, Agility and Intelligence of the Hero by 3."
+
+[ram4]
+Art=ReplaceableTextures\CommandButtons\BTNRingJadeFalcon.blp
+Description=A powerful artifact with a wondrous gem.
+Hotkey=R
+Name=Ring of the Archmagi
+Tip=Purchase |cffffcc00R|ring of the Archmagi
+Ubertip="A powerful artifact with a wondrous gem inset. Increases the Strength, Agility and Intelligence of the Hero by 3 and gives nearby friendly units a bonus to mana regeneration."
+
+[rat3]
+Art=ReplaceableTextures\CommandButtons\BTNClawsOfAttack.blp
+Description=Boosts attack damage by 3.
+Hotkey=K
+Name=Claws of Attack +3
+Tip=Purchase Claws of Attac|cffffcc00k|r +3
+Ubertip=Increases the attack damage of the Hero by 3 when worn.
+
+[rat6]
+Art=ReplaceableTextures\CommandButtons\BTNClawsOfAttack.blp
+Description=Boosts attack damage by 6.
+Name=Claws of Attack +6
+Tip=Purchase Claws of Attack +6
+Ubertip=Increases the attack damage of the Hero by 6 when worn.
+
+[rat9]
+Art=ReplaceableTextures\CommandButtons\BTNClawsOfAttack.blp
+Description=Boosts attack damage by 9.
+Hotkey=C
+Name=Claws of Attack +9
+Tip=Purchase |cffffcc00C|rlaws of Attack +9
+Ubertip=Increases the attack damage of the Hero by 9 when worn.
+
+[ratc]
+Art=ReplaceableTextures\CommandButtons\BTNClawsOfAttack.blp
+Description=Boosts attack damage by 12.
+Name=Claws of Attack +12
+Tip=Purchase Claws of Attack +12
+Ubertip=Increases the attack damage of the Hero by 12 when worn.
+
+[ratf]
+Art=ReplaceableTextures\CommandButtons\BTNClawsOfAttack.blp
+Description=Boosts attack damage by 15.
+Name=Claws of Attack +15
+Tip=Purchase Claws of Attack +15
+Ubertip=Increases the attack damage of the Hero by 15 when worn.
+
+[rde0]
+Art=ReplaceableTextures\CommandButtons\BTNRingGreen.blp
+Description=Boosts armor by 1.
+Hotkey=1
+Name=Ring of Protection +1
+Tip=Purchase Ring of Protection +|cffffcc001|r
+Ubertip=Increases the armor of the Hero by 1 when worn.
+
+[rde1]
+Art=ReplaceableTextures\CommandButtons\BTNRingGreen.blp
+Description=Boosts armor by 2.
+Hotkey=2
+Name=Ring of Protection +2
+Tip=Purchase Ring of Protection +|cffffcc002|r
+Ubertip=Increases the armor of the Hero by 2 when worn.
+
+[rde2]
+Art=ReplaceableTextures\CommandButtons\BTNRingGreen.blp
+Description=Boosts armor by 3.
+Hotkey=3
+Name=Ring of Protection +3
+Tip=Purchase Ring of Protection +|cffffcc003|r
+Ubertip=Increases the armor of the Hero by 3 when worn.
+
+[rde3]
+Art=ReplaceableTextures\CommandButtons\BTNRingGreen.blp
+Description=Boosts armor by 4.
+Hotkey=4
+Name=Ring of Protection +4
+Tip=Purchase Ring of Protection +|cffffcc004|r
+Ubertip=Increases the armor of the Hero by 4 when worn.
+
+[rde4]
+Art=ReplaceableTextures\CommandButtons\BTNRingGreen.blp
+Description=Boosts armor by 5.
+Hotkey=5
+Name=Ring of Protection +5
+Tip=Purchase Ring of Protection +|cffffcc005|r
+Ubertip=Increases the armor of the Hero by 5 when worn.
+
+[rdis]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Dispels magic in the surrounding area.
+Hotkey=D
+Name=Rune of Dispel Magic
+Tip=Purchase Rune of |cffffcc00D|rispel Magic
+Ubertip=Dispels all nearby magic effects. |n|cffffcc00Deals 250 damage to summoned units.|r
+
+[rej1]
+Art=ReplaceableTextures\CommandButtons\BTNMinorRejuvPotion.blp
+Description=Regenerates health and mana.
+Hotkey=R
+Name=Minor Replenishment Potion
+Tip=Purchase Minor |cffffcc00R|replenishment Potion
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates 100 hit points and 25 mana of the Hero over 30 seconds.
+
+[rej2]
+Art=ReplaceableTextures\CommandButtons\BTNLesserRejuvPotion.blp
+Description=Regenerates health and mana.
+Hotkey=R
+Name=Lesser Replenishment Potion
+Tip=Purchase Lesser |cffffcc00R|replenishment Potion
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates 150 hit points and 50 mana of the Hero over 30 seconds.
+
+[rej3]
+Art=ReplaceableTextures\CommandButtons\BTNRejuvPotion.blp
+Description=Regenerates health and mana.
+Hotkey=R
+Name=Replenishment Potion
+Tip=Purchase |cffffcc00R|replenishment Potion
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates 200 hit points and 75 mana of the Hero over 30 seconds.
+
+[rej4]
+Art=ReplaceableTextures\CommandButtons\BTNGreaterRejuvPotion.blp
+Description=Regenerates health and mana.
+Hotkey=R
+Name=Greater Replenishment Potion
+Tip=Purchase Greater |cffffcc00R|replenishment Potion
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates 400 hit points and 125 mana of the Hero over 30 seconds.
+
+[rej5]
+Art=ReplaceableTextures\CommandButtons\BTNLesserRejuvScroll.blp
+Description=Regenerates the health and mana of nearby units.
+Hotkey=R
+Name=Lesser Scroll of Replenishment 
+Tip=Purchase Lesser Scroll of |cffffcc00R|replenishment
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates 250 hit points and 100 mana of the Hero and nearby friendly units over 45 seconds.
+
+[rej6]
+Art=ReplaceableTextures\CommandButtons\BTNGreaterRejuvScroll.blp
+Description=Regenerates the health and mana of nearby units.
+Hotkey=R
+Name=Greater Scroll of Replenishment 
+Tip=Purchase Greater Scroll of |cffffcc00R|replenishment
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates 450 hit points and 150 mana of the Hero and nearby friendly units over 45 seconds.
+
+[rhe1]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Restores hit points to nearby units.
+Hotkey=H
+Name=Rune of Lesser Healing
+Tip=Purchase Rune of Lesser |cffffcc00H|realing
+Ubertip=Heals 125 hit points to all nearby friendly non-mechanical units.
+
+[rhe2]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Restores hit points to nearby units.
+Hotkey=H
+Name=Rune of Healing
+Tip=Purchase Rune of |cffffcc00H|realing
+Ubertip=Heals 250 hit points to all nearby friendly non-mechanical units.
+
+[rhe3]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Restores hit points to nearby units.
+Hotkey=H
+Name=Rune of Greater Healing
+Tip=Purchase Rune of Greater |cffffcc00H|realing
+Ubertip=Heals 400 hit points to all nearby friendly non-mechanical units.
+
+[rhth]
+Art=ReplaceableTextures\CommandButtons\BTNPeriapt1.blp
+Description=Increases the hit points of the Hero.
+Hotkey=H
+Name=Khadgar's Gem of Health
+Tip=Purchase Khadgar's Gem of |cffffcc00H|realth
+Ubertip=Increases the hit points of the Hero by 300 when worn.
+
+[rin1]
+Art=ReplaceableTextures\CommandButtons\BTNMantleOfIntelligence.blp
+Description=Boosts Intelligence by 3.
+Hotkey=I
+Name=Mantle of Intelligence +3
+Tip=Purchase Mantle of |cffffcc00I|rntelligence +3
+Ubertip=Increases the Intelligence of the Hero by 3 when worn.
+
+[rlif]
+Art=ReplaceableTextures\CommandButtons\BTNRingSkull.blp
+Description=Provides regeneration.
+Hotkey=R
+Name=Ring of Regeneration
+Tip=Purchase Ring of |cffffcc00R|regeneration
+Ubertip=Increases the Hero's hit point regeneration by 2 hit points per second.
+
+[rma2]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Restores mana to nearby units.
+Hotkey=M
+Name=Rune of Greater Mana
+Tip=Purchase Rune of Greater |cffffcc00M|rana
+Ubertip=Restores 300 mana to all nearby friendly units.
+
+[rman]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Restores mana to nearby units.
+Hotkey=M
+Name=Rune of Mana
+Tip=Purchase Rune of |cffffcc00M|rana
+Ubertip=Restores 125 mana to all nearby friendly units.
+
+[rnec]
+Art=ReplaceableTextures\CommandButtons\BTNRodOfNecromancy.blp
+Description=Creates two Skeleton Warriors from a corpse.
+Hotkey=R
+Name=Rod of Necromancy
+Tip=Purchase |cffffcc00R|rod of Necromancy
+Ubertip=Creates two Skeleton Warriors from a corpse. |nContains 4 charges.
+
+[rnsp]
+Art=ReplaceableTextures\CommandButtons\BTNGoldRing.blp
+Description="Provides a +1 bonus to Strength, Agility and Intelligence."
+Name=Ring of Superiority
+Tip=Purchase Ring of Superiority
+Ubertip="Increases the Strength, Agility and Intelligence of the Hero by 1 when worn."
+
+[rots]
+Art=ReplaceableTextures\CommandButtons\BTNWitchDoctorAdept.blp
+Description=|cff87ceebUnique Consumable|r|nSummons murlocs.
+Hotkey=R
+Name=Scepter of the Sea
+Tip=Purchase Scepte|cffffcc00r|r of the Sea
+Ubertip="|cff87ceebUnique Consumable|r|nSummons 2 Murlocs to fight for you. Also increases the Hero's strength, agility, and intelligence by 2. |nContains 5 charges."
+
+[rre1]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Resurrects your dead to fight again.
+Name=Rune of Lesser Resurrection
+Tip=Purchase Rune of Lesser Resurrection
+Ubertip=Brings 1 of your nearby dead units back to life.
+
+[rre2]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Resurrects your dead to fight again.
+Name=Rune of Greater Resurrection
+Tip=Purchase Rune of Greater Resurrection
+Ubertip=Brings 3 of your nearby dead units back to life.
+
+[rreb]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Makes a monster yours.
+Hotkey=B
+Name=Rune of Rebirth
+Tip=Purchase Rune of Re|cffffcc00b|rirth
+Ubertip=Places the monster that held this rune under your control.
+
+[rres]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Restores hit points and mana to nearby units.
+Hotkey=R
+Name=Rune of Restoration
+Tip=Purchase Rune of |cffffcc00R|restoration
+Ubertip=Restores 300 hit points and 150 mana of friendly non-mechanical units in an area around your Hero.
+
+[rspd]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Increases movement speed of units.
+Hotkey=D
+Name=Rune of Speed
+Tip=Purchase Rune of Spee|cffffcc00d|r
+Ubertip=Increases the movement speed of all nearby allied units to the maximum movement speed. |nLasts 60 seconds.
+
+[rspl]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Links units together to distribute damage.
+Name=Rune of Spirit Link
+Tip=Purchase Rune of Spirit Link
+Ubertip="Links nearby units' spirits together, causing 50% of the damage taken by one to be distributed across all spirit linked units."
+
+[rsps]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Gives nearby units a shield that blocks an enemy spell.
+Hotkey=S
+Name=Rune of Shielding
+Tip=Purchase Rune of |cffffcc00S|rhielding
+Ubertip=Creates a shield on nearby friendly units that blocks the next negative spell that an enemy casts upon them.
+
+[rst1]
+Art=ReplaceableTextures\CommandButtons\BTNGauntletsOfOgrePower.blp
+Description=Boosts Strength by 3.
+Hotkey=S
+Name=Gauntlets of Ogre Strength +3
+Tip=Purchase Gauntlets of Ogre |cffffcc00S|rtrength +3
+Ubertip=Increases the Strength of the Hero by 3 when worn.
+
+[rugt]
+Art=ReplaceableTextures\CommandButtons\BTNImprovedUnholyStrength.blp
+Description=Increases strength and armor.
+Hotkey=R
+Name=Runed Gauntlets
+Tip=Purchase |cffffcc00R|runed Gauntlets
+Ubertip=Increases the strength and armor of the Hero by 3 when worn.
+
+[rump]
+Art=ReplaceableTextures\CommandButtons\BTNGatherGold.blp
+Description=Increases attack damage and gives a chance to stun.
+Hotkey=R
+Name=Rusty Mining Pick
+Tip=Purchase |cffffcc00R|rusty Mining Pick
+Ubertip=This heavy pick can be swung with force. Increases the Hero's attack damage by 1 and gives a 15% chance to stun the enemy.
+
+[rwat]
+Art=ReplaceableTextures\CommandButtons\BTNRune.blp
+Description=Creates an invulnerable Sentry Ward here.
+Hotkey=W
+Name=Rune of the Watcher
+Tip=Purchase Rune of the |cffffcc00W|ratcher
+Ubertip=Creates an invulnerable Sentry Ward when activated.
+
+[rwiz]
+Art=ReplaceableTextures\CommandButtons\BTNSobiMask.blp
+Buttonpos=2
+Description=Increases mana regeneration rate.
+Hotkey=B
+Name=!@#$%^&*()
+Tip=Purchase So|cffffcc00b|ri Mask
+Ubertip=Increases the Hero's rate of mana regeneration by 50% when worn.
+
+[sand]
+Art=ReplaceableTextures\CommandButtons\BTNSnazzyScrollPurple.blp
+Description=Animates the dead to fight for you.
+Name=Scroll of Animate Dead
+Tip=Purchase Scroll of Animate Dead
+Ubertip=Raises 6 nearby dead units to fight for 40 seconds.
+
+[sbch]
+Art=ReplaceableTextures\CommandButtons\BTNBoneChimes.blp
+Description=Nearby units gain some life from damage they deal to enemy units.
+Name=Scourge Bone Chimes
+Tip=Purchase Scourge Bone Chimes
+Ubertip=Grants a melee Hero and friendly nearby melee units life stealing attacks which take 15% of the damage they deal and convert it into life. |nDoes not stack with Vampiric Aura.
+
+[sbok]
+Art=ReplaceableTextures\CommandButtons\BTNSpellBookBLS.blp
+Description=A book full of random spells.
+Hotkey=B
+Name=Spell Book
+Tip=Purchase Spell |cffffcc00B|rook
+Ubertip=A book full of random spells.
+
+[schl]
+Art=ReplaceableTextures\CommandButtons\BTNPriestAdept.blp
+Description=A staff that heals others.
+Hotkey=H
+Name=Scepter of Healing
+Tip=Purchase Scepter of |cffffcc00H|realing
+Ubertip=Grants the ability to heal a friendly unit. Also grants the Hero and friendly nearby units 2% increased hit point regeneration.
+
+[sclp]
+Art=ReplaceableTextures\CommandButtons\BTNSelectHeroOn.blp
+Description=Unlocks a secret level!
+Name=Secret Level Powerup
+Tip=Purchase Secret Level Powerup
+Ubertip=Unlocks a secret level!
+
+[scul]
+Art=ReplaceableTextures\CommandButtons\BTNBansheeMaster.blp
+Description=Animates nearby corpses.
+Hotkey=I
+Name=Scroll of the Unholy Legion
+Tip=Purchase Scroll of the Unholy Leg|cffffcc00i|ron
+Ubertip=Animates 6 nearby corpses to fight for you. Lasts 40 seconds.
+
+[sehr]
+Art=ReplaceableTextures\CommandButtons\BTNHeartOfSearinox.blp
+Description=The heart of the Dragon Searinox.
+Name=The Heart of Searinox
+Tip=Purchase the Heart of Searinox
+Ubertip=The still beating heart of Searinox can be used to imbue an Orb with the fiery powers of a Dragon.
+
+[sfog]
+Art=ReplaceableTextures\CommandButtons\BTNHornOfFog.blp
+Description=Stops enemy towers from attacking.
+Hotkey=C
+Name=Horn of the Clouds
+Tip=Purchase Horn of the |cffffcc00C|rlouds
+Ubertip="Allows the Hero to channel the Cloud ability, which stops an area of enemy towers from attacking for 30 seconds."
+
+[shar]
+Art=ReplaceableTextures\CommandButtons\BTNIceShard.blp
+Description=Summons an Ice Revenant.
+Name=Ice Shard
+Tip=Purchase Ice Shard
+Ubertip=Summons an Ice Revenant. The Ice Revenant lasts 180 seconds.
+
+[shas]
+Art=ReplaceableTextures\CommandButtons\BTNScrollOfHaste.blp
+Buttonpos=1
+Description=Increases movement speed of units.
+Hotkey=S
+Name=Scroll of Speed
+Tip=Purchase Scroll of |cffffcc00S|rpeed
+Ubertip=Increases the movement speed of the Hero and nearby allied units to the maximum movement speed. |nLasts 10 seconds.
+
+[shcw]
+Art=ReplaceableTextures\CommandButtons\BTNShamanMaster.blp
+Description=|cff8b00ffUnique|r|nIncreases attack damage and dispels magic.
+Hotkey=S
+Name=Shaman Claws
+Tip=Purchase |cffffcc00S|rhaman Claws
+Ubertip=|cff8b00ffUnique|r|nThese are given to shaman upon the completion of their training. Increases attack damage by 12. The Hero's attacks also have a chance to dispel magic and slow the movement speed of the enemy for 15 seconds.
+
+[shdt]
+Art=ReplaceableTextures\CommandButtons\BTNLightningShield.blp
+Description=|cffff8c00Artifact|r|nA magical shield with the emblem of an unfamiliar Paladin order on it.
+Hotkey=D
+Name=Shield of the Deathlord
+Tip=Purchase Shield of the |cffffcc00D|reathlord
+Ubertip="|cffff8c00Artifact|r|nEngulfs the Hero in fire which deals 10 damage per second to nearby enemy land units. Also increases the Hero's armor by 10, hit points by 150, and mana by 100 when worn. |n|cffffcc00History|r|n|cffffdeadWhen Arthas took up the sword against his own people in Stratholme, the Deathlords committed the same heinous act in many other cities across Lordaeron.|r"
+
+[shea]
+Art=ReplaceableTextures\CommandButtons\BTNScrollOfTownPortal.blp
+Buttonpos=1,2
+Description=Restores hit points to nearby units.
+Hotkey=H
+Name=Scroll of Healing
+Requires=unp2
+Tip=Purchase Scroll of |cffffcc00H|realing
+Ubertip=Heals 150 hit points to all friendly non-mechanical units around the Hero when used.
+
+[shen]
+Art=ReplaceableTextures\CommandButtons\BTNThoriumArmor.blp
+Description=Increases armor and hit points.
+Hotkey=E
+Name=Enchanted Shield
+Tip=Purchase |cffffcc00E|rnchanted Shield
+Ubertip=Increases the Hero's armor by 2 and hit points by 50 when worn.
+
+[shhn]
+Art=ReplaceableTextures\CommandButtons\BTNHumanArmorUpThree.blp
+Description=|cff8b00ffUnique|r|nA Kul Tiras navy commander's shield.
+Hotkey=H
+Name=Shield of Honor
+Tip=Purchase Shield of |cffffcc00H|ronor
+Ubertip=|cff8b00ffUnique|r|nGrants nearby friendly units a 10% bonus to attack damage. Also increases the armor of the Hero by 8 when worn.
+
+[shrs]
+Art=ReplaceableTextures\CommandButtons\BTNMonsterLure.blp
+Description=Restores lost hit points.
+Hotkey=S
+Name=Shimmerglaze Roast
+Tip=Purchase |cffffcc00S|rhimmerglaze Roast
+Ubertip=A tasty roast with a shimmerweed base. Heals 50 hit points when eaten. |nContains 6 charges.
+
+[shtm]
+Art=ReplaceableTextures\CommandButtons\BTNEntrapmentWard.blp
+Description=A powerful Orcish artifact.
+Hotkey=H
+Name=Shamanic Totem
+Tip=Purchase S|cffffcc00h|ramanic Totem
+Ubertip="This powerful Orc artifact channels Shamanic powers through its user, allowing them to cast Purge."
+
+[shwd]
+Art=ReplaceableTextures\CommandButtons\BTNShimmerWeed.blp
+Description=A shimmering plant.
+Hotkey=S
+Name=Shimmerweed
+Tip=Purchase |cffffcc00S|rhimmerweed
+Ubertip=Wondrous plant said to have miraculous mind-expanding properties.
+
+[silk]
+Art=ReplaceableTextures\CommandButtons\BTNSpiderSilkBroach.blp
+Description=Webs a target air unit.
+Hotkey=S
+Name=Spider Silk Broach
+Tip=Purchase |cffffcc00S|rpider Silk Broach
+Ubertip="Binds a target enemy air unit in webbing, forcing the target to the ground. Webbed units can be hit as though they were land units. |nContains 4 charges."
+
+[skrt]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfCorruption.blp
+Description=Soulfeast the Devourer.
+Name=Skeletal Artifact
+Tip=Purchase Skeletal Artifact
+Ubertip="This ancient artifact entraps the souls of those who die violently, forcing them to relive the last moments of their lives for eternity."
+
+[sksh]
+Art=ReplaceableTextures\CommandButtons\BTNGrimWard.blp
+Description=Boosts Strength by 1.
+Name=Skull Shield
+Tip=Purchase Skull Shield
+Ubertip=Increases the Strength of the Hero by 1 when carried.
+
+[skul]
+Art=ReplaceableTextures\CommandButtons\BTNSacrificialSkull.blp
+Buttonpos=2
+Description=Creates Blight at a target location.
+Hotkey=K
+Name=Sacrificial Skull
+Requires=ugrv
+Tip=Purchase Sacrificial S|cffffcc00k|rull
+Ubertip=Creates an area of Blight at a target location.
+
+[sman]
+Art=ReplaceableTextures\CommandButtons\BTNScrollOfProtection.blp
+Description=Restores mana to nearby units.
+Hotkey=M
+Name=Scroll of Mana
+Tip=Purchase Scroll of |cffffcc00M|rana
+Ubertip=Restores 100 mana to all friendly units in an area around your Hero.
+
+[sneg]
+Art=ReplaceableTextures\CommandButtons\BTNStaffOfNegation.blp
+Description=Dispels magic in an area.
+Hotkey=N
+Name=Staff of Negation
+Tip=Purchase Staff of |cffffcc00N|regation
+Ubertip=Dispels all magical effects in a target area. |n|cffffcc00Deals 200 damage to summoned units.|r
+
+[sor1]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +1
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip=This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 1.
+
+[sor2]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +2
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip=This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 2.
+
+[sor3]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +3
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip=This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 3.
+
+[sor4]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +4
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip=This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 4 and armor by 1.
+
+[sor5]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +5
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip=This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 5 and armor by 1.
+
+[sor6]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +6
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip=This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 6 and armor by 1.
+
+[sor7]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +7
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip=This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 7 and armor by 2.
+
+[sor8]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +8
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip=This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 8 and armor by 2.
+
+[sor9]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +9
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip="This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 9, armor by 2 and grants enhanced hit point regeneration."
+
+[sora]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=Gul'dan's Shadow Orb.
+Hotkey=O
+Name=Shadow Orb +10
+Tip=Purchase Shadow |cffffcc00O|rrb
+Ubertip="This artifact was imbued with special powers by the Orc Shadow Council. It increases your attack damage by 10, armor by 3 and grants enhanced hit point regeneration."
+
+[sorf]
+Art=ReplaceableTextures\CommandButtons\BTNOrbOfDarkness.blp
+Description=A fragment of the Shadow Orb.
+Hotkey=O
+Name=Shadow Orb Fragment
+Tip=Purchase Shadow |cffffcc00O|rrb Fragment
+Ubertip=A fragment of a powerful artifact.
+
+[soul]
+Art=ReplaceableTextures\CommandButtons\BTNUsedSoulGem.blp
+Description=This is a trapped soul.
+Name=Soul
+Tip=Purchase Soul
+Ubertip="A soul, trapped by the enchantments of a Soul Gem."
+
+[spre]
+Art=ReplaceableTextures\CommandButtons\BTNStaffOfPreservation.blp
+Buttonpos=3,1
+Description=Teleports a target unit home.
+Hotkey=E
+Name=Staff of Preservation
+Requires=etoa
+Tip=Purchase Staff of Pr|cffffcc00e|rservation
+Ubertip=Teleports a target friendly unit to its highest level town hall.
+
+[sprn]
+Art=ReplaceableTextures\CommandButtons\BTNRingVioletSpider.blp
+Description=Boosts Agility by 1.
+Name=Spider Ring
+Tip=Purchase Spider Ring
+Ubertip=Increases the Agility of the Hero by 1 when worn.
+
+[spro]
+Art=ReplaceableTextures\CommandButtons\BTNScroll.blp
+Description=Temporarily increases the armor of nearby units.
+Hotkey=R
+Name=Scroll of Protection
+Tip=Purchase Scroll of P|cffffcc00r|rotection
+Ubertip=Increases the armor of all friendly units in an area around your Hero by 2 for 30 seconds.
+
+[spsh]
+Art=ReplaceableTextures\CommandButtons\BTNSpellShieldAmulet.blp
+Description=Blocks enemy spells.
+Hotkey=A
+Name=Amulet of Spell Shield
+Tip=Purchase |cffffcc00A|rmulet of Spell Shield
+Ubertip=Blocks a negative spell that an enemy casts on the Hero once every 40 seconds.
+
+[srbd]
+Art=ReplaceableTextures\CommandButtons\BTNArcaniteMelee.blp
+Description=Increases attack damage.
+Hotkey=B
+Name=Searing Blade
+Tip=Purchase Searing |cffffcc00B|rlade
+Ubertip="Adds 10 bonus fire damage to the attack of a Hero when carried. The Hero's attacks also do splash damage to nearby enemy units, and have a 20% chance to deal 2 times their normal damage."
+
+[sreg]
+Art=ReplaceableTextures\CommandButtons\BTNScrollOfRegenerationGreen.blp
+Description=Regenerates the health of nearby units.
+Hotkey=R
+Name=Scroll of Regeneration
+Tip=Purchase Scroll of |cffffcc00R|regeneration
+Ubertip=|cff87ceebNon-Combat Consumable|r|nRegenerates the hit points of all friendly non-mechanical units in an area around your Hero by 225 over 45 seconds when used.
+
+[sres]
+Art=ReplaceableTextures\CommandButtons\BTNScrollOfHealing.blp
+Description=Restores hit points and mana to nearby units.
+Hotkey=R
+Name=Scroll of Restoration
+Tip=Purchase Scroll of |cffffcc00R|restoration
+Ubertip=Restores 300 hit points and 150 mana of friendly non-mechanical units in an area around your Hero.
+
+[sror]
+Art=ReplaceableTextures\CommandButtons\BTNSnazzyScrollGreen.blp
+Description=Boosts friendly unit combat damage.
+Name=Scroll of the Beast
+Tip=Purchase Scroll of the Beast
+Ubertip=Gives friendly nearby units a 25% bonus to damage for 45 seconds.
+
+[srrc]
+Art=ReplaceableTextures\CommandButtons\BTNSnazzyScroll.blp
+Description=Resurrects your dead to fight again.
+Name=Scroll of Resurrection
+Tip=Purchase Scroll of Resurrection
+Ubertip=Brings 6 of your nearby dead units back to life.
+
+[srtl]
+Art=ReplaceableTextures\CommandButtons\BTNOrcMeleeUpThree.blp
+Description=|cffff8c00Artifact|r|nThis massive axe is covered with notches and orcish runes.
+Hotkey=S
+Name=Serathil
+Tip=Purchase |cffffcc00S|rerathil
+Ubertip=|cffff8c00Artifact|r|nIncreases the attack rate of the Hero by 15% and attack damage by 15.|n|cffffcc00History|r|n|cffffdeadThis weapon was crafted on Draenor for Kash'drakor and used in the Blood River war that ended with the annihilation of the Dark Scar clan. Nazgrel is the last living relative of Kash'drakor.|r
+
+[ssan]
+Art=ReplaceableTextures\CommandButtons\BTNStaffOfSanctuary.blp
+Buttonpos=1,2
+Description=Heals and teleports a unit.
+Hotkey=N
+Name=Staff of Sanctuary
+Requires=hcas
+Tip=Purchase Staff of Sa|cffffcc00n|rctuary
+Ubertip="Teleports a target unit to your highest level town hall, stunning the unit and regenerating 15 hit points per second. Lasts until the unit is fully healed."
+
+[ssil]
+Art=ReplaceableTextures\CommandButtons\BTNStaffOfSilence.blp
+Description=Stops enemy spellcasting.
+Hotkey=E
+Name=Staff of Silence
+Tip=Purchase Staff of Sil|cffffcc00e|rnce
+Ubertip=Stops all enemies in a target area from casting spells.
+
+[stel]
+Art=ReplaceableTextures\CommandButtons\BTNStaffOfTeleportation.blp
+Buttonpos=3,1
+Description=Teleports the Hero.
+Hotkey=E
+Name=Staff of Teleportation
+Tip=Purchase Staff of T|cffffcc00e|rleportation
+Ubertip=Teleports the Hero to the targeted allied land unit or structure.
+
+[stpg]
+Art=ReplaceableTextures\CommandButtons\BTNPenguin.blp
+Description=A small clockwork penguin that squeaks.
+Hotkey=P
+Name=Clockwork Penguin
+Tip=Purchase Clockwork |cffffcc00P|renguin
+Ubertip=This penguin squeak-toy was first created by the goblin tinkerer Salzhigh for the centaur. Regarding it with some awe (having never seen a penguin before) the centaur purchased them as idols and worshipped them at altars.
+
+[stre]
+Art=ReplaceableTextures\CommandButtons\BTNWandSkull.blp
+Description=Animates a corpse.
+Hotkey=R
+Name=Staff of Reanimation
+Tip=Purchase Staff of |cffffcc00R|reanimation
+Ubertip=Animates a nearby corpse to fight your enemies. Lasts 60 seconds.
+
+[stwa]
+Art=ReplaceableTextures\CommandButtons\BTNOrcMeleeUpOne.blp
+Description=Increases attack damage.
+Hotkey=W
+Name=Sturdy War Axe
+Tip=Purchase Sturdy |cffffcc00W|rar Axe
+Ubertip=Increases the attack damage of the Hero by 5 when carried.
+
+[stwp]
+Art=ReplaceableTextures\CommandButtons\BTNScrollUber.blp
+Buttonpos=2,1
+Description=Transports troops to friendly town hall.
+Hotkey=T
+Name=Scroll of Town Portal
+Requires=TWN2
+Tip=Purchase Scroll of |cffffcc00T|rown Portal
+Ubertip=Teleports the Hero and any of its nearby troops to a target friendly town hall.
+
+[tbak]
+Art=ReplaceableTextures\CommandButtons\BTNAltarOfKings.blp
+Description=Creates a Altar of Kings.
+Hotkey=K
+Name=Tiny Altar of Kings
+Tip=Purchase Tiny Altar of |cffffcc00K|rings
+Ubertip=Creates a Altar of Kings at a target location.
+
+[tbar]
+Art=ReplaceableTextures\CommandButtons\BTNHumanBarracks.blp
+Description=Creates a Barracks.
+Hotkey=B
+Name=Tiny Barracks
+Tip=Purchase Tiny |cffffcc00B|rarracks
+Ubertip=Creates a Barracks at a target location.
+
+[tbsm]
+Art=ReplaceableTextures\CommandButtons\BTNBlacksmith.blp
+Description=Creates a Blacksmith.
+Hotkey=B
+Name=Tiny Blacksmith
+Tip=Purchase Tiny |cffffcc00B|rlacksmith
+Ubertip=Creates a Blacksmith at a target location.
+
+[tcas]
+Art=ReplaceableTextures\CommandButtons\BTNTinyCastle.blp
+Description=Creates a Castle.
+Hotkey=A
+Name=Tiny Castle
+Requires=hcas
+Tip=Purchase Tiny C|cffffcc00a|rstle
+Ubertip=Creates a Castle at a target location.
+
+[tdex]
+Art=ReplaceableTextures\CommandButtons\BTNTome.blp
+Description=Permanently increases Agility.
+Hotkey=A
+Name=Tome of Agility
+Tip=Purchase Tome of |cffffcc00A|rgility
+Ubertip=Permanently increases the Agility of the Hero by 1 when used.
+
+[tdx2]
+Art=ReplaceableTextures\CommandButtons\BTNTome.blp
+Description=Permanently increases Agility.
+Name=Tome of Agility +2
+Tip=Purchase Tome of Agility +2
+Ubertip=Permanently increases the Agility of the Hero by 2 when used.
+
+[tels]
+Art=ReplaceableTextures\CommandButtons\BTNTelescope.blp
+Description=Increases sight range at night.
+Hotkey=T
+Name=Goblin Night Scope
+Tip=Purchase Goblin Nigh|cffffcc00t|r Scope
+Ubertip=Provides an increase to the Hero's line of sight radius at night when carried.
+
+[texp]
+Art=ReplaceableTextures\CommandButtons\BTNTomeBrown.blp
+Description=Gives bonus experience points.
+Hotkey=E
+Name=Tome of Experience
+Tip=Purchase Tome of |cffffcc00E|rxperience
+Ubertip=Gives 150 experience to the Hero when used.
+
+[tfar]
+Art=ReplaceableTextures\CommandButtons\BTNFarm.blp
+Description=Creates a Farm.
+Hotkey=F
+Name=Tiny Farm
+Tip=Purchase Tiny |cffffcc00F|rarm
+Ubertip=Creates a Farm at a target location.
+
+[tgrh]
+Art=ReplaceableTextures\CommandButtons\BTNGreathall.blp
+Buttonpos=1,2
+Description=Creates a Great Hall.
+Hotkey=G
+Name=Tiny Great Hall
+Requires=ofrt
+Tip=Purchase Tiny |cffffcc00G|rreat Hall
+Ubertip="Creates a Great Hall at a target location. Human, Night Elf, and Undead players will get their racial equivalent town hall."
+
+[tgxp]
+Art=ReplaceableTextures\CommandButtons\BTNManual3.blp
+Description=Gives bonus experience points.
+Name=Tome of Greater Experience
+Tip=Purchase Tome of Greater Experience
+Ubertip=Gives the Hero 500 bonus experience points when used.
+
+[thdm]
+Art=ReplaceableTextures\CommandButtons\BTNEnchantedGemstone.blp
+Description=|cff8b00ffUnique|r|nA massive diamond that crackles with electricity.
+Hotkey=T
+Name=Thunderlizard Diamond
+Tip=Purchase |cffffcc00T|rhunderlizard Diamond
+Ubertip=|cff8b00ffUnique|r|nCasts bolts of lightning that deal damage to multiple targets.
+
+[thle]
+Art=ReplaceableTextures\CommandButtons\BTNThunderLizardEgg.blp
+Description=Massive Lizard Egg.
+Name=Thunder Lizard Egg
+Tip=Purchase Thunder Lizard Egg
+Ubertip=This massive egg will not hatch without a parent to warm it.
+
+[tin2]
+Art=ReplaceableTextures\CommandButtons\BTNTome.blp
+Description=Permanently increases Intelligence.
+Name=Tome of Intelligence +2
+Tip=Purchase Tome of Intelligence +2
+Ubertip=Permanently increases the Intelligence of the Hero by 2 when used.
+
+[tint]
+Art=ReplaceableTextures\CommandButtons\BTNTome.blp
+Description=Permanently increases Intelligence.
+Hotkey=T
+Name=Tome of Intelligence
+Tip=Purchase |cffffcc00T|rome of Intelligence
+Ubertip=Permanently increases the Intelligence of the Hero by 1 when used.
+
+[tkno]
+Art=ReplaceableTextures\CommandButtons\BTNTomeRed.blp
+Description=Gives the Hero an experience level.
+Hotkey=P
+Name=Tome of Power
+Tip=Purchase Tome of |cffffcc00P|rower
+Ubertip=Increases the level of the Hero by 1 when used.
+
+[tlum]
+Art=ReplaceableTextures\CommandButtons\BTNHumanLumberMill.blp
+Description=Creates a Lumber Mill.
+Hotkey=R
+Name=Tiny Lumber Mill
+Tip=Purchase Tiny Lumbe|cffffcc00r|r Mill
+Ubertip=Creates a Lumber Mill at a target location.
+
+[tmmt]
+Art=ReplaceableTextures\CommandButtons\BTNEntrapmentWard.blp
+Description=Boosts Strength by 1.
+Name=Totem of Might
+Tip=Purchase Totem of Might
+Ubertip=Increases the Strength of the Hero by 1 when carried.
+
+[tmsc]
+Art=ReplaceableTextures\CommandButtons\BTNNecromancerAdept.blp
+Description=|cff8b00ffUnique|r|nAn evil looking tome with runes of necromancy etched into the binding.
+Hotkey=T
+Name=Tome of Sacrifices
+Tip=Purchase |cffffcc00T|rome of Sacrifices
+Ubertip=|cff8b00ffUnique|r|nGrants the ability to sacrifice a friendly non-Hero unit to restore hit points. Also increases the Hero's mana by 100 while equipped.
+
+[totw]
+Art=ReplaceableTextures\CommandButtons\BTNStone.blp
+Description=Summons Furbolgs.
+Name=Talisman of the Wild
+Tip=Purchase Talisman of the Wild
+Ubertip=This mystic stone summons a Furbolg to fight for you. |nContains 3 charges. |nLasts 180 seconds.
+
+[tpow]
+Art=ReplaceableTextures\CommandButtons\BTNTomeRed.blp
+Description="Permanently increases Strength, Agility and Intelligence."
+Name=Tome of Knowledge
+Tip=Purchase Tome of Knowledge
+Ubertip="Permanently increases the Strength, Agility and Intelligence of the Hero by 1 when used."
+
+[tret]
+Art=ReplaceableTextures\CommandButtons\BTNTomeOfRetraining.blp
+Buttonpos=,2
+Description=Unlearns a Hero's skills.
+Hotkey=O
+Name=Tome of Retraining
+Tip=Purchase T|cffffcc00o|rme of Retraining
+Ubertip="Unlearns all of the Hero's spells, allowing the Hero to learn different skills."
+
+[tsct]
+Art=ReplaceableTextures\CommandButtons\BTNHumanWatchTower.blp
+Buttonpos=3,1
+Description=Creates a Scout Tower.
+Hotkey=V
+Name=Ivory Tower
+Requires=hkee
+Tip=Purchase I|cffffcc00v|rory Tower
+Ubertip=Creates a Scout Tower at a target location.
+
+[tst2]
+Art=ReplaceableTextures\CommandButtons\BTNTome.blp
+Description=Permanently increases Strength.
+Name=Tome of Strength +2
+Tip=Purchase Tome of Strength +2
+Ubertip=Permanently increases the Strength of the Hero by 2 when used.
+
+[tstr]
+Art=ReplaceableTextures\CommandButtons\BTNTome.blp
+Description=Permanently increases Strength.
+Hotkey=S
+Name=Tome of Strength
+Tip=Purchase Tome of |cffffcc00S|rtrength
+Ubertip=Permanently increases the Strength of the Hero by 1 when used.
+
+[uflg]
+Art=ReplaceableTextures\CommandButtons\BTNUndeadCaptureFlag.blp
+Description=Can be captured in special scenarios.
+Name=Undead Flag
+Tip=Purchase Undead Flag
+Ubertip=An object that is often captured in special scenarios as a win condition.
+
+[vamp]
+Art=ReplaceableTextures\CommandButtons\BTNPotionOfVampirism.blp
+Description=Damage bonus and life-stealing attack.
+Hotkey=V
+Name=Vampiric Potion
+Tip=Purchase |cffffcc00V|rampiric Potion
+Ubertip=Adds 12 bonus damage and a life-stealing attack to the Hero. |nLasts 20 seconds.
+
+[vddl]
+Art=ReplaceableTextures\CommandButtons\BTNShadowPact.blp
+Description=Boosts Intelligence by 1.
+Name=Voodoo Doll
+Tip=Purchase Voodoo Doll
+Ubertip=Increases the Intelligence of the Hero by 1 when carried.
+
+[ward]
+Art=ReplaceableTextures\CommandButtons\BTNDrum.blp
+Description=Increases combat effectiveness of nearby units.
+Hotkey=W
+Name=Warsong Battle Drums
+Tip=Purchase |cffffcc00W|rarsong Battle Drums
+Ubertip=Increases the attack damage of nearby friendly units by 10% when worn. |nDoes not stack with Command Aura.
+
+[wcyc]
+Art=ReplaceableTextures\CommandButtons\BTNWandOfCyclone.blp
+Description=Casts Cyclone.
+Name=Wand of the Wind
+Tip=Purchase Wand of the Wind
+Ubertip="Allows the Hero to cast Cyclone. Cyclone tosses a target enemy unit into the air, rendering it unable to attack, move or cast spells. |nContains 3 charges. |nLasts 20 seconds."
+
+[whwd]
+Art=ReplaceableTextures\CommandButtons\BTNHealingWard.blp
+Description=Conjures a Healing Ward.
+Name=Healing Wards
+Tip=Purchase Healing Wards
+Ubertip=Drops a ward that heals nearby friendly units for 30 seconds. |nContains 3 charges.
+
+[wild]
+Art=ReplaceableTextures\CommandButtons\BTNAmuletOftheWild.blp
+Description=Summons a Furbolg.
+Name=Amulet of the Wild
+Tip=Purchase Amulet of the Wild
+Ubertip=Summons a Furbolg Warrior. The Furbolg lasts 180 seconds.
+
+[will]
+Art=ReplaceableTextures\CommandButtons\BTNWand.blp
+Description=Creates a phantom double.
+Hotkey=I
+Name=Wand of Illusion
+Tip=Purchase Wand of |cffffcc00I|rllusion
+Ubertip="Create an illusory double of the targeted unit when used. The illusory double deals no damage to enemy units, takes 2 times the damage from enemy attacks, and will disappear after 60 seconds or when its hit points reach zero. |nContains 3 charges."
+
+[wlsd]
+Art=ReplaceableTextures\CommandButtons\BTNStarWand.blp
+Description=Casts Lightning Shield.
+Name=Wand of Lightning Shield
+Tip=Purchase Wand of Lightning Shield
+Ubertip="Allows the Hero to cast Lightning Shield on a target unit. Lightning Shield surrounds a unit with electricity, dealing 20 damage per second to nearby units. |nContains 3 charges. |nLasts 20 seconds."
+
+[wneg]
+Art=ReplaceableTextures\CommandButtons\BTNWandSkull.blp
+Buttonpos=3,1
+Description=Dispels magic in an area.
+Hotkey=N
+Name=Wand of Negation
+Requires=unp1
+Tip=Purchase Wand of |cffffcc00N|regation
+Ubertip=Dispels all magical effects in a target area. |nContains 3 charges. |n|cffffcc00Deals 200 damage to summoned units.|r
+
+[wneu]
+Art=ReplaceableTextures\CommandButtons\BTNWandOfNeutralization.blp
+Description=Dispels magical effects in a chain.
+Hotkey=N
+Name=Wand of Neutralization
+Tip=Purchase Wand of |cffffcc00N|reutralization
+Ubertip="Hurls forth a stream of neutralizing magic that bounces up to 8 times, dispelling units in its wake. |nContains 4 charges."
+
+[wolg]
+Art=ReplaceableTextures\CommandButtons\BTNWirtsOtherLeg.blp
+Description=The One Other Leg.
+Hotkey=O
+Name=Wirt's Other Leg
+Tip=Purchase Wirt's |cffffcc00O|rther Leg
+Ubertip=Perhaps the overzealous adventurer pried this off before his journey here thinking it might give him one last opportunity at bovine slaughter. Little did he know where it would lead him.
+
+[woms]
+Art=ReplaceableTextures\CommandButtons\BTNWandOfManaSteal.blp
+Description=Steals mana.
+Hotkey=W
+Name=Wand of Mana Stealing
+Tip=Purchase |cffffcc00W|rand of Mana Stealing
+Ubertip=Steals mana from a target unit and gives it to the Hero. |nContains 2 charges.
+
+[wshs]
+Art=ReplaceableTextures\CommandButtons\BTNWandOfShadowSight.blp
+Description=Grants vision of a target unit.
+Hotkey=W
+Name=Wand of Shadowsight
+Tip=Purchase |cffffcc00W|rand of Shadowsight
+Ubertip=Gives the player vision of a target unit until that unit is dispelled. |nContains 2 charges.
+
+[wswd]
+Art=ReplaceableTextures\CommandButtons\BTNSentryWard.blp
+Description=Conjures a Sentry Ward.
+Name=Sentry Wards
+Tip=Purchase Sentry Wards
+Ubertip=Drops a Sentry Ward to spy upon an area for 300 seconds. |nContains 3 charges.
+
+[wtlg]
+Art=ReplaceableTextures\CommandButtons\BTNWirtsLeg.blp
+Description=The One Leg.
+Hotkey=L
+Name=Wirt's Leg
+Tip=Purchase Wirt's |cffffcc00L|reg
+Ubertip="Could it be that a portal opened up and expelled the remains of our dearest pal from the world of Diablo to here? If so, was it a player, or a Demon? Just how many worlds have the Burning Legion conquered? Could the Demons of the Burning Legion and those of Sanctuary be one and the same? The mind wobbles."

@@ -1,0 +1,41 @@
+[HERO]
+DependencyOr=Hamg,Hblm,Hmkg,Hpal,Obla,Ofar,Oshd,Otch,Edem,Ekee,Emoo,Ewar,Ucrl,Udea,Udre,Ulic,Npbm,Nbrn,Nngs,Nplh,Nbst
+Name=A Hero
+[Misc]
+DamageBonusHero=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusMagic=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusNormal=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusPierce=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusSiege=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusSpells=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+GrantHeroXP=0
+GrantHeroXPFormulaC=0
+GrantNormalXP=0
+GrantNormalXPFormulaB=0
+GrantNormalXPFormulaC=0
+GuardReturnTime=120
+HeroFactorXP=0
+MaxBldgSpeed=522
+MaxGuardDistance=10000
+MaxUnitLevel=100
+MaxUnitSpeed=522
+MinUnitSpeed=25
+SummonedKillFactor=0
+TradingIncLarge=0
+TradingIncSmall=0
+UpkeepUsage=10000,10000,10000,10000,10000,10000,10000,10000
+[TALT]
+DependencyOr=halt,oalt,eate,uaod
+Name=An Altar
+[TWN1]
+DependencyOr=htow,ogre,etol,unpl
+Name=Town Hall or Great Hall or Tree of Life or Necropolis
+XPFactor=0
+[TWN2]
+DependencyOr=hkee,ostr,etoa,unp1
+Name=Keep or Stronghold or Tree of Ages or Halls of the Dead
+XPFactor=0
+[TWN3]
+DependencyOr=hcas,ofrt,etoe,unp2
+Name=Castle or Fortress or Tree of Eternity or Black Citadel
+XPFactor=0

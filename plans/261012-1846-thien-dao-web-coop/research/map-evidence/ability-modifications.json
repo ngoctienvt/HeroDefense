@@ -1,0 +1,3458 @@
+[
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 5,
+    "value": 0.5
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 6,
+    "value": 0.6000000238418579
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 7,
+    "value": 0.699999988079071
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 8,
+    "value": 0.800000011920929
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 9,
+    "value": 0.8999999761581421
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 10,
+    "value": 1.0
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 11,
+    "value": 1.100000023841858
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 12,
+    "value": 1.2000000476837158
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 13,
+    "value": 1.2999999523162842
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 14,
+    "value": 1.399999976158142
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 15,
+    "value": 1.5
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 16,
+    "value": 1.600000023841858
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 17,
+    "value": 1.7000000476837158
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 18,
+    "value": 1.7999999523162842
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 19,
+    "value": 1.899999976158142
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 20,
+    "value": 2.0
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 21,
+    "value": 2.0999999046325684
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 22,
+    "value": 2.200000047683716
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 23,
+    "value": 2.299999952316284
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 24,
+    "value": 2.4000000953674316
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 25,
+    "value": 2.5
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 26,
+    "value": 2.5999999046325684
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 27,
+    "value": 2.700000047683716
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 28,
+    "value": 2.7999989986419678
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 29,
+    "value": 2.899998903274536
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 30,
+    "value": 2.9999990463256836
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 31,
+    "value": 3.099998950958252
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 32,
+    "value": 3.1999990940093994
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 33,
+    "value": 3.2999989986419678
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 34,
+    "value": 3.399998903274536
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 35,
+    "value": 3.4999990463256836
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 36,
+    "value": 3.599998950958252
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 37,
+    "value": 3.6999990940093994
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 38,
+    "value": 3.7999989986419678
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 39,
+    "value": 3.8999979496002197
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 40,
+    "value": 3.999998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 41,
+    "value": 4.0999979972839355
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 42,
+    "value": 4.199997901916504
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 43,
+    "value": 4.299997806549072
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 44,
+    "value": 4.399998188018799
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 45,
+    "value": 4.499998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 46,
+    "value": 4.5999979972839355
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 47,
+    "value": 4.699997901916504
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 48,
+    "value": 4.799997806549072
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 49,
+    "value": 4.899998188018799
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 50,
+    "value": 4.999998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 51,
+    "value": 5.0999979972839355
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 52,
+    "value": 5.1999969482421875
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 53,
+    "value": 5.299996852874756
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 54,
+    "value": 5.399997234344482
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 55,
+    "value": 5.499997138977051
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 56,
+    "value": 5.599997043609619
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 57,
+    "value": 5.6999969482421875
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 58,
+    "value": 5.799996852874756
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 59,
+    "value": 5.899997234344482
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 60,
+    "value": 5.999997138977051
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 61,
+    "value": 6.099997043609619
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 62,
+    "value": 6.199995994567871
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 63,
+    "value": 6.2999958992004395
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 64,
+    "value": 6.399995803833008
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 65,
+    "value": 6.499996185302734
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 66,
+    "value": 6.599996089935303
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 67,
+    "value": 6.699995994567871
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 68,
+    "value": 6.7999958992004395
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 69,
+    "value": 6.899995803833008
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 70,
+    "value": 6.999996185302734
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 71,
+    "value": 7.099996089935303
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 72,
+    "value": 7.199995994567871
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 73,
+    "value": 7.299994945526123
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 74,
+    "value": 7.399994850158691
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 75,
+    "value": 7.499995231628418
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 76,
+    "value": 7.599995136260986
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 77,
+    "value": 7.699995040893555
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 78,
+    "value": 7.799994945526123
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 79,
+    "value": 7.899994850158691
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 80,
+    "value": 7.999995231628418
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 81,
+    "value": 8.099994659423828
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 82,
+    "value": 8.199995040893555
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 83,
+    "value": 8.299995422363281
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 84,
+    "value": 8.399995803833008
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 85,
+    "value": 8.499996185302734
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 86,
+    "value": 8.599996566772461
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 87,
+    "value": 8.699996948242188
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 88,
+    "value": 8.799997329711914
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 89,
+    "value": 8.89999771118164
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 90,
+    "value": 8.999998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 91,
+    "value": 9.099998474121094
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 92,
+    "value": 9.19999885559082
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 93,
+    "value": 9.299999237060547
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 94,
+    "value": 9.399999618530273
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 95,
+    "value": 9.5
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 96,
+    "value": 9.600000381469727
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 97,
+    "value": 9.700000762939453
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 98,
+    "value": 9.80000114440918
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 99,
+    "value": 9.900001525878906
+  },
+  {
+    "id": "R5qg",
+    "field": "adur",
+    "level": 100,
+    "value": 10.000001907348633
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 5,
+    "value": 0.5
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 6,
+    "value": 0.6000000238418579
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 7,
+    "value": 0.699999988079071
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 8,
+    "value": 0.800000011920929
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 9,
+    "value": 0.8999999761581421
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 10,
+    "value": 1.0
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 11,
+    "value": 1.100000023841858
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 12,
+    "value": 1.2000000476837158
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 13,
+    "value": 1.2999999523162842
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 14,
+    "value": 1.399999976158142
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 15,
+    "value": 1.5
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 16,
+    "value": 1.600000023841858
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 17,
+    "value": 1.7000000476837158
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 18,
+    "value": 1.7999999523162842
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 19,
+    "value": 1.899999976158142
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 20,
+    "value": 2.0
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 21,
+    "value": 2.0999999046325684
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 22,
+    "value": 2.200000047683716
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 23,
+    "value": 2.299999952316284
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 24,
+    "value": 2.4000000953674316
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 25,
+    "value": 2.5
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 26,
+    "value": 2.5999999046325684
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 27,
+    "value": 2.700000047683716
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 28,
+    "value": 2.7999989986419678
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 29,
+    "value": 2.899998903274536
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 30,
+    "value": 2.9999990463256836
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 31,
+    "value": 3.099998950958252
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 32,
+    "value": 3.1999990940093994
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 33,
+    "value": 3.2999989986419678
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 34,
+    "value": 3.399998903274536
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 35,
+    "value": 3.4999990463256836
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 36,
+    "value": 3.599998950958252
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 37,
+    "value": 3.6999990940093994
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 38,
+    "value": 3.7999989986419678
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 39,
+    "value": 3.8999979496002197
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 40,
+    "value": 3.999998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 41,
+    "value": 4.0999979972839355
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 42,
+    "value": 4.199997901916504
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 43,
+    "value": 4.299997806549072
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 44,
+    "value": 4.399998188018799
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 45,
+    "value": 4.499998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 46,
+    "value": 4.5999979972839355
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 47,
+    "value": 4.699997901916504
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 48,
+    "value": 4.799997806549072
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 49,
+    "value": 4.899998188018799
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 50,
+    "value": 4.999998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 51,
+    "value": 5.099999904632568
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 52,
+    "value": 5.199999809265137
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 53,
+    "value": 5.300000190734863
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 54,
+    "value": 5.400000095367432
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 55,
+    "value": 5.5
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 56,
+    "value": 5.599998950958252
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 57,
+    "value": 5.69999885559082
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 58,
+    "value": 5.799999237060547
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 59,
+    "value": 5.899999141693115
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 60,
+    "value": 6.0
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 61,
+    "value": 6.099998950958252
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 62,
+    "value": 6.19999885559082
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 63,
+    "value": 6.299999237060547
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 64,
+    "value": 6.399999141693115
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 65,
+    "value": 6.499999046325684
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 66,
+    "value": 6.5999979972839355
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 67,
+    "value": 6.699997901916504
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 68,
+    "value": 6.799997806549072
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 69,
+    "value": 6.899998188018799
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 70,
+    "value": 6.999998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 71,
+    "value": 7.0999979972839355
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 72,
+    "value": 7.199997901916504
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 73,
+    "value": 7.299997806549072
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 74,
+    "value": 7.399998188018799
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 75,
+    "value": 7.499998092651367
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 76,
+    "value": 7.5999979972839355
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 77,
+    "value": 7.6999969482421875
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 78,
+    "value": 7.799996852874756
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 79,
+    "value": 7.899997234344482
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 80,
+    "value": 7.999997138977051
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 81,
+    "value": 8.099998474121094
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 82,
+    "value": 8.199997901916504
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 83,
+    "value": 8.29999828338623
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 84,
+    "value": 8.399998664855957
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 85,
+    "value": 8.499999046325684
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 86,
+    "value": 8.59999942779541
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 87,
+    "value": 8.699999809265137
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 88,
+    "value": 8.800000190734863
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 89,
+    "value": 8.90000057220459
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 90,
+    "value": 9.000000953674316
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 91,
+    "value": 9.100001335144043
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 92,
+    "value": 9.20000171661377
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 93,
+    "value": 9.300002098083496
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 94,
+    "value": 9.400001525878906
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 95,
+    "value": 9.50000286102295
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 96,
+    "value": 9.600003242492676
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 97,
+    "value": 9.700003623962402
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 98,
+    "value": 9.800004005432129
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 99,
+    "value": 9.900004386901855
+  },
+  {
+    "id": "R5qg",
+    "field": "ahdu",
+    "level": 100,
+    "value": 10.000004768371582
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 5,
+    "value": 0.5
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 6,
+    "value": 0.6000000238418579
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 7,
+    "value": 0.699999988079071
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 8,
+    "value": 0.800000011920929
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 9,
+    "value": 0.8999999761581421
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 10,
+    "value": 1.0
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 11,
+    "value": 1.100000023841858
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 12,
+    "value": 1.2000000476837158
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 13,
+    "value": 1.2999999523162842
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 14,
+    "value": 1.399999976158142
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 15,
+    "value": 1.5
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 16,
+    "value": 1.600000023841858
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 17,
+    "value": 1.7000000476837158
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 18,
+    "value": 1.7999999523162842
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 19,
+    "value": 1.899999976158142
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 20,
+    "value": 2.0
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 21,
+    "value": 2.0999999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 22,
+    "value": 2.200000047683716
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 23,
+    "value": 2.299999952316284
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 24,
+    "value": 2.4000000953674316
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 25,
+    "value": 2.5
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 26,
+    "value": 2.5999999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 27,
+    "value": 2.700000047683716
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 28,
+    "value": 2.7999989986419678
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 29,
+    "value": 2.899998903274536
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 30,
+    "value": 2.9999990463256836
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 31,
+    "value": 3.099998950958252
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 32,
+    "value": 3.1999990940093994
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 33,
+    "value": 3.2999989986419678
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 34,
+    "value": 3.399998903274536
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 35,
+    "value": 3.4999990463256836
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 36,
+    "value": 3.599998950958252
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 37,
+    "value": 3.6999990940093994
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 38,
+    "value": 3.7999989986419678
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 39,
+    "value": 3.8999979496002197
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 40,
+    "value": 3.999998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 41,
+    "value": 4.0999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 42,
+    "value": 4.199997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 43,
+    "value": 4.299997806549072
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 44,
+    "value": 4.399998188018799
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 45,
+    "value": 4.499998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 46,
+    "value": 4.5999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 47,
+    "value": 4.699997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 48,
+    "value": 4.799997806549072
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 49,
+    "value": 4.899998188018799
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 50,
+    "value": 4.999998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 51,
+    "value": 5.099999904632568
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 52,
+    "value": 5.199999809265137
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 53,
+    "value": 5.300000190734863
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 54,
+    "value": 5.400000095367432
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 55,
+    "value": 5.5
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 56,
+    "value": 5.599998950958252
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 57,
+    "value": 5.69999885559082
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 58,
+    "value": 5.799999237060547
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 59,
+    "value": 5.899999141693115
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 60,
+    "value": 5.999999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 61,
+    "value": 6.099998950958252
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 62,
+    "value": 6.19999885559082
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 63,
+    "value": 6.299999237060547
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 64,
+    "value": 6.399999141693115
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 65,
+    "value": 6.499999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 66,
+    "value": 6.5999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 67,
+    "value": 6.699997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 68,
+    "value": 6.799997806549072
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 69,
+    "value": 6.899998188018799
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 70,
+    "value": 6.999998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 71,
+    "value": 7.0999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 72,
+    "value": 7.199997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 73,
+    "value": 7.299997806549072
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 74,
+    "value": 7.399998188018799
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 75,
+    "value": 7.499998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 76,
+    "value": 7.5999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 77,
+    "value": 7.6999969482421875
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 78,
+    "value": 7.799996852874756
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 79,
+    "value": 7.899997234344482
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 80,
+    "value": 7.999997138977051
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 81,
+    "value": 8.099998474121094
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 82,
+    "value": 8.199997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 83,
+    "value": 8.29999828338623
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 84,
+    "value": 8.399998664855957
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 85,
+    "value": 8.499999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 86,
+    "value": 8.59999942779541
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 87,
+    "value": 8.699999809265137
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 88,
+    "value": 8.800000190734863
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 89,
+    "value": 8.90000057220459
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 90,
+    "value": 9.000000953674316
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 91,
+    "value": 9.100001335144043
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 92,
+    "value": 9.20000171661377
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 93,
+    "value": 9.300002098083496
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 94,
+    "value": 9.400001525878906
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 95,
+    "value": 9.50000286102295
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 96,
+    "value": 9.600003242492676
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 97,
+    "value": 9.700003623962402
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 98,
+    "value": 9.800004005432129
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 99,
+    "value": 9.900004386901855
+  },
+  {
+    "id": "EgRP",
+    "field": "adur",
+    "level": 100,
+    "value": 10.000004768371582
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 5,
+    "value": 0.5
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 6,
+    "value": 0.6000000238418579
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 7,
+    "value": 0.699999988079071
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 8,
+    "value": 0.800000011920929
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 9,
+    "value": 0.8999999761581421
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 10,
+    "value": 1.0
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 11,
+    "value": 1.100000023841858
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 12,
+    "value": 1.2000000476837158
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 13,
+    "value": 1.2999999523162842
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 14,
+    "value": 1.399999976158142
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 15,
+    "value": 1.5
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 16,
+    "value": 1.600000023841858
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 17,
+    "value": 1.7000000476837158
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 18,
+    "value": 1.7999999523162842
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 19,
+    "value": 1.899999976158142
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 20,
+    "value": 2.0
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 21,
+    "value": 2.0999999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 22,
+    "value": 2.200000047683716
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 23,
+    "value": 2.299999952316284
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 24,
+    "value": 2.4000000953674316
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 25,
+    "value": 2.5
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 26,
+    "value": 2.5999999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 27,
+    "value": 2.700000047683716
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 28,
+    "value": 2.7999989986419678
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 29,
+    "value": 2.899998903274536
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 30,
+    "value": 2.9999990463256836
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 31,
+    "value": 3.099998950958252
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 32,
+    "value": 3.1999990940093994
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 33,
+    "value": 3.2999989986419678
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 34,
+    "value": 3.399998903274536
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 35,
+    "value": 3.4999990463256836
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 36,
+    "value": 3.599998950958252
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 37,
+    "value": 3.6999990940093994
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 38,
+    "value": 3.7999989986419678
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 39,
+    "value": 3.8999979496002197
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 40,
+    "value": 3.999998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 41,
+    "value": 4.0999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 42,
+    "value": 4.199997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 43,
+    "value": 4.299997806549072
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 44,
+    "value": 4.399998188018799
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 45,
+    "value": 4.499998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 46,
+    "value": 4.5999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 47,
+    "value": 4.699997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 48,
+    "value": 4.799997806549072
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 49,
+    "value": 4.899998188018799
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 50,
+    "value": 4.999998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 51,
+    "value": 5.099999904632568
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 52,
+    "value": 5.199999809265137
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 53,
+    "value": 5.300000190734863
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 54,
+    "value": 5.400000095367432
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 55,
+    "value": 5.5
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 56,
+    "value": 5.599998950958252
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 57,
+    "value": 5.69999885559082
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 58,
+    "value": 5.799999237060547
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 59,
+    "value": 5.899999141693115
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 60,
+    "value": 5.999999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 61,
+    "value": 6.099998950958252
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 62,
+    "value": 6.19999885559082
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 63,
+    "value": 6.299999237060547
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 64,
+    "value": 6.399999141693115
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 65,
+    "value": 6.499999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 66,
+    "value": 6.5999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 67,
+    "value": 6.699997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 68,
+    "value": 6.799997806549072
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 69,
+    "value": 6.899998188018799
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 70,
+    "value": 6.999998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 71,
+    "value": 7.0999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 72,
+    "value": 7.199997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 73,
+    "value": 7.299997806549072
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 74,
+    "value": 7.399998188018799
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 75,
+    "value": 7.499998092651367
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 76,
+    "value": 7.5999979972839355
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 77,
+    "value": 7.6999969482421875
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 78,
+    "value": 7.799996852874756
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 79,
+    "value": 7.899997234344482
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 80,
+    "value": 7.999997138977051
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 81,
+    "value": 8.099998474121094
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 82,
+    "value": 8.199997901916504
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 83,
+    "value": 8.29999828338623
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 84,
+    "value": 8.399998664855957
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 85,
+    "value": 8.499999046325684
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 86,
+    "value": 8.59999942779541
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 87,
+    "value": 8.699999809265137
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 88,
+    "value": 8.800000190734863
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 89,
+    "value": 8.90000057220459
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 90,
+    "value": 9.000000953674316
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 91,
+    "value": 9.100001335144043
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 92,
+    "value": 9.20000171661377
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 93,
+    "value": 9.300002098083496
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 94,
+    "value": 9.400001525878906
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 95,
+    "value": 9.50000286102295
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 96,
+    "value": 9.600003242492676
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 97,
+    "value": 9.700003623962402
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 98,
+    "value": 9.800004005432129
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 99,
+    "value": 9.900004386901855
+  },
+  {
+    "id": "EgRP",
+    "field": "ahdu",
+    "level": 100,
+    "value": 10.000004768371582
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 5,
+    "value": 0.5
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 6,
+    "value": 0.6000000238418579
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 7,
+    "value": 0.699999988079071
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 8,
+    "value": 0.800000011920929
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 9,
+    "value": 0.8999999761581421
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 10,
+    "value": 1.0
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 11,
+    "value": 1.100000023841858
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 12,
+    "value": 1.2000000476837158
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 13,
+    "value": 1.2999999523162842
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 14,
+    "value": 1.399999976158142
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 15,
+    "value": 1.5
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 16,
+    "value": 1.600000023841858
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 17,
+    "value": 1.7000000476837158
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 18,
+    "value": 1.7999999523162842
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 19,
+    "value": 1.899999976158142
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 20,
+    "value": 2.0
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 21,
+    "value": 2.0999999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 22,
+    "value": 2.200000047683716
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 23,
+    "value": 2.299999952316284
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 24,
+    "value": 2.4000000953674316
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 25,
+    "value": 2.5
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 26,
+    "value": 2.5999999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 27,
+    "value": 2.700000047683716
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 28,
+    "value": 2.7999989986419678
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 29,
+    "value": 2.899998903274536
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 30,
+    "value": 2.9999990463256836
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 31,
+    "value": 3.099998950958252
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 32,
+    "value": 3.1999990940093994
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 33,
+    "value": 3.2999989986419678
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 34,
+    "value": 3.399998903274536
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 35,
+    "value": 3.4999990463256836
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 36,
+    "value": 3.599998950958252
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 37,
+    "value": 3.6999990940093994
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 38,
+    "value": 3.7999989986419678
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 39,
+    "value": 3.8999979496002197
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 40,
+    "value": 3.999998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 41,
+    "value": 4.0999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 42,
+    "value": 4.199997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 43,
+    "value": 4.299997806549072
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 44,
+    "value": 4.399998188018799
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 45,
+    "value": 4.499998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 46,
+    "value": 4.5999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 47,
+    "value": 4.699997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 48,
+    "value": 4.799997806549072
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 49,
+    "value": 4.899998188018799
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 50,
+    "value": 4.999998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 51,
+    "value": 5.099999904632568
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 52,
+    "value": 5.199999809265137
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 53,
+    "value": 5.300000190734863
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 54,
+    "value": 5.400000095367432
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 55,
+    "value": 5.5
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 56,
+    "value": 5.599998950958252
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 57,
+    "value": 5.69999885559082
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 58,
+    "value": 5.799999237060547
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 59,
+    "value": 5.899999141693115
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 60,
+    "value": 5.999999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 61,
+    "value": 6.099998950958252
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 62,
+    "value": 6.19999885559082
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 63,
+    "value": 6.299999237060547
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 64,
+    "value": 6.399999141693115
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 65,
+    "value": 6.499999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 66,
+    "value": 6.5999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 67,
+    "value": 6.699997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 68,
+    "value": 6.799997806549072
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 69,
+    "value": 6.899998188018799
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 70,
+    "value": 6.999998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 71,
+    "value": 7.0999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 72,
+    "value": 7.199997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 73,
+    "value": 7.299997806549072
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 74,
+    "value": 7.399998188018799
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 75,
+    "value": 7.499998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 76,
+    "value": 7.5999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 77,
+    "value": 7.6999969482421875
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 78,
+    "value": 7.799996852874756
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 79,
+    "value": 7.899997234344482
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 80,
+    "value": 7.999997138977051
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 81,
+    "value": 8.099998474121094
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 82,
+    "value": 8.199997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 83,
+    "value": 8.29999828338623
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 84,
+    "value": 8.399998664855957
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 85,
+    "value": 8.499999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 86,
+    "value": 8.59999942779541
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 87,
+    "value": 8.699999809265137
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 88,
+    "value": 8.800000190734863
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 89,
+    "value": 8.90000057220459
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 90,
+    "value": 9.000000953674316
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 91,
+    "value": 9.100001335144043
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 92,
+    "value": 9.20000171661377
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 93,
+    "value": 9.300002098083496
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 94,
+    "value": 9.400001525878906
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 95,
+    "value": 9.50000286102295
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 96,
+    "value": 9.600003242492676
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 97,
+    "value": 9.700003623962402
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 98,
+    "value": 9.800004005432129
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 99,
+    "value": 9.900004386901855
+  },
+  {
+    "id": "BbdV",
+    "field": "adur",
+    "level": 100,
+    "value": 10.000004768371582
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 5,
+    "value": 0.5
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 6,
+    "value": 0.6000000238418579
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 7,
+    "value": 0.699999988079071
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 8,
+    "value": 0.800000011920929
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 9,
+    "value": 0.8999999761581421
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 10,
+    "value": 1.0
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 11,
+    "value": 1.100000023841858
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 12,
+    "value": 1.2000000476837158
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 13,
+    "value": 1.2999999523162842
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 14,
+    "value": 1.399999976158142
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 15,
+    "value": 1.5
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 16,
+    "value": 1.600000023841858
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 17,
+    "value": 1.7000000476837158
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 18,
+    "value": 1.7999999523162842
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 19,
+    "value": 1.899999976158142
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 20,
+    "value": 2.0
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 21,
+    "value": 2.0999999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 22,
+    "value": 2.200000047683716
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 23,
+    "value": 2.299999952316284
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 24,
+    "value": 2.4000000953674316
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 25,
+    "value": 2.5
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 26,
+    "value": 2.5999999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 27,
+    "value": 2.700000047683716
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 28,
+    "value": 2.7999989986419678
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 29,
+    "value": 2.899998903274536
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 30,
+    "value": 2.9999990463256836
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 31,
+    "value": 3.099998950958252
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 32,
+    "value": 3.1999990940093994
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 33,
+    "value": 3.2999989986419678
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 34,
+    "value": 3.399998903274536
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 35,
+    "value": 3.4999990463256836
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 36,
+    "value": 3.599998950958252
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 37,
+    "value": 3.6999990940093994
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 38,
+    "value": 3.7999989986419678
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 39,
+    "value": 3.8999979496002197
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 40,
+    "value": 3.999998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 41,
+    "value": 4.0999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 42,
+    "value": 4.199997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 43,
+    "value": 4.299997806549072
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 44,
+    "value": 4.399998188018799
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 45,
+    "value": 4.499998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 46,
+    "value": 4.5999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 47,
+    "value": 4.699997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 48,
+    "value": 4.799997806549072
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 49,
+    "value": 4.899998188018799
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 50,
+    "value": 4.999998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 51,
+    "value": 5.099999904632568
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 52,
+    "value": 5.199999809265137
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 53,
+    "value": 5.300000190734863
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 54,
+    "value": 5.400000095367432
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 55,
+    "value": 5.5
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 56,
+    "value": 5.599998950958252
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 57,
+    "value": 5.69999885559082
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 58,
+    "value": 5.799999237060547
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 59,
+    "value": 5.899999141693115
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 60,
+    "value": 5.999999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 61,
+    "value": 6.099998950958252
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 62,
+    "value": 6.19999885559082
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 63,
+    "value": 6.299999237060547
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 64,
+    "value": 6.399999141693115
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 65,
+    "value": 6.499999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 66,
+    "value": 6.5999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 67,
+    "value": 6.699997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 68,
+    "value": 6.799997806549072
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 69,
+    "value": 6.899998188018799
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 70,
+    "value": 6.999998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 71,
+    "value": 7.0999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 72,
+    "value": 7.199997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 73,
+    "value": 7.299997806549072
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 74,
+    "value": 7.399998188018799
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 75,
+    "value": 7.499998092651367
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 76,
+    "value": 7.5999979972839355
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 77,
+    "value": 7.6999969482421875
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 78,
+    "value": 7.799996852874756
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 79,
+    "value": 7.899997234344482
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 80,
+    "value": 7.999997138977051
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 81,
+    "value": 8.099998474121094
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 82,
+    "value": 8.199997901916504
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 83,
+    "value": 8.29999828338623
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 84,
+    "value": 8.399998664855957
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 85,
+    "value": 8.499999046325684
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 86,
+    "value": 8.59999942779541
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 87,
+    "value": 8.699999809265137
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 88,
+    "value": 8.800000190734863
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 89,
+    "value": 8.90000057220459
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 90,
+    "value": 9.000000953674316
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 91,
+    "value": 9.100001335144043
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 92,
+    "value": 9.20000171661377
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 93,
+    "value": 9.300002098083496
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 94,
+    "value": 9.400001525878906
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 95,
+    "value": 9.50000286102295
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 96,
+    "value": 9.600003242492676
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 97,
+    "value": 9.700003623962402
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 98,
+    "value": 9.800004005432129
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 99,
+    "value": 9.900004386901855
+  },
+  {
+    "id": "BbdV",
+    "field": "ahdu",
+    "level": 100,
+    "value": 10.000004768371582
+  }
+]

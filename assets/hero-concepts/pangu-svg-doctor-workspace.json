@@ -1,0 +1,258 @@
+{
+  "schema": "codeart2d.doctor_report.v1",
+  "cases": [
+    "t01",
+    "t03",
+    "t06A",
+    "t07",
+    "t09",
+    "t10",
+    "t13",
+    "t16",
+    "t17",
+    "t06B",
+    "t06C",
+    "t13B"
+  ],
+  "backends": {
+    "resvg_py": {
+      "status": "unavailable",
+      "reason": "resvg_py is not installed: python -m pip install \"resvg-py>=0.5,<0.6\""
+    },
+    "resvg_js_cli": {
+      "status": "unavailable",
+      "reason": "resvg-js-cli is not on PATH (npm install -g @resvg/resvg-js-cli)"
+    },
+    "chrome": {
+      "status": "fail",
+      "renderer": {
+        "backend": "chrome",
+        "name": "chrome",
+        "version": "155.0.8059.41"
+      },
+      "results": [
+        {
+          "case": "t01",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101540.619:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101540.646:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t01",
+          "zoom": 4,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101541.235:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101541.260:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t03",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101541.901:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101541.926:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t06A",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101542.517:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101542.542:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t07",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101543.094:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101543.120:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t09",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101543.678:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101543.702:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t10",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101544.275:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101544.300:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t13",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101544.869:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101544.894:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t16",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101545.477:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101545.501:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        },
+        {
+          "case": "t17",
+          "zoom": 1,
+          "status": "fail",
+          "error": "chrome failed (4294930433): [1015/101546.069:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101546.095:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+        }
+      ]
+    }
+  },
+  "primary": "chrome",
+  "lint": [
+    {
+      "case": "t06B",
+      "status": "pass",
+      "method": "lint",
+      "codes": [
+        "css-transform",
+        "transform-origin"
+      ],
+      "missing": []
+    },
+    {
+      "case": "t06C",
+      "status": "pass",
+      "method": "lint",
+      "codes": [
+        "transform-origin"
+      ],
+      "missing": []
+    },
+    {
+      "case": "t13B",
+      "status": "pass",
+      "method": "lint",
+      "codes": [
+        "mix-blend-mode"
+      ],
+      "missing": []
+    }
+  ],
+  "status": "fail",
+  "method": "svg_render.py doctor: codeart_core.run_doctor renders the conformance corpus on each backend; exact cases compare every pixel with the truth image (t01 also at 4x), the palette case checks colours and alpha, golden cases compare pinned resvg-py hashes or Chrome-measured probe pixels, and lint cases must be rejected by the portable lint. Only the primary backend gates the status; deviations of fallback backends are warnings",
+  "notProven": [
+    "SVG features outside the corpus, text and fonts (text is outside the portable profile).",
+    "Bit-exact goldens are pinned for resvg-py 0.5.0 on win32 only; elsewhere probes allow 8/255.",
+    "Rendering speed and memory use."
+  ],
+  "checks": [
+    {
+      "id": "primary",
+      "status": "pass",
+      "value": "chrome",
+      "threshold": "an available backend"
+    },
+    {
+      "id": "resvg_py:available",
+      "status": "skipped",
+      "value": "resvg_py is not installed: python -m pip install \"resvg-py>=0.5,<0.6\""
+    },
+    {
+      "id": "resvg_js_cli:available",
+      "status": "skipped",
+      "value": "resvg-js-cli is not on PATH (npm install -g @resvg/resvg-js-cli)"
+    },
+    {
+      "id": "chrome:t01@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101540.619:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101540.646:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t01@4x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101541.235:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101541.260:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t03@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101541.901:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101541.926:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t06A@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101542.517:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101542.542:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t07@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101543.094:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101543.120:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t09@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101543.678:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101543.702:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t10@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101544.275:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101544.300:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t13@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101544.869:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101544.894:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t16@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101545.477:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101545.501:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "chrome:t17@1x",
+      "status": "fail",
+      "value": {
+        "error": "chrome failed (4294930433): [1015/101546.069:ERROR:third_party\\crashpad\\crashpad\\util\\win\\registration_protocol_win.cc:136] TransactNamedPipe: The pipe has been ended. (0x6D)\n[1015/101546.095:ERROR:third_party\\crashpad\\crashpad\\client\\crashpad_client_win.cc:144] crash server failed to launch, self-terminating"
+      }
+    },
+    {
+      "id": "lint:t06B",
+      "status": "pass",
+      "value": [
+        "css-transform",
+        "transform-origin"
+      ],
+      "threshold": "rejected by the portable lint"
+    },
+    {
+      "id": "lint:t06C",
+      "status": "pass",
+      "value": [
+        "transform-origin"
+      ],
+      "threshold": "rejected by the portable lint"
+    },
+    {
+      "id": "lint:t13B",
+      "status": "pass",
+      "value": [
+        "mix-blend-mode"
+      ],
+      "threshold": "rejected by the portable lint"
+    }
+  ],
+  "inputs": [],
+  "outputs": [],
+  "tool": {
+    "name": "svg_render.py doctor",
+    "version": "0.4.0"
+  },
+  "platform": {
+    "system": "win32",
+    "python": "3.11.15"
+  }
+}

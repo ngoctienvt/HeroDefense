@@ -1,0 +1,29 @@
+{
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": "not exposed by built-in tool",
+  "estimateUsd": null,
+  "camera": "top-down approximately 45 degrees",
+  "master": "source/turnaround.png",
+  "sheetPrompt": "Make a production ANIMATION SPRITE SHEET from the attached Pangu directional master. Copy exact character identity, hand-painted cel-shaded style, proportions, skin, hair, beard, halo, costume and SINGLE sun/star axe. Maintain EXACT SAME elevated 45-degree top-down orthographic game camera and character facing in EVERY cell. 4 COLUMNS x 3 ROWS, 12 full figures, landscape 4:3 sheet. Read each row left to right. Row 1 IDLE cycle: neutral rest, inhale, rest, exhale; feet planted, tiny breathing and hair movement. Row 2 WALK IN PLACE cycle: left-leg contact forward, left-leg passing under body, right-leg contact forward, right-leg passing under body; clear alternating leg positions and modest body bob, axe held firmly with BOTH hands, game supplies world movement. Row 3 ATTACK: pull axe back with both arms and torso winding up; raise axe to ready; powerful two-hand forward chop in facing direction with extended arms; recover halfway toward idle. Pose differences MUST be visible, do not repeat idle in walk or attack. Feet stay near fixed root, no character turning. All figures same body height, each centered in its own equal cell with at least 12% empty margin, including axe and halo; no crossing cells, no cropping. Fully opaque crisp figure on PURE FLAT MAGENTA #FF00FF only. No ground, shadows, glow on background, blur, slash trails, particles, text, labels, dividers, grid lines, or extra weapons.",
+  "directions": {
+    "south": "screen-down; front seen from above",
+    "west": "screen-left; left side seen from above",
+    "north": "screen-up; rear seen from above",
+    "east": "screen-right; right side seen from above"
+  },
+  "frameOrder": [
+    "idle-00",
+    "idle-01",
+    "idle-02",
+    "idle-03",
+    "walk-00",
+    "walk-01",
+    "walk-02",
+    "walk-03",
+    "attack-00",
+    "attack-01",
+    "attack-02",
+    "attack-03"
+  ]
+}

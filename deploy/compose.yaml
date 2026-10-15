@@ -1,0 +1,26 @@
+services:
+  game:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    expose: ["2567"]
+    environment:
+      NODE_ENV: production
+      PORT: "2567"
+      TRUST_PROXY: "1"
+    mem_limit: 512m
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      GAME_DOMAIN: ${GAME_DOMAIN:?Set GAME_DOMAIN to your public hostname}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on: [game]
+volumes:
+  caddy-data:
+  caddy-config:

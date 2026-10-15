@@ -1,0 +1,169 @@
+{
+  "schema": "generate2dsprite.master.v1",
+  "tool": {
+    "name": "master_still",
+    "version": "0.4.0"
+  },
+  "created": "2026-10-15T02:37:32.927Z",
+  "name": "pangu-tier6",
+  "subject": "Pangu, the primordial creator titan, full body",
+  "identity_recap": "Pangu, the primordial creator titan, full body (A majestic, colossal Chinese mythic creator titan with broad heroic shoulders and powerful limbs. Long flowing cosmic silver hair and beard, luminous gold eyes, rugged stone-like skin marked with a few bold golden celestial cracks. Bare muscular upper body, ancient matte gold bracers and waist armor with restrained multicolored jade accents. A large circular stone-and-gold creation halo is mounted behind his shoulders. He holds one immense double-sided Khai Thien axe with both hands: one broad half of its blade is golden sunlight, the other dark starry stone. A few large angular rocks hover close to his feet. The whole design is formed from big readable shapes with restrained detail)",
+  "facing": "front",
+  "view": "straight-on frontal full-body orthographic game sprite view at character eye level, no isometric angle or overhead camera",
+  "finish": "hd",
+  "class": "hero",
+  "framing": {
+    "canvas": [
+      1024,
+      1024
+    ],
+    "subject_height_px": 788,
+    "top_margin_px": 138,
+    "lead_px": 0,
+    "preset": "hero",
+    "subject_bbox": [
+      112,
+      138,
+      912,
+      926
+    ],
+    "anchor": [
+      502.5,
+      926.0
+    ],
+    "opaque_area_px": 364816,
+    "width_limited": false
+  },
+  "key": "#FF00FF",
+  "files": {
+    "master": {
+      "path": "master.png",
+      "sha256": "885dfce4d05c3a5d5d72fc1fb4cd14924df0b62ab761daa4ebc96ca849893c2d",
+      "bytes": 888539,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "cutout": {
+      "path": "master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a",
+      "bytes": 1028608,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "source": {
+      "path": "source.png",
+      "sha256": "6581564fa33cc20331450195d39fbffc21bb65b3c975b1bd31ad9654e32d7f8c",
+      "bytes": 2426950,
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "spec": {
+      "path": "spec.json",
+      "sha256": "bad862e893ce0744395330876a68080e48649129c08e25566eb7fdd50cc09d16",
+      "bytes": 3401
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "sha256": "41ec6b60b9bc357c2a06593743b67cc1120f1f2e7dc55012ad59aff7a2d1d8cb",
+      "bytes": 3521
+    }
+  },
+  "references": [
+    {
+      "role": "style",
+      "path": "../heroic-wukong-concept.png",
+      "sha256": "6969d7c96c6a84aea9e4f72ee28c2bb7c9174cd8fadf7b208ca4f86ad87190e7",
+      "bytes": 2885028,
+      "what": "the earlier Wukong concept, for its hand-painted cel-shaded materials, strong heroic shape language and controlled colors only"
+    }
+  ],
+  "transform": {
+    "mapping": "master = scale * source + offset (continuous pixel coordinates: pixel i spans [i, i + 1))",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_subject_bbox": [
+      79,
+      58,
+      1203,
+      1167
+    ],
+    "crop_box": [
+      73,
+      52,
+      1209,
+      1173
+    ],
+    "crop_margin_px": 6,
+    "scale": 0.7105500450856628,
+    "offset": [
+      56.53742110009017,
+      96.78809738503156
+    ],
+    "canvas": [
+      1024,
+      1024
+    ],
+    "resampler": "lanczos",
+    "premultiplied": true,
+    "alpha_floor_px": 7254,
+    "subject_parts": 9,
+    "ignored_parts": 0,
+    "ignored_px": 0,
+    "source_touches": [],
+    "key_rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "route": "host-image_gen",
+  "provenance": {
+    "command": "prompt",
+    "run": "../pangu-prompt",
+    "take": null,
+    "source_name": "pangu-raw-idle.png",
+    "source_sha256": "6581564fa33cc20331450195d39fbffc21bb65b3c975b1bd31ad9654e32d7f8c",
+    "media": null,
+    "media_cli_source": null,
+    "edit": null
+  },
+  "matte": {
+    "requested": "soft",
+    "key_estimate": {
+      "key": [
+        248.0,
+        3.0,
+        250.0
+      ],
+      "source": "border_median",
+      "valid": true,
+      "ring_share": 1.0,
+      "coverage": 0.536157342755177,
+      "distance_from_declared": 9.11
+    },
+    "quality": "soft",
+    "interior_despill": true,
+    "qa": {
+      "opaque_key_px": 0,
+      "outer_ring_spill_fraction": 0.0,
+      "semitransparent_fraction": 0.031839434527902305,
+      "enclosed_key_pockets": 0,
+      "key_hued_px": 0,
+      "visible_px": 727180
+    },
+    "key_choice": {
+      "status": "ok",
+      "overlap_share": 0.0,
+      "rule": "reject a key when more than 0.5% of subject pixels have key dominance >= 40; first acceptable candidate wins"
+    }
+  },
+  "warnings": []
+}

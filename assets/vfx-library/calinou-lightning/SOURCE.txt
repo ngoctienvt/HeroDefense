@@ -1,0 +1,1 @@
+Lightning animation by Calinou. CC0. Source: https://opengameart.org/content/lightning-animation . Downloaded 2026-10-14. Eleven original RGB frames are in oga-calinou-lightning-animation.zip. These PNGs were modified: black RGB converted into alpha from luminance; colors retained.

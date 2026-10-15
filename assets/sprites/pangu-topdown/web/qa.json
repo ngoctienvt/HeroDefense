@@ -1,0 +1,519 @@
+{
+  "frameCount": 48,
+  "clipCount": 12,
+  "sourceReports": {
+    "south": {
+      "source": "source\\south-sheet.png",
+      "sourceSha256": "9cfe09f89cb3cfff97c67564d43577f264e6a8b6364c1cf218f856ca552c69c3",
+      "sourceSize": [
+        1448,
+        1086
+      ],
+      "figures": 12,
+      "scale": 0.6269592476489029,
+      "rowGround": [
+        338.0,
+        694.0,
+        1039.0
+      ],
+      "matte": {
+        "quality": "soft",
+        "requested_quality": "soft",
+        "resampler_hint": "lanczos",
+        "key": [
+          248.0,
+          2.0,
+          250.0
+        ],
+        "key_estimate": {
+          "declared": "magenta",
+          "declared_rgb": [
+            255,
+            0,
+            255
+          ],
+          "ring_px": 40288,
+          "native_alpha": false,
+          "use_native_alpha": false,
+          "near_share": 0.9979894757744241,
+          "key": [
+            248.0,
+            2.0,
+            250.0
+          ],
+          "source": "border_median",
+          "valid": true,
+          "reason": null,
+          "ring_share": 0.9976667990468626,
+          "coverage": 0.5542712117049744,
+          "distance_from_declared": 8.83
+        },
+        "params": {
+          "w_chroma": 1.0,
+          "t_bg": 18.0,
+          "t_fg": 40.0,
+          "keylike": 0.5,
+          "r_a": 3,
+          "r_c": 3,
+          "radius": 4,
+          "tau": 6.0,
+          "kappa": 0.6,
+          "temp": 0.4,
+          "a_lo": 0.04,
+          "a_hi": 0.96,
+          "unmix_from": 0.0,
+          "excess_slack": 3.0,
+          "ref_r": 10,
+          "speck_steps": 3,
+          "monotone": true,
+          "interior_despill": false,
+          "snap": "ramp",
+          "refine": "none",
+          "gf_r": 2,
+          "gf_eps": 0.004
+        },
+        "interior_despill": false,
+        "key_material_share": 0.02835308789640948,
+        "qa": {
+          "key": [
+            248.0,
+            2.0,
+            250.0
+          ],
+          "opaque_key_px": 0,
+          "outer_ring_spill_fraction": 0.01065805109922757,
+          "semitransparent_fraction": 0.11479889937197428,
+          "enclosed_key_pockets": 0,
+          "key_hued_px": 491,
+          "visible_px": 694876,
+          "outer_ring_px": 26928,
+          "thresholds": {
+            "key_tolerance": 48.0,
+            "spill_threshold": 20.0,
+            "min_pocket_area": 16,
+            "opaque_alpha": 128,
+            "spill_hue_balance": 0.5
+          },
+          "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+        },
+        "edgeDespill": {
+          "mode": "edge",
+          "applied": "edge",
+          "radius": 1,
+          "margin": 12,
+          "changed_px": 921
+        },
+        "qaAfterDespill": {
+          "key": [
+            248.0,
+            2.0,
+            250.0
+          ],
+          "opaque_key_px": 0,
+          "outer_ring_spill_fraction": 0.0,
+          "semitransparent_fraction": 0.11479889937197428,
+          "enclosed_key_pockets": 0,
+          "key_hued_px": 491,
+          "visible_px": 694876,
+          "outer_ring_px": 26928,
+          "thresholds": {
+            "key_tolerance": 48.0,
+            "spill_threshold": 20.0,
+            "min_pocket_area": 16,
+            "opaque_alpha": 128,
+            "spill_hue_balance": 0.5
+          },
+          "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+        }
+      }
+    },
+    "west": {
+      "source": "source\\west-sheet.png",
+      "sourceSha256": "182a01b84b01aa6c2ce1e133c6334b433aa6456386f85d946db7ab27fac9657d",
+      "sourceSize": [
+        1448,
+        1086
+      ],
+      "figures": 12,
+      "scale": 0.5625879043600562,
+      "rowGround": [
+        376.5,
+        720.0,
+        1053.5
+      ],
+      "matte": {
+        "quality": "soft",
+        "requested_quality": "soft",
+        "resampler_hint": "lanczos",
+        "key": [
+          247.0,
+          3.0,
+          247.0
+        ],
+        "key_estimate": {
+          "declared": "magenta",
+          "declared_rgb": [
+            255,
+            0,
+            255
+          ],
+          "ring_px": 40288,
+          "native_alpha": false,
+          "use_native_alpha": false,
+          "near_share": 1.0,
+          "key": [
+            247.0,
+            3.0,
+            247.0
+          ],
+          "source": "border_median",
+          "valid": true,
+          "reason": null,
+          "ring_share": 1.0,
+          "coverage": 0.5846490491743231,
+          "distance_from_declared": 11.7
+        },
+        "params": {
+          "w_chroma": 1.0,
+          "t_bg": 18.0,
+          "t_fg": 40.0,
+          "keylike": 0.5,
+          "r_a": 3,
+          "r_c": 3,
+          "radius": 4,
+          "tau": 6.0,
+          "kappa": 0.6,
+          "temp": 0.4,
+          "a_lo": 0.04,
+          "a_hi": 0.96,
+          "unmix_from": 0.0,
+          "excess_slack": 3.0,
+          "ref_r": 10,
+          "speck_steps": 3,
+          "monotone": true,
+          "interior_despill": false,
+          "snap": "ramp",
+          "refine": "none",
+          "gf_r": 2,
+          "gf_eps": 0.004
+        },
+        "interior_despill": false,
+        "key_material_share": 0.057726457726887705,
+        "qa": {
+          "key": [
+            247.0,
+            3.0,
+            247.0
+          ],
+          "opaque_key_px": 0,
+          "outer_ring_spill_fraction": 0.011969296153345766,
+          "semitransparent_fraction": 0.11011197094807834,
+          "enclosed_key_pockets": 0,
+          "key_hued_px": 581,
+          "visible_px": 647668,
+          "outer_ring_px": 23059,
+          "thresholds": {
+            "key_tolerance": 48.0,
+            "spill_threshold": 20.0,
+            "min_pocket_area": 16,
+            "opaque_alpha": 128,
+            "spill_hue_balance": 0.5
+          },
+          "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+        },
+        "edgeDespill": {
+          "mode": "edge",
+          "applied": "edge",
+          "radius": 1,
+          "margin": 12,
+          "changed_px": 950
+        },
+        "qaAfterDespill": {
+          "key": [
+            247.0,
+            3.0,
+            247.0
+          ],
+          "opaque_key_px": 0,
+          "outer_ring_spill_fraction": 0.0,
+          "semitransparent_fraction": 0.11011197094807834,
+          "enclosed_key_pockets": 0,
+          "key_hued_px": 581,
+          "visible_px": 647668,
+          "outer_ring_px": 23059,
+          "thresholds": {
+            "key_tolerance": 48.0,
+            "spill_threshold": 20.0,
+            "min_pocket_area": 16,
+            "opaque_alpha": 128,
+            "spill_hue_balance": 0.5
+          },
+          "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+        }
+      }
+    },
+    "north": {
+      "source": "source\\north-sheet.png",
+      "sourceSha256": "8b8f0cc165d124b3176f37dd5fd36481db527478b972bbd76ec9970756dae842",
+      "sourceSize": [
+        1448,
+        1086
+      ],
+      "figures": 12,
+      "scale": 0.6349206349206349,
+      "rowGround": [
+        342.5,
+        673.5,
+        1045.5
+      ],
+      "matte": {
+        "quality": "soft",
+        "requested_quality": "soft",
+        "resampler_hint": "lanczos",
+        "key": [
+          248.0,
+          3.0,
+          249.0
+        ],
+        "key_estimate": {
+          "declared": "magenta",
+          "declared_rgb": [
+            255,
+            0,
+            255
+          ],
+          "ring_px": 40288,
+          "native_alpha": false,
+          "use_native_alpha": false,
+          "near_share": 1.0,
+          "key": [
+            248.0,
+            3.0,
+            249.0
+          ],
+          "source": "border_median",
+          "valid": true,
+          "reason": null,
+          "ring_share": 1.0,
+          "coverage": 0.5956453557583712,
+          "distance_from_declared": 9.7
+        },
+        "params": {
+          "w_chroma": 1.0,
+          "t_bg": 18.0,
+          "t_fg": 40.0,
+          "keylike": 0.5,
+          "r_a": 3,
+          "r_c": 3,
+          "radius": 4,
+          "tau": 6.0,
+          "kappa": 0.6,
+          "temp": 0.4,
+          "a_lo": 0.04,
+          "a_hi": 0.96,
+          "unmix_from": 0.0,
+          "excess_slack": 3.0,
+          "ref_r": 10,
+          "speck_steps": 3,
+          "monotone": true,
+          "interior_despill": false,
+          "snap": "ramp",
+          "refine": "none",
+          "gf_r": 2,
+          "gf_eps": 0.004
+        },
+        "interior_despill": false,
+        "key_material_share": 0.019769055363077142,
+        "qa": {
+          "key": [
+            248.0,
+            3.0,
+            249.0
+          ],
+          "opaque_key_px": 0,
+          "outer_ring_spill_fraction": 0.0013421656492185131,
+          "semitransparent_fraction": 0.10854429527116659,
+          "enclosed_key_pockets": 0,
+          "key_hued_px": 80,
+          "visible_px": 630959,
+          "outer_ring_px": 23097,
+          "thresholds": {
+            "key_tolerance": 48.0,
+            "spill_threshold": 20.0,
+            "min_pocket_area": 16,
+            "opaque_alpha": 128,
+            "spill_hue_balance": 0.5
+          },
+          "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+        },
+        "edgeDespill": {
+          "mode": "edge",
+          "applied": "edge",
+          "radius": 1,
+          "margin": 12,
+          "changed_px": 201
+        },
+        "qaAfterDespill": {
+          "key": [
+            248.0,
+            3.0,
+            249.0
+          ],
+          "opaque_key_px": 0,
+          "outer_ring_spill_fraction": 0.0,
+          "semitransparent_fraction": 0.10854429527116659,
+          "enclosed_key_pockets": 0,
+          "key_hued_px": 80,
+          "visible_px": 630959,
+          "outer_ring_px": 23097,
+          "thresholds": {
+            "key_tolerance": 48.0,
+            "spill_threshold": 20.0,
+            "min_pocket_area": 16,
+            "opaque_alpha": 128,
+            "spill_hue_balance": 0.5
+          },
+          "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+        }
+      }
+    },
+    "east": {
+      "source": "source\\east-sheet.png",
+      "sourceSha256": "9489e40822e17a4d0dc135a3ba466d963c172809d51394353b15dc3916096c7a",
+      "sourceSize": [
+        1448,
+        1086
+      ],
+      "figures": 12,
+      "scale": 0.5970149253731343,
+      "rowGround": [
+        351.0,
+        689.0,
+        1053.5
+      ],
+      "matte": {
+        "quality": "soft",
+        "requested_quality": "soft",
+        "resampler_hint": "lanczos",
+        "key": [
+          249.0,
+          3.0,
+          249.0
+        ],
+        "key_estimate": {
+          "declared": "magenta",
+          "declared_rgb": [
+            255,
+            0,
+            255
+          ],
+          "ring_px": 40288,
+          "native_alpha": false,
+          "use_native_alpha": false,
+          "near_share": 1.0,
+          "key": [
+            249.0,
+            3.0,
+            249.0
+          ],
+          "source": "border_median",
+          "valid": true,
+          "reason": null,
+          "ring_share": 1.0,
+          "coverage": 0.6286787898212305,
+          "distance_from_declared": 9.0
+        },
+        "params": {
+          "w_chroma": 1.0,
+          "t_bg": 18.0,
+          "t_fg": 40.0,
+          "keylike": 0.5,
+          "r_a": 3,
+          "r_c": 3,
+          "radius": 4,
+          "tau": 6.0,
+          "kappa": 0.6,
+          "temp": 0.4,
+          "a_lo": 0.04,
+          "a_hi": 0.96,
+          "unmix_from": 0.0,
+          "excess_slack": 3.0,
+          "ref_r": 10,
+          "speck_steps": 3,
+          "monotone": true,
+          "interior_despill": false,
+          "snap": "ramp",
+          "refine": "none",
+          "gf_r": 2,
+          "gf_eps": 0.004
+        },
+        "interior_despill": false,
+        "key_material_share": 0.03129621537010564,
+        "qa": {
+          "key": [
+            249.0,
+            3.0,
+            249.0
+          ],
+          "opaque_key_px": 0,
+          "outer_ring_spill_fraction": 0.004488128899061981,
+          "semitransparent_fraction": 0.11579951047030435,
+          "enclosed_key_pockets": 0,
+          "key_hued_px": 508,
+          "visible_px": 578923,
+          "outer_ring_px": 22281,
+          "thresholds": {
+            "key_tolerance": 48.0,
+            "spill_threshold": 20.0,
+            "min_pocket_area": 16,
+            "opaque_alpha": 128,
+            "spill_hue_balance": 0.5
+          },
+          "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+        },
+        "edgeDespill": {
+          "mode": "edge",
+          "applied": "edge",
+          "radius": 1,
+          "margin": 12,
+          "changed_px": 517
+        },
+        "qaAfterDespill": {
+          "key": [
+            249.0,
+            3.0,
+            249.0
+          ],
+          "opaque_key_px": 0,
+          "outer_ring_spill_fraction": 0.0,
+          "semitransparent_fraction": 0.11579951047030435,
+          "enclosed_key_pockets": 0,
+          "key_hued_px": 508,
+          "visible_px": 578923,
+          "outer_ring_px": 22281,
+          "thresholds": {
+            "key_tolerance": 48.0,
+            "spill_threshold": 20.0,
+            "min_pocket_area": 16,
+            "opaque_alpha": 128,
+            "spill_hue_balance": 0.5
+          },
+          "method": "forge_matte.matte_qa v1: straight-colour key distance and dominance on the keyed image; two-channel keys count spill only where the key channels are balanced"
+        }
+      }
+    }
+  },
+  "failures": [],
+  "limits": [
+    "Generated pose-to-pose identity and acting need human motion review.",
+    "Four keyframes per action are intentionally sparse.",
+    "No in-game playback or FPS checks were run."
+  ],
+  "packageChecks": {
+    "frameInventory": 48,
+    "clipInventory": 12,
+    "atlasFramesEqual": true,
+    "webpPngEqual": true,
+    "rectanglesInBounds": true
+  }
+}

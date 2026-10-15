@@ -1,0 +1,403 @@
+{
+  "schema": "codeart2d.codeart_meta.v1",
+  "art_source": "code",
+  "placeholder": false,
+  "disclosure": "code-drawn, no image model",
+  "generator": "codeart2d/rig_animate.py",
+  "spec_sha256": "404c9e166dc7c54769f6e8b8bd11ed58b73d132dde5e09965c2ee0f7cea39ec1",
+  "renderer": {
+    "backend": "resvg_py",
+    "name": "resvg-py",
+    "version": "0.5.0",
+    "engine": "resvg 0.48.1",
+    "zoom": 1,
+    "size": [
+      128,
+      128
+    ],
+    "route": "vector"
+  },
+  "palette": {
+    "colors": {
+      "outline": "#202330",
+      "colour1": "#292b3c",
+      "colour2": "#3b435b",
+      "colour3": "#438f82",
+      "colour4": "#655e61",
+      "colour5": "#6a2730",
+      "colour6": "#786960",
+      "colour7": "#80572f",
+      "colour8": "#8f8170",
+      "colour9": "#90939f",
+      "colour10": "#9c9182",
+      "colour11": "#a63e38",
+      "colour12": "#ae947e",
+      "colour13": "#d5a34a",
+      "colour14": "#d8dadd",
+      "colour15": "#f5d574",
+      "colour16": "#f5f2e9",
+      "colour17": "#f6d576",
+      "colour18": "#ffe184"
+    },
+    "variants": {}
+  },
+  "outputs": [
+    {
+      "path": "frames/idle-00.png",
+      "sha256": "85d34ad70f8e0b7dee15aa2e1e726402db04a2e427846350c113811bd42e2c5b",
+      "bytes": 11223
+    },
+    {
+      "path": "frames/idle-01.png",
+      "sha256": "aec27b9fb52d282632ab246e5fc6ceaf16ec6231fffbb5c758a127273b5f9c7d",
+      "bytes": 11525
+    },
+    {
+      "path": "frames/idle-02.png",
+      "sha256": "5e2b3fe94d57d63db3122b8001d3f8b6424db4f530c60abe27f2f86a4bcf5ef8",
+      "bytes": 11550
+    },
+    {
+      "path": "frames/idle-03.png",
+      "sha256": "d9786dc7f58f2a7852371900802bea6bca8e00591dab0aad23550b1aaa116612",
+      "bytes": 11490
+    },
+    {
+      "path": "frames/walk-00.png",
+      "sha256": "3ee57891a94c786a040e3b19146943ba37f6992afaccc16bef32cea3910ea6e4",
+      "bytes": 11754
+    },
+    {
+      "path": "frames/walk-01.png",
+      "sha256": "a3aeb75d78e7f31c70af49ac5cbc99bb1e6b8d0ec7e4d7c8a38880672da12b8c",
+      "bytes": 11550
+    },
+    {
+      "path": "frames/walk-02.png",
+      "sha256": "e5bf8c1253869be2397f1f668d35ef4bc895a0fcb1207d89328a766a8901c3a6",
+      "bytes": 11829
+    },
+    {
+      "path": "frames/walk-03.png",
+      "sha256": "6e1a0f258168437958efaccf19ce6d5db8051e9f0387fcdc7ca316f57ea8bcf0",
+      "bytes": 12467
+    },
+    {
+      "path": "frames/walk-04.png",
+      "sha256": "0b76482d8e3cbe79f4ec86fb8272d7b86f5e7ed66dd99defeb434aa4d5e637b4",
+      "bytes": 11901
+    },
+    {
+      "path": "frames/walk-05.png",
+      "sha256": "e2a9c1a5554ff33f6c4d3e5da8bc141855db3c450b03c14aac6d47a82d42b326",
+      "bytes": 11651
+    },
+    {
+      "path": "frames/walk-06.png",
+      "sha256": "476c57c80b97bce44b414e4aa3fba8917cfc8a6af09ca359abb94d9279f01897",
+      "bytes": 11609
+    },
+    {
+      "path": "frames/walk-07.png",
+      "sha256": "a0adaa4fb709b8474fc2d3ae140cd53da1a282a9ca1e1322d0a2213f69933431",
+      "bytes": 12242
+    },
+    {
+      "path": "frames/attack-01.png",
+      "sha256": "8b1159343b42aea1f1eb783f542166cda2c4eaa3cbb7fed7f6e1cc4b0edb5215",
+      "bytes": 11923
+    },
+    {
+      "path": "frames/attack-02.png",
+      "sha256": "e0b5307663bf6f517b9e662f7390e488c19b0de1eb3d7badc8077bb59352e37f",
+      "bytes": 12327
+    },
+    {
+      "path": "frames/attack-03.png",
+      "sha256": "96d71c39273e3cdbecb5a8f153c44e8d42f287d0ab5771bfee67e060af79b094",
+      "bytes": 12000
+    },
+    {
+      "path": "frames/attack-04.png",
+      "sha256": "fb043ae32922ecc259454e99c69bb7439241701fd893e6c6f3881678f94d1888",
+      "bytes": 11651
+    },
+    {
+      "path": "frames/attack-05.png",
+      "sha256": "9cea4dda7b17fcb8ce300d9f79cbe371db12f524f25f758d3445a3f832d9b390",
+      "bytes": 11718
+    },
+    {
+      "path": "frames/death-01.png",
+      "sha256": "8c99ffc1bb502a572b7674a3cef8fc22d0c6a8ff111f4c8f4c560fbad4c1f364",
+      "bytes": 11605
+    },
+    {
+      "path": "frames/death-02.png",
+      "sha256": "72c9bd670acf2fec86b804b40bc1aafb1ca38e5defca558523b1b2552957fe98",
+      "bytes": 12523
+    },
+    {
+      "path": "frames/death-03.png",
+      "sha256": "0dc8a75d81bf5720212c9b70585fc040c2a4a5f06d6f08722798fbdfaf1e9ce2",
+      "bytes": 12528
+    },
+    {
+      "path": "frames/death-04.png",
+      "sha256": "040b060bee14d1cfb42ca2b26d932e75b896904b869fdb5dd6cadebfbae70ecb",
+      "bytes": 12926
+    },
+    {
+      "path": "frames/death-05.png",
+      "sha256": "4f8dc63d5974d486ac8900e57188c2b4b0515b18b36aa333db6252ea3d680323",
+      "bytes": 13217
+    },
+    {
+      "path": "frames/death-06.png",
+      "sha256": "d4d069a1b67514f417204b6be6368cf01d6efa467fa09439538944f349141480",
+      "bytes": 13039
+    },
+    {
+      "path": "frames/death-07.png",
+      "sha256": "9d28bef729bf52b319524b0e1eba98279f471d13f2eba1d7b7adfad19c4a620e",
+      "bytes": 13205
+    },
+    {
+      "path": "clips.json",
+      "sha256": "c9c278295d57bc5ac195e2518c42d4efb62a0ae49d8f8fe0d6078462d1ad5f1f",
+      "bytes": 3782
+    }
+  ],
+  "qa": {
+    "status": "fail",
+    "method": "rig_animate: FK and two-bone IK sampled per clip; vector route: anti-aliased frames, pixel gates not applicable; forge_core.seam_report (premultiplied MAE, seam over median adjacent step) on each loop of 3+ frames; planted-foot drift measured on the rig geometry (ankle x + stride * t, ankle y) per run of planted frames; IK clamps; lowest alpha row of grounded frames against the ground line; transparent margin; optional build_animation_clips run",
+    "notProven": [
+      "Appeal, silhouette, anatomy and readability at game scale: look at review/*.png.",
+      "Timing, weight and acting in motion: the checks measure geometry, not feel.",
+      "Planted-foot drift is measured on rig geometry; rendered pixels may still differ by coverage rounding or anti-aliasing when the per-frame travel is not a whole number of pixels.",
+      "Vector frames are anti-aliased: partial alpha and blended edge colours are expected, so palette conformance is not proven."
+    ],
+    "checks": [
+      {
+        "id": "partial_alpha",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      },
+      {
+        "id": "off_palette",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      },
+      {
+        "id": "outline_gaps",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      },
+      {
+        "id": "l_corners",
+        "status": "skipped",
+        "value": null,
+        "threshold": 10
+      },
+      {
+        "id": "seam:idle",
+        "status": "fail",
+        "value": 1.8146,
+        "threshold": [
+          0.8,
+          1.25
+        ]
+      },
+      {
+        "id": "seam:walk",
+        "status": "fail",
+        "value": 0.5126,
+        "threshold": [
+          0.8,
+          1.25
+        ]
+      },
+      {
+        "id": "ik_clamp",
+        "status": "pass",
+        "value": 0,
+        "threshold": 0
+      },
+      {
+        "id": "ground_row",
+        "status": "fail",
+        "value": 19,
+        "threshold": 0
+      },
+      {
+        "id": "margins",
+        "status": "fail",
+        "value": 6,
+        "threshold": 1
+      },
+      {
+        "id": "build_clips",
+        "status": "pass",
+        "value": 0,
+        "threshold": 0
+      }
+    ],
+    "inputs": [
+      {
+        "path": "../pangu-front.rig.svg",
+        "sha256": "c0eb8c19fd46a524dad9ee21fa0df3b8b9140391cb730694155c0187e43b07fa",
+        "bytes": 4141
+      },
+      {
+        "path": "../pangu-front.anim.json",
+        "sha256": "404c9e166dc7c54769f6e8b8bd11ed58b73d132dde5e09965c2ee0f7cea39ec1",
+        "bytes": 15834
+      }
+    ],
+    "outputs": [
+      {
+        "path": "frames/idle-00.png",
+        "sha256": "85d34ad70f8e0b7dee15aa2e1e726402db04a2e427846350c113811bd42e2c5b",
+        "bytes": 11223
+      },
+      {
+        "path": "frames/idle-01.png",
+        "sha256": "aec27b9fb52d282632ab246e5fc6ceaf16ec6231fffbb5c758a127273b5f9c7d",
+        "bytes": 11525
+      },
+      {
+        "path": "frames/idle-02.png",
+        "sha256": "5e2b3fe94d57d63db3122b8001d3f8b6424db4f530c60abe27f2f86a4bcf5ef8",
+        "bytes": 11550
+      },
+      {
+        "path": "frames/idle-03.png",
+        "sha256": "d9786dc7f58f2a7852371900802bea6bca8e00591dab0aad23550b1aaa116612",
+        "bytes": 11490
+      },
+      {
+        "path": "frames/walk-00.png",
+        "sha256": "3ee57891a94c786a040e3b19146943ba37f6992afaccc16bef32cea3910ea6e4",
+        "bytes": 11754
+      },
+      {
+        "path": "frames/walk-01.png",
+        "sha256": "a3aeb75d78e7f31c70af49ac5cbc99bb1e6b8d0ec7e4d7c8a38880672da12b8c",
+        "bytes": 11550
+      },
+      {
+        "path": "frames/walk-02.png",
+        "sha256": "e5bf8c1253869be2397f1f668d35ef4bc895a0fcb1207d89328a766a8901c3a6",
+        "bytes": 11829
+      },
+      {
+        "path": "frames/walk-03.png",
+        "sha256": "6e1a0f258168437958efaccf19ce6d5db8051e9f0387fcdc7ca316f57ea8bcf0",
+        "bytes": 12467
+      },
+      {
+        "path": "frames/walk-04.png",
+        "sha256": "0b76482d8e3cbe79f4ec86fb8272d7b86f5e7ed66dd99defeb434aa4d5e637b4",
+        "bytes": 11901
+      },
+      {
+        "path": "frames/walk-05.png",
+        "sha256": "e2a9c1a5554ff33f6c4d3e5da8bc141855db3c450b03c14aac6d47a82d42b326",
+        "bytes": 11651
+      },
+      {
+        "path": "frames/walk-06.png",
+        "sha256": "476c57c80b97bce44b414e4aa3fba8917cfc8a6af09ca359abb94d9279f01897",
+        "bytes": 11609
+      },
+      {
+        "path": "frames/walk-07.png",
+        "sha256": "a0adaa4fb709b8474fc2d3ae140cd53da1a282a9ca1e1322d0a2213f69933431",
+        "bytes": 12242
+      },
+      {
+        "path": "frames/attack-01.png",
+        "sha256": "8b1159343b42aea1f1eb783f542166cda2c4eaa3cbb7fed7f6e1cc4b0edb5215",
+        "bytes": 11923
+      },
+      {
+        "path": "frames/attack-02.png",
+        "sha256": "e0b5307663bf6f517b9e662f7390e488c19b0de1eb3d7badc8077bb59352e37f",
+        "bytes": 12327
+      },
+      {
+        "path": "frames/attack-03.png",
+        "sha256": "96d71c39273e3cdbecb5a8f153c44e8d42f287d0ab5771bfee67e060af79b094",
+        "bytes": 12000
+      },
+      {
+        "path": "frames/attack-04.png",
+        "sha256": "fb043ae32922ecc259454e99c69bb7439241701fd893e6c6f3881678f94d1888",
+        "bytes": 11651
+      },
+      {
+        "path": "frames/attack-05.png",
+        "sha256": "9cea4dda7b17fcb8ce300d9f79cbe371db12f524f25f758d3445a3f832d9b390",
+        "bytes": 11718
+      },
+      {
+        "path": "frames/death-01.png",
+        "sha256": "8c99ffc1bb502a572b7674a3cef8fc22d0c6a8ff111f4c8f4c560fbad4c1f364",
+        "bytes": 11605
+      },
+      {
+        "path": "frames/death-02.png",
+        "sha256": "72c9bd670acf2fec86b804b40bc1aafb1ca38e5defca558523b1b2552957fe98",
+        "bytes": 12523
+      },
+      {
+        "path": "frames/death-03.png",
+        "sha256": "0dc8a75d81bf5720212c9b70585fc040c2a4a5f06d6f08722798fbdfaf1e9ce2",
+        "bytes": 12528
+      },
+      {
+        "path": "frames/death-04.png",
+        "sha256": "040b060bee14d1cfb42ca2b26d932e75b896904b869fdb5dd6cadebfbae70ecb",
+        "bytes": 12926
+      },
+      {
+        "path": "frames/death-05.png",
+        "sha256": "4f8dc63d5974d486ac8900e57188c2b4b0515b18b36aa333db6252ea3d680323",
+        "bytes": 13217
+      },
+      {
+        "path": "frames/death-06.png",
+        "sha256": "d4d069a1b67514f417204b6be6368cf01d6efa467fa09439538944f349141480",
+        "bytes": 13039
+      },
+      {
+        "path": "frames/death-07.png",
+        "sha256": "9d28bef729bf52b319524b0e1eba98279f471d13f2eba1d7b7adfad19c4a620e",
+        "bytes": 13205
+      },
+      {
+        "path": "clips.json",
+        "sha256": "c9c278295d57bc5ac195e2518c42d4efb62a0ae49d8f8fe0d6078462d1ad5f1f",
+        "bytes": 3782
+      }
+    ],
+    "tool": {
+      "name": "codeart2d/rig_animate.py",
+      "version": "0.4.0"
+    }
+  },
+  "route": "vector",
+  "rig": {
+    "path": "../pangu-front.rig.svg",
+    "sha256": "c0eb8c19fd46a524dad9ee21fa0df3b8b9140391cb730694155c0187e43b07fa",
+    "bytes": 4141
+  },
+  "anim": {
+    "path": "../pangu-front.anim.json",
+    "sha256": "404c9e166dc7c54769f6e8b8bd11ed58b73d132dde5e09965c2ee0f7cea39ec1",
+    "bytes": 15834
+  }
+}
