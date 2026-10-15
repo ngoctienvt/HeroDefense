@@ -1,4 +1,5 @@
 import type { HeroDirection, HeroPose } from './hero-motion.js';
+import layout from './stylized-layout.json';
 
 /** Installed only after all requested generated bundles are published. */
 export const STYLIZED_HEROES = ['h001', 'h002', 'h003', 'h004', 'h005', 'h006', 'h007', 'h008',
@@ -8,6 +9,11 @@ export const hasStylizedMotion = (heroId: string): boolean => heroes.has(heroId)
 export const STYLIZED_PLANE_HEIGHT = 6;
 export const STYLIZED_ANCHOR_Y = (.875 - .5) * STYLIZED_PLANE_HEIGHT;
 export const STYLIZED_REST_Y = .12;
+const sizes: Readonly<Record<string, { planeHeight: number }>> = layout;
+export function stylizedDimensions(heroId: string): { height: number; anchorY: number } {
+  const height = sizes[heroId]?.planeHeight ?? STYLIZED_PLANE_HEIGHT;
+  return { height, anchorY: (.875 - .5) * height };
+}
 const directions: HeroDirection[] = ['south', 'west', 'north', 'east'];
 const attackDurations = [150, 100, 100, 150];
 

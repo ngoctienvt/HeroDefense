@@ -1,0 +1,177 @@
+{
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": null,
+  "estimateUsd": null,
+  "heroes": [
+    {
+      "id": "h001",
+      "name": "Thiên Lý Nhãn",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1528876,
+      "sha256": "fd999f62d3a7df7fc6aa5f3a1c85a6c6ce26c35999269b1c7da1674554417c15"
+    },
+    {
+      "id": "h002",
+      "name": "Thuận Phong Nhĩ",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1483652,
+      "sha256": "16c39de2a8e78fc0af1fc96180bca886cf6ceb6c9dc5c20cafb3a4693af9d4a3"
+    },
+    {
+      "id": "h003",
+      "name": "Quỷ Sai",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 956288,
+      "sha256": "f80bb1ccd03d3dfe72d48ac709f7e4be31af9b91ee43baceedfe563ff022efda"
+    },
+    {
+      "id": "h004",
+      "name": "Thiên Binh",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 973212,
+      "sha256": "60b92043e1b650440ed35c31114fe6589066e486ac223949e7f8be8d79f94d55"
+    },
+    {
+      "id": "h005",
+      "name": "Xạ Nhân",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1364112,
+      "sha256": "08d11825ae2ce0578dc8afc81706127ea49682dc2a7132970504e820dd828566"
+    },
+    {
+      "id": "h006",
+      "name": "Tiên Nữ",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1287094,
+      "sha256": "b731ca6327df2e523963d232fae9dfe6dd0aa212177bbe877beb4737902bb839"
+    },
+    {
+      "id": "h007",
+      "name": "Quy Thừa Tướng",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1305606,
+      "sha256": "e83554479178d3a1aa67b8eaa75392f44f62ca1aeda376f7ed758da56bc6bf86"
+    },
+    {
+      "id": "h008",
+      "name": "Thổ Hành Tôn",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 768886,
+      "sha256": "e11d665d89099508fd0f7f5467497442b3a1df981a16ecb2a74eab896f742baf"
+    },
+    {
+      "id": "h009",
+      "name": "Kim Tra",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1037150,
+      "sha256": "2e83a50c8656e1e511b66b4a0f97d18b0d64199317fbe764e5a9471853669dee"
+    },
+    {
+      "id": "h00A",
+      "name": "Mộc Tra",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1220402,
+      "sha256": "b2f7eff038a68ce6306cd8da9fcfd8e2fee2cd6ab3f091b0505c61ae3e03a4f8"
+    },
+    {
+      "id": "h00B",
+      "name": "Thiết Phiến",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1155584,
+      "sha256": "2a566bc26993636cb1553abd60a34e0e55b4de384fb45fe9bda92869c09010eb"
+    },
+    {
+      "id": "h00C",
+      "name": "Hồng Hài Nhi",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 967984,
+      "sha256": "8f4edddbb3433cf3bd66c14d2b5d4ed19b8191d911483e576c73049bbec9966d"
+    },
+    {
+      "id": "h00D",
+      "name": "Lã Động Tân",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1263476,
+      "sha256": "761a01bc5bb00d91d9cf43510cc2e0504318c46c1447ace618577a1c7ba97fd4"
+    },
+    {
+      "id": "h00E",
+      "name": "Cự Linh Thần",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1599650,
+      "sha256": "a06d130af53f1077fba84085a29bc58732332801e3dc969742bab133a02d62af"
+    },
+    {
+      "id": "h00F",
+      "name": "Mẫu Đơn Tiên Tử",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1261536,
+      "sha256": "2bb8ad07281a15010fa6f311bc1d41fcfd97743025e5dd25867fd559cec3b7a6"
+    },
+    {
+      "id": "h00G",
+      "name": "Hà Bá",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 759488,
+      "sha256": "0485368dd6e7d387e8f16f7ca03191c4c05e69c815e3f83313ebab799e4ba5af"
+    },
+    {
+      "id": "h00H",
+      "name": "Vô Thường",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 691652,
+      "sha256": "46c2673468b88c392e46a1b6443f0b8df96cf4f0d0147832076a7137b280b101"
+    },
+    {
+      "id": "h00I",
+      "name": "Mạnh Bà",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1204102,
+      "sha256": "d21b4d94434be4e14773ca27d06185e256eb714f647e05919414457a430a8ac4"
+    },
+    {
+      "id": "h03O",
+      "name": "Nhiếp Tiểu Thiến",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1473380,
+      "sha256": "5f1dfc9233c6fbc05cebf65fabec7a3ee1ecf07019904b041270800fd9cda335"
+    },
+    {
+      "id": "h03P",
+      "name": "Bảo Quả Tử",
+      "frames": 36,
+      "clips": 12,
+      "atlasBytes": 1322252,
+      "sha256": "f7ee78329edac0a8af0d4435020bc9911a29d507cc56949ba4d6a4b6ae09cbb4"
+    }
+  ],
+  "heroCount": 20,
+  "frameCount": 720,
+  "clipCount": 240,
+  "idle": "still",
+  "limits": [
+    "Generated anatomy/acting need user visual review.",
+    "Four keyframes per moving action.",
+    "No game/test/build executed."
+  ]
+}

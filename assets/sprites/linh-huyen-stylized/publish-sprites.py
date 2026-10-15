@@ -11,6 +11,7 @@ PUBLIC = PROJECT / 'apps/client/public/assets'
 roster = json.loads((ROOT / 'roster.json').read_text(encoding='utf-8'))
 heroes = roster['heroes']
 reports = []
+layout = {}
 for hero in heroes:
     folder = ROOT / hero['id'] / 'web'
     manifest = json.loads((folder / 'atlas.json').read_text(encoding='utf-8'))
@@ -21,6 +22,11 @@ for hero in heroes:
         raise ValueError(f"Review source warnings before publishing {hero['id']}: {qa['warnings']}")
     if manifest['meta']['size'] != {'w':1536,'h':1536} or manifest['meta']['anchor'] != [128,224]:
         raise ValueError('Runtime layout mismatch')
+    height = 6 / qa['uniformEnvelopeReduction']
+    if not 6 <= height <= 20: raise ValueError('Invalid character envelope scale')
+    manifest['meta']['planeHeight'] = height
+    (folder/'atlas.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    layout[hero['id']] = {'planeHeight':height}
     for key, clip in manifest['animations'].items():
         expected = 1 if key.endswith('.idle') else 4
         if len(clip['frames']) != expected or any(name not in manifest['frames'] for name in clip['frames']):
@@ -43,6 +49,7 @@ summary={'art_source':'host_image','route':'host-image_gen','model':None,'estima
     'heroes':reports,'heroCount':20,'frameCount':720,'clipCount':240,'idle':'still',
     'limits':['Generated anatomy/acting need user visual review.','Four keyframes per moving action.','No game/test/build executed.']}
 (ROOT/'package.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+(PROJECT/'apps/client/src/stylized-layout.json').write_text(json.dumps(layout,indent=2)+'\n',encoding='utf-8')
 with zipfile.ZipFile(ROOT/'linh-huyen-web-sprites.zip','w',zipfile.ZIP_DEFLATED) as package:
     package.write(ROOT/'package.json','package.json')
     package.write(ROOT/'roster.json','roster.json')

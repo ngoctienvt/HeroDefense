@@ -136,7 +136,7 @@ def pack(hero_id: str):
     portrait.thumbnail((512,512),Image.Resampling.LANCZOS)
     portrait_canvas=Image.new('RGBA',(512,512));portrait_canvas.alpha_composite(portrait,((512-portrait.width)//2,(512-portrait.height)//2))
     portrait_canvas.save(staging/'portrait.webp',lossless=True,method=6)
-    manifest={'frames':rectangles,'animations':animations,'meta':{'image':'atlas.webp','size':{'w':CELL*6,'h':CELL*6},'cellSize':CELL,'anchor':list(ANCHOR),'alpha':'straight','sampling':'linear','idle':'still','art_source':'host_image','route':'host-image_gen','model':None,'estimateUsd':None}}
+    manifest={'frames':rectangles,'animations':animations,'meta':{'image':'atlas.webp','size':{'w':CELL*6,'h':CELL*6},'cellSize':CELL,'anchor':list(ANCHOR),'planeHeight':6/shrink,'alpha':'straight','sampling':'linear','idle':'still','art_source':'host_image','route':'host-image_gen','model':None,'estimateUsd':None}}
     save_json(staging/'atlas.json',manifest)
     board=Image.new('RGB',(CELL*9,CELL*4),'#384c45')
     for i,f in enumerate(registered):board.paste(previews[f"{f['direction']}.{f['action']}"][f['phase']],((i%9)*CELL,(i//9)*CELL),previews[f"{f['direction']}.{f['action']}"][f['phase']])

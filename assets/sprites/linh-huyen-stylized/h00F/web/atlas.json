@@ -1,0 +1,506 @@
+{
+  "frames": {
+    "south.idle.0": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 1000
+    },
+    "south.walk.0": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "south.walk.1": {
+      "frame": {
+        "x": 512,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "south.walk.2": {
+      "frame": {
+        "x": 768,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "south.walk.3": {
+      "frame": {
+        "x": 1024,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "south.attack.0": {
+      "frame": {
+        "x": 1280,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "south.attack.1": {
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 100
+    },
+    "south.attack.2": {
+      "frame": {
+        "x": 256,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 100
+    },
+    "south.attack.3": {
+      "frame": {
+        "x": 512,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "west.idle.0": {
+      "frame": {
+        "x": 768,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 1000
+    },
+    "west.walk.0": {
+      "frame": {
+        "x": 1024,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "west.walk.1": {
+      "frame": {
+        "x": 1280,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "west.walk.2": {
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "west.walk.3": {
+      "frame": {
+        "x": 256,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "west.attack.0": {
+      "frame": {
+        "x": 512,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "west.attack.1": {
+      "frame": {
+        "x": 768,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 100
+    },
+    "west.attack.2": {
+      "frame": {
+        "x": 1024,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 100
+    },
+    "west.attack.3": {
+      "frame": {
+        "x": 1280,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "north.idle.0": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 1000
+    },
+    "north.walk.0": {
+      "frame": {
+        "x": 256,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "north.walk.1": {
+      "frame": {
+        "x": 512,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "north.walk.2": {
+      "frame": {
+        "x": 768,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "north.walk.3": {
+      "frame": {
+        "x": 1024,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "north.attack.0": {
+      "frame": {
+        "x": 1280,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "north.attack.1": {
+      "frame": {
+        "x": 0,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 100
+    },
+    "north.attack.2": {
+      "frame": {
+        "x": 256,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 100
+    },
+    "north.attack.3": {
+      "frame": {
+        "x": 512,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "east.idle.0": {
+      "frame": {
+        "x": 768,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 1000
+    },
+    "east.walk.0": {
+      "frame": {
+        "x": 1024,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "east.walk.1": {
+      "frame": {
+        "x": 1280,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "east.walk.2": {
+      "frame": {
+        "x": 0,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "east.walk.3": {
+      "frame": {
+        "x": 256,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "east.attack.0": {
+      "frame": {
+        "x": 512,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    },
+    "east.attack.1": {
+      "frame": {
+        "x": 768,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 100
+    },
+    "east.attack.2": {
+      "frame": {
+        "x": 1024,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 100
+    },
+    "east.attack.3": {
+      "frame": {
+        "x": 1280,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "duration": 150
+    }
+  },
+  "animations": {
+    "south.idle": {
+      "frames": [
+        "south.idle.0"
+      ],
+      "durationsMs": [
+        1000
+      ],
+      "loop": true
+    },
+    "south.walk": {
+      "frames": [
+        "south.walk.0",
+        "south.walk.1",
+        "south.walk.2",
+        "south.walk.3"
+      ],
+      "durationsMs": [
+        150,
+        150,
+        150,
+        150
+      ],
+      "loop": true
+    },
+    "south.attack": {
+      "frames": [
+        "south.attack.0",
+        "south.attack.1",
+        "south.attack.2",
+        "south.attack.3"
+      ],
+      "durationsMs": [
+        150,
+        100,
+        100,
+        150
+      ],
+      "loop": false
+    },
+    "west.idle": {
+      "frames": [
+        "west.idle.0"
+      ],
+      "durationsMs": [
+        1000
+      ],
+      "loop": true
+    },
+    "west.walk": {
+      "frames": [
+        "west.walk.0",
+        "west.walk.1",
+        "west.walk.2",
+        "west.walk.3"
+      ],
+      "durationsMs": [
+        150,
+        150,
+        150,
+        150
+      ],
+      "loop": true
+    },
+    "west.attack": {
+      "frames": [
+        "west.attack.0",
+        "west.attack.1",
+        "west.attack.2",
+        "west.attack.3"
+      ],
+      "durationsMs": [
+        150,
+        100,
+        100,
+        150
+      ],
+      "loop": false
+    },
+    "north.idle": {
+      "frames": [
+        "north.idle.0"
+      ],
+      "durationsMs": [
+        1000
+      ],
+      "loop": true
+    },
+    "north.walk": {
+      "frames": [
+        "north.walk.0",
+        "north.walk.1",
+        "north.walk.2",
+        "north.walk.3"
+      ],
+      "durationsMs": [
+        150,
+        150,
+        150,
+        150
+      ],
+      "loop": true
+    },
+    "north.attack": {
+      "frames": [
+        "north.attack.0",
+        "north.attack.1",
+        "north.attack.2",
+        "north.attack.3"
+      ],
+      "durationsMs": [
+        150,
+        100,
+        100,
+        150
+      ],
+      "loop": false
+    },
+    "east.idle": {
+      "frames": [
+        "east.idle.0"
+      ],
+      "durationsMs": [
+        1000
+      ],
+      "loop": true
+    },
+    "east.walk": {
+      "frames": [
+        "east.walk.0",
+        "east.walk.1",
+        "east.walk.2",
+        "east.walk.3"
+      ],
+      "durationsMs": [
+        150,
+        150,
+        150,
+        150
+      ],
+      "loop": true
+    },
+    "east.attack": {
+      "frames": [
+        "east.attack.0",
+        "east.attack.1",
+        "east.attack.2",
+        "east.attack.3"
+      ],
+      "durationsMs": [
+        150,
+        100,
+        100,
+        150
+      ],
+      "loop": false
+    }
+  },
+  "meta": {
+    "image": "atlas.webp",
+    "size": {
+      "w": 1536,
+      "h": 1536
+    },
+    "cellSize": 256,
+    "anchor": [
+      128,
+      224
+    ],
+    "planeHeight": 7.347540983606557,
+    "alpha": "straight",
+    "sampling": "linear",
+    "idle": "still",
+    "art_source": "host_image",
+    "route": "host-image_gen",
+    "model": null,
+    "estimateUsd": null
+  }
+}

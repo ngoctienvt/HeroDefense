@@ -1,6 +1,7 @@
 import { PANGU_HERO_ID, panguFrame } from './pangu-motion.js';
+import { hasStylizedMotion, STYLIZED_HEROES, stylizedFrame } from './stylized-motion.js';
 
-export const MOTION_HEROES = ['h001', 'h003', 'h006', 'h007', 'h00F', 'h00B', 'h018', 'h01A', 'h01C', 'h03W', 'h01B'] as const;
+export const MOTION_HEROES = [...STYLIZED_HEROES, 'h018', 'h01A', 'h01C', 'h03W', 'h01B'] as const;
 const motionHeroes = new Set<string>(MOTION_HEROES);
 
 export type HeroDirection = 'south' | 'west' | 'north' | 'east';
@@ -19,7 +20,7 @@ const paintedSheetBounds: Record<string, { x: number[]; y: number[] }> = {
 };
 
 export function hasHeroMotion(heroId: string): boolean { return motionHeroes.has(heroId); }
-export function motionCellAspect(heroId: string): number { return heroId === 'h001' || heroId === 'h003' ? 7 / 6 : 1; }
+export function motionCellAspect(_heroId: string): number { return 1; }
 
 /** Camera-relative facing keeps the drawn front/back/side aligned when the view rotates. */
 export function heroDirection(facingX: number, facingZ: number, cameraX: number, cameraZ: number): HeroDirection {
@@ -31,6 +32,7 @@ export function heroDirection(facingX: number, facingZ: number, cameraX: number,
 }
 
 export function motionFrameUv(heroId: string, direction: HeroDirection, pose: HeroPose): number[] {
+  if (hasStylizedMotion(heroId)) return stylizedFrame(direction, pose, pose === 'walk-b' ? 300 : 0, pose === 'attack' ? .5 : 0).uv;
   if (heroId === PANGU_HERO_ID) return panguFrame(direction, pose).uv;
   const col = directions.indexOf(direction);
   const row = poses.indexOf(pose);

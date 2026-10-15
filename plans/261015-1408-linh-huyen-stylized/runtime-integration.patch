@@ -1,0 +1,101 @@
+*** Begin Patch
+*** Update File: D:/HeroDefense/apps/client/src/hero-motion.ts
+@@
+ import { PANGU_HERO_ID, panguFrame } from './pangu-motion.js';
++import { hasStylizedMotion, STYLIZED_HEROES, stylizedFrame } from './stylized-motion.js';
+@@
+-export const MOTION_HEROES = ['h001', 'h003', 'h006', 'h007', 'h00F', 'h00B', 'h018', 'h01A', 'h01C', 'h03W', 'h01B'] as const;
++export const MOTION_HEROES = [...STYLIZED_HEROES, 'h018', 'h01A', 'h01C', 'h03W', 'h01B'] as const;
+@@
+-export function motionCellAspect(heroId: string): number { return heroId === 'h001' || heroId === 'h003' ? 7 / 6 : 1; }
++export function motionCellAspect(_heroId: string): number { return 1; }
+@@
+ export function motionFrameUv(heroId: string, direction: HeroDirection, pose: HeroPose): number[] {
++  if (hasStylizedMotion(heroId)) return stylizedFrame(direction, pose, pose === 'walk-b' ? 300 : 0, pose === 'attack' ? .5 : 0).uv;
+*** Update File: D:/HeroDefense/apps/client/src/visual-materials.ts
+@@
+ import { debug } from './debug.js';
++import { hasStylizedMotion } from './stylized-motion.js';
+@@
+-    const atlasAnimation = heroId === 'h01B';
+-    const texture = new Texture(`/assets/${key}.webp`, this.scene, atlasAnimation, true,
++    const stylized = hasStylizedMotion(heroId);
++    const atlasAnimation = heroId === 'h01B' || stylized;
++    const texture = new Texture(`/assets/${stylized ? `hero-stylized-${heroId}` : key}.webp`, this.scene, atlasAnimation, true,
+*** Update File: D:/HeroDefense/apps/client/src/visual-sprites.ts
+@@
+ import { debug } from './debug.js';
++import { hasStylizedMotion, stylizedDimensions, stylizedFrame, STYLIZED_REST_Y } from './stylized-motion.js';
+@@
+   const pangu = heroId === PANGU_HERO_ID;
+-  const uv = pangu ? panguFrame('south', 'idle').uv : animated ? motionFrameUv(heroId, 'south', 'idle') : spriteUv(heroId);
++  const stylized = hasStylizedMotion(heroId);
++  const sequence = pangu || stylized;
++  const sequenceFrame = stylized ? stylizedFrame : panguFrame;
++  const uv = sequence ? sequenceFrame('south', 'idle').uv : animated ? motionFrameUv(heroId, 'south', 'idle') : spriteUv(heroId);
+@@
+-  const height = pangu ? PANGU_PLANE_HEIGHT : 4.85;
+-  const restY = pangu ? PANGU_REST_Y : 2.045;
++  const dimensions = stylizedDimensions(heroId);
++  const height = stylized ? dimensions.height : pangu ? PANGU_PLANE_HEIGHT : 4.85;
++  const restY = stylized ? STYLIZED_REST_Y : pangu ? PANGU_REST_Y : 2.045;
+@@
+-  if (pangu) mesh.bakeTransformIntoVertices(Matrix.Translation(0, PANGU_ANCHOR_OFFSET_Y, 0));
++  if (sequence) mesh.bakeTransformIntoVertices(Matrix.Translation(0, stylized ? dimensions.anchorY : PANGU_ANCHOR_OFFSET_Y, 0));
+@@
+-  mesh.position.y = pangu ? restY : height / 2 + .12;
++  mesh.position.y = sequence ? restY : height / 2 + .12;
+@@
+-  let currentFrame = pangu ? panguFrame('south', 'idle').key : 'south:idle';
++  let currentFrame = sequence ? sequenceFrame('south', 'idle').key : 'south:idle';
+@@
+   if (pangu) debug('sprite.pangu-config', { heroId, clips: 12, frames: 48, origin: [160, 280], idle: 'still', directionBasis: 'camera-screen' });
++  if (stylized) debug('sprite.stylized-config', { heroId, clips: 12, frames: 36, anchor: [128, 224], height, idle: 'still', directionBasis: 'camera-screen' });
+@@
+-    mesh, animated, restY, healthBarY: pangu ? 4.3 : undefined,
++    mesh, animated, restY, healthBarY: stylized ? 4.25 : pangu ? 4.3 : undefined,
+@@
+-      if (pangu) {
++      if (sequence) {
+@@
+-        const frame = panguFrame(direction, pose, elapsedMs, progress, reduced);
++        const frame = sequenceFrame(direction, pose, elapsedMs, progress, reduced);
+*** Update File: D:/HeroDefense/apps/client/src/hero-portraits.ts
+@@
+ import { debug } from './debug.js';
++import { hasStylizedMotion } from './stylized-motion.js';
+@@
+ const loading = new Map<number, Promise<boolean>>();
++const stylizedLoading = new Map<string, Promise<boolean>>();
+@@
+ export function applyHeroPortrait(node: HTMLElement, heroId: string): void {
++  if (hasStylizedMotion(heroId)) {
++    const url = `/assets/hero-portrait-${heroId}.webp`;
++    let ready = stylizedLoading.get(heroId);
++    if (!ready) {
++      ready = new Promise<boolean>(resolve => {
++        const image = new Image();
++        image.onload = () => { debug('portrait.stylized-ready', { heroId }); resolve(true); };
++        image.onerror = () => { debug('portrait.stylized-fallback', { heroId }); resolve(false); };
++        image.src = url;
++      });
++      stylizedLoading.set(heroId, ready);
++    }
++    void ready.then(ok => {
++      if (!ok) return;
++      node.style.backgroundImage = `url('${url}')`;
++      node.style.backgroundSize = 'contain'; node.style.backgroundPosition = 'center';
++      node.classList.add('has-art');
++    });
++    return;
++  }
+*** Update File: D:/HeroDefense/apps/client/src/battlefield.ts
+@@
+ import { buildTerrain } from './visual-terrain.js';
++import { hasStylizedMotion } from './stylized-motion.js';
+@@
+-      source.action = event.kind === 'ability' && event.skillId !== 'skill-h01B' ? 'cast' : 'attack'; source.actionTime = .38;
++      const stylized = hasStylizedMotion(source.heroId ?? '');
++      source.action = event.kind === 'ability' && event.skillId !== 'skill-h01B' && !stylized ? 'cast' : 'attack';
++      source.actionTime = stylized && event.kind === 'ability' ? .2 : .38;
+*** End Patch

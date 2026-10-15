@@ -1,4 +1,5 @@
 import { debug } from './debug.js';
+import { hasStylizedMotion } from './stylized-motion.js';
 
 // Atlas 0 holds the first eight art samples; later atlases cover the rest of
 // the roster in catalog order. A failed image leaves the role glyph visible.
@@ -20,6 +21,7 @@ for (const [atlas, heroes] of groups.entries()) {
   heroes.forEach((id, tile) => byHero.set(id, { atlas, tile, columns }));
 }
 const loading = new Map<number, Promise<boolean>>();
+const stylizedLoading = new Map<string, Promise<boolean>>();
 
 export function portraitCoverage(): number { return byHero.size; }
 export function hasHeroPortrait(heroId: string): boolean { return byHero.has(heroId); }
@@ -39,6 +41,26 @@ export function spriteUv(heroId: string): number[] | undefined {
 }
 
 export function applyHeroPortrait(node: HTMLElement, heroId: string): void {
+  if (hasStylizedMotion(heroId)) {
+    const url = `/assets/hero-portrait-${heroId}.webp`;
+    let ready = stylizedLoading.get(heroId);
+    if (!ready) {
+      ready = new Promise<boolean>(resolve => {
+        const image = new Image();
+        image.onload = () => { debug('portrait.stylized-ready', { heroId }); resolve(true); };
+        image.onerror = () => { debug('portrait.stylized-fallback', { heroId }); resolve(false); };
+        image.src = url;
+      });
+      stylizedLoading.set(heroId, ready);
+    }
+    void ready.then(ok => {
+      if (!ok) return;
+      node.style.backgroundImage = `url('${url}')`;
+      node.style.backgroundSize = 'contain'; node.style.backgroundPosition = 'center';
+      node.classList.add('has-art');
+    });
+    return;
+  }
   const tile = byHero.get(heroId);
   if (!tile) { debug('portrait.missing', { heroId }); return; }
   let ready = loading.get(tile.atlas);

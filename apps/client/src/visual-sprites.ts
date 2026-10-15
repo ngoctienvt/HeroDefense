@@ -10,6 +10,7 @@ import { hasHeroMotion, motionCellAspect, motionFrameUv, type HeroDirection, typ
 import { VisualMaterials } from './visual-materials.js';
 import { PANGU_ANCHOR_OFFSET_Y, PANGU_HERO_ID, PANGU_PLANE_HEIGHT, PANGU_REST_Y, panguAction, panguFrame } from './pangu-motion.js';
 import { debug } from './debug.js';
+import { hasStylizedMotion, stylizedDimensions, stylizedFrame, STYLIZED_REST_Y } from './stylized-motion.js';
 import type { Enemy } from '../../../packages/contracts/src/types.js';
 
 export function createMonsterSprite(scene: Scene, palette: VisualMaterials, monsterId: NonNullable<Enemy['monsterId']>, root: TransformNode) {
@@ -42,16 +43,20 @@ export function createHeroSprite(scene: Scene, palette: VisualMaterials, heroId:
   const tile = heroArtTile(heroId);
   const animated = hasHeroMotion(heroId);
   const pangu = heroId === PANGU_HERO_ID;
-  const uv = pangu ? panguFrame('south', 'idle').uv : animated ? motionFrameUv(heroId, 'south', 'idle') : spriteUv(heroId);
+  const stylized = hasStylizedMotion(heroId);
+  const sequence = pangu || stylized;
+  const sequenceFrame = stylized ? stylizedFrame : panguFrame;
+  const uv = sequence ? sequenceFrame('south', 'idle').uv : animated ? motionFrameUv(heroId, 'south', 'idle') : spriteUv(heroId);
   if (!tile || !uv) return undefined;
   const squareCell = tile.atlas === 0 || tile.atlas >= 4 && tile.atlas <= 7 || tile.atlas === 8;
-  const height = pangu ? PANGU_PLANE_HEIGHT : 4.85;
-  const restY = pangu ? PANGU_REST_Y : 2.045;
+  const dimensions = stylizedDimensions(heroId);
+  const height = stylized ? dimensions.height : pangu ? PANGU_PLANE_HEIGHT : 4.85;
+  const restY = stylized ? STYLIZED_REST_Y : pangu ? PANGU_REST_Y : 2.045;
   const mesh = MeshBuilder.CreatePlane(`hero-art-${heroId}`, { width: height * (animated ? motionCellAspect(heroId) : squareCell ? 1 : .75), height }, scene);
   // Anchor the geometry itself: billboard rotation must leave the feet at the root.
-  if (pangu) mesh.bakeTransformIntoVertices(Matrix.Translation(0, PANGU_ANCHOR_OFFSET_Y, 0));
+  if (sequence) mesh.bakeTransformIntoVertices(Matrix.Translation(0, stylized ? dimensions.anchorY : PANGU_ANCHOR_OFFSET_Y, 0));
   mesh.parent = root;
-  mesh.position.y = pangu ? restY : height / 2 + .12;
+  mesh.position.y = sequence ? restY : height / 2 + .12;
   mesh.billboardMode = Mesh.BILLBOARDMODE_Y;
   mesh.setVerticesData(VertexBuffer.UVKind, uv, animated);
   mesh.isPickable = false;
@@ -64,21 +69,22 @@ export function createHeroSprite(scene: Scene, palette: VisualMaterials, heroId:
   hitbox.visibility = 0;
   hitbox.metadata = { actorId: root.name, heroId };
   mesh.setEnabled(false);
-  let currentFrame = pangu ? panguFrame('south', 'idle').key : 'south:idle';
+  let currentFrame = sequence ? sequenceFrame('south', 'idle').key : 'south:idle';
   let elapsedMs = 0;
   let action = 'idle';
   if (pangu) debug('sprite.pangu-config', { heroId, clips: 12, frames: 48, origin: [160, 280], idle: 'still', directionBasis: 'camera-screen' });
+  if (stylized) debug('sprite.stylized-config', { heroId, clips: 12, frames: 36, anchor: [128, 224], height, idle: 'still', directionBasis: 'camera-screen' });
   return {
-    mesh, animated, restY, healthBarY: pangu ? 4.3 : undefined,
+    mesh, animated, restY, healthBarY: stylized ? 4.25 : pangu ? 4.3 : undefined,
     ready: () => (material as StandardMaterial).diffuseTexture?.isReady() ?? false,
     setFrame: (direction, pose, dt = 0, progress = 0, reduced = false) => {
       if (!animated) return;
-      if (pangu) {
+      if (sequence) {
         const nextAction = panguAction(pose);
         if (action !== nextAction) elapsedMs = 0;
         else if (Number.isFinite(dt) && dt > 0) elapsedMs += dt * 1000;
         action = nextAction;
-        const frame = panguFrame(direction, pose, elapsedMs, progress, reduced);
+        const frame = sequenceFrame(direction, pose, elapsedMs, progress, reduced);
         if (frame.key !== currentFrame) mesh.updateVerticesData(VertexBuffer.UVKind, frame.uv);
         currentFrame = frame.key;
         return;

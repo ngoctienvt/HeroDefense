@@ -95,3 +95,7 @@ Warcraft ability parity are outside this catalog's claims.
 ## Pangu override (2026-10-15)
 
 The user-authored Supreme Creator design supersedes generated h01B combat values at runtime in `content/catalog.ts`, with ability constants in `content/pangu-design.ts`. Recipe, name, element and source identity are preserved. Generated JSON and Warcraft archive were not edited. `provenance: original` describes this explicit web design. See [Pangu combat](pangu-combat.md) for exact rules and pending user validation.
+
+## Linh and Huyền visual replacement (2026-10-15)
+
+All 20 characters in these tiers now use original generated stylized artwork inspired by the accepted Pangu master. Builtin `image_gen` produced four-direction masters and separate walk/attack sheets; exact prompts, original images, source hashes and alpha/registration reports are retained in `assets/sprites/linh-huyen-stylized/`. No Warcraft imagery was used. This changes battlefield sprites and portraits, not catalog identity, balance or combat rules. Model/cost are undisclosed by the host tool. See [sprite package and validation limits](linh-huyen-sprites.md).

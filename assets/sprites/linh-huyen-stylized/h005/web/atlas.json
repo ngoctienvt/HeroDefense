@@ -500,6 +500,7 @@
     "art_source": "host_image",
     "route": "host-image_gen",
     "model": null,
-    "estimateUsd": null
+    "estimateUsd": null,
+    "planeHeight": 6.460139165009941
   }
 }

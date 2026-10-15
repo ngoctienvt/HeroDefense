@@ -2,20 +2,22 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { heroDirection, hasHeroMotion, motionFrameUv, MOTION_HEROES } from '../src/hero-motion.js';
 import { Matrix, Vector3 } from '@babylonjs/core/Maths/math.vector.js';
+import { hasStylizedMotion } from '../src/stylized-motion.js';
 
 describe('directional hero sprite sheets', () => {
   it('ships one WebP sheet for each sample hero', () => {
-    expect(MOTION_HEROES).toHaveLength(11);
-    expect(MOTION_HEROES.slice(5)).toEqual(['h00B', 'h018', 'h01A', 'h01C', 'h03W', 'h01B']);
+    expect(MOTION_HEROES).toHaveLength(25);
+    expect(MOTION_HEROES.filter(id => !hasStylizedMotion(id))).toEqual(['h018', 'h01A', 'h01C', 'h03W', 'h01B']);
     for (const heroId of MOTION_HEROES) {
       expect(hasHeroMotion(heroId)).toBe(true);
-      const path = new URL(`../public/assets/hero-motion-${heroId}.webp`, import.meta.url);
+      const path = new URL(`../public/assets/${hasStylizedMotion(heroId) ? 'hero-stylized' : 'hero-motion'}-${heroId}.webp`, import.meta.url);
       expect(existsSync(path)).toBe(true);
       const header = readFileSync(path).subarray(0, 12);
       expect(header.toString('ascii', 0, 4)).toBe('RIFF');
       expect(header.toString('ascii', 8, 12)).toBe('WEBP');
     }
-    expect(hasHeroMotion('h00C')).toBe(false);
+    expect(hasHeroMotion('h00C')).toBe(true);
+    expect(hasHeroMotion('h010')).toBe(false);
   });
 
   it('maps movement to the camera-relative front, back, left and right', () => {
@@ -45,7 +47,7 @@ describe('directional hero sprite sheets', () => {
     const poses = ['idle', 'walk-a', 'walk-b', 'attack', 'cast', 'hit', 'death'] as const;
     const cells = new Set<string>();
     for (const pose of poses) for (const direction of directions) {
-      const uv = motionFrameUv('h001', direction, pose);
+      const uv = motionFrameUv('h018', direction, pose);
       expect(uv.every(value => value >= 0 && value <= 1)).toBe(true);
       cells.add(uv.join(','));
     }
@@ -53,12 +55,12 @@ describe('directional hero sprite sheets', () => {
   });
 
   it('uses painted sheet gutters so the full figure stays in its own frame', () => {
-    const front = motionFrameUv('h00B', 'south', 'idle');
-    const walk = motionFrameUv('h00B', 'south', 'walk-a');
-    expect(front[1]).toBeCloseTo(1 - 275 / 1659);
-    expect(walk[5]).toBeCloseTo(1 - 281 / 1659);
+    const front = motionFrameUv('h018', 'south', 'idle');
+    const walk = motionFrameUv('h018', 'south', 'walk-a');
+    expect(front[1]).toBeCloseTo(1 - 263 / 1659);
+    expect(walk[5]).toBeCloseTo(1 - 269 / 1659);
     expect(front[1]).toBeGreaterThan(walk[5]);
-    for (const heroId of MOTION_HEROES.slice(5).filter(id => id !== 'h01B')) {
+    for (const heroId of MOTION_HEROES.filter(id => id !== 'h01B' && !hasStylizedMotion(id))) {
       const cells = new Set<string>();
       for (const pose of ['idle', 'walk-a', 'walk-b', 'attack', 'cast', 'hit', 'death'] as const)
         for (const direction of ['south', 'west', 'north', 'east'] as const) {

@@ -10,8 +10,8 @@ Acceptance: 20 characters, 12 clips each; idle one frame; walk four distinct con
 
 ## Progress
 
-- All 20 four-direction masters generated; young black-haired Kim Tra and paired hook swords for Mộc Tra corrected. Ba Tiêu fan correction in progress.
-- Thiên Lý Nhãn walk/attack sheets generated; attack bow-tip padding repair in progress. Asset packer produced a review bundle and detected source_outer_edge (0px, threshold2px) in the original attack row1/col2; do not publish that draft.
-- Asset pipeline: `assets/sprites/linh-huyen-stylized/pack-sprites.py`; full-roster publication gate: `publish-sprites.py`. Source files/prompts in each hero/source; roster and prompt-contract JSON at asset root.
-- New `stylized-motion.ts` and regression tests authored, deliberately not yet imported by live runtime until all 20 bundles are ready. Existing accepted assets still active.
-- Remaining: finish corrections, generate the other 19 walk/attack sheet pairs, package and visually review all, publish together, integrate live runtime/portraits, update docs and static review. No game/test/typecheck/build execution.
+- All 20 four-direction masters and 40 action sheets generated; corrected Kim Tra identity, Mộc Tra swords, Thiết Phiến banana leaf and Thiên Lý Nhãn bow padding. Sources and exact prompts retained.
+- All 20 bundles published: 720 frames, 240 clips; WebP atlas/JSON and portraits installed in public/assets; ZIP exported. Asset QA has no source/alpha warning entries across the 20 final bundles. This is geometry/alpha evidence, not in-game motion approval.
+- Runtime now routes all requested heroes to stylized sheets, holds idle still, loops four walk phases, holds cast windup and plays attack/recovery. Per-hero plane dimensions compensate long-weapon envelope reduction. Existing camera direction mapping and unrelated billboard changes preserved.
+- Regression tests authored; README and source documentation updated. Spec compliance reviewed against roster, manifests, frame routing and local action review sheets. Independent static code review completed with no blocking concrete defects; see `reports/static-review.md`.
+- User validation pending: test/typecheck/build and gameplay checks. Agent did not run those commands or launch the game, per AGENTS.

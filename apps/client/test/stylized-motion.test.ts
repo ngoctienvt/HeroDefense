@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { HEROES } from '../../../content/catalog.js';
-import { hasStylizedMotion, STYLIZED_HEROES, stylizedFrame, STYLIZED_ANCHOR_Y, STYLIZED_PLANE_HEIGHT, STYLIZED_REST_Y } from '../src/stylized-motion.js';
+import { hasStylizedMotion, STYLIZED_HEROES, stylizedFrame, stylizedDimensions, STYLIZED_ANCHOR_Y, STYLIZED_PLANE_HEIGHT, STYLIZED_REST_Y } from '../src/stylized-motion.js';
 
 const directions = ['south', 'west', 'north', 'east'] as const;
 describe('Linh and Huyền stylized sprite contract', () => {
@@ -39,6 +39,9 @@ describe('Linh and Huyền stylized sprite contract', () => {
       const atlas = JSON.parse(readFileSync(url, 'utf8'));
       expect(Object.keys(atlas.frames)).toHaveLength(36); expect(Object.keys(atlas.animations)).toHaveLength(12);
       expect(atlas.meta).toMatchObject({ size: { w: 1536, h: 1536 }, cellSize: 256, anchor: [128, 224], idle: 'still' });
+      const dimensions = stylizedDimensions(hero);
+      expect(dimensions.height).toBeCloseTo(atlas.meta.planeHeight);
+      expect((.5-.875)*dimensions.height+dimensions.anchorY+STYLIZED_REST_Y).toBeCloseTo(.12);
       for (const direction of directions) for (const [pose, times] of [['idle', [0]], ['walk-a', [0,150,300,450]], ['attack', [0,.3,.5,.7]]] as const) {
         for (const time of times) {
           const frame = stylizedFrame(direction, pose, pose === 'walk-a' ? time : 0, pose === 'attack' ? time : 0);

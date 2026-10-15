@@ -18,6 +18,7 @@ import { hasFireBurn } from './visual-fire.js';
 import { isTierSkill } from './visual-tier-skills.js';
 import { VisualMaterials } from './visual-materials.js';
 import { buildTerrain } from './visual-terrain.js';
+import { hasStylizedMotion } from './stylized-motion.js';
 
 export class Battlefield {
   private engine: Engine;
@@ -413,7 +414,9 @@ export class Battlefield {
     }
     if (source && event.kind !== 'death') {
       const supportive = event.ability === 'heal' || event.ability === 'shield';
-      source.action = event.kind === 'ability' && event.skillId !== 'skill-h01B' ? 'cast' : 'attack'; source.actionTime = .38;
+      const stylized = hasStylizedMotion(source.heroId ?? '');
+      source.action = event.kind === 'ability' && event.skillId !== 'skill-h01B' && !stylized ? 'cast' : 'attack';
+      source.actionTime = stylized && event.kind === 'ability' ? .2 : .38;
       if (event.kind === 'ability' && !supportive && !this.reducedMotion.matches) source.hitStop = .045;
       const aim = target?.root.position;
       if (aim) faceActorTowards(source, aim.x, aim.z);

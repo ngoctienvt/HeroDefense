@@ -4,6 +4,7 @@ import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js'
 import { Texture } from '@babylonjs/core/Materials/Textures/texture.js';
 import { Scene } from '@babylonjs/core/scene.js';
 import { debug } from './debug.js';
+import { hasStylizedMotion } from './stylized-motion.js';
 
 /** One material per palette entry keeps draw calls and GPU allocations bounded. */
 export class VisualMaterials {
@@ -106,8 +107,9 @@ export class VisualMaterials {
     const existing = this.cache.get(key);
     if (existing) return existing;
     const material = new StandardMaterial(key, this.scene);
-    const atlasAnimation = heroId === 'h01B';
-    const texture = new Texture(`/assets/${key}.webp`, this.scene, atlasAnimation, true,
+    const stylized = hasStylizedMotion(heroId);
+    const atlasAnimation = heroId === 'h01B' || stylized;
+    const texture = new Texture(`/assets/${stylized ? `hero-stylized-${heroId}` : key}.webp`, this.scene, atlasAnimation, true,
       atlasAnimation ? Texture.BILINEAR_SAMPLINGMODE : Texture.TRILINEAR_SAMPLINGMODE,
       () => debug('sprite.motion-ready', { heroId }),
       (_message, error) => debug('sprite.motion-fallback', { heroId, error: String(error ?? _message) }));
