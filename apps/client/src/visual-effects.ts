@@ -25,6 +25,32 @@ import type { TierMotif } from './visual-tier-motif-textures.js';
 import { VisualMonsterProjectiles } from './visual-monster-projectiles.js';
 import { VisualBossEarth } from './visual-boss-earth.js';
 import { VisualPangu } from './visual-pangu.js';
+import { VisualXingtian } from './visual-xingtian.js';
+import { VisualDouzhan } from './visual-douzhan.js';
+import { VisualKimthien } from './visual-kimthien.js';
+import { VisualHangnga } from './visual-hangnga.js';
+import { VisualNuwa } from './visual-nuwa.js';
+import { VisualHienvien } from './visual-hienvien.js';
+import { VisualShennong } from './visual-shennong.js';
+import { VisualChuclong } from './visual-chuclong.js';
+import { VisualFuxi } from './visual-fuxi.js';
+import { VisualTuongThan } from './visual-tuong-than.js';
+import { VisualPhuongHoang } from './visual-phuong-hoang.js';
+import { VisualHauNghe } from './visual-hau-nghe.js';
+import { paintTier34Ability, paintTier34Attack, paintTier34Cast, paintTier34Pulse, paintTier34Summon,
+  tier34HeroId } from './visual-tier34-skills.js';
+import { VisualKimsi } from './visual-kimsi.js';
+import { VisualKhuongTuNha } from './visual-khuongtu-nha.js';
+import { VisualChucdung } from './visual-chucdung.js';
+import { VisualCongcong } from './visual-congcong.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { HeroVfxRegistry } from './visual-kit-hero.js';
+import type { HeroVfxHost } from './visual-hero-adapter.js';
+import { registerLegacyHeroes } from './visual-hero-adapters.js';
+import { VisualTayvuongmau } from './visual-tayvuongmau.js';
+import { VisualLucnhi } from './visual-lucnhi.js';
+import { VisualTruongDaoLang } from './visual-truong-dao-lang.js';
+import { VisualDivine } from './visual-divine.js';
 import type { GameState } from '../../../packages/contracts/src/types.js';
 
 type EffectKind = 'ring' | 'orb' | 'beam' | 'halo' | 'spark' | 'flare' | 'glyph' | 'decal';
@@ -32,12 +58,15 @@ type ActiveEffect = { mesh: AbstractMesh; age: number; duration: number; size: n
   baseColor: Color3; velocity?: Vector3; from?: Vector3; to?: Vector3; arrive?: () => void; spin?: number;
   arcHeight?: number; orient?: boolean };
 type StatusKind = 'stun' | 'root' | 'sunder' | 'slow' | 'poison' | 'charged' | 'shield' | 'ward' | 'haste'
-  | 'berserk' | 'soulLink' | 'frost' | 'stoneShield';
+  | 'berserk' | 'goldenFeathers' | 'soulLink' | 'frost' | 'stoneShield' | 'pureLand' | 'sealed';
 const MAX_EFFECTS = 64;
 const STATUS_COLORS: Record<StatusKind, string> = {
   stun: '#ffdc78', root: '#7eda9b', sunder: '#d48b8b', slow: '#83dbf8', poison: '#92d77c', charged: '#b99cf1',
   shield: '#f6df8f', ward: '#b4eddf', haste: '#eac2fc',
   berserk: '#3ac587', soulLink: '#38bdf8', frost: '#a9e8ff', stoneShield: '#aa9273',
+  pureLand: '#c9d987',
+  goldenFeathers: '#e5b342',
+  sealed: '#c9ad67',
 };
 const STATUS_MOTIFS: Partial<Record<StatusKind, TierMotif>> = {
   shield: 'bell', ward: 'shield', berserk: 'vines', haste: 'flower', frost: 'ice',
@@ -47,6 +76,23 @@ const ELEMENT_COLORS = ['#f59e0b', '#10b981', '#0284c7', '#ea580c', '#d97706'];
 /** Short, pooled feedback tied only to authoritative combat events. */
 export class VisualEffects {
   private pangu: VisualPangu;
+  private xingtian: VisualXingtian;
+  private douzhan: VisualDouzhan;
+  private kimthien: VisualKimthien;
+  private hangnga: VisualHangnga;
+  private nuwa: VisualNuwa;
+  private hienvien: VisualHienvien;
+  private shennong: VisualShennong;
+  private fuxi: VisualFuxi;
+  private tuongThan: VisualTuongThan;
+  private phuongHoang: VisualPhuongHoang;
+  private khuongtu: VisualKhuongTuNha;
+  /** Hero VFX built on the shared kit (Cộng Công first); asked before the per-hero if-chains. */
+  private heroKit = new HeroVfxRegistry();
+  private tayvuongmau: VisualTayvuongmau;
+  private lucnhi: VisualLucnhi;
+  private truongDaoLang: VisualTruongDaoLang;
+  private divine: VisualDivine;
   private active: ActiveEffect[] = [];
   private pools: Record<EffectKind, AbstractMesh[]> = { ring: [], orb: [], beam: [], halo: [], spark: [], flare: [], glyph: [], decal: [] };
   private scheduled: { delay: number; run: () => void }[] = [];
@@ -73,14 +119,54 @@ export class VisualEffects {
   private readonly roots: Partial<Record<EffectKind, Mesh>> = {};
   private readonly tempColor = new Color3();
   private readonly arrivals: (() => void)[] = [];
+  /** Helpers the hero adapters use for the small accents around their own module. */
+  private readonly heroHost: HeroVfxHost = {
+    reduced: () => this.reduced.matches,
+    spawn: (kind, at, color, size, duration, texture) => this.spawn(kind, at, color, size, duration, undefined, texture),
+    burst: (at, color, count, spread) => this.burst(at, color, count, spread),
+    tierBurst: (at, color, count, spread) => this.tierParticles.burst(at, color, count, spread),
+    beam: (from, to, color) => this.beam(from, to, color),
+    fireImpact: (at, full, radius) => this.fire.impact(at, full, radius),
+    waterImpact: (at, radius, duration, reduced) => this.water.impact(at, radius, duration, reduced),
+    motifShow: (at, kind, size, duration, reduced) => this.tierMotifs.show(at, kind, size, duration, false, 0, reduced),
+    motifTravel: (from, to, kind, size, duration, arrive, reduced) =>
+      this.tierMotifs.travel(from, to, kind, size, duration, arrive, 0, reduced),
+  };
   constructor(private scene: Scene, private palette: VisualMaterials) {
     this.pangu = new VisualPangu(scene);
+    this.xingtian = new VisualXingtian(scene);
+    this.douzhan = new VisualDouzhan(scene);
+    this.kimthien = new VisualKimthien(scene);
+    this.hangnga = new VisualHangnga(scene);
+    this.nuwa = new VisualNuwa(scene);
+    this.hienvien = new VisualHienvien(scene);
+    this.shennong = new VisualShennong(scene);
+    const chuclong = new VisualChuclong(scene);
+    this.fuxi = new VisualFuxi(scene);
+    this.tuongThan = new VisualTuongThan(scene);
+    this.phuongHoang = new VisualPhuongHoang(scene);
+    const haunghe = new VisualHauNghe(scene);
+    const kimsi = new VisualKimsi(scene);
+    this.khuongtu = new VisualKhuongTuNha(scene);
+    this.heroKit.register(new VisualCongcong(scene, new KitFlipbooks(scene)));
+    this.heroKit.register(new VisualChucdung(scene, (at, full, radius) => this.fire.impact(at, full, radius)));
+    this.tayvuongmau = new VisualTayvuongmau(scene);
+    this.lucnhi = new VisualLucnhi(scene, palette);
+    this.truongDaoLang = new VisualTruongDaoLang(scene);
+    this.divine = new VisualDivine(scene);
     this.fire = new VisualFire(scene);
     this.tierParticles = new VisualTierParticles(scene);
     this.water = new VisualWater(scene);
     this.tierMotifs = new VisualTierMotifs(scene);
     this.monsterProjectiles = new VisualMonsterProjectiles(scene, palette);
     this.bossEarth = new VisualBossEarth(scene);
+    registerLegacyHeroes(this.heroKit, {
+      pangu: this.pangu, xingtian: this.xingtian, douzhan: this.douzhan, kimthien: this.kimthien,
+      hangnga: this.hangnga, nuwa: this.nuwa, hienvien: this.hienvien, shennong: this.shennong, chuclong,
+      fuxi: this.fuxi, tuongThan: this.tuongThan, phuongHoang: this.phuongHoang, haunghe, kimsi,
+      khuongtu: this.khuongtu, truongDaoLang: this.truongDaoLang, divine: this.divine,
+      tayvuongmau: this.tayvuongmau, lucnhi: this.lucnhi,
+    }, this.heroHost);
     this.initInstancedRoots();
     for (const name of ['magic_01', 'magic_03', 'slash_01', 'twirl_01', 'spark_01', 'trace_01', 'circle_03']) {
       const texture = new Texture(`/assets/vfx-${name}.webp`, scene, false, true, Texture.TRILINEAR_SAMPLINGMODE,
@@ -100,7 +186,12 @@ export class VisualEffects {
   }
 
   showCast(event: GameEvent, position: Vector3): void {
-    if (event.skillId === 'skill-h01B') { this.pangu.cast(event, position.clone(), this.reduced.matches); return; }
+    if (this.heroKit.cast(event, position, this.reduced.matches)) return;
+    if (event.skillId?.startsWith('tier3-tier4-') && tier34HeroId(event.skillId)) {
+      paintTier34Cast(this.tierPainter(), event, position.clone());
+      debug('visual.tier34.cast', { eventId: event.id, skillId: event.skillId });
+      return;
+    }
     if (isTierSkill(event.skillId)) {
       paintTierCast(this.tierPainter(), event, position.clone());
       debug('visual.tier.cast', { eventId: event.id, skillId: event.skillId });
@@ -121,8 +212,27 @@ export class VisualEffects {
   }
 
   show(event: GameEvent, position: Vector3, origin?: Vector3, targets: readonly Vector3[] = []): void {
-    if (event.skillId?.endsWith('-h01B')) {
-      this.pangu.show(event, position.clone(), origin?.clone() ?? position.clone(), this.reduced.matches); return;
+    // Defensive events arrive once per ally: position = ally, origin = the caster.
+    if (this.heroKit.ability(event, origin ?? position, position, this.reduced.matches,
+      { targets, hasOrigin: origin !== undefined })) return;
+    if (event.skillId === 'tier3-tier4-summon-h00N') {
+      paintTier34Summon(this.tierPainter(), origin?.clone() ?? position.clone(), position.clone());
+      return;
+    }
+    if (event.skillId?.startsWith('tier3-tier4-pulse-') && tier34HeroId(event.skillId)) {
+      paintTier34Pulse(this.tierPainter(), event, position.clone());
+      debug('visual.tier34.pulse', { eventId: event.id, skillId: event.skillId });
+      return;
+    }
+    if (event.kind === 'ability' && event.skillId?.startsWith('tier3-tier4-') && tier34HeroId(event.skillId)) {
+      paintTier34Ability(this.tierPainter(), event, origin?.clone() ?? position.clone(), position.clone(), targets.map(at => at.clone()));
+      debug('visual.tier34.ability', { eventId: event.id, skillId: event.skillId, targets: targets.length });
+      return;
+    }
+    if ((event.kind === 'attack' || event.kind === 'trait') && tier34HeroId(event.skillId)) {
+      paintTier34Attack(this.tierPainter(), event, origin?.clone() ?? position.clone(), position.clone());
+      debug('visual.tier34.attack', { eventId: event.id, skillId: event.skillId });
+      return;
     }
     if (event.skillId?.startsWith('monster-') || event.skillId?.startsWith('boss-')) {
       this.showMonster(event, position, origin);
@@ -138,22 +248,6 @@ export class VisualEffects {
     if ((event.kind === 'attack' || event.kind === 'trait') && isTierSkill(event.skillId)) {
       paintTierAttack(this.tierPainter(), event, origin?.clone() ?? position.clone(), position.clone());
       debug('visual.tier.attack', { eventId: event.id, skillId: event.skillId });
-      return;
-    }
-    if (event.skillId === 'burst-h003') {
-      this.fire.impact(position, true, 2);
-      debug('visual.trait.burst', { eventId: event.id, skillId: event.skillId });
-      return;
-    }
-    if (event.skillId === 'burst-h005' || event.skillId === 'burst-h008') {
-      const earth = event.skillId === 'burst-h008';
-      this.spawn('ring', position, earth ? '#d6b47e' : '#f0d28a', earth ? 5 : 2.2, .38);
-      if (!this.reduced.matches) {
-        this.spawn('glyph', position, earth ? '#e2c994' : '#fff1b6', earth ? 2.8 : 1.4, .38,
-          undefined, earth ? 'twirl_01' : 'spark_01');
-        this.burst(position, earth ? '#d6b47e' : '#f0d28a', earth ? 7 : 4, earth ? 2.1 : 1.1);
-      }
-      debug('visual.trait.burst', { eventId: event.id, skillId: event.skillId });
       return;
     }
     const ability = event.kind === 'ability';
@@ -261,18 +355,27 @@ export class VisualEffects {
     } else if (id === 'monster-attack-m002') {
       const impact = position.clone();
       const arrive = () => {
-        this.spawn('orb', impact, '#e97434', .35, .18);
-        if (!this.reduced.matches) this.spawn('glyph', impact, '#ffbd78', .6, .18, undefined, 'trace_01');
+        this.spawn('orb', impact, '#f59742', .38, .18);
+        if (!this.reduced.matches) {
+          this.spawn('glyph', impact, '#ffb25b', .72, .22, undefined, 'spark_01');
+          this.tierParticles.smoke(impact, '#6b4940', .45, .25);
+        }
       };
       if (origin && !this.reduced.matches) this.monsterProjectiles.launch(origin.clone(), impact, arrive);
       else arrive();
+    } else if (id === 'monster-attack-m001') {
+      this.spawn('glyph', position, '#c4d4d0', .95, .2, undefined, 'slash_01');
+      if (!this.reduced.matches) this.tierParticles.burst(position, '#a8b7b1', 3, .65);
     } else if (id === 'monster-attack-m003' || id === 'monster-attack-b001') {
-      this.spawn('ring', position, '#9c816c', id.endsWith('b001') ? 2.1 : 1.1, .2);
-      if (!this.reduced.matches) this.tierParticles.burst(position, '#a69079', 3, .7);
+      const boss = id.endsWith('b001');
+      this.spawn('ring', position, '#8f7760', boss ? 2.1 : 1.1, .22);
+      if (!this.reduced.matches) {
+        this.tierParticles.burst(position, '#a69079', boss ? 7 : 4, boss ? 1.5 : .75);
+        this.tierParticles.smoke(position, '#72675a', boss ? 1.3 : .7, .35);
+      }
     } else if (id === 'monster-attack-m004') {
-      this.spawn('orb', position, '#bb4763', .38, .17);
-      if (!this.reduced.matches) this.spawn('glyph', position, '#c65a70', .65, .2, undefined, 'slash_01');
-      if (origin) this.spawn('halo', origin, '#c75670', .9, .25);
+      this.spawn('glyph', position, '#b54454', .85, .22, undefined, 'slash_01');
+      if (!this.reduced.matches) this.tierParticles.burst(position, '#8e3446', 3, .55);
     } else {
       this.spawn('orb', position, '#91b9a9', .32, .16);
       if (!this.reduced.matches) this.spawn('glyph', position, '#9cbea9', .7, .2, undefined, 'slash_01');
@@ -536,7 +639,7 @@ export class VisualEffects {
   tick(dt: number): void {
     this.monsterProjectiles.tick(dt);
     this.bossEarth.tick(dt);
-    this.pangu.tick(dt);
+    this.heroKit.tick(dt);
     for (let i = this.scheduled.length - 1; i >= 0; i--) {
       const task = this.scheduled[i]; task.delay -= dt;
       if (task.delay <= 0) {
@@ -646,6 +749,21 @@ export class VisualEffects {
   }
 
   markBurning(id: string, position: Vector3, phase: number): void { this.fire.markBurning(id, position, phase); }
+  markPhongThan(id: string, position: Vector3): void {
+    this.khuongtu.mark(id, position, this.reduced.matches);
+  }
+  /** Kit snapshot marker for `heroId`'s module (aura, ward, frozen… per hero). */
+  markHero(heroId: string, kind: string, id: string, position: Vector3): void {
+    this.heroKit.mark(heroId, kind, id, position, this.reduced.matches);
+  }
+  /** Called from the snapshot loop when a hero is in view: loads that hero's atlases once per zone. */
+  prepareHero(heroId: string): void { this.heroKit.prepare(heroId); }
+  markPeachBlessing(id: string, position: Vector3): void {
+    this.tayvuongmau.markBlessing(id, position);
+  }
+  markLucnhiExposed(id: string, position: Vector3): void {
+    this.lucnhi.markExposed(id, position);
+  }
   markStatus(id: string, position: Vector3, kind: StatusKind): void {
     if (kind === 'stoneShield') { this.bossEarth.markShield(id, position); return; }
     let marker = this.statusMarkers.get(id);
@@ -677,17 +795,20 @@ export class VisualEffects {
       marker.accent = undefined;
     }
   }
-  markGround(id: string, position: Vector3, radius: number): void {
+  markGround(id: string, position: Vector3, radius: number,
+    kind?: NonNullable<GameState['groundEffects']>[number]['kind']): void {
     let marker = this.groundMarkers.get(id);
     if (!marker) {
       if (this.groundMarkers.size >= 16) return;
       const mesh = this.groundPool.pop() ?? MeshBuilder.CreateTorus('burning-ground', { diameter: 1, thickness: .1, tessellation: 36 }, this.scene);
-      mesh.isPickable = false; mesh.material = this.palette.get('burning-ground', '#ff8d58', .5);
+      mesh.isPickable = false;
       mesh.setEnabled(true); marker = { mesh, touched: false }; this.groundMarkers.set(id, marker);
     }
     marker.touched = true; marker.mesh.position.set(position.x, .04, position.z);
     marker.mesh.scaling.setAll(radius * 2);
-    this.fire.markGroundBurning(id, position);
+    const color = kind === 'tier-water' ? '#56cce3' : kind === 'tier-gold' ? '#e6c97b' : '#ff8d58';
+    marker.mesh.material = this.palette.get(`ground-${kind ?? 'fire'}`, color, .5);
+    if (!kind || kind === 'tier-fire') this.fire.markGroundBurning(id, position);
   }
   markPlant(id: string, position: Vector3): void {
     let plant = this.plants.get(id);
@@ -772,7 +893,7 @@ export class VisualEffects {
   clear(): void {
     this.monsterProjectiles.clear();
     this.bossEarth.clear();
-    this.pangu.clear();
+    this.heroKit.clear();
     this.scheduled.length = 0;
     for (const fx of this.active) this.release(fx);
     this.active.length = 0;
@@ -792,6 +913,28 @@ export class VisualEffects {
     fx.mesh.setEnabled(false); fx.mesh.visibility = 1; this.pools[fx.kind].push(fx.mesh);
   }
   markPanguRift(ground: NonNullable<GameState['groundEffects']>[number]): void { this.pangu.markRift(ground, this.reduced.matches); }
+  markBeidou(id: string, at: Vector3, remaining: number): void {
+    this.truongDaoLang.markZone(id, at, remaining, this.reduced.matches);
+  }
+  markDivineZone(id: string, kind: 'lantern-cage' | 'five-finger', at: Vector3,
+    radius: number, remaining: number): void {
+    this.divine.markZone(id, kind, at, radius, remaining, this.reduced.matches);
+  }
+  markDivineAura(id: string, kind: 'lantern' | 'buddha' | 'solar' | 'bodhi' | 'cloud' | 'primordial', at: Vector3): void {
+    this.divine.markAura(id, kind, at);
+  }
   markPanguStatus(id: string, at: Vector3, kind: 'stun' | 'sunder' | 'empower'): void { this.pangu.markStatus(id, at, kind, this.reduced.matches); }
+  markXingtianImmortal(id: string, at: Vector3): void { this.xingtian.markImmortal(id, at); }
+  markDouzhanClone(id: string, at: Vector3): void { this.douzhan.markClone(id, at); }
+  markKimthienBowl(id: string, at: Vector3): void { this.kimthien.markBowl(id, at, this.reduced.matches); }
+  markHangngaBlessing(id: string, at: Vector3): void { this.hangnga.markBlessing(id, at); }
+  markNuwaShield(id: string, at: Vector3): void { this.nuwa.markShield(id, at); }
+  markHienvienMonument(id: string, at: Vector3): void { this.hienvien.markMonument(id, at); }
+  markHienvienBlessing(id: string, at: Vector3): void { this.hienvien.markBlessing(id, at); }
+  markShennongGrove(id: string, at: Vector3): void { this.shennong.markGrove(id, at); }
+  markFuxiBagua(id: string, at: Vector3): void { this.fuxi.markZone(id, at); }
+  markBloodSea(id: string, at: Vector3): void { this.tuongThan.markZone(id, at); }
+  markPhoenixCarpet(id: string, at: Vector3): void { this.phuongHoang.markCarpet(id, at); }
+  markPhoenixEgg(id: string, at: Vector3): void { this.phuongHoang.markEgg(id, at); }
   cameraShake(): { x: number; y: number } { return this.reduced.matches ? { x: 0, y: 0 } : this.pangu.shake(); }
 }
