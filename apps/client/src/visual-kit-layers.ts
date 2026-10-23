@@ -33,6 +33,49 @@ export function createShellLayer(scene: Scene, palette: KitPaletteName, name: st
   return { mesh, material };
 }
 
+/** Unit sphere carrying kitGuard: the neutral shared shield bubble. Starts disabled. */
+export function createGuardLayer(scene: Scene, palette: KitPaletteName, name: string, segments: number): Layer {
+  const mesh = MeshBuilder.CreateSphere(`kit-${name}`, { diameter: 1, segments }, scene);
+  const material = kitMaterial(scene, 'kitGuard', palette, name);
+  mesh.material = material;
+  mesh.isPickable = false;
+  mesh.setEnabled(false);
+  return { mesh, material };
+}
+
+/** (y, r) silhouette points from bottom to top, y in -.5..+.5 (kitShell maps the mask/foot fade on local y). */
+export type LatheProfile = readonly (readonly [number, number])[];
+
+/**
+ * Surface of revolution carrying kitShell: a shell with a hero-specific silhouette (bell, gourd, lotus…).
+ * Scale it like the unit sphere of createShellLayer. Starts disabled.
+ */
+export function createLatheShellLayer(scene: Scene, palette: KitPaletteName, name: string, profile: LatheProfile,
+  segments = 48, options?: KitMaterialOptions): Layer {
+  const positions: number[] = [], indices: number[] = [], normals: number[] = [];
+  const n = profile.length;
+  for (let s = 0; s <= segments; s++) {
+    const a = s / segments * Math.PI * 2;
+    for (const [y, r] of profile) positions.push(Math.cos(a) * r, y, Math.sin(a) * r);
+  }
+  for (let s = 0; s < segments; s++) for (let i = 0; i < n - 1; i++) {
+    const v = s * n + i, w = (s + 1) * n + i;
+    indices.push(v, v + 1, w + 1, v, w + 1, w);
+  }
+  VertexData.ComputeNormals(positions, indices, normals);
+  const data = new VertexData();
+  data.positions = positions; data.indices = indices; data.normals = normals;
+  const mesh = new Mesh(`kit-${name}`, scene);
+  data.applyToMesh(mesh);
+  const material = kitMaterial(scene, 'kitShell', palette, name, options);
+  material.setFloat('uDissolve', 0);
+  material.backFaceCulling = false; // translucent shell: the far wall shows through as a second rim
+  mesh.material = material;
+  mesh.isPickable = false;
+  mesh.setEnabled(false);
+  return { mesh, material };
+}
+
 /** (dr, z) profile points: `dr` radial offset around the ring radius, `z` height. */
 export type RingProfile = readonly (readonly [number, number])[];
 
@@ -72,10 +115,15 @@ export function createLoftedRingLayer(scene: Scene, palette: KitPaletteName, nam
   return { mesh, material };
 }
 
-/**
- * Capped pool of layers. `acquire` returns an enabled layer or undefined at the cap (logged once per
- * zone as visual.kit.pool.cap); `release` disables it and keeps it for reuse.
- */
+/** Directional curling water wall, sharing the ring's profiles and material. Local +X is forward. */
+export function createLoftedWaveLayer(scene: Scene, palette: KitPaletteName, name: string,
+  standing: RingProfile, crashed: RingProfile): Layer {
+  const layer = createLoftedRingLayer(scene, palette, name, 1, standing, crashed, 48);
+  layer.material.setFloat('uLinear', 1);
+  return layer;
+}
+
+/** Capped pool. Released layers remain allocated for reuse; exhaustion logs once per zone. */
 export class LayerPool<L extends Layer = Layer> {
   private free: L[] = [];
   private active = new Set<L>();

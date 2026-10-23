@@ -1,4 +1,4 @@
-import { DUNGEONS, FORMATIONS, HEROES, HERO_BY_ID, SYNERGIES } from '../../../content/catalog.js';
+﻿import { CRAFT_RECIPES, FORMATIONS, HEROES, HERO_BY_ID, SYNERGIES } from '../../../content/catalog.js';
 import {
   ATTACK_GEOMETRY_DESCRIPTIONS,
   ATTACK_GEOMETRY_NAMES,
@@ -6,18 +6,24 @@ import {
   ON_HIT_TRAIT_NAMES,
 } from '../../../packages/contracts/src/combat-profiles.js';
 import { equipmentCost, PELLET_PRICES, SUMMON_PACKS, summonWave } from '../../../packages/game-core/src/rules.js';
+import { controlChance } from '../../../packages/game-core/src/crowd-control.js';
 import type { Command, GameState, HeroDef, Unit } from '../../../packages/contracts/src/types.js';
 import { button, deployedHeroCard, el, elements, gearIcons, gearNames, heading, heroPortrait, metric, number, playerBadge, roles, unitCard } from './ui.js';
-import { renderCraftBoard } from './craft-board.js';
+import { getIngredientTree, renderCraftBoard } from './craft-board.js';
 import { debug } from './debug.js';
 
-export type Panel = 'shop' | 'craft' | 'synergy' | 'formation' | 'dungeon' | 'guide' | 'roster' | 'admin';
-export interface PanelContext { state: GameState; selfId: string; selected: string; send: (command: Command) => void; select: (id: string) => void; zone: (zone: number) => void }
+export type Panel = 'shop' | 'craft' | 'synergy' | 'formation' | 'guide' | 'roster' | 'admin';
+export interface PanelContext { state: GameState; selfId: string; selected: string; send: (command: Command) => void; select: (id: string) => void; zone?: (zone: number) => void }
 const ownUnits = (ctx: PanelContext) => Object.values(ctx.state.units).filter(unit => unit.owner === ctx.selfId);
 const abilitySource = (source?: string) => source === 'map' ? 'Kỹ năng theo chứng cứ map' : source === 'original' ? 'Kỹ năng thiết kế mới cho bản web' : 'Kỹ năng thích nghi cho bản web';
+/** Server rule shown to players: hard control (stun/freeze/root/silence) lands by tier chance. */
+const controlLine = (hero: HeroDef): string => {
+  const percent = (value: number) => `${(value * 100).toLocaleString('vi-VN', { maximumFractionDigits: 1 })}%`;
+  return `Tỷ lệ khống chế cứng (bậc ${hero.tier}): ${percent(controlChance(hero.tier, false))} quái / ${percent(controlChance(hero.tier, true))} Boss`;
+};
 const abilityResource = (hero: HeroDef) => hero.energyType === 'rage_on_attack' || hero.energyType === 'rage_on_hit'
   ? `cần ${hero.maxEnergy ?? 100} Nộ` : `hồi ${hero.ability?.cooldown ?? 0}s`;
-const expeditionSelection = new Set<string>();
+
 
 export function renderPanel(panel: Panel, ctx: PanelContext): HTMLElement {
   const container = el('div', 'panel-content');
@@ -25,7 +31,7 @@ export function renderPanel(panel: Panel, ctx: PanelContext): HTMLElement {
   if (panel === 'craft') renderCraftBoard(container, ctx);
   if (panel === 'synergy') synergy(container, ctx);
   if (panel === 'formation') formations(container, ctx);
-  if (panel === 'dungeon') dungeons(container, ctx);
+
   if (panel === 'guide') guide(container);
   if (panel === 'roster') roster(container, ctx);
   if (panel === 'admin') admin(container, ctx);
@@ -115,43 +121,6 @@ function formations(container: HTMLElement, ctx: PanelContext): void {
   }
 }
 
-function dungeons(container: HTMLElement, ctx: PanelContext): void {
-  const units = ownUnits(ctx).filter(u => u.slot >= 0 && u.hp > 0);
-  container.append(heading('Hư Không Bí Cảnh', 'Đưa đội hình xuất trận vào thử thách boss. Rời làn phòng thủ sẽ khiến thần điện hở.'));
-  const squad = el('fieldset', 'expedition-squad');
-  squad.append(el('legend', '', 'Chọn tướng tham gia'));
-  for (const unit of units.filter(u => u.zone === 0)) {
-    const label = el('label');
-    const check = el('input');
-    check.type = 'checkbox';
-    check.checked = !expeditionSelection.has(unit.id);
-    check.addEventListener('change', () => { if (check.checked) expeditionSelection.delete(unit.id); else expeditionSelection.add(unit.id); });
-    label.append(check, el('span', '', HERO_BY_ID[unit.heroId].name));
-    squad.append(label);
-  }
-  container.append(squad);
-  container.append(button('Về chiến trường chính', () => ctx.zone(0), 'text-button'));
-  for (const definition of DUNGEONS) {
-    const state = ctx.state.dungeons.find(d => d.id === definition.id); if (!state) continue;
-    const row = el('div', 'dungeon');
-    row.append(el('h3', '', definition.name), el('p', 'muted', `${definition.boss} · Mở sau đợt ${definition.wave}${definition.supremeOnly ? ' · Chí tôn' : ''}`));
-    row.append(el('p', '', state.cleared ? 'Đã chinh phục' : state.active ? `Đang giao chiến · ${Math.ceil(state.remaining)} giây` : state.unlocked ? 'Sẵn sàng thách đấu' : 'Chưa mở'));
-    const actions = el('div', 'button-row');
-    actions.append(
-      button(state.active ? 'Gia nhập' : 'Đưa đội vào', () => {
-        ctx.send({ type: 'dungeon', dungeonId: definition.id, unitIds: units.filter(u => u.zone === 0 && !expeditionSelection.has(u.id)).map(u => u.id) });
-        ctx.zone(definition.id);
-      }, '', !state.unlocked || state.cleared || !units.some(u => u.zone === 0)),
-      button('Quan sát', () => ctx.zone(definition.id))
-    );
-    row.append(actions);
-    if (units.some(u => u.zone === definition.id)) {
-      row.append(button('Rút đội hình', () => units.filter(u => u.zone === definition.id).forEach(u => ctx.send({ type: 'return', unitId: u.id })), 'text-button'));
-    }
-    container.append(row);
-  }
-}
-
 function guide(container: HTMLElement): void {
   container.append(heading('Cẩm Nang Chiến Trận', 'Mỗi người phòng thủ một làn quái; các làn hội tụ vào đường giữa trước Thần Điện.'));
   const rows = [
@@ -171,7 +140,7 @@ function guide(container: HTMLElement): void {
     ['C', 'Bật / Tắt bảng Ghép Tướng (Bát Quái Đồ)'],
     ['P', 'Bật / Tắt bảng Quản lý Đội Hình & Bộ Sưu Tập'],
     ['K', 'Bật / Tắt bảng Admin (Mua / nhận bất cứ tướng nào để test)'],
-    ['T / F / V', 'Bật / Tắt Duyên Phận / Trận Pháp / Bí Cảnh'],
+    ['T / F', 'Bật / Tắt Duyên Phận / Trận Pháp'],
     ['Esc', 'Đóng mọi bảng đang mở / Bỏ chọn tướng']
   ];
   const table = el('div', 'key-table');
@@ -181,7 +150,7 @@ function guide(container: HTMLElement): void {
     table.append(row);
   }
   container.append(table);
-  container.append(el('p', 'hint', 'Hợp nhất 3 bản sao cùng bậc để nâng sao (tối đa 3 sao). Nâng cấp trang bị bằng Linh Thạch để tăng công thủ.'));
+  container.append(el('p', 'hint', 'Hợp nhất 3 bản sao cùng bậc để nâng sao (tối đa 10 sao). Nâng cấp trang bị bằng Linh Thạch để tăng công thủ.'));
 }
 
 function roster(container: HTMLElement, ctx: PanelContext): void {
@@ -279,7 +248,7 @@ function roster(container: HTMLElement, ctx: PanelContext): void {
         button(freeSlot !== undefined ? `Xuất trận (Ô ${freeSlot + 1})` : 'Đội hình đầy', () => {
           if (freeSlot !== undefined) ctx.send({ type: 'deploy', unitId: unit.id, slot: freeSlot });
         }, 'primary', freeSlot === undefined),
-        button(`Hợp nhất ${duplicateCount}/3`, () => ctx.send({ type: 'merge', unitId: unit.id }), '', duplicateCount < 3 || unit.rank >= 3),
+        button(`Hợp nhất ${duplicateCount}/3`, () => ctx.send({ type: 'merge', unitId: unit.id }), '', duplicateCount < 3 || unit.rank >= 10),
         button('Bán', () => ctx.send({ type: 'sell', unitId: unit.id }), 'danger')
       );
 
@@ -316,6 +285,7 @@ function roster(container: HTMLElement, ctx: PanelContext): void {
         ...(hero.attackGeometry ? [el('p', 'muted', `🗡️ ${ATTACK_GEOMETRY_NAMES[hero.attackGeometry.type]}: ${ATTACK_GEOMETRY_DESCRIPTIONS[hero.attackGeometry.type]}`)] : []),
         ...(hero.onHitTrait ? [el('p', 'muted', `✨ ${ON_HIT_TRAIT_NAMES[hero.onHitTrait.type]}: ${ON_HIT_TRAIT_DESCRIPTIONS[hero.onHitTrait.type]}`)] : []),
         ...(hero.ability ? [el('p', 'muted', `${hero.ability.name}: ${hero.ability.description} · ${abilityResource(hero)}`)] : []),
+        el('p', 'muted', controlLine(hero)),
         el('small', 'muted', hero.ability ? abilitySource(hero.ability.provenance) : 'Thiết kế riêng bản web · Không có kỹ năng chủ động'));
       list.append(row);
     }
@@ -386,7 +356,7 @@ export function renderSelectedActionBar(ctx: PanelContext): HTMLElement | null {
     `Hợp nhất ${duplicateCount}/3`,
     () => ctx.send({ type: 'merge', unitId: unit.id }),
     'action-merge-btn',
-    duplicateCount < 3 || unit.rank >= 3
+    duplicateCount < 3 || unit.rank >= 10
   );
 
   const recallBtn = button(
@@ -464,14 +434,22 @@ export function renderSquad(ctx: PanelContext): HTMLElement {
   return renderDeployedDock(ctx);
 }
 
+const recipeByHero = new Map(CRAFT_RECIPES.map(r => [r.heroId, r]));
+let adminTargetHeroId: string | null = null;
+let adminOnlyShowRelated = false;
+let adminSelectedRank = 1;
+let adminSelectedTier = 0;
+
 function admin(container: HTMLElement, ctx: PanelContext): void {
   const player = ctx.state.players[ctx.selfId];
   if (!player) return;
+  const ownedUnits = ownUnits(ctx);
+  const countOwned = (id: string) => ownedUnits.filter(u => u.heroId === id).length;
 
   container.append(
     heading(
       'Cơ Chế Admin & Thử Nghiệm',
-      'Mua / nhận bất cứ tướng nào trong 70 tướng của Thiên Đạo để thử nghiệm chiêu thức, hoạt ảnh, duyên phận và chiến thuật.'
+      'Mua / nhận bất cứ tướng nào trong 70 tướng của Thiên Đạo. Nhấp chọn tướng để highlight công thức và nguyên liệu ghép.'
     )
   );
 
@@ -500,9 +478,75 @@ function admin(container: HTMLElement, ctx: PanelContext): void {
   resSection.append(resGrid);
   container.append(resSection);
 
-  // Hero Selection Header & Filters
+  // --- SECTION: TƯỚNG ĐANG CÓ (ALWAYS VISIBLE) ---
+  const ownedSection = el('section', 'admin-owned-section');
+  const deployedCount = ownedUnits.filter(u => u.slot >= 0).length;
+  const benchCount = ownedUnits.filter(u => u.slot < 0).length;
+
+  const ownedHeader = el('div', 'admin-owned-header');
+  ownedHeader.append(
+    el('h3', 'section-sub', `Tướng Đang Sở Hữu (${ownedUnits.length})`),
+    el('span', 'admin-owned-hint', `Xuất trận: ${deployedCount}/5 · Kho: ${benchCount}`)
+  );
+  ownedSection.append(ownedHeader);
+
+  const ownedList = el('div', 'admin-owned-list');
+  if (ownedUnits.length === 0) {
+    ownedList.append(el('p', 'hint', 'Chưa sở hữu tướng nào. Nhấp vào tướng bên dưới để nhận hoặc ra trận.'));
+  } else {
+    const heroGroups = new Map<string, Unit[]>();
+    for (const u of ownedUnits) {
+      const g = heroGroups.get(u.heroId) ?? [];
+      g.push(u);
+      heroGroups.set(u.heroId, g);
+    }
+
+    const tree = adminTargetHeroId ? getIngredientTree(adminTargetHeroId, recipeByHero) : null;
+
+    for (const [heroId, units] of heroGroups.entries()) {
+      const hero = HERO_BY_ID[heroId];
+      if (!hero) continue;
+      const isTarget = adminTargetHeroId === heroId;
+      const isDirect = tree?.directCounts.has(heroId);
+      const isSub = tree?.subCounts.has(heroId);
+
+      const isDimmed = !!adminTargetHeroId && !isTarget && !isDirect && !isSub;
+      const chip = el('div', `admin-owned-chip ${isTarget ? 'is-target' : ''} ${isDirect ? 'is-needed direct' : ''} ${isSub ? 'is-needed sub' : ''} ${isDimmed ? 'is-dimmed' : ''}`);
+      chip.append(heroPortrait(hero, 'mini-portrait'));
+
+      const chipInfo = el('div', 'admin-chip-info');
+      chipInfo.append(
+        el('span', 'admin-chip-name', hero.name),
+        el('span', 'admin-chip-rank', units.map(u => (u.rank <= 6 ? '★'.repeat(u.rank) : `${u.rank}★`) + (u.slot >= 0 ? ` (Ô ${u.slot + 1})` : '')).join(', '))
+      );
+      chip.append(chipInfo);
+
+      if (units.length > 1) {
+        chip.append(el('span', 'admin-chip-count', `x${units.length}`));
+      }
+      if (isDirect) {
+        chip.append(el('span', 'admin-chip-badge direct', 'Nguyên liệu'));
+      } else if (isSub) {
+        chip.append(el('span', 'admin-chip-badge sub', 'Thành phần'));
+      } else if (isTarget) {
+        chip.append(el('span', 'admin-chip-badge target', 'Đang chọn'));
+      }
+
+      chip.title = `${hero.name} (${hero.tier} phẩm · ${roles[hero.role]})\nNhấp để chọn highlight tướng này`;
+      chip.addEventListener('click', () => {
+        adminTargetHeroId = adminTargetHeroId === heroId ? null : heroId;
+        update();
+      });
+
+      ownedList.append(chip);
+    }
+  }
+  ownedSection.append(ownedList);
+  container.append(ownedSection);
+
+  // --- SECTION: DANH SÁCH 70 TƯỚNG ---
   const heroSection = el('section', 'admin-hero-section');
-  heroSection.append(el('h3', 'section-sub', 'Danh Sách 70 Tướng (Nhận / Xuất Trận Trực Tiếp)'));
+  heroSection.append(el('h3', 'section-sub', 'Danh Sách 70 Tướng (Nhận / Ghép / Ra Trận)'));
 
   const filterWrap = el('div', 'admin-filter-wrap');
   const searchInput = el('input', 'admin-search-input');
@@ -510,7 +554,6 @@ function admin(container: HTMLElement, ctx: PanelContext): void {
   searchInput.placeholder = 'Tìm tên tướng, hệ, vai trò hoặc kỹ năng…';
   filterWrap.append(searchInput);
 
-  let selectedTier = 0;
   const tierTabs = [
     { tier: 0, label: 'Tất cả (70)' },
     { tier: 1, label: 'Bậc 1 (8)' },
@@ -524,26 +567,25 @@ function admin(container: HTMLElement, ctx: PanelContext): void {
   const pillBtns: HTMLButtonElement[] = [];
   tierTabs.forEach(({ tier, label }) => {
     const pill = button(label, () => {
-      selectedTier = tier;
-      pillBtns.forEach((b, i) => b.classList.toggle('selected', tierTabs[i].tier === selectedTier));
+      adminSelectedTier = tier;
+      pillBtns.forEach((b, i) => b.classList.toggle('selected', tierTabs[i].tier === adminSelectedTier));
       update();
-    }, `admin-pill-btn ${tier === selectedTier ? 'selected' : ''}`);
+    }, `admin-pill-btn ${tier === adminSelectedTier ? 'selected' : ''}`);
     pillBtns.push(pill);
     pillsContainer.append(pill);
   });
   filterWrap.append(pillsContainer);
 
-  let selectedRank = 1;
   const rankWrap = el('div', 'admin-rank-selector-wrap');
   rankWrap.append(el('span', 'admin-rank-label', 'Cấp sao test:'));
   const rankPills = el('div', 'admin-pills-row');
   const rankPillBtns: HTMLButtonElement[] = [];
   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(star => {
     const starBtn = button(`${star}★`, () => {
-      selectedRank = star;
-      rankPillBtns.forEach((b, i) => b.classList.toggle('selected', i + 1 === selectedRank));
+      adminSelectedRank = star;
+      rankPillBtns.forEach((b, i) => b.classList.toggle('selected', i + 1 === adminSelectedRank));
       update();
-    }, `admin-pill-btn ${star === selectedRank ? 'selected' : ''}`);
+    }, `admin-pill-btn ${star === adminSelectedRank ? 'selected' : ''}`);
     rankPillBtns.push(starBtn);
     rankPills.append(starBtn);
   });
@@ -552,22 +594,87 @@ function admin(container: HTMLElement, ctx: PanelContext): void {
 
   heroSection.append(filterWrap);
 
+  // Active target banner container
+  const bannerContainer = el('div', 'admin-banner-container');
+  heroSection.append(bannerContainer);
+
   const heroList = el('div', 'admin-hero-list');
   heroSection.append(heroList);
   container.append(heroSection);
 
   const update = () => {
+    bannerContainer.replaceChildren();
     heroList.replaceChildren();
+
+    const tree = adminTargetHeroId ? getIngredientTree(adminTargetHeroId, recipeByHero) : null;
+    const targetHero = adminTargetHeroId ? HERO_BY_ID[adminTargetHeroId] : null;
+    const targetRecipe = adminTargetHeroId ? recipeByHero.get(adminTargetHeroId) : null;
+
+    if (targetHero) {
+      const banner = el('div', 'admin-target-banner');
+      const targetInfo = el('div', 'admin-target-info');
+      targetInfo.append(
+        el('div', 'admin-target-title', `🎯 Đang chọn mua: ${targetHero.name} (Phẩm ${targetHero.tier} · ${roles[targetHero.role] || targetHero.role})`),
+        el('div', 'admin-target-recipe', targetRecipe
+          ? `Công thức ghép: ${targetRecipe.ingredients.map(id => HERO_BY_ID[id]?.name ?? id).join(' + ')}`
+          : 'Tướng Phẩm 1 khởi đầu · Không cần công thức ghép')
+      );
+      banner.append(targetInfo);
+
+      const bannerActions = el('div', 'admin-banner-actions');
+      const toggleBtn = button(adminOnlyShowRelated ? 'Hiện tất cả 70 tướng' : 'Chỉ hiện tướng liên quan', () => {
+        adminOnlyShowRelated = !adminOnlyShowRelated;
+        update();
+      }, 'admin-banner-btn');
+      const clearBtn = button('✕ Bỏ chọn', () => {
+        adminTargetHeroId = null;
+        adminOnlyShowRelated = false;
+        update();
+      }, 'admin-banner-btn danger');
+
+      bannerActions.append(toggleBtn, clearBtn);
+      banner.append(bannerActions);
+      bannerContainer.append(banner);
+    }
+
     const query = searchInput.value.trim().toLocaleLowerCase('vi');
     const filtered = HEROES.filter(h => {
-      if (selectedTier !== 0 && h.tier !== selectedTier) return false;
+      const isTarget = h.id === adminTargetHeroId;
+      const isDirect = tree?.directCounts.has(h.id) ?? false;
+      const isSub = tree?.subCounts.has(h.id) ?? false;
+      const isRelated = isTarget || isDirect || isSub;
+
+      if (adminTargetHeroId) {
+        if (adminOnlyShowRelated) {
+          if (!isRelated) return false;
+        } else if (adminSelectedTier !== 0 && !isRelated && h.tier !== adminSelectedTier) {
+          return false;
+        }
+      } else if (adminSelectedTier !== 0 && h.tier !== adminSelectedTier) {
+        return false;
+      }
+
       if (!query) return true;
       const matchName = h.name.toLocaleLowerCase('vi').includes(query);
       const matchRole = roles[h.role]?.toLocaleLowerCase('vi').includes(query);
       const matchElem = elements[h.element]?.toLocaleLowerCase('vi').includes(query);
       const matchAbility = h.ability?.name.toLocaleLowerCase('vi').includes(query);
       const matchTrait = h.trait?.name.toLocaleLowerCase('vi').includes(query);
-      return matchName || matchRole || matchElem || matchAbility || matchTrait;
+      return matchName || matchRole || matchElem || matchAbility || matchTrait || isRelated;
+    });
+
+    // Sort: Target hero first (0) -> Direct ingredients (1) -> Sub-ingredients (2) -> Other heroes (3)
+    filtered.sort((a, b) => {
+      const score = (h: HeroDef) => {
+        if (h.id === adminTargetHeroId) return 0;
+        if (tree?.directCounts.has(h.id)) return 1;
+        if (tree?.subCounts.has(h.id)) return 2;
+        return 3;
+      };
+      const diff = score(a) - score(b);
+      if (diff !== 0) return diff;
+      if (a.tier !== b.tier) return b.tier - a.tier;
+      return a.name.localeCompare(b.name, 'vi');
     });
 
     if (!filtered.length) {
@@ -576,9 +683,34 @@ function admin(container: HTMLElement, ctx: PanelContext): void {
     }
 
     for (const hero of filtered) {
-      const card = el('div', 'admin-hero-card');
+      const isTarget = adminTargetHeroId === hero.id;
+      const isDirect = tree?.directCounts.has(hero.id);
+      const isSub = tree?.subCounts.has(hero.id);
+      const isRelevant = isTarget || isDirect || isSub;
+      const isDimmed = !!adminTargetHeroId && !isRelevant;
+
+      const card = el('div', `admin-hero-card ${isTarget ? 'is-target-hero' : ''} ${isDirect ? 'is-craft-ingredient' : ''} ${isSub ? 'is-craft-sub-ingredient' : ''} ${isDimmed ? 'is-dimmed' : ''}`);
+
+      if (isTarget) {
+        card.append(el('div', 'admin-card-tag target', '🎯 TƯỚNG ĐANG CHỌN MUA'));
+      } else if (isDirect) {
+        const need = tree!.directCounts.get(hero.id)!;
+        const have = countOwned(hero.id);
+        card.append(el('div', `admin-card-tag direct-ingredient ${have >= need ? 'ready' : 'missing'}`, `📦 NGUYÊN LIỆU TRỰC TIẾP (Cần x${need} · Đang có x${have} ${have >= need ? '✓' : ''})`));
+      } else if (isSub) {
+        const subNeed = tree!.subCounts.get(hero.id)!;
+        const have = countOwned(hero.id);
+        card.append(el('div', 'admin-card-tag sub-ingredient', `🔹 NGUYÊN LIỆU THÀNH PHẦN (Cần x${subNeed} · Đang có x${have})`));
+      }
 
       const headerRow = el('div', 'admin-card-header');
+      headerRow.title = 'Nhấp vào đây để chọn tướng này và xem nguyên liệu ghép';
+      headerRow.style.cursor = 'pointer';
+      headerRow.addEventListener('click', () => {
+        adminTargetHeroId = adminTargetHeroId === hero.id ? null : hero.id;
+        update();
+      });
+
       const meta = el('div', 'admin-hero-meta');
       meta.append(
         el('strong', 'admin-hero-name', hero.name),
@@ -590,6 +722,7 @@ function admin(container: HTMLElement, ctx: PanelContext): void {
       const descBox = el('div', 'admin-hero-desc');
       if (hero.ability) {
         descBox.append(el('p', '', `⚡ Kỹ năng [${hero.ability.name}]: ${hero.ability.description} (${abilityResource(hero)})`));
+        descBox.append(el('p', 'muted', controlLine(hero)));
       }
       if (hero.trait) {
         descBox.append(el('p', 'muted', `🗡️ Đặc tính [${hero.trait.name}]: ${hero.trait.description}`));
@@ -604,19 +737,23 @@ function admin(container: HTMLElement, ctx: PanelContext): void {
       // Actions row
       const actions = el('div', 'admin-card-actions');
       actions.append(
-        button(`+ Kho (${selectedRank}★)`, () => {
-          debug('client.admin-get-hero', { heroId: hero.id, rank: selectedRank, deploy: false });
-          ctx.send({ type: 'admin-get-hero', heroId: hero.id, rank: selectedRank, deploy: false });
+        button(`+ Kho (${adminSelectedRank}★)`, () => {
+          debug('client.admin-get-hero', { heroId: hero.id, rank: adminSelectedRank, deploy: false });
+          ctx.send({ type: 'admin-get-hero', heroId: hero.id, rank: adminSelectedRank, deploy: false });
         }, 'admin-action-btn highlight'),
-        button(`⚔️ Ra trận (${selectedRank}★)`, () => {
-          debug('client.admin-get-hero', { heroId: hero.id, rank: selectedRank, deploy: true });
-          ctx.send({ type: 'admin-get-hero', heroId: hero.id, rank: selectedRank, deploy: true });
-        }, 'admin-action-btn primary')
+        button(`⚔️ Ra trận (${adminSelectedRank}★)`, () => {
+          debug('client.admin-get-hero', { heroId: hero.id, rank: adminSelectedRank, deploy: true });
+          ctx.send({ type: 'admin-get-hero', heroId: hero.id, rank: adminSelectedRank, deploy: true });
+        }, 'admin-action-btn primary'),
+        button(isTarget ? '✓ Bỏ chọn' : '🎯 Chọn ghép', () => {
+          adminTargetHeroId = isTarget ? null : hero.id;
+          update();
+        }, `admin-action-btn ${isTarget ? 'active-target' : 'select-target'}`)
       );
 
       const quickStars = el('div', 'admin-quick-stars');
       quickStars.append(el('span', 'admin-quick-label', 'Nhận nhanh:'));
-      [1, 2, 3, 4, 5, 6].forEach(star => {
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(star => {
         quickStars.append(
           button(`${star}★`, () => {
             debug('client.admin-get-hero', { heroId: hero.id, rank: star, deploy: false });

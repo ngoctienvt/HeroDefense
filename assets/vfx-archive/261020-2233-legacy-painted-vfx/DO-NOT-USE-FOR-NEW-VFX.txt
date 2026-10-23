@@ -1,0 +1,1 @@
+Archived painterly VFX. Do not use for art, style reference, runtime or automatic selection. No runtime exceptions: the three mistakenly integrated Nhulai atlases were retired by explicit user request. Generate stylized replacements in current raw/ before processing. Files moved byte-for-byte; archive-index.json records original paths and hashes.

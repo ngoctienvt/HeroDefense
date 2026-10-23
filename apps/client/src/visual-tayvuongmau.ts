@@ -1,153 +1,125 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { TAYVUONGMAU as T } from '../../../content/tayvuongmau-design.js';
 import { debug } from './debug.js';
+import { screenUp } from './visual-kit-billboard.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { KitFxBank } from './visual-kit-fx-bank.js';
+import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { unitDirection } from './visual-kit-timeline.js';
+import { TayvuongmauImpacts } from './visual-tayvuongmau-impacts.js';
+import { TayvuongmauPeach } from './visual-tayvuongmau-peach.js';
+import { TayvuongmauPins } from './visual-tayvuongmau-pins.js';
+import { TayvuongmauRain } from './visual-tayvuongmau-rain.js';
+import { TayvuongmauReplay } from './visual-tayvuongmau-replay.js';
+import { DEFAULT_WINDUP, MAX_BASIC_PINS, NOCK_HEIGHT, PIN_COUNT, STRIKE_HEIGHT } from './visual-tayvuongmau-timeline.js';
 
-type Flight = { mesh: Mesh; from: Vector3; to: Vector3; age: number; life: number; peach: boolean };
-type Blessing = { mesh: Mesh; touched: boolean };
+/** Painted planes alive at once: 3 casts × 11 pins, 36 planted pins, 30 basic pins, 12 peaches. */
+const PAINTED_CAPACITY = 128;
 
-/** Phoenix-shaped hairpins, falling metal rain, and recipient-specific peaches. */
-export class VisualTayvuongmau {
-  private pins: Mesh[] = [];
-  private peaches: Mesh[] = [];
-  private flights: Flight[] = [];
-  private blessings = new Map<string, Blessing>();
-  private blessingPool: Mesh[] = [];
-  private gold: StandardMaterial;
-  private rose: StandardMaterial;
-  private jade: StandardMaterial;
+/**
+ * Tây Vương Mẫu (h01A) on the kit, Codex art from tier56-codex-art (palettes/sprays `kunlun`, `peach`).
+ * Windup (`cast skill-h01A`, locked point): the R7 edge lights and a crown of golden hairpins hangs high over the point.
+ * Resolve (`ability skill-h01A`): the pins fan out and fall onto the listed monsters and the area, each leaving a planted
+ * pin that pulls up and fades; the first landing sends the R7 shock ring. The sunder mark on monsters comes from the
+ * shared status marks. `peach-h01A` (one per recipient): the peach arcs from her to the ally and folds in; the 5 s buff
+ * is a ring marker (`peach`). Basic `trait-h01A`: one hairpin per listed monster. Presentation only; the server decides hits.
+ */
+export class VisualTayvuongmau implements HeroVfx {
+  readonly heroId = T.id;
+  private art: KitPainted;
+  private bank: KitFxBank;
+  private impacts: TayvuongmauImpacts;
+  private rain: TayvuongmauRain;
+  private pins: TayvuongmauPins;
+  private peach: TayvuongmauPeach;
+  private preview = new TayvuongmauReplay(this);
 
   constructor(private scene: Scene) {
-    this.gold = this.material('tayvuongmau-gold', '#deb455', .92);
-    this.rose = this.material('tayvuongmau-peach', '#e89aa3', .9);
-    this.jade = this.material('tayvuongmau-jade', '#77b795', .9);
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'tayvuongmau');
+    this.bank = new KitFxBank(scene, new KitFlipbooks(scene));
+    this.impacts = new TayvuongmauImpacts(this.art);
+    this.rain = new TayvuongmauRain(scene, this.art, this.bank, this.impacts);
+    this.pins = new TayvuongmauPins(scene, this.art);
+    this.peach = new TayvuongmauPeach(scene, this.art, this.bank);
+    debug('visual.tayvuongmau.layout', { radius: T.rainRadius, pins: PIN_COUNT, peaches: T.peachCount });
   }
 
-  private material(name: string, color: string, alpha: number): StandardMaterial {
-    const material = new StandardMaterial(name, this.scene);
-    material.diffuseColor = Color3.FromHexString(color);
-    material.emissiveColor = material.diffuseColor.scale(.24);
-    material.alpha = alpha;
-    material.backFaceCulling = false;
-    material.disableDepthWrite = true;
-    return material;
+  /** Idempotent; art still loading keeps the shader rim and ring, and the next use retries. */
+  prepare(): void {
+    this.art.prepare('pin', '/assets/vfx-tayvuongmau-pin.webp', { foreground: true });
+    this.art.prepare('impact', '/assets/vfx-tayvuongmau-impact.webp', { foreground: true });
+    this.art.prepare('peach', '/assets/vfx-tayvuongmau-peach.webp', { foreground: true });
   }
 
-  private pin(): Mesh {
-    const pin = this.pins.pop() ?? MeshBuilder.CreateCylinder('phoenix-hairpin',
-      { height: 1.2, diameterTop: .1, diameterBottom: .04, tessellation: 8 }, this.scene);
-    if (!pin.getChildMeshes().length) {
-      for (const side of [-1, 1]) {
-        const wing = MeshBuilder.CreatePlane('phoenix-wing', { width: .7, height: .28 }, this.scene);
-        wing.parent = pin; wing.position.set(side * .28, .35, 0);
-        wing.rotation.z = side * .42; wing.material = this.gold; wing.isPickable = false;
+  cast(event: GameEvent, at: Vector3, reduced: boolean): boolean {
+    if (event.skillId !== `skill-${T.id}`) return false;
+    this.prepare();
+    this.rain.begin(at, event.windup ?? DEFAULT_WINDUP, reduced, event.source);
+    debug('visual.tayvuongmau.cast', { eventId: event.id, windup: event.windup ?? DEFAULT_WINDUP, reduced });
+    return true;
+  }
+
+  ability(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {
+    this.prepare();
+    switch (event.skillId) {
+      case `skill-${T.id}`: {
+        if (event.kind !== 'ability') return false;
+        const hadCast = this.rain.resolve(event.source, at, extra?.targets ?? [], reduced);
+        debug('visual.tayvuongmau.rain', { eventId: event.id, hadCast, targets: event.targets?.length ?? 0, reduced });
+        return true;
       }
+      case `trait-${T.id}`:
+        this.basic(event, origin, extra?.targets ?? [at], reduced);
+        return true;
+      case `peach-${T.id}`:
+        this.peach.gift(origin, at, extra?.hasOrigin ?? false, reduced);
+        debug('visual.tayvuongmau.peach', { eventId: event.id, recipient: event.target, reduced });
+        return true;
+      default: return false;
     }
-    pin.material = this.gold; pin.isPickable = false; pin.setEnabled(true);
-    return pin;
   }
 
-  private peach(): Mesh {
-    const peach = this.peaches.pop() ?? MeshBuilder.CreateSphere('immortal-peach',
-      { diameter: .8, segments: 12 }, this.scene);
-    if (!peach.getChildMeshes().length) {
-      const leaf = MeshBuilder.CreatePlane('peach-leaf', { width: .42, height: .22 }, this.scene);
-      leaf.parent = peach; leaf.position.set(.13, .42, 0);
-      leaf.rotation.z = -.4; leaf.material = this.jade; leaf.isPickable = false;
-    }
-    peach.material = this.rose; peach.isPickable = false; peach.setEnabled(true);
-    return peach;
+  /** Snapshot marker `peach` (every frame while the ally has the 5 s peach buff). */
+  mark(kind: string, id: string, at: Vector3, reduced: boolean): void {
+    if (kind === 'peach') this.peach.mark(id, at, reduced);
   }
 
-  private launch(mesh: Mesh, from: Vector3, to: Vector3, life: number, peach: boolean): void {
-    if (this.flights.length >= 48) { mesh.setEnabled(false); (peach ? this.peaches : this.pins).push(mesh); return; }
-    mesh.position.copyFrom(from); mesh.visibility = 1;
-    this.flights.push({ mesh, from, to, life, age: 0, peach });
-  }
-
-  cast(event: GameEvent, at: Vector3, reduced: boolean): void {
-    if (reduced) return;
-    for (let i = 0; i < 8; i++) {
-      const angle = i * Math.PI / 4;
-      const origin = at.add(new Vector3(Math.cos(angle) * 1.1, 2.2 + i * .08,
-        Math.sin(angle) * 1.1));
-      this.launch(this.pin(), origin, origin.add(new Vector3(0, 1, 0)),
-        event.windup ?? .25, false);
-    }
-    debug('visual.tayvuongmau.cast', { eventId: event.id });
-  }
-
-  attack(event: GameEvent, from: Vector3, targets: Vector3[], reduced: boolean): void {
-    const selected = reduced ? targets.slice(0, 1) : targets.slice(0, T.pins);
-    for (const target of selected) this.launch(this.pin(),
-      from.add(new Vector3(0, 2, 0)), target.add(new Vector3(0, 1.2, 0)), .33, false);
-    debug('visual.tayvuongmau.pins', { eventId: event.id, targets: selected.length });
-  }
-
-  rain(event: GameEvent, at: Vector3, reduced: boolean): void {
-    const count = reduced ? 8 : 24;
-    for (let i = 0; i < count; i++) {
-      const angle = i * 2.399963, radius = T.rainRadius * Math.sqrt((i + .5) / count);
-      const x = at.x + Math.cos(angle) * radius, z = at.z + Math.sin(angle) * radius;
-      this.launch(this.pin(), new Vector3(x, reduced ? 3 : 7 + i % 4, z),
-        new Vector3(x, .15, z), reduced ? .2 : .34 + i % 4 * .065, false);
-    }
-    debug('visual.tayvuongmau.rain', { eventId: event.id, targets: event.targets?.length ?? 0 });
-  }
-
-  gift(event: GameEvent, from: Vector3, to: Vector3, reduced: boolean): void {
-    this.launch(this.peach(), from.add(new Vector3(0, 2.4, 0)),
-      to.add(new Vector3(0, 1.6, 0)), reduced ? .22 : .55, true);
-    debug('visual.tayvuongmau.peach', { eventId: event.id, recipient: event.target });
-  }
-
-  markBlessing(id: string, at: Vector3): void {
-    let blessing = this.blessings.get(id);
-    if (!blessing) {
-      if (this.blessings.size >= 20) return;
-      const mesh = this.blessingPool.pop() ?? MeshBuilder.CreateTorus('peach-blessing',
-        { diameter: 2.4, thickness: .1, tessellation: 20 }, this.scene);
-      mesh.material = this.rose; mesh.isPickable = false; mesh.setEnabled(true);
-      blessing = { mesh, touched: false }; this.blessings.set(id, blessing);
-    }
-    blessing.touched = true; blessing.mesh.position.set(at.x, .08, at.z);
-  }
-
-  tick(dt: number): void {
-    if (!Number.isFinite(dt) || dt <= 0) return;
-    for (const [id, blessing] of this.blessings) {
-      if (blessing.touched) { blessing.touched = false; continue; }
-      blessing.mesh.setEnabled(false); this.blessingPool.push(blessing.mesh); this.blessings.delete(id);
-    }
-    for (let i = this.flights.length - 1; i >= 0; i--) {
-      const flight = this.flights[i]; flight.age += dt;
-      if (flight.age >= flight.life) {
-        flight.mesh.setEnabled(false);
-        (flight.peach ? this.peaches : this.pins).push(flight.mesh);
-        this.flights.splice(i, 1); continue;
-      }
-      const progress = flight.age / flight.life;
-      Vector3.LerpToRef(flight.from, flight.to, progress, flight.mesh.position);
-      if (flight.peach) flight.mesh.position.y += Math.sin(progress * Math.PI) * .7;
-      else flight.mesh.rotation.z = Math.atan2(flight.to.x - flight.from.x,
-        flight.to.y - flight.from.y);
-      flight.mesh.visibility = Math.min(1, (1 - progress) * 3);
-    }
+  tick(dt: number, time: number): void {
+    this.preview.tick(dt);
+    this.rain.tick(dt, time);
+    this.pins.tick(dt);
+    this.peach.tick(dt, time);
+    this.impacts.tick(dt, screenUp(this.scene));
+    this.bank.tick(dt, time);
   }
 
   clear(): void {
-    for (const flight of this.flights) {
-      flight.mesh.setEnabled(false); (flight.peach ? this.peaches : this.pins).push(flight.mesh);
+    this.preview.clear(); this.rain.clear(); this.pins.clear(); this.peach.clear(); this.impacts.clear();
+    this.bank.clear(); this.art.clear();
+  }
+
+  replay(kind: string, at: Vector3, reduced: boolean, origin = at): boolean {
+    this.prepare();
+    return this.preview.start(kind, at, reduced, origin);
+  }
+
+  /** One hairpin per monster the server listed, flying tip-first from the caster; a contact ring where each lands. */
+  private basic(event: GameEvent, origin: Vector3, targets: readonly Vector3[], reduced: boolean): void {
+    const hits = targets.slice(0, reduced ? 1 : MAX_BASIC_PINS);
+    for (const target of hits) {
+      const dir = unitDirection({ x: target.x, z: target.z }, origin);
+      if (!dir) { debug('visual.tayvuongmau.pin.skip', { eventId: event.id, reason: 'no-direction' }); continue; }
+      const land = () => {
+        this.bank.ring(target, 1.1, 'kunlun', { life: .28, fill: .3, rim: 1, alpha: .8, hold: true, reduced, order: 5 });
+        if (!reduced) this.bank.spray('kunlun').ring(new Vector3(target.x, 0, target.z), .3, 8, .2, 1.4, 2.6);
+      };
+      if (reduced) { land(); continue; }
+      const from = new Vector3(origin.x + dir.x * 1.2, NOCK_HEIGHT, origin.z + dir.z * 1.2);
+      this.pins.fire(from, new Vector3(target.x, STRIKE_HEIGHT, target.z), land);
     }
-    this.flights.length = 0;
-    for (const blessing of this.blessings.values()) {
-      blessing.mesh.setEnabled(false); this.blessingPool.push(blessing.mesh);
-    }
-    this.blessings.clear();
+    debug('visual.tayvuongmau.pins', { eventId: event.id, targets: hits.length, reduced });
   }
 }

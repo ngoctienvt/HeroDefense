@@ -1,0 +1,114 @@
+{
+  "frames": 36,
+  "clips": 12,
+  "idleFramesPerDirection": 1,
+  "sourceReports": {
+    "idle": {
+      "size": [
+        2450,
+        2568
+      ],
+      "sha256": "c56cdfc3d5e2fba9d29ffff7b3417d128a791e535008540c52bfc458f0aa8a73",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    },
+    "walk": {
+      "size": [
+        2588,
+        2508
+      ],
+      "sha256": "8b324cef0b6f4d0592d99e14a3a7611cc063f7dbd7154abc731fc55888f81f6e",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": [
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01G\\source\\walk.png",
+          "slot": 2
+        },
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01G\\source\\walk.png",
+          "slot": 3
+        }
+      ]
+    },
+    "attack": {
+      "size": [
+        2508,
+        2508
+      ],
+      "sha256": "98b2b7304827f3e6eabaa9e8cec0cf630a7cb3ad5d084832b6f28fc107a8218f",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": [
+        {
+          "id": "source_outer_edge",
+          "value": 1,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01G\\source\\attack.png",
+          "slot": 11
+        },
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01G\\source\\attack.png",
+          "slot": 13
+        }
+      ]
+    }
+  },
+  "masterBodyHeight": 1033.5,
+  "familyScaleAdjustments": {},
+  "directionScaleAdjustments": {},
+  "familyScales": {
+    "idle": 0.1606192549588776,
+    "walk": 0.3207729468599034,
+    "attack": 0.3494736842105263
+  },
+  "uniformEnvelopeReduction": 0.8552266350582903,
+  "warnings": [
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01G\\source\\walk.png",
+      "slot": 2
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01G\\source\\walk.png",
+      "slot": 3
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 1,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01G\\source\\attack.png",
+      "slot": 11
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01G\\source\\attack.png",
+      "slot": 13
+    }
+  ],
+  "limits": [
+    "Generated acting and identity need visual motion review.",
+    "Four keyframes per action are intentionally sparse.",
+    "No game/test/build execution."
+  ]
+}

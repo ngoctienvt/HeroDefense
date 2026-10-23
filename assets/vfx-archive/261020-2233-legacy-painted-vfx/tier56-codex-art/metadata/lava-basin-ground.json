@@ -1,0 +1,50 @@
+{
+  "heroId": "h01H",
+  "asset": "lava-basin-ground",
+  "type": "D",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-f762e41c-ff35-4959-9e75-a64a7faaef95.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/lava-basin-ground.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/lava-basin-ground.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "visualQA": "Top-down basalt basin; after two framing corrections visible content has at least 7% margin. Contrast and material checked light/dark.",
+  "sha256": "4864a204a6c9af26495a2a2889d58250169278840f6e3b5b5f50b8294a6b4884",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/lava-basin-ground-light-dark.jpg",
+  "limitations": [
+    "Raw art only; not processed, built, run or approved in game.",
+    "Runtime mapping, scale, timing and lifecycle remain for integration."
+  ],
+  "alphaSilhouetteBBoxAboveAlpha8Px": [
+    94,
+    125,
+    1167,
+    1148
+  ],
+  "promptUsedForRecordedOutput": "Final framing correction: shrink and center the full lava basin substantially so there is a clearly visible transparent border at least 8% of canvas width on all four sides (larger than 3% minimum). Keep the complete uncut basalt rim and flowing lava; do not crop or flatten it. Preserve top-down decal view and same material/palette. One square decal only, transparent background, no other elements.",
+  "generationOutputs": [
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-4cfaca23-db92-443f-b63d-949f26c7cc7b.png",
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-1082ebca-bb65-47e9-8b72-7edb77fc480f.png",
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-f762e41c-ff35-4959-9e75-a64a7faaef95.png"
+  ],
+  "iterations": [
+    "assets/vfx-source/tier56-codex-art/iterations/lava-basin-ground-attempt-01.png",
+    "assets/vfx-source/tier56-codex-art/iterations/lava-basin-ground-attempt-02.png"
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/lava-basin-ground.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

@@ -1,0 +1,58 @@
+{
+  "heroId": "h01J",
+  "asset": "five-finger-mountain-front-sheet",
+  "type": "P16",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-7171301f-3e0d-4f23-8953-52a491ac0e53.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/five-finger-mountain-front-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/five-finger-mountain-front-sheet.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "rectRule": "round(i*1254/4); alternate 313/314 px cells, no stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "P16 4x4 confirmed; low foreground ridge preserves broad actor lane. Checked light/dark.",
+  "sha256": "0bd77fe1a6d8346e52960c1bf0c4ee047102e49b31cff5edfe11d30036cd2eec",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/five-finger-mountain-front-sheet-light-dark.jpg",
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime scale, timing, depth and routing remain to be integrated and checked."
+  ],
+  "promptUsedForRecordedOutput": "Create the matching front-layer JOB five-finger-mountain-front-sheet by editing the attached accepted rear mountain sheet. Preserve its exact five-peaked ridge identity, painterly ochre stone material, camera, scale, frame timing, and anchor. Show ONLY low foreground foothills and a few broken rock pieces that belong in front of the player; keep central body/upper half mostly transparent so actors and health bars stay clear. Do not draw a second full mountain or tall peaks. Same 4x4 P16: grow 1-4, hold 5-12 with modest stone changes, erode 13-16. Transparent background, 3% safe margin, no character, text, grid, borders, or scenery.",
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/five-finger-mountain-front-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

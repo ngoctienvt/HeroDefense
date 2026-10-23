@@ -1,0 +1,61 @@
+{
+  "heroId": "h013",
+  "heroName": "Kim Thiền Tử",
+  "asset": "bowl-front-sheet",
+  "type": "P16",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen edited from accepted bowl-rear-sheet",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/bowl-front-sheet.txt",
+  "sourceImagePath": "assets/vfx-source/tier56-codex-art/raw/bowl-rear-sheet.png (matching accepted layer reference)",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/bowl-front-sheet.png",
+  "actualSizePx": [
+    1536,
+    1024
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    254
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      384,
+      768,
+      1152,
+      1536
+    ],
+    "yBoundsPx": [
+      0,
+      256,
+      512,
+      768,
+      1024
+    ],
+    "rectRule": "equal 384x256 cells in generated 3:2 atlas; preserve without stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "Reviewed on light/dark and against rear sheet. Low matching front rim and jade side ornament align with rear silhouette; upper area and center remain transparent; frames 1-4 appear, hold through 12, dissolve 13-16. Actual 3:2 atlas; retain cell rectangles.",
+  "sha256": "dd22cede5e3ae8bb1421b5ea25b82644fe094843785d629db944ac5667b7a397",
+  "previewPaths": [
+    "assets/vfx-source/tier56-codex-art/previews/bowl-front-sheet-light.jpg",
+    "assets/vfx-source/tier56-codex-art/previews/bowl-front-sheet-dark.jpg"
+  ],
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Pair only with accepted bowl-rear-sheet; this does not form a full independent bowl billboard."
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/bowl-front-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

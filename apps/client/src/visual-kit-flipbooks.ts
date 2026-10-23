@@ -23,6 +23,8 @@ export class KitFlipbooks {
       { width: atlas.cell, height: atlas.cell }, this.scene);
     manager.isPickable = false;
     manager.texture.hasAlpha = true;
+    // A tall billboard on a hero sits nearer the camera than the hero's body; without depth it can't hide it.
+    if (atlas.depthWrite === false) manager.disableDepthWrite = true;
     manager.texture.onLoadObservable.addOnce(() => debug('visual.kit.asset.ready', { asset: id }));
     this.managers.set(id, manager);
     this.pools.set(id, []);

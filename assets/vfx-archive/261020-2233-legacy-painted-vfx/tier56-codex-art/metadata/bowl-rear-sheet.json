@@ -1,0 +1,60 @@
+{
+  "heroId": "h013",
+  "heroName": "Kim Thiền Tử",
+  "asset": "bowl-rear-sheet",
+  "type": "P16",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/bowl-rear-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/bowl-rear-sheet.png",
+  "actualSizePx": [
+    1536,
+    1024
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    253
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      384,
+      768,
+      1152,
+      1536
+    ],
+    "yBoundsPx": [
+      0,
+      256,
+      512,
+      768,
+      1024
+    ],
+    "rectRule": "equal 384x256 cells in generated 3:2 atlas; preserve without stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "Reviewed 16 cells on light/dark. Rear wall is a stable U-shaped gold bowl back with an open center; frames 1-4 assemble, 5-12 hold with subtle glints, 13-16 dissolve. No full disc; alpha clear. Actual 3:2 canvas differs from square target; do not stretch cells.",
+  "sha256": "cd8f3c1137041cc72c432ca5040b6a21e48fcea6442250f777c78a78a6651fb0",
+  "previewPaths": [
+    "assets/vfx-source/tier56-codex-art/previews/bowl-rear-sheet-light.jpg",
+    "assets/vfx-source/tier56-codex-art/previews/bowl-rear-sheet-dark.jpg"
+  ],
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Must be paired with matching front layer; runtime bowl must retain R7 and 5s server lifetime."
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/bowl-rear-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

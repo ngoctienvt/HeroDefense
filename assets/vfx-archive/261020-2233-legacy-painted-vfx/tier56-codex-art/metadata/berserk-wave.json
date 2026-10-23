@@ -1,0 +1,39 @@
+{
+  "heroId": "h011",
+  "heroName": "Hình Thiên",
+  "asset": "berserk-wave",
+  "type": "T",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/berserk-wave.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/berserk-wave.png",
+  "actualSizePx": [
+    2172,
+    724
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "ratio": 3.0,
+  "orientation": "head at right, smoky ash trail to left",
+  "visualQA": "Reviewed on light/dark. Long, low crimson/plum ribbon reads left-to-right with a flattened flame head at right and ash tail at left; no circular blast. Alpha is present. Keep aspect ratio and avoid trimming tips.",
+  "sha256": "af18b03d1b05fdfc68580d2764c5c5ff53e9bf080b1f399d2c32bdb8738728dc",
+  "previewPaths": [
+    "assets/vfx-source/tier56-codex-art/previews/berserk-wave-light.jpg",
+    "assets/vfx-source/tier56-codex-art/previews/berserk-wave-dark.jpg"
+  ],
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime ribbon mesh, direction, timing and cleanup remain to be integrated and checked."
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/berserk-wave.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

@@ -1,0 +1,31 @@
+{
+  "heroId": "h01J",
+  "asset": "buddha-shield-rear-sheet",
+  "type": "P16",
+  "status": "superseded-by-shared-shield",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/buddha-shield-rear-sheet.txt",
+  "iterations": [
+    "assets/vfx-source/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-01.png",
+    "assets/vfx-source/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-02.png",
+    "assets/vfx-source/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-03.png",
+    "assets/vfx-source/tier56-codex-art/raw/buddha-shield-rear-sheet-retry-04.png"
+  ],
+  "visualQA": "Initial result and two corrections still show an enclosed ring/wreath instead of the required two rear shield walls with an open ally center. All revisions retained.",
+  "limitations": [
+    "No accepted raw image; one raw-ready primary asset still unavailable for the Nhulai pilot."
+  ],
+  "finalPromptUsed": "This is the second and final correction to this job. Keep the exact 4x4 P16 layout and painted ivory-gold material, but remove the closed circular ring/donut silhouette in frames 5-12. A rear shield layer must be only two tall translucent curved side walls rising from the ground behind an absent ally, with a faint connecting upper canopy; keep the torso-sized center completely transparent. No full circle or ring may appear in any frame. Frames 1-4 grow those rear side walls, 5-12 hold with subtle light variation, 13-16 break apart. Same anchor/camera/margins. Transparent background, no character, text, grid, scenery.",
+  "generationOutputs": [
+    "Codex image_gen follow-up retry-04"
+  ],
+  "latestAttemptQA": "Rejected: non-transparent, noisy magenta/yellow contamination and inconsistent frame layout. Preserved as rejected iteration; blocker remains.",
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/buddha-shield-rear-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "BLOCKED_ART",
+  "replacementAssets": [
+    "shared-shield-rear-sheet",
+    "shared-shield-front-sheet"
+  ]
+}

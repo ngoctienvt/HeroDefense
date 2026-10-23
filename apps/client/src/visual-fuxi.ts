@@ -1,144 +1,101 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
-import { TransformNode } from '@babylonjs/core/Meshes/transformNode.js';
+import type { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { debug } from './debug.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { KitFxBank } from './visual-kit-fx-bank.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { prepareFuxiArt } from './visual-fuxi-assets.js';
+import { FuxiArray } from './visual-fuxi-array.js';
+import { FuxiLinks } from './visual-fuxi-links.js';
+import { FuxiReplay } from './visual-fuxi-replay.js';
+import { DEFAULT_WINDUP } from './visual-fuxi-timeline.js';
+import { FuxiWake } from './visual-fuxi-wake.js';
 
-type Marker = { root: TransformNode; touched: boolean };
-type Pulse = { root: TransformNode; age: number; life: number };
+/** Painted planes alive at once: wake (3) + held zones (3) + ropes (24 + 24 knots). */
+const PAINTED_CAPACITY = 64;
+const MAX_STRIKE_POINTS = 6;
 
+/**
+ * Phục Hy (h01D) on the kit: Tiên Thiên Bát Quái Càn Khôn Trận and the guqin strike.
+ * Server events: `cast skill-h01D` (0.25 s windup, at the locked point) → `ability skill-h01D` (everything in R9.5 takes 440 %,
+ * slow, sunder and a 60 % soul link) → snapshot `fuxi-bagua` (radius / remaining, 6 s, pulls monsters inward) and `soulLink`
+ * pairs (rope between linked monsters). `trait-h01D` is the normal guqin strike (35 % link, not an ultimate link).
+ * Layers (each its own module): FuxiWake opening, FuxiArray hold/close, FuxiLinks rope. The VisualEffects marker and adapter
+ * entry points keep their signatures; the adapter routes `skill-h01D` here with the real target list.
+ */
 export class VisualFuxi {
-  private readonly zones = new Map<string, Marker>();
-  private readonly pool: TransformNode[] = [];
-  private readonly pulses: Pulse[] = [];
-  private readonly jade: StandardMaterial;
-  private readonly gold: StandardMaterial;
-  private readonly surface: StandardMaterial;
+  private readonly art: KitPainted;
+  private readonly bank: KitFxBank;
+  private readonly wake: FuxiWake;
+  private readonly array: FuxiArray;
+  private readonly links: FuxiLinks;
+  private readonly preview = new FuxiReplay(this);
+  private time = 0;
 
-  constructor(private readonly scene: Scene) {
-    this.jade = this.material('fuxi-jade', '#3ba58b', .35, .82);
-    this.gold = this.material('fuxi-gold', '#dfbd65', .25, .88);
-    this.surface = this.material('fuxi-bagua-surface', '#2d8b76', .08, .16);
+  constructor(scene: Scene) {
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'fuxi');
+    this.bank = new KitFxBank(scene, new KitFlipbooks(scene));
+    this.wake = new FuxiWake(scene, this.art, this.bank);
+    this.array = new FuxiArray(scene, this.art, this.bank);
+    this.links = new FuxiLinks(scene, this.art);
   }
 
-  private material(name: string, color: string, glow: number, alpha: number): StandardMaterial {
-    const result = new StandardMaterial(name, this.scene);
-    result.diffuseColor = Color3.FromHexString(color);
-    result.emissiveColor = result.diffuseColor.scale(glow);
-    result.alpha = alpha; result.backFaceCulling = false; result.disableDepthWrite = true;
-    return result;
+  /** Atlases load only once a Phục Hy is on the field (idempotent). */
+  prepare(): void { prepareFuxiArt(this.art); }
+
+  /** `at` is the locked point (the cast event is placed on the target), where the array will stand. */
+  cast(event: GameEvent, at: Vector3, reduced = false): void {
+    this.prepare();
+    this.wake.cast(event.source ?? String(event.id), at, event.windup ?? DEFAULT_WINDUP, reduced);
   }
 
-  private makeBagua(): TransformNode {
-    const root = new TransformNode('fuxi-bagua-array', this.scene);
-    const disc = MeshBuilder.CreateCylinder('bagua-jade-disc', {
-      height: .035, diameter: 19, tessellation: 8,
-    }, this.scene);
-    disc.parent = root; disc.position.y = .02;
-    disc.material = this.surface; disc.isPickable = false;
-    for (const [diameter, material] of [[19, this.gold], [12, this.jade], [3.2, this.gold]] as const) {
-      const ring = MeshBuilder.CreateTorus('bagua-octagonal-ring', {
-        diameter, thickness: .16, tessellation: 8,
-      }, this.scene);
-      ring.parent = root; ring.position.y = .09;
-      ring.material = material; ring.isPickable = false;
-    }
-    for (let gua = 0; gua < 8; gua++) {
-      const angle = gua * Math.PI / 4;
-      const cx = Math.cos(angle) * 7.9, cz = Math.sin(angle) * 7.9;
-      for (let line = 0; line < 3; line++) {
-        const broken = (gua >> line) & 1;
-        for (const half of broken ? [-1, 1] : [0]) {
-          const bar = MeshBuilder.CreateBox('bagua-trigram-stroke', {
-            width: broken ? .61 : 1.45, height: .05, depth: .18,
-          }, this.scene);
-          bar.parent = root;
-          const tangent = line * .48 - .48;
-          const split = broken ? half * .39 : 0;
-          bar.position.set(cx + Math.cos(angle) * tangent - Math.sin(angle) * split,
-            .13, cz + Math.sin(angle) * tangent + Math.cos(angle) * split);
-          bar.rotation.y = -angle;
-          bar.material = this.gold; bar.isPickable = false;
-        }
-      }
-    }
-    return root;
+  impact(event: GameEvent, at: Vector3, reduced: boolean, targets: readonly Vector3[] = []): void {
+    this.prepare();
+    this.wake.impact(event.source ?? String(event.id), at, targets, reduced);
   }
 
-  markZone(id: string, at: Vector3): void {
-    let marker = this.zones.get(id);
-    if (!marker) {
-      if (this.zones.size >= 8) return;
-      marker = { root: this.pool.pop() ?? this.makeBagua(), touched: false };
-      marker.root.setEnabled(true); this.zones.set(id, marker);
-      debug('visual.fuxi.zone.start', { id });
-    }
-    marker.root.position.copyFrom(at); marker.touched = true;
-  }
-
-  cast(event: GameEvent, at: Vector3): void {
-    debug('visual.fuxi.cast', { eventId: event.id, x: at.x, z: at.z });
-  }
-
+  /** Normal guqin strike: a jade qi line chains from the player through up to six linked monsters. */
   attack(event: GameEvent, from: Vector3, targets: Vector3[], reduced: boolean): void {
-    if (this.pulses.length >= 12 || !targets.length) return;
-    const root = new TransformNode('fuxi-guqin-sound-waves', this.scene);
-    const points = [from, ...targets.slice(0, reduced ? 2 : 6)];
-    for (let i = 1; i < points.length; i++) {
-      const start = points[i - 1], end = points[i];
-      const dx = end.x - start.x, dz = end.z - start.z;
-      const beam = MeshBuilder.CreateBox('fuxi-sound-wave', {
-        width: reduced ? .13 : .22, height: .12, depth: Math.hypot(dx, dz),
-      }, this.scene);
-      beam.parent = root;
-      beam.position.set((start.x + end.x) / 2, 1.2, (start.z + end.z) / 2);
-      beam.rotation.y = Math.atan2(dx, dz);
-      beam.material = this.jade; beam.isPickable = false;
-    }
-    this.pulses.push({ root, age: 0, life: reduced ? .2 : .38 });
-    debug('visual.fuxi.attack', { eventId: event.id, targets: points.length - 1 });
+    if (!targets.length) return;
+    this.prepare();
+    const points = [from, ...targets.slice(0, reduced ? 2 : MAX_STRIKE_POINTS)];
+    for (let i = 1; i < points.length; i++)
+      this.bank.ribbon(points[i - 1], points[i], 'bagua', { life: reduced ? .2 : .38, width: reduced ? .45 : .7, wave: .6, height: 1.2, reduced });
+    debug('visual.fuxi.attack', { eventId: event.id, targets: points.length - 1, reduced });
   }
 
-  impact(event: GameEvent, at: Vector3, reduced: boolean): void {
-    if (this.pulses.length >= 12) return;
-    const root = new TransformNode('fuxi-eight-trigram-focus', this.scene);
-    root.position.copyFrom(at);
-    for (let i = 0; i < 8; i++) {
-      const angle = i * Math.PI / 4;
-      const beam = MeshBuilder.CreateBox('fuxi-converging-jade-beam', {
-        width: reduced ? .12 : .23, height: .08, depth: 8.1,
-      }, this.scene);
-      beam.parent = root;
-      beam.position.set(Math.cos(angle) * 4.2, .17, Math.sin(angle) * 4.2);
-      beam.rotation.y = Math.PI / 2 - angle;
-      beam.material = i % 2 ? this.gold : this.jade; beam.isPickable = false;
-    }
-    this.pulses.push({ root, age: 0, life: reduced ? .22 : .55 });
-    debug('visual.fuxi.impact', { eventId: event.id, reduced });
+  /** Snapshot marker: `fuxi-bagua` radius / remaining (called every frame the zone exists). */
+  markZone(id: string, at: Vector3, radius: number, remaining: number, reduced = false): void {
+    this.prepare();
+    this.array.mark(id, at, radius, remaining, reduced);
+  }
+
+  /** Caller provides current snapshot endpoints and only ultimate-strength soulLink pairs. */
+  markLink(id: string, from: Vector3, to: Vector3, remaining: number, reduced = false): void {
+    this.prepare();
+    this.links.mark(id, from, to, remaining, reduced);
   }
 
   tick(dt: number): void {
-    for (const [id, marker] of this.zones) {
-      if (marker.touched) marker.touched = false;
-      else { marker.root.setEnabled(false); this.pool.push(marker.root); this.zones.delete(id); }
-    }
-    for (let i = this.pulses.length - 1; i >= 0; i--) {
-      const pulse = this.pulses[i]; pulse.age += dt;
-      if (pulse.age >= pulse.life) {
-        pulse.root.dispose(false, false); this.pulses.splice(i, 1);
-      }
-    }
+    if (!Number.isFinite(dt) || dt <= 0) return;
+    this.time += dt;
+    this.preview.tick(dt);
+    this.wake.tick(dt, this.time);
+    this.array.tick(dt, this.time);
+    this.links.tick(dt, this.time);
+    this.bank.tick(dt, this.time);
   }
 
   clear(): void {
-    for (const marker of this.zones.values()) {
-      marker.root.setEnabled(false); this.pool.push(marker.root);
-    }
-    this.zones.clear();
-    for (const pulse of this.pulses) pulse.root.dispose(false, false);
-    this.pulses.length = 0;
+    this.preview.clear();
+    this.wake.clear(); this.array.clear(); this.links.clear();
+    this.bank.clear(); this.art.clear(); this.time = 0;
+  }
+
+  /** `?debug=1` replay (`__vfxReplay('h01D', kind?)`); presentation only. */
+  replay(kind: string, caster: Vector3, point: Vector3, reduced: boolean): boolean {
+    this.prepare();
+    return this.preview.start(kind, caster, point, reduced);
   }
 }

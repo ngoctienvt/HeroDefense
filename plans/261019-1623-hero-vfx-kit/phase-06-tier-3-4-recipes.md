@@ -9,6 +9,8 @@ dependsOn: [4]
 
 > Đây mới là khung. Có thể chạy song song với giai đoạn 5 vì hai giai đoạn sửa file khác nhau.
 
+> **Nguồn ảnh (20-10-2026):** hình chính, va chạm và trạng thái tuyệt kỹ bậc 3–4 lấy từ [lô ảnh Codex bậc 3–4](../261020-2126-tier34-codex-skill-art/plan.md) (124 job, ledger `assets/vfx-source/tier34-codex-art/job-manifest.json`). Mỗi job có `eventBinding` và `layer` trong metadata; dùng [chứng cứ combat](../reports/scout-261020-2126-tier34-combat-evidence.md) thay cho `vfxDirection` cũ của brief. Ảnh đã xử lý vẫn đi qua kit (cổng phong cách bên dưới không đổi).
+
 **Skill:** chạy theo `vfx-skill` (mục 1–6) cộng `docs/vfx-kit.md`. Mỗi phiên chỉ nạp skill, tài liệu kit và bảng đặc tả của lô.
 
 Quy trình giống giai đoạn 5: bảng đặc tả → `visual-kit-recipes-tier34.ts` → bổ sung test dạng bảng. Nguồn dữ liệu là `content/tier3-tier4-design.ts`, `content/tier3-tier4-rework.ts` và `content/tier3-tier4-brief.json`. Đọc kỹ đợt sửa khống chế cứng → mềm trong `plans/261019-1557-lower-tier-skill-identity`: VFX khống chế phải khớp trạng thái **sau** khi sửa (chậm hoặc đẩy lùi, không còn choáng).

@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { DUNGEONS, HEROES } from '../../../content/catalog.js';
+import { HEROES } from '../../../content/catalog.js';
 import { handleCommand, stepGame } from '../src/index.js';
 import { combatStep } from '../src/combat.js';
 import { attackInterval } from '../src/stats.js';
-import { dungeonStep } from '../src/dungeons.js';
-import { command, deployed, enemy, game, rankThree, start } from './fixtures.js';
+import { command, deployed, enemy, game, start } from './fixtures.js';
 
 function finishWindup(state: ReturnType<typeof game>, unit: ReturnType<typeof deployed>): void {
   for (let tick = 0; tick < 8 && unit.pendingAbility; tick++) combatStep(state, .05);
@@ -117,14 +116,14 @@ describe('death, rewards and respawn', () => {
     expect(unit.kills).toBe(1); expect(state.players.p1.kills).toBe(1);
     combatStep(state, .05); expect(state.players.p1.gold).toBe(gold);
   });
-  it('absorbs shields then dies, respawns at a saved position and returns from dungeon', () => {
+  it('absorbs shields then dies and respawns at a saved position', () => {
     const state = game(), unit = deployed(state); start(state);
     unit.savedPosition = { x: -10, z: 10 }; unit.stopped = true; unit.shield = 100;
     const killer = enemy(state, unit, { attack: 100000 });
-    stepGame(state, .05);
+    // Enemy hits land after their wind-up.
+    for (let tick = 0; tick < 20 && unit.hp > 0; tick++) stepGame(state, .05);
     expect(unit.hp).toBe(0); expect(unit.deaths).toBe(1); expect(unit.respawn).toBeGreaterThan(5);
     expect(unit.shield).toBe(0); delete state.enemies[killer.id];
-    unit.zone = 1;
     for (let n = 0; n < 120; n++) stepGame(state, .05);
     expect(unit.hp).toBe(unit.maxHp); expect(unit.zone).toBe(0); expect(unit.respawn).toBe(0);
     expect({ x: unit.x, z: unit.z }).toEqual(unit.savedPosition);
@@ -213,7 +212,8 @@ describe('hero skill statuses', () => {
     guardian.shield = 0; guardian.stopped = true; healer.stopped = true;
     const attacker = enemy(state, guardian, { attack: 100, speed: 0, cooldown: 0 });
     const before = guardian.hp;
-    combatStep(state, .05);
+    // One enemy swing (wind-up then hit) fits in 0.6 s.
+    for (let tick = 0; tick < 12; tick++) combatStep(state, .05);
     const expectedWithoutWard = 100 * 100 / (100 + guardian.armor * 5);
     expect(before - guardian.hp).toBeLessThan(expectedWithoutWard);
     delete state.enemies[attacker.id];
@@ -228,44 +228,5 @@ describe('hero skill statuses', () => {
     for (let n = 0; n < 140; n++) combatStep(state, .05);
     expect(healer.haste).toBeUndefined();
     expect(attackInterval(state, healer)).toBeCloseTo(normalInterval);
-  });
-});
-
-describe('cooperative dungeons', () => {
-  it.each(DUNGEONS)('unlocks dungeon $id at the correct wave and respects supreme-only gate', (def) => {
-    const state = game(); state.wave = def.wave - 1; dungeonStep(state, .05);
-    const dungeon = state.dungeons.find(d => d.id === def.id)!;
-    expect(dungeon.unlocked).toBe(false);
-    state.wave = def.wave; dungeonStep(state, .05);
-    expect(dungeon.unlocked).toBe(!def.supremeOnly);
-    if (def.supremeOnly) { state.difficulty = 'supreme'; dungeonStep(state, .05); expect(dungeon.unlocked).toBe(true); }
-  });
-  it('allows both owners to join, defeats an actual boss and rewards the party once', () => {
-    const state = game(), hero = HEROES.find(h => h.id === 'h040')!;
-    const a = rankThree(state, hero.id, 0, 'p1'), b = rankThree(state, hero.id, 0, 'p2');
-    start(state); state.wave = 5; dungeonStep(state, .05);
-    expect(handleCommand(state, 'p1', { type: 'dungeon', dungeonId: 1, unitIds: [b.id] }).ok).toBe(false);
-    expect(handleCommand(state, 'p1', { type: 'dungeon', dungeonId: 1, unitIds: [a.id, a.id] }).ok).toBe(false);
-    expect(handleCommand(state, 'p1', { type: 'dungeon', dungeonId: 1, unitIds: [] }).ok).toBe(false);
-    command(state, { type: 'dungeon', dungeonId: 1, unitIds: [a.id] });
-    command(state, { type: 'dungeon', dungeonId: 1, unitIds: [b.id] }, 'p2');
-    expect(state.dungeons[0].attempts).toBe(1);
-    for (let n = 0; n < 500 && !state.dungeons[0].cleared; n++) { combatStep(state, .05); dungeonStep(state, .05); }
-    expect(state.dungeons[0].cleared).toBe(true); expect(a.zone).toBe(0); expect(b.zone).toBe(0);
-    expect(state.players.p1.formationPoints).toBe(2); expect(state.players.p2.formationPoints).toBe(2);
-    const gold = state.players.p2.gold; dungeonStep(state, .05); expect(state.players.p2.gold).toBe(gold);
-    expect(handleCommand(state, 'p1', { type: 'dungeon', dungeonId: 1, unitIds: [a.id] }).ok).toBe(false);
-  });
-  it('cleans up failed empty expeditions and permits retry/manual return', () => {
-    const state = game(), unit = deployed(state); start(state); state.wave = 5; dungeonStep(state, .05);
-    command(state, { type: 'dungeon', dungeonId: 1, unitIds: [unit.id] });
-    expect(handleCommand(state, 'p1', { type: 'bench', unitId: unit.id }).ok).toBe(false);
-    expect(handleCommand(state, 'p1', { type: 'sell', unitId: unit.id }).ok).toBe(false);
-    command(state, { type: 'return', unitId: unit.id }); dungeonStep(state, .05);
-    expect(state.dungeons[0].active).toBe(false); expect(state.dungeons[0].cleared).toBe(false);
-    expect(Object.values(state.enemies).some(e => e.zone === 1)).toBe(false);
-    command(state, { type: 'dungeon', dungeonId: 1, unitIds: [unit.id] }); expect(state.dungeons[0].attempts).toBe(2);
-    state.dungeons[0].remaining = .01; dungeonStep(state, .05);
-    expect(unit.zone).toBe(0); expect(state.dungeons[0].active).toBe(false);
   });
 });

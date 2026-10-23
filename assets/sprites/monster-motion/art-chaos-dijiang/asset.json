@@ -1,0 +1,68 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "art-chaos-dijiang",
+  "displayName": "Đế Giang",
+  "category": "boss",
+  "identity": "Low broad faceless alien beast with vermilion/charcoal cracked body, exactly six legs in three pairs and four folded dark-crimson wings in two pairs, broad antique-gold plates.",
+  "palette": [
+    "vermilion",
+    "charcoal",
+    "antique gold"
+  ],
+  "camera": "orthographic, top-down 45-degree battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master/master_rgba.png",
+  "anchor": [
+    589.5,
+    940.0
+  ],
+  "motionEnvelopePx": [
+    890,
+    820
+  ],
+  "displayHeightWorld": 8.0,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "walk": {
+      "framesPerDirection": 8,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 8,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "pending",
+    "motion": "pending",
+    "packaged": "pending",
+    "integrated": "pending",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        589.5,
+        940.0
+      ],
+      "source": "source/master/master_rgba.png"
+    }
+  }
+}

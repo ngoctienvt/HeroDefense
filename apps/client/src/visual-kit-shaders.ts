@@ -46,7 +46,11 @@ export function kitMaterial(scene: Scene, shader: KitShader, palette: KitPalette
   material.onError = (_effect, errors) => debug('visual.kit.shader.error', { shader, errors });
   material.setFloat('uAlpha', 1);
   material.setFloat('uTime', 0);
+  if (shader === 'kitWall') { material.setFloat('uLinear', 0); material.setFloat('uSpan', 1); material.setFloat('uBend', 0); }
   if (shader === 'kitGround') { material.setFloat('uBand', 0); material.setFloat('uSpiral', 1); }
+  if (shader === 'kitGuard') material.setFloat('uDissolve', 0);
+  if (shader === 'kitSlash') material.setFloat('uArc', 1.72);
+  if (shader === 'kitLink') { material.setFloat('uHead', 1); material.setFloat('uTail', 0); material.setFloat('uWave', 0); material.setFloat('uTaper', 0); }
   if (options.mask) material.setTexture('uMask', options.mask);
   setPalette(material, palette);
   return material;

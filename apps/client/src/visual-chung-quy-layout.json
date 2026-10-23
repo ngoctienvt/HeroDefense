@@ -1,0 +1,69 @@
+{
+  "talisman": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 1024,
+    "bounds": {
+      "left": 0.049805,
+      "right": 0.956055,
+      "top": 0.398438,
+      "bottom": 0.617188
+    },
+    "head": "right"
+  },
+  "slam": {
+    "anchorY": 0.878613,
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "cell": 384,
+    "bounds": {
+      "left": 0.151042,
+      "right": 0.882812,
+      "top": 0.09375,
+      "bottom": 0.888021
+    }
+  },
+  "sigil": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 768,
+    "bounds": {
+      "left": 0.044271,
+      "right": 0.955729,
+      "top": 0.048177,
+      "bottom": 0.955729
+    },
+    "radialEdge": 0.458341
+  },
+  "flame": {
+    "anchorY": 0.89916,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.184896,
+      "right": 0.859375,
+      "top": 0.161458,
+      "bottom": 0.901042
+    }
+  },
+  "hit": {
+    "anchorY": 0.89916,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.226562,
+      "right": 0.885417,
+      "top": 0.268229,
+      "bottom": 0.895833
+    }
+  }
+}

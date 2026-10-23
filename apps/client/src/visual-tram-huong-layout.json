@@ -1,0 +1,76 @@
+{
+  "lamp": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "anchorY": 0.8508403361344538,
+    "bounds": {
+      "left": 0.0859375,
+      "top": 0.052083333333333336,
+      "right": 0.9244791666666666,
+      "bottom": 0.90625
+    }
+  },
+  "axe": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "cell": 384,
+    "anchorY": 0.8808290155440415,
+    "bounds": {
+      "left": 0.049479166666666664,
+      "top": 0.12239583333333333,
+      "right": 0.9505208333333334,
+      "bottom": 0.9140625
+    },
+    "sourceFloorOrigins": [
+      300,
+      592,
+      852,
+      1070
+    ],
+    "contactFrame": 3
+  },
+  "fissure": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 768,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.15364583333333334,
+      "top": 0.265625,
+      "right": 0.8658854166666666,
+      "bottom": 0.703125
+    },
+    "radialEdge": 0.365999
+  },
+  "lotus": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 512,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.0390625,
+      "top": 0.064453125,
+      "right": 0.9609375,
+      "bottom": 0.947265625
+    },
+    "radialEdge": 0.460955
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "anchorY": 0.8802521008403361,
+    "bounds": {
+      "left": 0.09635416666666667,
+      "top": 0.03125,
+      "right": 0.9270833333333334,
+      "bottom": 0.9166666666666666
+    }
+  }
+}

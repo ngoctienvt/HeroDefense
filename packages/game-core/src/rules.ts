@@ -1,6 +1,7 @@
 import type { GameState, Unit, Vec, GameEvent } from '../../contracts/src/types.js';
 import { deploymentPosition, laneCenters } from './battlefield-layout.js';
 
+export const RUN_WAVES = 20;
 export const RANDOM_SUMMON_COST = 2;
 export const SUMMON_PACKS = {
   phan: { cost: 2, wave: 1, success: 1, tiers: [1, 2] as const, tierChance: .85 },
@@ -23,6 +24,7 @@ export function event(state: GameState, data: Omit<GameEvent, 'id'>): void {
   if (state.events.length > 96) state.events.splice(0, state.events.length - 96);
 }
 export function laneX(state: GameState, owner: string): number {
+  if (owner === 'party') return 0;
   return laneCenters(Object.keys(state.players).length)[Math.max(0, Object.keys(state.players).indexOf(owner))] ?? 0;
 }
 export function slotPosition(state: GameState, owner: string, slot: number): Vec {

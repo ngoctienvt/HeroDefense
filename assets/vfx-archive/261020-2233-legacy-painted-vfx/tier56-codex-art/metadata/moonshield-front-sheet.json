@@ -1,0 +1,62 @@
+{
+  "heroId": "h018",
+  "asset": "moonshield-front-sheet",
+  "type": "P16",
+  "status": "superseded-by-shared-shield",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-6cc74cbd-0145-4f01-94cc-a423a0abf129.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/moonshield-front-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/moonshield-front-sheet.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "rectRule": "round(i*1254/4); alternate 313/314 px cells, no stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "P16 4x4 confirmed; low side/foot silk edges with center clear, matches rear material and framing. Checked light/dark.",
+  "sha256": "fc155124262090178afe58ccf481d1452db01c58c1f0db20e58e4b52601e9888",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/moonshield-front-sheet-light-dark.jpg",
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime scale, timing, depth and routing remain to be integrated and checked."
+  ],
+  "promptUsedForRecordedOutput": "Create a companion front-layer sheet derived from the attached Hằng Nga moonshield rear sheet. This is a separate JOB moonshield-front-sheet: preserve exact crescent-silk material, pale silver-blue palette, scale, camera, and frame timing, but show ONLY the two low foreground arcs at the ally's feet and lower flanks. Keep the full center and upper half transparent so the ally body stays unobscured. Same 4x4 P16 timeline: grow 1-4, hold 5-12 with subtle silk flow loop 12→5, unravel 13-16. Exact matching camera/anchor/cell layout to source. No full dome, no character, no flowers/fan, no text, grid, border or scenery. Transparent background.",
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/moonshield-front-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready",
+  "replacementAssets": [
+    "shared-shield-rear-sheet",
+    "shared-shield-front-sheet"
+  ]
+}

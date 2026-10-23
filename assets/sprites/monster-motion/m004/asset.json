@@ -1,0 +1,89 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "m004",
+  "displayName": "Huyết Dơi Yêu",
+  "category": "mob",
+  "identity": "Compact flying bat fiend with wine-red membrane wings, charcoal body, pale bone wing fingers, pointed ears and fangs; grounded static rest pose with wings held motionless.",
+  "palette": [
+    "wine-red",
+    "charcoal",
+    "pale bone"
+  ],
+  "camera": "orthographic, top-down 45-degree battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master/master_rgba.png",
+  "anchor": [
+    595.5,
+    820.0
+  ],
+  "motionEnvelopePx": [
+    608,
+    650
+  ],
+  "displayHeightWorld": 3.5,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "flight": {
+      "framesPerDirection": 6,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 6,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "directions-approved",
+    "motion": "pending",
+    "packaged": "pending",
+    "integrated": "pending",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        595.5,
+        820.0
+      ],
+      "source": "source/master/master_rgba.png"
+    },
+    "west": {
+      "anchorPx": [
+        597.0,
+        820.0
+      ],
+      "source": "source/directions/west/master/master_rgba.png"
+    },
+    "north": {
+      "anchorPx": [
+        580.5,
+        820.0
+      ],
+      "source": "source/directions/north/master/master_rgba.png"
+    },
+    "east": {
+      "anchorPx": [
+        532.5,
+        820.0
+      ],
+      "source": "source/directions/east/master/master_rgba.png"
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { FORMATIONS, HEROES, SYNERGIES } from '../../../content/catalog.js';
 import { addPlayer, removePlayer, setPlayerConnected } from '../src/state.js';
 import { handleCommand as dispatch, stepGame } from '../src/index.js';
-import { equipmentCost, RANDOM_SUMMON_COST, slotPosition } from '../src/rules.js';
+import { equipmentCost, RANDOM_SUMMON_COST, RUN_WAVES, slotPosition } from '../src/rules.js';
 import { attackInterval } from '../src/stats.js';
 import { combatStep } from '../src/combat.js';
 import { command, deployed, enemy, game, start, summon } from './fixtures.js';
@@ -41,11 +41,11 @@ describe('lobby and authority', () => {
     removePlayer(state, 'p4');
     expect(state.players.p4.connected).toBe(false);
   });
-  it('supports all difficulties and only permits valid host speed', () => {
+  it('supports all difficulties with 20 waves and only permits valid host speed', () => {
     const state = game();
     for (const difficulty of ['normal', 'nightmare', 'hell', 'supreme'] as const) {
       command(state, { type: 'difficulty', difficulty });
-      expect(state.maxWaves).toBe(difficulty === 'supreme' ? 60 : 45);
+      expect(state.maxWaves).toBe(RUN_WAVES);
     }
     expect(dispatch(state, 'p2', { type: 'difficulty', difficulty: 'normal' }).ok).toBe(false);
     for (const speed of [-1, 0, 3, NaN, Infinity]) expect(dispatch(state, 'p1', { type: 'speed', speed }).ok).toBe(false);
@@ -116,7 +116,7 @@ describe('roster and economy', () => {
     const commands = [
       { type: 'deploy', slot: 1 }, { type: 'bench' }, { type: 'sell' }, { type: 'merge' },
       { type: 'equip', category: 0 }, { type: 'move', x: 0, z: 0 }, { type: 'stop' },
-      { type: 'attack', target: 'missing' }, { type: 'cast' }, { type: 'save-position' }, { type: 'return' },
+      { type: 'attack', target: 'missing' }, { type: 'cast' }, { type: 'save-position' },
     ];
     const before = JSON.stringify(state);
     for (const value of commands) expect(dispatch(state, 'p2', { ...value, unitId: unit.id } as Parameters<typeof dispatch>[2]).ok).toBe(false);
@@ -157,7 +157,7 @@ describe('synergies, formations and movement', () => {
     if (formation.bonus === 'speed') expect(attackInterval(state, unit)).toBeLessThan(original.interval);
     if (formation.bonus === 'regen') { unit.hp /= 2; const injuredHp = unit.hp; combatStep(state, .1); expect(unit.hp).toBeGreaterThan(injuredHp); }
     expect(dispatch(state, 'p1', { type: 'upgrade-formation', formation: formation.id }).ok).toBe(false);
-    state.wave = 40; command(state, { type: 'upgrade-formation', formation: formation.id });
+    state.wave = 16; command(state, { type: 'upgrade-formation', formation: formation.id });
     expect(state.players.p1.formationLevels[formation.id - 1]).toBe(4);
     expect(dispatch(state, 'p1', { type: 'upgrade-formation', formation: formation.id }).ok).toBe(false);
   });
@@ -209,6 +209,13 @@ describe('synergies, formations and movement', () => {
     const target = enemy(state, unit);
     command(state, { type: 'attack', unitId: unit.id, target: target.id }); stepGame(state, .05);
     expect(target.hp).toBeLessThan(target.maxHp); expect(unit.stopped).toBe(false);
+  });
+
+  it('gives heroes in a move order distinct destinations', () => {
+    const state = game(1), first = deployed(state, 'h001', 0), second = deployed(state, 'h002', 1);
+    start(state);
+    command(state, { type: 'order', order: 'move', unitIds: [first.id, second.id], x: 0, z: 0 });
+    expect(Math.abs(first.destination!.x - second.destination!.x)).toBe(3.2);
   });
 });
 
@@ -262,4 +269,3 @@ describe('admin commands', () => {
     expect(p.formationPoints).toBe(initialPoints + 10);
   });
 });
-

@@ -1,0 +1,67 @@
+{
+  "heroId": "h01H",
+  "asset": "volcanic-eruption-sheet",
+  "type": "S16",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-5f907814-98ff-4fa4-8a98-14734b9e667c.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/volcanic-eruption-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/volcanic-eruption-sheet.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "rectRule": "round(i*1254/4); alternate 313/314 px cells, no stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "S16 4x4 confirmed; checked on light/dark. Cell 16 nearly empty after two revisions; large readable basalt/lava material, variable eruption poses.",
+  "sha256": "7eb1dd7ffbf36ace4f25f27e76774586314e4d7314b3acf5639b2505cea124ba",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/volcanic-eruption-sheet-light-dark.jpg",
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime scale, timing, depth and routing remain to be integrated and checked."
+  ],
+  "promptUsedForRecordedOutput": "Edit only cell 16 (bottom-right) of this exact 4x4 volcanic eruption sprite sheet. Keep cells 1-15, their art, grid, camera, scale, and anchors unchanged. Cell 16 must be nearly empty: only a few faint cooling hairline cracks and tiny ash motes, no basalt mound, no lava pool, no flying rocks. Preserve transparent background and exact square 4x4 sheet. Do not alter any other cell.",
+  "generationOutputs": [
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-2ee82a2c-64d2-45c7-90a2-9e13aa3c2404.png",
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-d5859e0e-128b-4625-9b75-7067c2399265.png",
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-5f907814-98ff-4fa4-8a98-14734b9e667c.png"
+  ],
+  "iterations": [
+    "assets/vfx-source/tier56-codex-art/iterations/volcanic-eruption-sheet-attempt-01.png",
+    "assets/vfx-source/tier56-codex-art/iterations/volcanic-eruption-sheet-attempt-02.png"
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/volcanic-eruption-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

@@ -1,0 +1,83 @@
+{
+  "call": {
+    "anchorY": 0.89916,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.216146,
+      "right": 0.820312,
+      "top": 0.169271,
+      "bottom": 0.90625
+    }
+  },
+  "warning": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 768,
+    "bounds": {
+      "left": 0.09375,
+      "right": 0.915365,
+      "top": 0.096354,
+      "bottom": 0.889323
+    },
+    "radialEdge": 0.423228
+  },
+  "boulder": {
+    "anchorY": 0.899689,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 512,
+    "bounds": {
+      "left": 0.306641,
+      "right": 0.705078,
+      "top": 0.265625,
+      "bottom": 0.900391
+    }
+  },
+  "trail": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 1024,
+    "bounds": {
+      "left": 0.128906,
+      "right": 0.861328,
+      "top": 0.415039,
+      "bottom": 0.594727
+    },
+    "head": "right"
+  },
+  "hit": {
+    "anchorY": 0.900398,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.096354,
+      "right": 0.927083,
+      "top": 0.033854,
+      "bottom": 0.908854
+    }
+  },
+  "crater": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 512,
+    "bounds": {
+      "left": 0.091797,
+      "right": 0.910156,
+      "top": 0.097656,
+      "bottom": 0.90625
+    },
+    "radialEdge": 0.461984
+  }
+}

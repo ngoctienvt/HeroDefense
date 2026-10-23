@@ -1,0 +1,52 @@
+{
+  "heroId": "h011",
+  "heroName": "Hình Thiên",
+  "asset": "warfire-ground",
+  "type": "D",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool; one framing correction from exact generated decal",
+  "sourceImagePath": "Generated image returned by Codex image_gen; accepted edit saved byte-for-byte as raw PNG.",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/warfire-ground.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/warfire-ground.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBoundsPx": [
+    0,
+    17,
+    1244,
+    1226
+  ],
+  "camera": "strict top-down",
+  "anchorNormalized": [
+    0.5,
+    0.5
+  ],
+  "visualQA": "Reviewed on light/dark. Top-down open ring with deep red-violet ash, chipped earth and axe-cut marks; center remains clear. One framing edit improved edge margin.",
+  "sha256": "4c476ecbb58d9b748cd088e1fb6c25b549b510595bf8a51216993203fd8c4f19",
+  "previewPaths": [
+    "assets/vfx-source/tier56-codex-art/previews/warfire-ground-light.jpg",
+    "assets/vfx-source/tier56-codex-art/previews/warfire-ground-dark.jpg"
+  ],
+  "iterations": [
+    "assets/vfx-source/tier56-codex-art/iterations/warfire-ground-attempt-01.png"
+  ],
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime radius, position, timing and cleanup remain to be integrated and checked."
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/warfire-ground.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

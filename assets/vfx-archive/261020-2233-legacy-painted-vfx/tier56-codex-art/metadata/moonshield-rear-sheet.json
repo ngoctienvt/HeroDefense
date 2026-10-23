@@ -1,0 +1,62 @@
+{
+  "heroId": "h018",
+  "asset": "moonshield-rear-sheet",
+  "type": "P16",
+  "status": "superseded-by-shared-shield",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-63e7b0c8-dcca-4fcc-84cf-6e6bf03fad3d.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/moonshield-rear-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/moonshield-rear-sheet.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "rectRule": "round(i*1254/4); alternate 313/314 px cells, no stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "P16 4x4 confirmed; paired crescent silk walls and open center, subtle hold. Checked light/dark.",
+  "sha256": "ffad8b1f5828c8102b0e78d2d9f55eee31583332191f100a93f75a3b28272cde",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/moonshield-rear-sheet-light-dark.jpg",
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime scale, timing, depth and routing remain to be integrated and checked."
+  ],
+  "promptUsedForRecordedOutput": "Create one transparent square 4x4 P16 sprite sheet for Hằng Nga's moonshield REAR layer. A crescent-moon silk canopy in silver-blue and pale violet, with curved translucent ribbons sweeping behind an unseen ally; broad center must remain transparent so the ally silhouette is clear. This is a rear half shell, not a complete bubble or ring. Frames 1-4 grow from a crescent sweep, 5-12 hold as gently flowing silk with subtle cloth folds changing and loop 12→5, 13-16 unravel and fade. Painterly hand-brushed material, nuanced tonal detail, no character, no flowers, no fan. Exact 4x4 sheet, fixed anchor/camera, 3% margins. Transparent background, no text, grid, borders, scenery, UI or watermark.",
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/moonshield-rear-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready",
+  "replacementAssets": [
+    "shared-shield-rear-sheet",
+    "shared-shield-front-sheet"
+  ]
+}

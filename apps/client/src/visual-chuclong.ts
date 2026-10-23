@@ -6,28 +6,53 @@ import { TransformNode } from '@babylonjs/core/Meshes/transformNode.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { debug } from './debug.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { KitFxBank } from './visual-kit-fx-bank.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { prepareChuclongArt } from './visual-chuclong-assets.js';
+import { ChuclongEye } from './visual-chuclong-eye.js';
+import { ChuclongFronts } from './visual-chuclong-fronts.js';
+import { ChuclongGift } from './visual-chuclong-gift.js';
+import { ChuclongMarks } from './visual-chuclong-marks.js';
+import { ChuclongReplay } from './visual-chuclong-replay.js';
 
 type Echo = { root: TransformNode; age: number; life: number };
 
-/** Dragon eyes over the battlefield; ambient change is always restored. */
+/** Painted planes alive at once: eyes 3 × 2 + fronts 28 + burn rings 24 + gifts 12 × 2 (+ headroom). */
+const PAINTED_CAPACITY = 96;
+
+/**
+ * Chúc Long (h01K): the primitive primordial breath of the normal attack, plus the ultimate on the kit
+ * (`visual-chuclong-{eye,fronts,marks,gift,timeline,assets,replay}.ts`). Server events: `cast skill-h01K` (0.25 s windup) →
+ * `ability skill-h01K` (night: every monster of the zone, freeze roll ≤ 2.5 s, allies −3 s cooldown) → 1.5 s later
+ * `trait summer-h01K` (day: the zone's monsters at that moment, burn 4 s). The two target lists are independent. The adapter
+ * still routes events here; every layer of the ultimate is created in this class, never by the adapter.
+ */
 export class VisualChuclong {
   private active: Echo[] = [];
-  private originalAmbient?: Color3;
-  private darkRemaining = 0;
+  private readonly art: KitPainted;
+  private readonly bank: KitFxBank;
+  private readonly eye: ChuclongEye;
+  private readonly fronts: ChuclongFronts;
+  private readonly marks: ChuclongMarks;
+  private readonly gift: ChuclongGift;
+  private readonly preview = new ChuclongReplay(this);
+  private time = 0;
+
   private readonly scarlet: StandardMaterial;
-  private readonly midnight: StandardMaterial;
+
   private readonly sun: StandardMaterial;
-  private readonly ice: StandardMaterial;
-  private readonly solarGround: StandardMaterial;
 
   constructor(private readonly scene: Scene) {
     this.scarlet = this.material('chuclong-dragon-scarlet', '#9b3b34', .25);
-    this.midnight = this.material('chuclong-night-eye', '#372d57', .23);
     this.sun = this.material('chuclong-sun-eye', '#ffd46b', .65);
-    this.ice = this.material('chuclong-winter-ice', '#8ec5dc', .12);
-    this.ice.alpha = .72;
-    this.solarGround = this.material('chuclong-solar-ground', '#d97935', .16);
-    this.solarGround.alpha = .19;
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'chuclong');
+    this.bank = new KitFxBank(scene, new KitFlipbooks(scene));
+    const frost = this.bank.spray('frost'), embers = this.bank.spray('daybreak');
+    this.eye = new ChuclongEye(scene, this.art, frost, embers);
+    this.fronts = new ChuclongFronts(scene, this.art, this.bank);
+    this.marks = new ChuclongMarks(scene, this.art, frost, embers);
+    this.gift = new ChuclongGift(scene, this.art);
   }
 
   private material(name: string, hex: string, glow: number): StandardMaterial {
@@ -38,34 +63,14 @@ export class VisualChuclong {
     return mat;
   }
 
-  private eyes(at: Vector3, open: boolean, reduced: boolean): void {
-    if (this.active.length >= 12) return;
-    const root = new TransformNode(open ? 'chuclong-open-sun-eyes' : 'chuclong-closed-night-eyes', this.scene);
-    root.position.copyFrom(at.add(new Vector3(0, reduced ? 5 : 13, 0)));
-    for (const side of [-1, 1]) {
-      const arc = MeshBuilder.CreateTorus('scarlet-dragon-brow', {
-        diameter: reduced ? 2.6 : 5.3, thickness: reduced ? .2 : .35, tessellation: 24,
-      }, this.scene);
-      arc.parent = root; arc.position.x = side * (reduced ? 1.8 : 3.7);
-      arc.scaling.y = .32; arc.rotation.x = Math.PI / 2;
-      arc.material = this.scarlet; arc.isPickable = false;
-      const eye = MeshBuilder.CreateSphere('dragon-solar-eye', { diameter: 1, segments: 16 }, this.scene);
-      eye.parent = root; eye.position.x = arc.position.x;
-      eye.scaling.set(reduced ? 1.05 : 2.1, open ? (reduced ? .52 : 1.05) : .08, .28);
-      eye.material = open ? this.sun : this.midnight; eye.isPickable = false;
-      if (open) {
-        const pupil = MeshBuilder.CreateSphere('dragon-eye-pupil', { diameter: 1, segments: 10 }, this.scene);
-        pupil.parent = root; pupil.position.set(eye.position.x, 0, -.28);
-        pupil.scaling.set(reduced ? .18 : .4, reduced ? .47 : .9, .16);
-        pupil.material = this.scarlet; pupil.isPickable = false;
-      }
-    }
-    this.active.push({ root, age: 0, life: open ? .65 : 1.5 });
-  }
+  /** Atlases load only once a Chúc Long is on the field (idempotent). */
+  prepare(): void { prepareChuclongArt(this.art); }
 
-  cast(event: GameEvent, at: Vector3, reduced: boolean): void {
-    this.eyes(at, false, reduced);
-    debug('visual.chuclong.cast', { eventId: event.id, reduced });
+  cast(event: GameEvent, at: Vector3, reduced: boolean, origin?: Vector3): void {
+    // Event coordinates may be the target: the eye opens over the real caster the caller supplies.
+    if (!origin) { debug('visual.chuclong.cast.skip', { eventId: event.id, reason: 'missing-origin' }); return; }
+    this.prepare();
+    this.eye.cast(event.source ?? 'unknown', origin, event.windup ?? .25, reduced);
   }
 
   breath(event: GameEvent, from: Vector3, to: Vector3, reduced: boolean): void {
@@ -91,61 +96,46 @@ export class VisualChuclong {
     debug('visual.chuclong.breath', { eventId: event.id });
   }
 
-  winter(event: GameEvent, at: Vector3, targets: Vector3[], reduced: boolean): void {
-    if (!reduced) {
-      this.originalAmbient ??= this.scene.ambientColor.clone();
-      this.scene.ambientColor = Color3.FromHexString('#182945');
-      this.darkRemaining = Math.max(this.darkRemaining, 1.5);
-    }
-    this.eyes(at, false, reduced);
-    if (this.active.length < 12 && targets.length) {
-      const root = new TransformNode('chuclong-winter-ice-shards', this.scene);
-      for (const point of targets.slice(0, reduced ? 5 : 16)) {
-        for (const side of [-1, 1]) {
-          const spike = MeshBuilder.CreateCylinder('primordial-ice-spike', {
-            height: reduced ? 1.1 : 2.2, diameterTop: 0, diameterBottom: reduced ? .35 : .7,
-            tessellation: 4,
-          }, this.scene);
-          spike.parent = root;
-          spike.position.set(point.x + side * .42, reduced ? .55 : 1.1, point.z);
-          spike.rotation.z = side * .25;
-          spike.material = this.ice; spike.isPickable = false;
-        }
-      }
-      this.active.push({ root, age: 0, life: reduced ? .45 : 1.25 });
-    }
-    debug('visual.chuclong.winter', { eventId: event.id, reduced });
+  /** `skill-h01K`: the server places the caster at the event point; `targets` are the monsters this event froze. */
+  winter(event: GameEvent, at: Vector3, targets: readonly Vector3[], reduced: boolean): void {
+    this.prepare();
+    this.eye.winter(event.source ?? 'unknown', at, reduced);
+    this.fronts.night(at, targets, reduced);
   }
 
-  summer(event: GameEvent, at: Vector3, reduced: boolean): void {
-    this.restoreAmbient();
-    this.eyes(at, true, reduced);
-    if (this.active.length < 12) {
-      const root = new TransformNode('chuclong-solar-eruption', this.scene);
-      root.position.copyFrom(at);
-      const disc = MeshBuilder.CreateCylinder('solar-ground-disc', {
-        height: .08, diameter: reduced ? 15 : 24, tessellation: 36,
-      }, this.scene);
-      disc.parent = root; disc.position.y = .06;
-      disc.material = this.solarGround; disc.isPickable = false;
-      const sun = MeshBuilder.CreateSphere('solar-burst-body', {
-        diameter: reduced ? 2.5 : 4, segments: 20,
-      }, this.scene);
-      sun.parent = root; sun.position.y = reduced ? 6 : 11;
-      sun.scaling.y = .22; sun.material = this.sun; sun.isPickable = false;
-      this.active.push({ root, age: 0, life: reduced ? .28 : .68 });
-    }
-    debug('visual.chuclong.summer', { eventId: event.id, reduced });
+  /** `summer-h01K`: the day list is chosen again by the server (monsters that arrived during the night are in it). */
+  summer(event: GameEvent, at: Vector3, reduced: boolean, targets: readonly Vector3[] = []): void {
+    this.prepare();
+    this.eye.summer(event.source ?? 'unknown', at, reduced);
+    this.fronts.day(at, targets, reduced);
   }
 
-  private restoreAmbient(): void {
-    if (this.originalAmbient) this.scene.ambientColor = this.originalAmbient;
-    this.originalAmbient = undefined;
-    this.darkRemaining = 0;
+  markWinter(id: string, at: Vector3, remaining: number, reduced = false): void {
+    this.prepare(); this.marks.markFrost(id, at, remaining, reduced);
+  }
+
+  markBurn(id: string, at: Vector3, remaining: number, reduced = false): void {
+    this.prepare(); this.marks.markBurn(id, at, remaining, reduced);
+  }
+
+  /** Instant accent on an eligible ally of the caster's zone; never a timed buff (the 3 s is the cooldown cut). */
+  timeGift(event: GameEvent, from: Vector3, to: Vector3, reduced: boolean): void {
+    this.prepare();
+    this.gift.send(from, to, reduced);
+    debug('visual.chuclong.time-gift', { eventId: event.id, reduced });
+  }
+
+  /** `?debug=1` replay (`__vfxReplay('h01K', kind?)`); presentation only. */
+  replay(kind: string, caster: Vector3, reduced: boolean): boolean {
+    this.prepare();
+    return this.preview.start(kind, caster, reduced);
   }
 
   tick(dt: number): void {
-    if (this.darkRemaining > 0 && (this.darkRemaining -= dt) <= 0) this.restoreAmbient();
+    this.time += dt;
+    this.preview.tick(dt);
+    this.eye.tick(dt, this.time); this.fronts.tick(dt); this.marks.tick(dt, this.time); this.gift.tick(dt);
+    this.bank.tick(dt, this.time);
     for (let i = this.active.length - 1; i >= 0; i--) {
       const fx = this.active[i]; fx.age += dt;
       if (fx.age >= fx.life) {
@@ -155,7 +145,9 @@ export class VisualChuclong {
   }
 
   clear(): void {
-    this.restoreAmbient();
+    this.preview.clear();
+    this.eye.clear(); this.fronts.clear(); this.marks.clear(); this.gift.clear();
+    this.bank.clear(); this.art.clear(); this.time = 0;
     for (const fx of this.active) fx.root.dispose(false, false);
     this.active.length = 0;
   }

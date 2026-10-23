@@ -1,0 +1,69 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "m002",
+  "displayName": "Hắc Sơn Cốt Cung Thủ",
+  "category": "mob",
+  "identity": "Lean skeleton archer with violet eyes, curved asymmetrical bone bow, bone quiver and dark red hood; no projectile.",
+  "palette": [
+    "ivory",
+    "charcoal",
+    "dark red",
+    "muted violet"
+  ],
+  "camera": "orthographic, 45-degree top-down battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master-v2/master_rgba.png",
+  "anchor": [
+    395.0,
+    803.0
+  ],
+  "motionEnvelopePx": [
+    607,
+    615
+  ],
+  "displayHeightWorld": 5.5,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "walk": {
+      "framesPerDirection": 6,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 6,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "pending",
+    "motion": "pending",
+    "packaged": "pending",
+    "integrated": "pending",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        395.0,
+        803.0
+      ],
+      "source": "source/master-v2/master_rgba.png"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 ---
 phase: 5
 title: "Công thức bậc 1–2 (20 tướng)"
-status: pending
+status: in-progress (20 tướng xong code, đã chạy thử trong game; chờ người dùng duyệt hình)
 dependsOn: [4]
 ---
 
@@ -25,8 +25,14 @@ dependsOn: [4]
 
 ## Trạng thái phiên
 
-_(Agent ghi ngắn cuối mỗi phiên: xong gì, chưa xong gì, người dùng cần duyệt gì.)_
+- Bảng đặc tả đã duyệt (`plans/reports/spec-261019-1813-tier12-vfx-recipes.md`). Chia hai lô; bổ sung kit archetype chain/aura; không làm flipbook mới; `burrow-earthquake` → `burrow-h008`.
+- Lô bậc 1 (8 tướng): xong nguồn. Kit thêm `kitLink`, `uArc` của `kitSlash`, palette `gold/jade/earth/netherfire`, spray `gold/jade/earth/nether/frost`, `KitFxBank`, `KitAuraShell`. Công thức ở `visual-kit-recipes-tier12.ts`, đăng ký trong `VisualEffects`, replay trong `battlefield.ts`. Đã bỏ 8 dòng tier 1 khỏi `TIER_VISUALS`.
+- Lô bậc 2 (12 tướng) xong: `visual-kit-recipe-skills.ts`, archetype shield/heal/chain/nova/sweep/buff. Đã chạy `visual-kit-recipes.test.ts` (30 test qua), tsc sạch phần mới, và chơi thử trận thật + replay (làm chậm 5×) để xem; ảnh đã gửi.
+- Còn: người dùng duyệt hình cả hai lô cạnh Cộng Công; dọn motif/painter bậc 2 cũ trong `visual-tier-skills.ts` và `TIER_VISUALS` (phase 8, hiện còn là nhánh dự phòng không còn được gọi).
+- Test hỏng sẵn trong checkout (không do phase này): `hero-motion`, `stylized-motion`/Linh-Huyền, `hienvien-combat.test.ts` (lỗi cú pháp), vài test game-core.
 
 ## Kit cần bổ sung
 
 _(Ghi khi phát hiện kit thiếu khả năng; không vá riêng trong module tướng.)_
+- Trạng thái snapshot cho dấu ấn/lửa bám/chảy máu/vầng giáp (h002, h003, h004, h005, h008) chưa đọc được ở client; cần marker `markHero` từ snapshot rồi vẽ bằng `KitAuraShell`/ring.
+- Cây decal 'ấn xếp lớp' nhiều mức cho h002.

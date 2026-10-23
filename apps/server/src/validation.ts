@@ -41,9 +41,8 @@ export function commandEnvelope(value: unknown): CommandEnvelope | null {
     }
     case 'save-position': keys = ['unitId', 'clear']; valid = identifier(c.unitId) && (c.clear === undefined || typeof c.clear === 'boolean'); break;
     case 'formation': case 'upgrade-formation': keys = ['formation']; valid = integer(c.formation, 1, 8); break;
-    case 'dungeon': keys = ['dungeonId', 'unitIds']; valid = integer(c.dungeonId, 0, 31) && Array.isArray(c.unitIds) && c.unitIds.length >= 1 && c.unitIds.length <= 5 && c.unitIds.every(identifier) && new Set(c.unitIds).size === c.unitIds.length; break;
     case 'speed': keys = ['speed']; valid = typeof c.speed === 'number' && [1, 2, 4].includes(c.speed); break;
-    case 'bench': case 'merge': case 'sell': case 'stop': case 'return': keys = ['unitId']; valid = identifier(c.unitId); break;
+    case 'bench': case 'merge': case 'sell': case 'stop': keys = ['unitId']; valid = identifier(c.unitId); break;
     case 'admin-get-hero':
       keys = ['heroId', 'rank', 'deploy'];
       valid = identifier(c.heroId) &&

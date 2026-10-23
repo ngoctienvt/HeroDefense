@@ -1,0 +1,49 @@
+{
+  "schema": "sprite-art-provenance.v1",
+  "date": "2026-10-22",
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": null,
+  "estimatedCostUsd": null,
+  "routeRequest": "exec-98b41271-c729-4520-ab2f-5295ae1806a3",
+  "generatedSource": "source/master-generated-raw.png",
+  "acceptedMaster": "source/master/master_rgba.png",
+  "prompt": "source/master-prompt.txt",
+  "styleReference": "assets/sprites/pangu-topdown/source/south-master.png",
+  "routeVerified": true,
+  "revisionNotes": "Generated master.",
+  "warnings": [],
+  "sourceSha256": "a03eb0ff6ab0b3a4769dbf8011b8854e384081e5a5ed47920a6702d340b8ba10",
+  "masterSha256": "dff0f42bb01f61066c16cc0324adcb31aeb3e71dc0fb8cd0b5cefdc4acfcb0ab",
+  "directions": {
+    "west": {
+      "source": "source/directions/west/master/master_rgba.png",
+      "raw": "source/directions/west/direction-generated-raw.png",
+      "prompt": "source/directions/west/prompt.txt",
+      "routeRequest": "exec-3626fd4e-25df-48f4-915b-a97f718fd7ba",
+      "status": "direction-approved",
+      "warnings": []
+    },
+    "north": {
+      "source": "source/directions/north/master/master_rgba.png",
+      "raw": "source/directions/north/direction-generated-raw.png",
+      "prompt": "source/directions/north/prompt.txt",
+      "routeRequest": "exec-5f1e1319-9381-489b-91f6-d7c3ce7d2229",
+      "status": "direction-approved",
+      "warnings": []
+    }
+  },
+  "directionAttempts": [
+    {
+      "direction": "east",
+      "prompt": "source/directions/east/prompt.txt",
+      "status": "blocked_by_usage_limit",
+      "outputs": [],
+      "notes": [
+        "host image_gen returned HTTP 429 usage_limit_reached",
+        "route_media codex-cli failed because installed CLI rejects the wrapper sleep_tool feature flag",
+        "direct codex-cli native image_gen returned the same HTTP 429"
+      ]
+    }
+  ]
+}

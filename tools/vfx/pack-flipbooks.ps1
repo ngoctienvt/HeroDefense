@@ -27,8 +27,10 @@ foreach ($entry in $selected) {
   if ($frames.Count -ne $entry.frames) { throw "$($entry.id) needs $($entry.frames) frames, found $($frames.Count)" }
   $cell = $entry.cell
   $output = Join-Path $runtime (Split-Path -Leaf $entry.url)
+  # Blender renders stay lossless; painted (Codex) art sets "quality" for lossy WebP with near-lossless alpha.
+  $encode = if ($entry.PSObject.Properties['quality']) { @('-quality', "$($entry.quality)", '-define', 'webp:alpha-quality=95') } else { @('-define', 'webp:lossless=true') }
   & magick montage $frames.FullName -thumbnail "${cell}x${cell}" -tile $entry.tile `
-    -geometry "${cell}x${cell}+0+0" -background none -define webp:lossless=true $output
+    -geometry "${cell}x${cell}+0+0" -background none @encode $output
   if ($LASTEXITCODE -ne 0) { throw "ImageMagick failed for $($entry.id)" }
   $metadata = & magick identify -format '%wx%h %[channels]' $output
   if ($LASTEXITCODE -ne 0 -or $metadata -notmatch "^$($entry.size).*a") {

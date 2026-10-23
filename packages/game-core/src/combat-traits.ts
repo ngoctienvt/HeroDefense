@@ -1,14 +1,22 @@
 import type { Enemy, GameState, Unit } from '../../contracts/src/types.js';
 import { executeAttackGeometry, type Hurt } from './attack-geometry.js';
 import { applyEnemyStatus, knockEnemyBack } from './combat-status.js';
+import { carryHurt, carryPassiveOf, recordCarryAttack, tickCarryPassives } from './carry-passive.js';
 import { distance, event, isDeployed } from './rules.js';
 
 export function basicAttack(state: GameState, unit: Unit, target: Enemy, hurt: Hurt): void {
-  // Execute authoritative Attack Geometry & On-Hit Trait system
-  executeAttackGeometry(state, unit, target, hurt);
+  // Execute authoritative Attack Geometry & On-Hit Trait system; carries add their hand-attack passive.
+  const passive = carryPassiveOf(unit);
+  if (!passive) {
+    executeAttackGeometry(state, unit, target, hurt);
+    return;
+  }
+  executeAttackGeometry(state, unit, target, carryHurt(state, unit, target, passive, hurt));
+  recordCarryAttack(state, unit, target, passive);
 }
 
 export function passiveTraits(state: GameState, dt: number): void {
+  tickCarryPassives(state, dt);
   for (const unit of Object.values(state.units)) {
     if (unit.followUpCooldown && unit.followUpCooldown > 0) {
       unit.followUpCooldown = Math.max(0, unit.followUpCooldown - dt);

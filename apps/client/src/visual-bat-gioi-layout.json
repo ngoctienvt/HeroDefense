@@ -1,0 +1,68 @@
+{
+  "burst": {
+    "anchorY": 0.650118,
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "cell": 320,
+    "bounds": {
+      "left": 0.140625,
+      "right": 0.859375,
+      "top": 0.21875,
+      "bottom": 0.9625
+    }
+  },
+  "ground": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 768,
+    "bounds": {
+      "left": 0.076823,
+      "right": 0.93099,
+      "top": 0.105469,
+      "bottom": 0.914062
+    },
+    "radialEdge": 0.458513
+  },
+  "guard": {
+    "anchorY": 0.679191,
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "cell": 320,
+    "bounds": {
+      "left": 0.065625,
+      "right": 0.9375,
+      "top": 0.15625,
+      "bottom": 0.8375
+    }
+  },
+  "rupture": {
+    "anchorY": 0.899038,
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "cell": 384,
+    "bounds": {
+      "left": 0.075521,
+      "right": 0.927083,
+      "top": 0.210938,
+      "bottom": 0.932292
+    }
+  },
+  "hit": {
+    "anchorY": 0.89916,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.091146,
+      "right": 0.927083,
+      "top": 0.111979,
+      "bottom": 0.929688
+    }
+  }
+}

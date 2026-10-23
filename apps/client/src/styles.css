@@ -1425,6 +1425,307 @@ kbd { font-family: var(--body); color: var(--gold); }
   transform: translateY(-1px);
 }
 
+/* Admin Owned Heroes Bar */
+.admin-owned-section {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+.admin-owned-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.admin-owned-header .section-sub {
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.admin-owned-hint {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+.admin-owned-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.admin-owned-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 28, 32, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 120ms ease;
+  user-select: none;
+}
+.admin-owned-chip:hover {
+  border-color: var(--gold);
+  background: rgba(30, 58, 62, 0.9);
+  transform: translateY(-1px);
+}
+.admin-owned-chip .mini-portrait {
+  width: 28px;
+  height: 32px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.admin-chip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.2;
+}
+.admin-chip-name {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+.admin-chip-rank {
+  font-size: 0.64rem;
+  color: var(--gold);
+}
+.admin-chip-count {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #34d399;
+}
+.admin-chip-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.admin-chip-badge.target {
+  background: #f59e0b;
+  color: #000;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+.admin-chip-badge.direct {
+  background: #10b981;
+  color: #000;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+.admin-chip-badge.sub {
+  background: #0284c7;
+  color: #fff;
+  box-shadow: 0 0 6px rgba(2, 132, 199, 0.6);
+}
+.admin-owned-chip.is-target {
+  border-color: #fbbf24;
+  background: rgba(245, 158, 11, 0.22);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.45);
+}
+.admin-owned-chip.is-needed.direct {
+  border-color: #34d399;
+  background: rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+.admin-owned-chip.is-needed.sub {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.18);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
+}
+.admin-owned-chip.is-dimmed {
+  opacity: 0.35;
+  filter: grayscale(0.7);
+}
+
+/* Admin Target Craft Banner */
+.admin-banner-container {
+  width: 100%;
+}
+.admin-target-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(30, 48, 42, 0.95), rgba(15, 25, 30, 0.95));
+  border: 1px solid #fbbf24;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.3);
+}
+.admin-target-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.admin-target-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fbbf24;
+}
+.admin-target-recipe {
+  font-size: 0.74rem;
+  color: #cbd5e1;
+}
+.admin-banner-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.admin-banner-btn {
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  background: rgba(30, 58, 62, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+.admin-banner-btn:hover {
+  border-color: var(--gold);
+  color: #fff;
+}
+.admin-banner-btn.danger {
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #fca5a5;
+}
+.admin-banner-btn.danger:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Admin Card Tags */
+.admin-card-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+  letter-spacing: 0.2px;
+}
+.admin-card-tag.target {
+  background: #f59e0b;
+  color: #0b1719;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+.admin-card-tag.direct-ingredient.ready {
+  background: #10b981;
+  color: #042f2e;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+.admin-card-tag.direct-ingredient.missing {
+  background: #059669;
+  color: #ecfdf5;
+  box-shadow: 0 0 6px rgba(5, 150, 105, 0.4);
+}
+.admin-card-tag.sub-ingredient {
+  background: #0284c7;
+  color: #f0f9ff;
+  box-shadow: 0 0 6px rgba(2, 132, 199, 0.4);
+}
+
+/* Admin Hero Card States & Dimming */
+.admin-hero-card.is-target-hero {
+  border-color: #fbbf24 !important;
+  background: rgba(35, 45, 30, 0.95) !important;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.45), inset 0 0 8px rgba(245, 158, 11, 0.15) !important;
+}
+.admin-hero-card.is-craft-ingredient {
+  border-color: #34d399 !important;
+  background: rgba(16, 45, 35, 0.95) !important;
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.35), inset 0 0 6px rgba(52, 211, 153, 0.12) !important;
+}
+.admin-hero-card.is-craft-sub-ingredient {
+  border-color: #38bdf8 !important;
+  background: rgba(12, 38, 55, 0.95) !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3), inset 0 0 6px rgba(56, 189, 248, 0.1) !important;
+}
+.admin-hero-card.is-dimmed {
+  opacity: 0.28;
+  filter: grayscale(0.85) brightness(0.6);
+  transition: opacity 160ms ease, filter 160ms ease;
+}
+.admin-hero-card.is-dimmed:hover {
+  opacity: 0.92;
+  filter: none;
+}
+
+/* Card Target Action Buttons */
+.admin-action-btn.active-target {
+  background: #f59e0b;
+  color: #0b1719;
+  font-weight: 700;
+  border-color: #fbbf24;
+}
+.admin-action-btn.select-target {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+.admin-action-btn.select-target:hover {
+  background: rgba(245, 158, 11, 0.35);
+  border-color: #fbbf24;
+  color: #fff;
+}
+
+/* Craft Board Header Owned Bar & Quick Buy */
+.craft-owned-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+.craft-owned-label {
+  font-size: 0.72rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+.craft-owned-chip {
+  padding: 2px 7px;
+  font-size: 0.68rem;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #a7f3d0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+.craft-owned-chip:hover {
+  background: rgba(16, 185, 129, 0.3);
+  border-color: #34d399;
+  color: #fff;
+  transform: translateY(-1px);
+}
+.craft-admin-buy-btn {
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  background: rgba(94, 234, 212, 0.18);
+  border: 1px solid rgba(94, 234, 212, 0.55);
+  color: #5eead4;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 120ms ease;
+}
+.craft-admin-buy-btn:hover {
+  background: #14b8a6;
+  color: #042f2e;
+  border-color: #2dd4bf;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 900px) {
   .hud-dock { transform: scale(0.85); transform-origin: bottom left; }
   .hud-top { height: auto; flex-wrap: wrap; padding: 4px var(--s2); gap: 4px; }

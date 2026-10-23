@@ -1,136 +1,143 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { KIMSI as K } from '../../../content/kimsi-design.js';
 import { debug } from './debug.js';
+import { screenUp } from './visual-kit-billboard.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { KitFxBank } from './visual-kit-fx-bank.js';
+import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { unitDirection } from './visual-kit-timeline.js';
+import { KimsiBleed } from './visual-kimsi-bleed.js';
+import { KimsiCuts } from './visual-kimsi-cuts.js';
+import { KimsiGather } from './visual-kimsi-gather.js';
+import { KimsiMantle } from './visual-kimsi-mantle.js';
+import { KimsiReplay } from './visual-kimsi-replay.js';
+import { KimsiStorm } from './visual-kimsi-storm.js';
+import { BASIC_ARC, BASIC_LIFE, BASIC_REACH, CUT_BASIC_SIZE, CUT_CRIT_SIZE, CUT_SIZE, cutDelay, DEFAULT_WINDUP,
+  DOUBLE_STRIKE_WINDOW, strikeDirection } from './visual-kimsi-timeline.js';
 
-type Effect = { mesh: Mesh; kind: 'blade' | 'scar' | 'ring'; age: number; life: number;
-  delay: number; fromY: number; toY: number };
+/** Painted planes alive at once: 2 casts × (14 feathers + bud), 3 storms, 24 cuts, 20 scars, 6 × 2 mantle bands. */
+const PAINTED_CAPACITY = 110;
+/** Targets that get a cut for one basic strike. */
+const MAX_BASIC_HITS = 12;
 
-/** Golden feather blades and ground cuts timed from confirmed combat events. */
-export class VisualKimsi {
-  private active: Effect[] = [];
-  private pool: Record<Effect['kind'], Mesh[]> = { blade: [], scar: [], ring: [] };
-  private feather: StandardMaterial;
-  private scar: StandardMaterial;
-  private warning: StandardMaterial;
+/**
+ * Kim Sí Đại Bằng Kim Dực Trảm Thiên (h016) on the kit, Codex art from tier56-codex-art (palette `goldwing`).
+ * Windup (`cast`): the feather gather (storm-sheet bud + fourteen feathers swirling in from the R6.5 rim), following
+ * the caster. Resolve (`ability skill-h016`): the storm burst flat over R6.5, one rim ring at the exact radius, four
+ * ground crescents and ONE simultaneous wave of X cuts over the monsters the server listed (never a rain of hits).
+ * Berserk (marker `berserk`, from `berserk.remaining`): two feather bands at shoulders and feet while it lasts, folded
+ * back in 0.3 s when it ends. Bleed (marker `bleed`, from `bleed.remaining` of an h016 bleed): a small scar per
+ * monster for exactly the server's 3 s. Basic `trait-h016`: a frontal crescent per strike plus a small cut on each
+ * target. No fire ring, the actor never leaves the ground. Presentation only; the server decides hits and timers.
+ */
+export class VisualKimsi implements HeroVfx {
+  readonly heroId = K.id;
+  private art: KitPainted;
+  private bank: KitFxBank;
+  private gather: KimsiGather;
+  private storm: KimsiStorm;
+  private cuts: KimsiCuts;
+  private mantle: KimsiMantle;
+  private bleed: KimsiBleed;
+  private preview = new KimsiReplay(this);
+  private lastStrike = new Map<string, { time: number; flip: boolean }>();
+  private time = 0;
+  private reduced = false;
 
   constructor(private scene: Scene) {
-    const feather = new DynamicTexture('kimsi-feather-shape', 128, scene, false);
-    const ctx = feather.getContext() as unknown as CanvasRenderingContext2D;
-    ctx.clearRect(0, 0, 128, 128);
-    ctx.beginPath(); ctx.moveTo(64, 3);
-    ctx.bezierCurveTo(105, 23, 105, 77, 64, 122);
-    ctx.bezierCurveTo(23, 77, 23, 23, 64, 3);
-    ctx.fillStyle = '#efae39'; ctx.fill();
-    ctx.beginPath(); ctx.moveTo(64, 6); ctx.lineTo(64, 121);
-    ctx.strokeStyle = '#fff0a8'; ctx.lineWidth = 5; ctx.stroke();
-    for (let i = 0; i < 4; i++) {
-      const y = 33 + i * 17;
-      ctx.beginPath(); ctx.moveTo(63, y + 12); ctx.lineTo(37 - i, y);
-      ctx.moveTo(65, y + 12); ctx.lineTo(91 + i, y);
-      ctx.strokeStyle = '#aa5722'; ctx.lineWidth = 2; ctx.stroke();
-    }
-    feather.hasAlpha = true; feather.update();
-    this.feather = new StandardMaterial('kimsi-solid-feather', scene);
-    this.feather.diffuseTexture = feather;
-    this.feather.emissiveColor = Color3.FromHexString('#e6a443').scale(.25);
-    this.feather.useAlphaFromDiffuseTexture = true; this.feather.backFaceCulling = false;
-    this.feather.disableDepthWrite = true;
-
-    const slash = new DynamicTexture('kimsi-x-scars', 128, scene, false);
-    const draw = slash.getContext() as unknown as CanvasRenderingContext2D;
-    draw.clearRect(0, 0, 128, 128);
-    draw.lineCap = 'round';
-    for (const sign of [-1, 1]) {
-      draw.beginPath(); draw.moveTo(20, sign < 0 ? 19 : 109);
-      draw.quadraticCurveTo(66, 65 + sign * 9, 111, sign < 0 ? 108 : 18);
-      draw.strokeStyle = '#935724'; draw.lineWidth = 12; draw.stroke();
-      draw.strokeStyle = '#f4d178'; draw.lineWidth = 3; draw.stroke();
-    }
-    slash.hasAlpha = true; slash.update();
-    this.scar = new StandardMaterial('kimsi-ground-cuts', scene);
-    this.scar.diffuseTexture = slash; this.scar.useAlphaFromDiffuseTexture = true;
-    this.scar.backFaceCulling = false; this.scar.disableDepthWrite = true;
-
-    this.warning = new StandardMaterial('kimsi-warning-gold', scene);
-    this.warning.diffuseColor = Color3.FromHexString('#ddad56');
-    this.warning.emissiveColor = Color3.FromHexString('#a17a35').scale(.2);
-    this.warning.alpha = .65; this.warning.disableDepthWrite = true;
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'kimsi');
+    this.bank = new KitFxBank(scene, new KitFlipbooks(scene));
+    this.gather = new KimsiGather(this.art);
+    this.storm = new KimsiStorm(this.art, this.bank);
+    this.cuts = new KimsiCuts(this.art, this.bank);
+    this.mantle = new KimsiMantle(this.art, this.bank);
+    this.bleed = new KimsiBleed(this.art, this.bank);
+    debug('visual.kimsi.layout', { radius: K.stormRadius, berserk: K.berserkSeconds, bleed: K.bleedSeconds });
   }
 
-  private spawn(kind: Effect['kind'], at: Vector3, life: number, delay = 0): Effect | undefined {
-    if (this.active.length >= 32) return;
-    const mesh = this.pool[kind].pop() ?? (kind === 'ring'
-      ? MeshBuilder.CreateTorus('kimsi-storm-radius', { diameter: K.stormRadius * 2,
-        thickness: .14, tessellation: 48 }, this.scene)
-      : MeshBuilder.CreatePlane(`kimsi-${kind}`, { size: 1 }, this.scene));
-    mesh.material = kind === 'blade' ? this.feather : kind === 'scar' ? this.scar : this.warning;
-    mesh.position.copyFrom(at); mesh.rotation.set(0, 0, 0);
-    mesh.billboardMode = kind === 'blade' ? Mesh.BILLBOARDMODE_ALL : Mesh.BILLBOARDMODE_NONE;
-    if (kind === 'scar') mesh.rotation.x = Math.PI / 2;
-    mesh.visibility = 1; mesh.isPickable = false; mesh.setEnabled(true);
-    const effect = { mesh, kind, age: 0, life, delay, fromY: at.y, toY: at.y };
-    this.active.push(effect);
-    return effect;
+  /** Idempotent; art still loading keeps the rim ring and the next use retries. */
+  prepare(): void {
+    this.art.prepare('storm', '/assets/vfx-kimsi-storm.webp', { foreground: true });
+    this.art.prepare('feather', '/assets/vfx-kimsi-feather.webp', { foreground: true });
+    this.art.prepare('cut', '/assets/vfx-kimsi-cut.webp', { foreground: true });
+    this.art.prepare('bleed', '/assets/vfx-kimsi-bleed.webp', { foreground: true });
+    this.art.prepare('mantle', '/assets/vfx-kimsi-mantle.webp', { foreground: true });
   }
 
-  cast(event: GameEvent, at: Vector3): void {
-    const ring = this.spawn('ring', new Vector3(at.x, .08, at.z), event.windup ?? .25);
-    ring?.mesh.scaling.setAll(1);
-    debug('visual.kimsi.cast', { eventId: event.id });
+  cast(event: GameEvent, at: Vector3, reduced: boolean, origin?: Vector3): boolean {
+    if (event.skillId !== `skill-${K.id}`) return false;
+    this.prepare();
+    this.gather.begin(origin ?? at, event.windup ?? DEFAULT_WINDUP, reduced, event.source);
+    debug('visual.kimsi.cast', { eventId: event.id, windup: event.windup ?? DEFAULT_WINDUP, reduced });
+    return true;
   }
 
-  attack(event: GameEvent, at: Vector3, reduced: boolean): void {
-    if (!reduced) {
-      const blade = this.spawn('blade', new Vector3(at.x, 1.4, at.z), .23);
-      blade?.mesh.scaling.set(.5, 1.15, 1);
-    }
-    debug('visual.kimsi.attack', { eventId: event.id, hits: event.targets?.length ?? 0 });
-  }
-
-  impact(event: GameEvent, at: Vector3, reduced: boolean): void {
-    const count = reduced ? 6 : 24;
-    for (let i = 0; i < count; i++) {
-      const angle = i * 2.399963, radius = K.stormRadius * Math.sqrt((i + .4) / count);
-      const x = at.x + Math.cos(angle) * radius, z = at.z + Math.sin(angle) * radius;
-      if (i % 3 === 0) {
-        const scar = this.spawn('scar', new Vector3(x, .09, z), .72, i * .016);
-        scar?.mesh.scaling.setAll(.9);
+  ability(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {
+    this.prepare();
+    switch (event.skillId) {
+      case `skill-${K.id}`: {
+        if (event.kind !== 'ability') return false;
+        const center = event.x !== undefined && event.z !== undefined ? new Vector3(event.x, 0, event.z) : at;
+        const hadCast = this.gather.release(event.source);
+        this.storm.play(center, reduced);
+        const targets = extra?.targets ?? [];
+        for (const target of targets.slice(0, MAX_BASIC_HITS * 2))
+          this.cuts.add(target, CUT_SIZE, cutDelay(Math.hypot(target.x - center.x, target.z - center.z), reduced), reduced);
+        debug('visual.kimsi.impact', { eventId: event.id, hadCast, targets: event.targets?.length ?? 0, shown: targets.length, reduced });
+        return true;
       }
-      if (!reduced) {
-        const blade = this.spawn('blade', new Vector3(x - .65, 4.8 + i % 4, z - .45), .5, i * .016);
-        if (blade) {
-          blade.toY = .45;
-          blade.mesh.scaling.set(.55, 1.45, 1);
-        }
-      }
+      case `trait-${K.id}`:
+        this.basic(event, origin, extra?.targets ?? [], reduced);
+        return true;
+      default: return false;
     }
-    debug('visual.kimsi.impact', { eventId: event.id, targets: event.targets?.length ?? 0, reduced });
   }
 
-  tick(dt: number): void {
-    if (!Number.isFinite(dt) || dt <= 0) return;
-    for (let i = this.active.length - 1; i >= 0; i--) {
-      const fx = this.active[i]; fx.age += dt;
-      const progress = (fx.age - fx.delay) / fx.life;
-      if (progress < 0) { fx.mesh.visibility = 0; continue; }
-      if (progress >= 1) {
-        fx.mesh.setEnabled(false); this.pool[fx.kind].push(fx.mesh);
-        this.active.splice(i, 1); continue;
-      }
-      fx.mesh.visibility = 1 - progress * progress;
-      if (fx.kind === 'blade') fx.mesh.position.y = fx.fromY + (fx.toY - fx.fromY) * progress * progress;
-    }
+  /** Snapshot markers, every frame while the state is present: `caster`, `berserk`, `bleed`. */
+  mark(kind: string, id: string, at: Vector3, reduced = false): void {
+    this.reduced = reduced;
+    if (kind === 'caster') this.gather.follow(id, at);
+    else if (kind === 'berserk') this.mantle.mark(id, at);
+    else if (kind === 'bleed' && !this.bleed.mark(id, at)) debug('visual.kimsi.cap', { layer: 'bleed' });
+  }
+
+  tick(dt: number, time: number): void {
+    this.time = time;
+    this.preview.tick(dt);
+    const up = screenUp(this.scene);
+    this.gather.tick(dt);
+    this.storm.tick(dt);
+    this.cuts.tick(dt, up);
+    this.mantle.tick(dt, up, this.reduced);
+    this.bleed.tick(dt, up, this.reduced);
+    this.bank.tick(dt, time);
   }
 
   clear(): void {
-    for (const fx of this.active) { fx.mesh.setEnabled(false); this.pool[fx.kind].push(fx.mesh); }
-    this.active.length = 0;
+    this.preview.clear(); this.gather.clear(); this.storm.clear(); this.cuts.clear();
+    this.mantle.clear(); this.bleed.clear(); this.bank.clear(); this.art.clear(); this.lastStrike.clear();
+  }
+
+  replay(kind: string, at: Vector3, reduced: boolean, origin = at): boolean {
+    this.prepare();
+    return this.preview.start(kind, at, reduced, origin);
+  }
+
+  /** One frontal crescent per strike (the second of a double strike swings from the other side), a cut per target. */
+  private basic(event: GameEvent, origin: Vector3, targets: readonly Vector3[], reduced: boolean): void {
+    const dir = unitDirection(event, origin);
+    if (!dir) { debug('visual.kimsi.attack.skip', { eventId: event.id, reason: 'no-direction' }); return; }
+    const key = event.source ?? '';
+    const previous = this.lastStrike.get(key);
+    const followUp = Boolean(previous && this.time - previous.time < DOUBLE_STRIKE_WINDOW && this.time >= previous.time);
+    const flip = followUp ? !previous!.flip : false;
+    this.lastStrike.set(key, { time: this.time, flip });
+    this.bank.slash(origin, strikeDirection(dir, followUp, flip), BASIC_REACH, BASIC_ARC, 'goldwing', BASIC_LIFE, reduced);
+    for (const target of targets.slice(0, MAX_BASIC_HITS))
+      this.cuts.add(target, event.isCrit ? CUT_CRIT_SIZE : CUT_BASIC_SIZE, reduced ? 0 : .04, reduced);
+    debug('visual.kimsi.attack', { eventId: event.id, hits: targets.length, crit: Boolean(event.isCrit), followUp, reduced });
   }
 }

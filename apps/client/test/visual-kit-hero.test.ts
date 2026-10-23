@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 import type { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { extractHeroIdFromSkill, HeroVfxRegistry, heroIdFromSkillId, type HeroVfx } from '../src/visual-kit-hero.js';
-import { installReplay, registerReplay } from '../src/visual-kit-replay.js';
+import { installReplay, registerReplay, replayHero } from '../src/visual-kit-replay.js';
 
 // debug() reads location.search; the registry/replay log through it.
 beforeAll(() => { vi.stubGlobal('location', { search: '' }); });
@@ -67,6 +67,17 @@ describe('hero registry', () => {
 });
 
 describe('__vfxReplay', () => {
+  it('shares dispatch with the review UI and preserves a newer registration during old cleanup', () => {
+    const old = registerReplay('review-test', () => false);
+    const current = vi.fn(() => true);
+    const remove = registerReplay('review-test', current);
+    old();
+    expect(replayHero('review-test', 'ultimate', 2, -3)).toBe(true);
+    expect(current).toHaveBeenCalledWith('ultimate', 2, -3);
+    remove();
+    expect(replayHero('review-test')).toBe(false);
+  });
+
   it('installs only with ?debug=1 and dispatches by hero id', () => {
     const calls: unknown[][] = [];
     const unregister = registerReplay('h01G', (kind, x, z) => { calls.push([kind, x, z]); return true; });

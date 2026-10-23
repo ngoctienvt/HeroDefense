@@ -1,114 +1,129 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { HAUNGHE as H } from '../../../content/hau-nghe-design.js';
 import { debug } from './debug.js';
+import { screenUp } from './visual-kit-billboard.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { KitFxBank } from './visual-kit-fx-bank.js';
+import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { unitDirection } from './visual-kit-timeline.js';
+import { HauNgheArrows } from './visual-hau-nghe-arrows.js';
+import { HauNgheBlast } from './visual-hau-nghe-blast.js';
+import { HauNgheSuns } from './visual-hau-nghe-suns.js';
+import { HauNgheReplay } from './visual-hau-nghe-replay.js';
+import { BASIC_ARROW_LENGTH, BASIC_ARROW_WIDTH, BASIC_FLIGHT, DEFAULT_WINDUP, NOCK_HEIGHT, STRIKE_HEIGHT,
+  ARROW_LENGTH, ARROW_WIDTH } from './visual-hau-nghe-timeline.js';
 
-type Effect = { mesh: Mesh; kind: 'sun' | 'ring'; age: number; life: number;
-  startY: number; endY: number; delay: number };
+/** Painted planes alive at once: 24 basic arrows, 4 casts × 7 suns, 4 blasts × 2. */
+const PAINTED_CAPACITY = 64;
+/** Targets that get a contact flare for one basic shot. */
+const MAX_BASIC_HITS = 12;
 
-/** Nine visible solar bodies descend only after the server confirms the strike. */
-export class VisualHauNghe {
-  private active: Effect[] = [];
-  private sunPool: Mesh[] = [];
-  private ringPool: Mesh[] = [];
-  private sun: StandardMaterial;
-  private warning: StandardMaterial;
+/**
+ * Hậu Nghệ Cửu Nhật Liên Châu Trảm (h017) on the kit, Codex art from tier56-codex-art (palette `solar`).
+ * Windup (`cast`): seven suns (cut from the Codex nine-suns sheet; seven accepted by the user) pop in an arc above the
+ * caster and follow him until the resolve (`caster` marker, every frame).
+ * Resolve (`ability skill-h017`, R6.5): the suns dive one after another onto the confirmed point (no origin: they fall
+ * from the sky), and the single blast (detonation flipbook + scorch + shock ring + sparks) plays as the last lands.
+ * Basic `trait-h017`: one arrow along the 12-unit pierce line, a flare on every hit target.
+ * Burn / sunder marks on monsters come from the shared status marks. Presentation only; the server decides hits.
+ */
+export class VisualHauNghe implements HeroVfx {
+  readonly heroId = H.id;
+  private art: KitPainted;
+  private bank: KitFxBank;
+  private suns: HauNgheSuns;
+  private arrows: HauNgheArrows;
+  private blast: HauNgheBlast;
+  private preview = new HauNgheReplay(this);
 
   constructor(private scene: Scene) {
-    const texture = new DynamicTexture('hau-nghe-sun-corona', { width: 256, height: 256 }, scene, false);
-    const ctx = texture.getContext() as unknown as CanvasRenderingContext2D;
-    ctx.clearRect(0, 0, 256, 256); ctx.translate(128, 128);
-    for (let i = 0; i < 18; i++) {
-      ctx.save(); ctx.rotate(i * Math.PI / 9);
-      ctx.beginPath(); ctx.moveTo(-16, -64);
-      ctx.quadraticCurveTo(-15, -97, 0, -116);
-      ctx.quadraticCurveTo(17, -94, 16, -64);
-      ctx.fillStyle = i % 2 ? '#e05a25' : '#ff9234'; ctx.fill(); ctx.restore();
-    }
-    ctx.beginPath(); ctx.arc(0, 0, 70, 0, Math.PI * 2);
-    ctx.fillStyle = '#bd3e1b'; ctx.fill();
-    ctx.beginPath(); ctx.arc(-13, -13, 51, 0, Math.PI * 2);
-    ctx.fillStyle = '#ffd15b'; ctx.fill();
-    texture.hasAlpha = true; texture.update();
-    this.sun = new StandardMaterial('hau-nghe-solid-sun', scene);
-    this.sun.diffuseTexture = texture; this.sun.emissiveTexture = texture;
-    this.sun.emissiveColor = Color3.FromHexString('#dc641d').scale(.36);
-    this.sun.useAlphaFromDiffuseTexture = true; this.sun.backFaceCulling = false;
-    this.sun.disableDepthWrite = true;
-    this.warning = new StandardMaterial('hau-nghe-scorch-ring', scene);
-    this.warning.diffuseColor = Color3.FromHexString('#7a3525');
-    this.warning.emissiveColor = Color3.FromHexString('#e1712c').scale(.16);
-    this.warning.alpha = .78; this.warning.disableDepthWrite = true;
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'haunghe');
+    this.bank = new KitFxBank(scene, new KitFlipbooks(scene));
+    this.suns = new HauNgheSuns(scene, this.art, this.bank);
+    this.arrows = new HauNgheArrows(scene, this.art);
+    this.blast = new HauNgheBlast(this.art, this.bank);
+    debug('visual.haunghe.layout', { radius: H.blastRadius, arrow: ARROW_LENGTH, arrowWidth: +ARROW_WIDTH.toFixed(2) });
   }
 
-  private ring(at: Vector3, life: number, size: number): void {
-    if (this.active.length >= 32) return;
-    const mesh = this.ringPool.pop() ?? MeshBuilder.CreateTorus('hau-nghe-scorch',
-      { diameter: H.blastRadius * 2, thickness: .16, tessellation: 48 }, this.scene);
-    mesh.material = this.warning; mesh.position.set(at.x, .08, at.z);
-    mesh.scaling.setAll(size / (H.blastRadius * 2)); mesh.visibility = 1;
-    mesh.isPickable = false; mesh.setEnabled(true);
-    this.active.push({ mesh, kind: 'ring', age: 0, life, startY: .08, endY: .08, delay: 0 });
+  /** Idempotent; art still loading keeps the shader rim and ring, and the next use retries. */
+  prepare(): void {
+    this.art.prepare('sun', '/assets/vfx-hau-nghe-sun.webp', { foreground: true });
+    this.art.prepare('arrow', '/assets/vfx-hau-nghe-arrow.webp', { foreground: true });
+    this.art.prepare('detonation', '/assets/vfx-hau-nghe-detonation.webp', { foreground: true });
+    this.art.prepare('scorch', '/assets/vfx-hau-nghe-scorch.webp');
   }
 
-  cast(event: GameEvent, at: Vector3): void {
-    this.ring(at, event.windup ?? .25, 2.8);
-    debug('visual.haunghe.cast', { eventId: event.id });
+  cast(event: GameEvent, at: Vector3, reduced: boolean, origin?: Vector3): boolean {
+    if (event.skillId !== `skill-${H.id}`) return false;
+    this.prepare();
+    this.suns.begin(origin ?? at, event.windup ?? DEFAULT_WINDUP, reduced, event.source);
+    debug('visual.haunghe.cast', { eventId: event.id, windup: event.windup ?? DEFAULT_WINDUP, reduced });
+    return true;
   }
 
-  arrow(event: GameEvent, at: Vector3, reduced: boolean): void {
-    if (reduced || this.active.length >= 32) return;
-    const mesh = this.sunPool.pop() ?? MeshBuilder.CreatePlane('hau-nghe-solar-arrow', { size: 1 }, this.scene);
-    mesh.material = this.sun; mesh.billboardMode = Mesh.BILLBOARDMODE_ALL;
-    mesh.position.set(at.x, 1.3, at.z); mesh.scaling.setAll(1.2);
-    mesh.visibility = 1; mesh.isPickable = false; mesh.setEnabled(true);
-    this.active.push({ mesh, kind: 'sun', age: 0, life: .28, startY: 1.3, endY: 1.3, delay: 0 });
-    debug('visual.haunghe.arrow', { eventId: event.id, hits: event.targets?.length ?? 0 });
-  }
-
-  impact(event: GameEvent, at: Vector3, reduced: boolean): void {
-    this.ring(at, reduced ? .28 : .85, H.blastRadius * 2);
-    if (!reduced) for (let i = 0; i < H.sunCount && this.active.length < 32; i++) {
-      const angle = i * Math.PI * 2 / H.sunCount;
-      const radius = i === 0 ? 0 : H.blastRadius * (.35 + (i % 3) * .2);
-      const mesh = this.sunPool.pop() ?? MeshBuilder.CreatePlane('hau-nghe-nine-suns', { size: 1 }, this.scene);
-      mesh.material = this.sun; mesh.billboardMode = Mesh.BILLBOARDMODE_ALL;
-      mesh.position.set(at.x + Math.cos(angle) * radius, 10 + (i % 3) * 1.5,
-        at.z + Math.sin(angle) * radius);
-      mesh.scaling.setAll(i === 0 ? 2.4 : 1.8);
-      mesh.visibility = 1; mesh.isPickable = false; mesh.setEnabled(true);
-      this.active.push({ mesh, kind: 'sun', age: 0, life: .75,
-        startY: mesh.position.y, endY: .7, delay: i * .045 });
-    }
-    debug('visual.haunghe.impact', { eventId: event.id, targets: event.targets?.length ?? 0, reduced });
-  }
-
-  tick(dt: number): void {
-    if (!Number.isFinite(dt) || dt <= 0) return;
-    for (let i = this.active.length - 1; i >= 0; i--) {
-      const effect = this.active[i]; effect.age += dt;
-      const progress = (effect.age - effect.delay) / effect.life;
-      if (progress < 0) { effect.mesh.visibility = 0; continue; }
-      if (progress >= 1) {
-        effect.mesh.setEnabled(false);
-        (effect.kind === 'sun' ? this.sunPool : this.ringPool).push(effect.mesh);
-        this.active.splice(i, 1); continue;
+  ability(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {
+    this.prepare();
+    switch (event.skillId) {
+      case `skill-${H.id}`: {
+        if (event.kind !== 'ability') return false;
+        const hadCast = this.suns.dive(event.source, at, extra?.hasOrigin ? origin : undefined, reduced,
+          () => this.blast.play(at, reduced));
+        debug('visual.haunghe.impact', { eventId: event.id, hadCast, hasOrigin: extra?.hasOrigin ?? false,
+          targets: event.targets?.length ?? 0, reduced });
+        return true;
       }
-      effect.mesh.visibility = 1 - progress * progress;
-      if (effect.kind === 'sun') effect.mesh.position.y = effect.startY + (effect.endY - effect.startY) * progress * progress;
+      case `trait-${H.id}`:
+        this.basic(event, origin, extra?.targets ?? [], reduced);
+        return true;
+      default: return false;
     }
+  }
+
+  /** Snapshot marker `caster` (every frame while the hero is on the field): the hovering suns follow him. */
+  mark(kind: string, id: string, at: Vector3): void {
+    if (kind === 'caster') this.suns.follow(id, at);
+  }
+
+  tick(dt: number, time: number): void {
+    this.preview.tick(dt);
+    const up = screenUp(this.scene);
+    this.suns.tick(dt, time);
+    this.arrows.tick(dt);
+    this.blast.tick(dt, up);
+    this.bank.tick(dt, time);
   }
 
   clear(): void {
-    for (const effect of this.active) {
-      effect.mesh.setEnabled(false); (effect.kind === 'sun' ? this.sunPool : this.ringPool).push(effect.mesh);
+    this.preview.clear(); this.suns.clear(); this.arrows.clear(); this.blast.clear(); this.bank.clear(); this.art.clear();
+  }
+
+  replay(kind: string, at: Vector3, reduced: boolean, origin = at): boolean {
+    this.prepare();
+    return this.preview.start(kind, at, reduced, origin);
+  }
+
+  /** One arrow along the server's pierce line, a flare on each target as the head passes it. */
+  private basic(event: GameEvent, origin: Vector3, targets: readonly Vector3[], reduced: boolean): void {
+    const dir = unitDirection(event, origin);
+    if (!dir) { debug('visual.haunghe.arrow.skip', { eventId: event.id, reason: 'no-direction' }); return; }
+    const from = new Vector3(origin.x + dir.x * 1.4, NOCK_HEIGHT, origin.z + dir.z * 1.4);
+    const to = new Vector3(origin.x + dir.x * H.arrowLength, STRIKE_HEIGHT, origin.z + dir.z * H.arrowLength);
+    if (!reduced) {
+      this.arrows.launch(from, to, BASIC_FLIGHT, BASIC_ARROW_LENGTH, BASIC_ARROW_WIDTH, () => undefined);
+      this.bank.ribbon(from, to, 'solar', { life: .24, width: .9, taper: .7, height: NOCK_HEIGHT, maxSpan: 5 });
     }
-    this.active.length = 0;
+    for (const target of targets.slice(0, MAX_BASIC_HITS)) {
+      const travel = Math.min(1, Math.hypot(target.x - origin.x, target.z - origin.z) / H.arrowLength);
+      // The arrow accelerates cubically, so its head reaches fraction x of the line at flight · x^(1/3).
+      this.bank.after(reduced ? 0 : BASIC_FLIGHT * Math.cbrt(travel), () => {
+        this.bank.ring(target, event.isCrit ? 1.9 : 1.2, event.isCrit ? 'gold' : 'solar',
+          { life: .3, fill: .25, rim: 1, alpha: .8, hold: true, reduced, order: 5 });
+        if (!reduced) this.bank.spray('solar').ring(target, .3, event.isCrit ? 14 : 8, .2, 1.3, 2.4);
+      });
+    }
+    debug('visual.haunghe.arrow', { eventId: event.id, hits: targets.length, crit: Boolean(event.isCrit), reduced });
   }
 }

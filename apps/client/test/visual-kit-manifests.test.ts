@@ -31,6 +31,12 @@ describe('kit atlas manifest', () => {
     expect(validateAtlas({})).not.toEqual([]);
   });
 
+  it('accepts finite camera offsets at or below ground level without dropping painted atlases', () => {
+    for (const targetZ of [0, -1]) expect(validateAtlas({ ...atlases.atlases[0], targetZ })).toEqual([]);
+    for (const targetZ of [NaN, Infinity, undefined])
+      expect(validateAtlas({ ...atlases.atlases[0], targetZ })).toContain('targetZ must be finite');
+  });
+
   it('points at runtime WebP files and source frame folders that exist', () => {
     for (const atlas of atlases.atlases) {
       expect(existsSync(resolve(ROOT, 'apps/client/public', atlas.url.replace(/^\//, ''))), atlas.url).toBe(true);

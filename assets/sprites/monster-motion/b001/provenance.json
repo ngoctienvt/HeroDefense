@@ -1,0 +1,52 @@
+{
+  "schema": "sprite-art-provenance.v1",
+  "date": "2026-10-22",
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": null,
+  "estimatedCostUsd": null,
+  "routeRequest": "exec-d55fd24f-efc0-4f5e-bc3d-6245bcf6fa84",
+  "generatedSource": "source/master-generated-raw.png",
+  "acceptedMaster": "source/master/master_rgba.png",
+  "prompt": "source/master-prompt.txt",
+  "styleReference": "assets/sprites/pangu-topdown/source/south-master.png",
+  "routeVerified": true,
+  "revisionNotes": "Generated master.",
+  "warnings": [],
+  "sourceSha256": "53ae9ff2e35ce6acb0a2b14eff86edb511b702a4326a3333122f9a695e29cb03",
+  "masterSha256": "8bb1558f7bcb5d24c9dc214f5a4070b9031a73c70c37f9eb729148c979ff66a2",
+  "directions": {
+    "south": {
+      "source": "source/master/master_rgba.png",
+      "status": "directions-approved"
+    },
+    "west": {
+      "source": "source/directions/west/master/master_rgba.png",
+      "raw": "source/directions/west/direction-generated-raw.png",
+      "prompt": "source/directions/west/prompt.txt",
+      "routeRequest": "exec-211fb3d3-aefe-494e-90c7-4840d86b3b65",
+      "status": "directions-approved",
+      "warnings": []
+    },
+    "north": {
+      "source": "source/directions/north/master/master_rgba.png",
+      "raw": "source/directions/north/direction-generated-raw.png",
+      "prompt": "source/directions/north/prompt.txt",
+      "routeRequest": "exec-f2079db6-adf9-48eb-9b17-63ddcbc78648",
+      "status": "directions-approved",
+      "warnings": []
+    },
+    "east": {
+      "source": "source/directions/east/master/master_rgba.png",
+      "raw": "source/directions/east/direction-generated-raw.png",
+      "prompt": "source/directions/east/prompt.txt",
+      "routeRequest": "exec-e5177fac-d9f4-4dea-81b2-e3141a81a045",
+      "status": "directions-approved",
+      "warnings": []
+    }
+  },
+  "directionContact": [
+    "source/directions/contact-light.webp",
+    "source/directions/contact-dark.webp"
+  ]
+}

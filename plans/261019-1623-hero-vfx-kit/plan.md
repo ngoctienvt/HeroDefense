@@ -6,7 +6,7 @@ priority: P2
 effort: 8 giai đoạn; giai đoạn 1 khoảng 1 phiên Opus
 branch: main
 tags: [frontend, refactor, vfx]
-blockedBy: []
+blockedBy: [261020-1054-tier56-codex-ultimate-art, 261020-2126-tier34-codex-skill-art]
 blocks: []
 created: 2026-10-19
 ---
@@ -60,6 +60,10 @@ Gameplay, chỉ số, mô tả chiêu, sprite thân hero, âm thanh, VFX quái.
 
 Giai đoạn 2–8 mới ở mức khung. Mỗi giai đoạn sẽ được viết chi tiết ngay trước khi chạy, dựa trên kit thực tế và `docs/vfx-kit.md`, để không tốn token lập kế hoạch cho phần còn có thể thay đổi.
 
+**Bổ sung 20-10-2026 — phụ thuộc cục bộ giai đoạn7:** [Kế hoạch ảnh Codex bậc5–6](../261020-1054-tier56-codex-ultimate-art/plan.md) cung cấp inventory và nguồn ảnh tuyệt kỹ/trạng thái cho25 tướng, trừ Cộng Công. `blockedBy` trên chỉ áp dụng phần tích hợp cần lô ảnh mới trong giai đoạn7; không chặn các phần kit và giai đoạn khác độc lập. Người dùng chốt phong cách **stylized như Cộng Công** cho lô này, Cộng Công giữ vai trò chuẩn chất lượng tích hợp. Kế hoạch mới không thay phạm vi đòn thường/nội tại của toàn kit.
+
+**Bổ sung 20-10-2026 — phụ thuộc cục bộ giai đoạn 6:** [Kế hoạch ảnh Codex bậc 3–4](../261020-2126-tier34-codex-skill-art/plan.md) cung cấp ảnh tuyệt kỹ/trạng thái cho 24 tướng bậc 3–4 và thêm hai dấu chung `shared-attack-down-mark`, `shared-vulnerable-mark`. Ảnh đi vào khe motif/flipbook/ribbon/decal của kit qua `visual-kit-recipes-tier34.ts`; bậc 3–4 vẫn là công thức dữ liệu, không thêm module riêng từng tướng. `blockedBy` chỉ áp dụng cho phần tích hợp cần lô ảnh này.
+
 ## Tiêu chí nghiệm thu toàn plan
 
 1. Cộng Công trên kit nhìn y hệt bản cũ (người dùng so bằng replay; flipbook re-render khớp pixel với bản cũ).
@@ -84,7 +88,7 @@ Mỗi file phase có hai mục để bàn giao: **Trạng thái phiên** và **K
 
 ## Chuẩn phong cách: không hời hợt, không "đồ chơi"
 
-Bậc 1–4 có thể nhỏ và ngắn hơn, nhưng phải **cùng chất liệu hình ảnh** với Cộng Công và sprite hero (vẽ tay, cel shading).
+Bậc 1–4 có thể nhỏ và ngắn hơn, nhưng phải **cùng chất liệu hình ảnh** với Cộng Công và sprite hero (stylized, cel shading).
 
 **Nguyên nhân gây cảm giác đồ chơi đã gặp**: StandardMaterial tô phẳng, primitive tròn hoặc trụ hoàn hảo, texture phép chung chỉ đổi màu, chuyển động tuyến tính, đốm additive trắng xóa, vật bay không có pha lấy đà hay dư âm.
 

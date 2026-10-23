@@ -81,7 +81,7 @@ Số lượng làn quái xuất hiện bằng chính xác số lượng người
 
 ### 2.4. Bố trí Ô Đội Hình (Deployment Slots Grid)
 Mỗi người chơi sở hữu đúng **5 ô triển khai** trên chiến trường (đánh số `slot` từ `0` đến `4`). Vị trí triển khai được tính toán tự động dựa trên chỉ số làn của người chơi:
-$$\text{spread} = \left(\text{laneIndex} - \frac{N - 1}{2}\right) \times 7$$
+$$\text{spread} = \left(\text{laneIndex} - \frac{N - 1}{2}\right) \times 15$$
 $$X_{\text{slot}} = \text{clamp}\big(-40, 40, \text{spread} + (\text{slot} \% 3 - 1) \times 3.2\big)$$
 $$Z_{\text{slot}} = 9 + \lfloor \text{slot} / 3 \rfloor \times 4$$
 - Hàng trước: Gồm 3 ô (slot 0, 1, 2) tại $Z = 9$.
@@ -229,6 +229,12 @@ $$\mathbf{AttackInterval} = \frac{\text{Interval}_{\text{base}}}{1 + \text{Bonus
 - $\text{Interval}_{\text{base}}$: Thời gian hồi giữa 2 đòn đánh cơ bản (ví dụ 0.8s, 1.0s, 1.2s).
 - $\text{Gear}_{\text{mag}}$: Cấp độ trang bị nhánh Pháp lực (tăng 4% tốc đánh/cấp).
 - $\text{Haste}_{\text{amount}}$: Hệ số buff tăng tốc từ kỹ năng hỗ trợ.
+- Carry có nội tại đánh tay cộng thêm tầng Chiến Ý và Thừa Thắng vào mẫu số (xem 4.4.1).
+
+#### 4.4.1. Đánh Lan & Nội Tại Carry (bản web, 19-10-2026)
+- Đòn đánh thường không còn nổ lan quanh mục tiêu. Chỉ carry cận chiến giữ chém quét: mục tiêu chính 100%, quái bên cạnh 60% (Quỷ Sai, Mộc Tra: 50%).
+- Support và Hộ vệ đánh một mục tiêu với mọi kiểu đòn; xạ thủ và pháp sư giữ nảy/đa tia/xuyên nếu có.
+- 33 carry (18 cận chiến, 15 tầm xa) có nội tại đánh tay riêng (`carryPassive`). Thưởng sát thương và hút máu chỉ áp lên mục tiêu chính; Chiến Ý/Thừa Thắng hết sau 3 giây không đánh; Thân Bất Hoại giảm sát thương khi có từ 3 quái trong 3 đơn vị. Số liệu: `packages/contracts/src/carry-passives.ts`; máy xử lý: `packages/game-core/src/carry-passive.ts`.
 
 ### 4.5. Hồi Máu Tự Nhiên (Health Regeneration)
 Các tướng được hưởng hiệu ứng hồi phục từ Tiên Duyên (`regen`) sẽ tự hồi phục sinh lực theo mỗi chu kỳ mô phỏng $dt$:
@@ -628,7 +634,7 @@ Dưới đây là danh sách toàn bộ 70 vị tướng được sắp xếp th
 | `h003` | **Quỷ Sai** | Hỏa (Fire) | Chiến Binh (Warrior) | 650 | 52 | 6 | 1.8 | 1s | 4.2 | **Đặc tính: Quỷ Liêm Âm Hỏa** (không có kỹ năng chủ động) | Mỗi đòn gây thiêu đốt bằng 40% Công trong 2 giây; quái đang cháy chết sẽ nổ 30 sát thương trong bán kính 2. |
 | `h004` | **Thiên Binh** | Kim (Metal) | Chiến Binh (Warrior) | 680 | 50 | 7 | 2 | 1.05s | 4 | **Đặc tính: Trường Thương Phá Giáp** (không có kỹ năng chủ động) | 25% cơ hội chí mạng 150% sát thương; mũi thương quét thêm tối đa hai quái sát mục tiêu trong bán kính 2. |
 | `h005` | **Xạ Nhân** | Thổ (Earth) | Xạ Thủ (Ranger) | 240 | 58 | 4 | 7.5 | 1.05s | 3.5 | **Đặc tính: Trọng Tiễn Chấn Động** (không có kỹ năng chủ động) | Mỗi phát thứ ba làm choáng 0,4 giây và đẩy mục tiêu lùi 0,5 đơn vị. |
-| `h006` | **Tiên Nữ** | Mộc (Wood) | Pháp Sư (Mage) | 190 | 54 | 2 | 7 | 1.2s | 3.4 | **Đặc tính: Linh Hoa Tán Lộc** (không có kỹ năng chủ động) | Đòn đánh lan 35% sát thương cho quái trong bán kính 2,2; hồi 15 HP cho đồng minh thấp máu nhất trong 6 đơn vị. |
+| `h006` | **Tiên Nữ** | Mộc (Wood) | Pháp Sư (Mage) | 190 | 54 | 2 | 7 | 1.2s | 3.4 | **Đặc tính: Linh Hoa Tán Lộc** (không có kỹ năng chủ động) | Đánh một mục tiêu (support không đánh lan); hồi 15 HP cho đồng minh thấp máu nhất trong 6 đơn vị. |
 | `h007` | **Quy Thừa Tướng** | Thủy (Water) | Hộ Vệ (Guardian) | 1450 | 32 | 12 | 1.8 | 1.25s | 3 | **Đặc tính: Huyền Quy Hàn Giáp** (không có kỹ năng chủ động) | Chặn tối đa 5 quái, giảm cố định 10 sát thương nhận vào; kẻ đánh cận chiến bị chậm di chuyển và đánh 20% trong 2 giây. |
 | `h008` | **Thổ Hành Tôn** | Thổ (Earth) | Chiến Binh (Warrior) | 720 | 48 | 8 | 1.8 | 1s | 4.4 | **Đặc tính: Độn Thổ Xung Kích** (không có kỹ năng chủ động) | Lướt nhanh khi tiếp cận mục tiêu mới; mỗi đòn thứ tư nứt đất trong bán kính 2,5, gây 130% Công và tự tăng 4 Giáp trong 3 giây. |
 

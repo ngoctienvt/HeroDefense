@@ -6,6 +6,7 @@ import { debug } from './debug.js';
 import { button, el, elements, heroPortrait, number, roles } from './ui.js';
 
 let selectedHeroId = CRAFT_RECIPES[0].heroId;
+let craftOnlyShowRelated = false;
 
 export interface IngredientTreeInfo {
   directCounts: Map<string, number>;
@@ -90,8 +91,40 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
   const dotReady = el('span', 'legend-dot ready');
   itemReady.append(dotReady, el('span', '', 'Đã đủ nguyên liệu'));
 
-  legend.append(itemDirect, itemSub, itemReady);
+  const filterBtn = button(craftOnlyShowRelated ? 'Hiện tất cả 70 tướng' : 'Chỉ hiện tướng ghép liên quan', () => {
+    craftOnlyShowRelated = !craftOnlyShowRelated;
+    filterBtn.textContent = craftOnlyShowRelated ? 'Hiện tất cả 70 tướng' : 'Chỉ hiện tướng ghép liên quan';
+    filterBtn.classList.toggle('active', craftOnlyShowRelated);
+    updateHighlights();
+  }, `craft-filter-btn ${craftOnlyShowRelated ? 'active' : ''}`);
+
+  legend.append(itemDirect, itemSub, itemReady, filterBtn);
   intro.append(legend);
+
+  if (owned.length > 0) {
+    const ownedBar = el('div', 'craft-owned-bar');
+    ownedBar.append(el('span', 'craft-owned-label', `Đang sở hữu (${owned.length}):`));
+    const heroGroups = new Map<string, Unit[]>();
+    for (const u of owned) {
+      const g = heroGroups.get(u.heroId) ?? [];
+      g.push(u);
+      heroGroups.set(u.heroId, g);
+    }
+    for (const [hId, units] of heroGroups.entries()) {
+      const h = HERO_BY_ID[hId];
+      if (!h) continue;
+      const rankSummary = units.map(u => (u.rank <= 6 ? '★'.repeat(u.rank) : `${u.rank}★`)).join(',');
+      const chip = button(`${h.name} (${rankSummary})`, () => {
+        selectHero(hId);
+        const targetIcon = gallery.querySelector<HTMLButtonElement>(`[data-hero-id="${hId}"]`);
+        targetIcon?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 'craft-owned-chip');
+      chip.dataset.heroId = hId;
+      chip.title = `${h.name} (Phẩm ${h.tier}) · Đang có ${units.length} bản sao · Nhấp để xem công thức ghép`;
+      ownedBar.append(chip);
+    }
+    intro.append(ownedBar);
+  }
 
   header.append(
     intro,
@@ -146,9 +179,35 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
       if (hasRecipe) {
         const isRelevant = isSelected || directCounts.has(heroId) || subCounts.has(heroId);
         icon.classList.toggle('is-dimmed', !isRelevant);
+        icon.classList.toggle('is-hidden', craftOnlyShowRelated && !isRelevant);
       } else {
         icon.classList.remove('is-dimmed');
+        icon.classList.remove('is-hidden');
       }
+    }
+
+    const tierSections = gallery.querySelectorAll<HTMLElement>('.craft-tier-section');
+    for (const section of tierSections) {
+      if (!craftOnlyShowRelated || !hasRecipe) {
+        section.classList.remove('is-hidden');
+      } else {
+        const visibleIcons = section.querySelectorAll<HTMLElement>('.craft-icon:not(.is-hidden)');
+        section.classList.toggle('is-hidden', visibleIcons.length === 0);
+      }
+    }
+
+    const ownedChips = intro.querySelectorAll<HTMLButtonElement>('.craft-owned-chip');
+    for (const chip of ownedChips) {
+      const hId = chip.dataset.heroId;
+      if (!hId) continue;
+      const isTarget = hId === selectedHeroId;
+      const isDirect = directCounts.has(hId);
+      const isSub = subCounts.has(hId);
+      const isRelevant = isTarget || isDirect || isSub;
+      chip.classList.toggle('is-target', isTarget);
+      chip.classList.toggle('is-needed-direct', isDirect);
+      chip.classList.toggle('is-needed-sub', isSub);
+      chip.classList.toggle('is-dimmed', hasRecipe && !isRelevant);
     }
   };
 
@@ -167,11 +226,24 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
 
     // Hero Header
     const title = el('div', 'craft-result');
-    const info = el('div');
+    const info = el('div', 'craft-result-info');
     info.append(
       el('h3', '', hero.name),
       el('p', 'muted', `${roles[hero.role]} · Hành ${elements[hero.element]} · Phẩm ${hero.tier}`)
     );
+
+    const quickStars = el('div', 'craft-quick-stars');
+    quickStars.append(el('span', 'craft-quick-label', 'Nhận test:'));
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(star => {
+      quickStars.append(
+        button(`${star}★`, () => {
+          debug('client.admin-get-hero', { heroId: hero.id, rank: star, deploy: false });
+          ctx.send({ type: 'admin-get-hero', heroId: hero.id, rank: star, deploy: false });
+        }, 'craft-star-mini-btn')
+      );
+    });
+    info.append(quickStars);
+
     title.append(heroPortrait(hero), info);
     detail.append(title);
 
@@ -253,7 +325,13 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
       );
       const haveCount = count(id);
       const status = el('span', 'craft-ingredient-status', `${Math.min(haveCount, needed)}/${needed} ${haveCount >= needed ? '✓' : ''}`);
-      row.append(ingInfo, status);
+      const buyIngBtn = button('+ Mua', (e) => {
+        e.stopPropagation();
+        debug('client.admin-get-hero', { heroId: id, rank: 1, deploy: false });
+        ctx.send({ type: 'admin-get-hero', heroId: id, rank: 1, deploy: false });
+      }, 'craft-admin-buy-btn');
+      buyIngBtn.title = `Admin: Nhận ngay 1 ${ingredient.name} (1★) vào kho để ghép`;
+      row.append(ingInfo, status, buyIngBtn);
       row.title = `Nhấp để xem công thức ghép ${ingredient.name}`;
       row.style.cursor = 'pointer';
       row.addEventListener('click', () => {

@@ -1,0 +1,19 @@
+{
+  "schema": "sprite-art-provenance.v1",
+  "date": "2026-10-22",
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": null,
+  "estimatedCostUsd": null,
+  "routeRequest": "exec-b3716066-9de7-4d05-b423-69d3dbf61dc5",
+  "generatedSource": "source/master-generated-raw.png",
+  "acceptedMaster": "source/master/master_rgba.png",
+  "prompt": "source/master-prompt.txt",
+  "styleReference": "assets/sprites/pangu-topdown/source/south-master.png",
+  "identityReference": "assets/monster-source/m003.png",
+  "routeVerified": true,
+  "revisionNotes": "Master accepted after game framing and alpha processing; route metadata recorded from host image generation.",
+  "warnings": [],
+  "sourceSha256": "581f576f72a5af9195faa5f7bb587624f85eb915b8f9dc44d04085c603afe19e",
+  "masterSha256": "759f9db9ad1845d34ec0915d4abf44fceefd4c57f7705962c5b53ad8028d67b7"
+}

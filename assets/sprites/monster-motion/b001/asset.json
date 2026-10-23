@@ -1,0 +1,89 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "b001",
+  "displayName": "Hắc Phong Hùng Vương",
+  "category": "boss",
+  "identity": "Heavy dark-furred upright bear with broad build, cracked stone shoulder plates, bronze neck ring and bone tokens; empty paws, no giant hammer.",
+  "palette": [
+    "charcoal",
+    "earth brown",
+    "bronze"
+  ],
+  "camera": "orthographic, top-down 45-degree battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master/master_rgba.png",
+  "anchor": [
+    753.5,
+    940.0
+  ],
+  "motionEnvelopePx": [
+    881,
+    820
+  ],
+  "displayHeightWorld": 8.0,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "walk": {
+      "framesPerDirection": 8,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 8,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "directions-approved",
+    "motion": "pending",
+    "packaged": "pending",
+    "integrated": "pending",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        753.5,
+        940.0
+      ],
+      "source": "source/master/master_rgba.png"
+    },
+    "west": {
+      "anchorPx": [
+        631.0,
+        940.0
+      ],
+      "source": "source/directions/west/master/master_rgba.png"
+    },
+    "north": {
+      "anchorPx": [
+        663.5,
+        940.0
+      ],
+      "source": "source/directions/north/master/master_rgba.png"
+    },
+    "east": {
+      "anchorPx": [
+        437.5,
+        940.0
+      ],
+      "source": "source/directions/east/master/master_rgba.png"
+    }
+  }
+}

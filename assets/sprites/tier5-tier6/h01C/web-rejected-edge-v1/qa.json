@@ -1,0 +1,83 @@
+{
+  "frames": 36,
+  "clips": 12,
+  "idleFramesPerDirection": 1,
+  "sourceReports": {
+    "idle": {
+      "size": [
+        2646,
+        2378
+      ],
+      "sha256": "f4a6b7463ec73a372dd0d7ddbdfd83f1e2beb32bc499b589fc7bbc5207e9816b",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    },
+    "walk": {
+      "size": [
+        2716,
+        2508
+      ],
+      "sha256": "83c082c1f908a13996245402c93d7e1d416c55c895dd066980dedc42242f4532",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": [
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01C\\source\\walk.png",
+          "slot": 2
+        },
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01C\\source\\walk.png",
+          "slot": 3
+        }
+      ]
+    },
+    "attack": {
+      "size": [
+        2648,
+        2508
+      ],
+      "sha256": "a184698840bc6d744db5813030a9aac82efd520a39d82309c6ab36f34068d759",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    }
+  },
+  "masterBodyHeight": 1029.0,
+  "familyScales": {
+    "idle": 0.16132167152575316,
+    "walk": 0.3091247672253259,
+    "attack": 0.3001224897510882
+  },
+  "uniformEnvelopeReduction": 1.0,
+  "warnings": [
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01C\\source\\walk.png",
+      "slot": 2
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01C\\source\\walk.png",
+      "slot": 3
+    }
+  ],
+  "limits": [
+    "Generated acting and identity need visual motion review.",
+    "Four keyframes per action are intentionally sparse.",
+    "No game/test/build execution."
+  ]
+}

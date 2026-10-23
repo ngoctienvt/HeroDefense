@@ -56,7 +56,7 @@ export function rosterCommand(state: GameState, id: string, command: Command): C
     unit.slot = -1; unit.target = null; unit.destination = null; unit.orderMode = 'auto'; unit.engageAt = null; unit.guardPosition = null; refreshStats(state, id); return { ok: true };
   }
   if (command.type === 'merge') {
-    if (unit.rank >= 3) return fail('Đã đạt bậc tối đa.');
+    if (unit.rank >= 10) return fail('Đã đạt bậc tối đa (10★).');
     if (unit.zone) return fail('Không hợp nhất trong phụ bản.');
     const copies = owned.filter(u => u.id !== unit.id && u.heroId === unit.heroId && u.rank === unit.rank && !u.zone).slice(0, 2);
     if (copies.length !== 2) return fail('Cần 3 bản sao cùng nhân vật và cùng bậc.');

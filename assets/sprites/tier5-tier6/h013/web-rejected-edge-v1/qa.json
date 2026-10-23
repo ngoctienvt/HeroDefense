@@ -1,0 +1,154 @@
+{
+  "frames": 36,
+  "clips": 12,
+  "idleFramesPerDirection": 1,
+  "sourceReports": {
+    "idle": {
+      "size": [
+        2646,
+        2378
+      ],
+      "sha256": "627f9689bd97ed4112f5a22feaa829d24eb92afc52891f577ade6f6edd9ce779",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    },
+    "walk": {
+      "size": [
+        2648,
+        2380
+      ],
+      "sha256": "05a17e792799a27787d7ecf4b7e12db2f79325ff1f6bbed21c5d9465d6d584c7",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": [
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\walk.png",
+          "slot": 2
+        },
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\walk.png",
+          "slot": 3
+        },
+        {
+          "id": "source_outer_edge",
+          "value": 1,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\walk.png",
+          "slot": 13
+        }
+      ]
+    },
+    "attack": {
+      "size": [
+        2508,
+        2508
+      ],
+      "sha256": "d1d28b3900de94af2115f00301fcb08767604842da2327f3c5d012c4c25f68a2",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": [
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\attack.png",
+          "slot": 0
+        },
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\attack.png",
+          "slot": 3
+        },
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\attack.png",
+          "slot": 12
+        },
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\attack.png",
+          "slot": 13
+        }
+      ]
+    }
+  },
+  "masterBodyHeight": 1066.5,
+  "familyScales": {
+    "idle": 0.15564932020628222,
+    "walk": 0.2999096657633243,
+    "attack": 0.30127041742286753
+  },
+  "uniformEnvelopeReduction": 1.0,
+  "warnings": [
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\walk.png",
+      "slot": 2
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\walk.png",
+      "slot": 3
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 1,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\walk.png",
+      "slot": 13
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\attack.png",
+      "slot": 0
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\attack.png",
+      "slot": 3
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\attack.png",
+      "slot": 12
+    },
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h013\\source\\attack.png",
+      "slot": 13
+    }
+  ],
+  "limits": [
+    "Generated acting and identity need visual motion review.",
+    "Four keyframes per action are intentionally sparse.",
+    "No game/test/build execution."
+  ]
+}

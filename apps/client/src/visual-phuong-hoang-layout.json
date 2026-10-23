@@ -1,0 +1,22 @@
+{
+  "sweep-sheet": {
+    "anchorY": 0.78,
+    "radialEdge": 1
+  },
+  "feather-rain-sheet": {
+    "anchorY": 0.78,
+    "radialEdge": 1
+  },
+  "feather-hit-sheet": {
+    "anchorY": 0.966736,
+    "radialEdge": 1
+  },
+  "carpet-flame-sheet": {
+    "anchorY": 0.97411,
+    "radialEdge": 1
+  },
+  "carpet": {
+    "anchorY": 0.5,
+    "radialEdge": 1.020841
+  }
+}

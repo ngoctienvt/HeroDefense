@@ -1,6 +1,7 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import type { TierMotif } from './visual-tier-motif-textures.js';
 
 /** Shared VisualEffects helpers that hero adapters use for the small accents around their own module. */
 export interface HeroVfxHost {
@@ -12,8 +13,10 @@ export interface HeroVfxHost {
   beam(from: Vector3, to: Vector3, color: string): void;
   fireImpact(at: Vector3, full: boolean, radius: number): void;
   waterImpact(at: Vector3, radius: number, duration: number, reduced: boolean): void;
-  motifShow(at: Vector3, kind: 'shield', size: number, duration: number, reduced: boolean): void;
-  motifTravel(from: Vector3, to: Vector3, kind: 'hound', size: number, duration: number, arrive: () => void,
+  /** Blender-authored per-skill flipbook (vfx-huyen-<kind>); `ground` lays it flat on the floor and `spin` rotates it. */
+  motifShow(at: Vector3, kind: TierMotif, size: number, duration: number, reduced: boolean, ground?: boolean,
+    spin?: number): void;
+  motifTravel(from: Vector3, to: Vector3, kind: TierMotif, size: number, duration: number, arrive: () => void,
     reduced: boolean): void;
 }
 
@@ -28,6 +31,7 @@ export interface HeroEventContext {
   targetsOrAt: Vector3[];
   hasOrigin: boolean;
   reduced: boolean;
+  main?: Vector3;
 }
 
 export type HeroEventHandler = (ctx: HeroEventContext) => void;
@@ -53,29 +57,29 @@ export interface LegacyHeroSpec {
  */
 export function legacyHero(spec: LegacyHeroSpec): HeroVfx {
   const context = (event: GameEvent, origin: Vector3 | undefined, at: Vector3, targets: readonly Vector3[],
-    hasOrigin: boolean, reduced: boolean): HeroEventContext => {
+    hasOrigin: boolean, reduced: boolean, main?: Vector3): HeroEventContext => {
     const point = at.clone();
     return {
       event, at: point, origin: hasOrigin && origin ? origin.clone() : point.clone(),
       targets: targets.map(target => target.clone()), targetsOrAt: targets.length ? [...targets] : [at],
-      hasOrigin, reduced,
+      hasOrigin, reduced, main: main?.clone(),
     };
   };
   return {
     heroId: spec.heroId,
     aliases: spec.aliases,
     prepare: () => undefined,
-    cast: (event, at, reduced) => {
+    cast: (event, at, reduced, origin) => {
       const handler = event.skillId ? spec.cast?.[event.skillId] : undefined;
       if (!handler) return false;
-      handler(context(event, undefined, at, [], false, reduced));
+      handler(context(event, origin, at, [], origin !== undefined, reduced));
       return true;
     },
     ability: (event, origin, at, reduced, extra?: AbilityExtra) => {
       const id = event.skillId ?? '';
       const handler = spec.ability?.[id] ?? spec.abilityFallback?.(id);
       if (!handler || (spec.abilityOnly?.includes(id) && event.kind !== 'ability')) return false;
-      handler(context(event, origin, at, extra?.targets ?? [], extra?.hasOrigin ?? true, reduced));
+      handler(context(event, origin, at, extra?.targets ?? [], extra?.hasOrigin ?? true, reduced, extra?.main));
       return true;
     },
     tick: dt => spec.tick?.(dt),

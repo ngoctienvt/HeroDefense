@@ -5,6 +5,12 @@ export type ReplayFn = (kind: string | undefined, x?: number, z?: number) => boo
 
 const replays = new Map<string, ReplayFn>();
 
+export function replayHero(heroId: string, kind?: string, x?: number, z?: number): boolean {
+  const ok = replays.get(heroId)?.(kind, x, z) ?? false;
+  debug('visual.kit.replay', { heroId, kind: kind ?? 'default', ok });
+  return ok;
+}
+
 /** Registers a hero's replay; returns the unregister function. */
 export function registerReplay(heroId: string, replay: ReplayFn): () => void {
   replays.set(heroId, replay);
@@ -19,10 +25,7 @@ export function installReplay(target: object, search: string = location.search):
   if (!new URLSearchParams(search).has('debug')) return () => undefined;
   Object.defineProperty(target, '__vfxReplay', { configurable: true,
     value: (heroId: string, kind?: string, x?: number, z?: number): boolean => {
-      const replay = replays.get(heroId);
-      const ok = replay ? replay(kind, x, z) : false;
-      debug('visual.kit.replay', { heroId, kind: kind ?? 'default', ok });
-      return ok;
+      return replayHero(heroId, kind, x, z);
     } });
   return () => { Reflect.deleteProperty(target, '__vfxReplay'); };
 }

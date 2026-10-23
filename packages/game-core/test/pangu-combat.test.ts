@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { MELEE_CLEAVE_SECONDARY } from '../../contracts/src/combat-profiles.js';
 import { HERO_BY_ID, CRAFT_RECIPES } from '../../../content/catalog.js';
 import { PANGU as P } from '../../../content/pangu-design.js';
 import { executeAttackGeometry } from '../src/attack-geometry.js';
@@ -31,7 +32,8 @@ describe('Khai Thiên Tổ Thần', () => {
     const behind = enemy(state, unit, { x: unit.x - .1 }), far = enemy(state, unit, { x: unit.x + 3.9 });
     executeAttackGeometry(state, unit, target, physical);
     expect(unit.energy).toBe(14); expect(target.maxHp - target.hp).toBeCloseTo(unit.attack);
-    expect(side.hp).toBeLessThan(side.maxHp); expect(behind.hp).toBe(behind.maxHp); expect(far.hp).toBe(far.maxHp);
+    expect(side.maxHp - side.hp).toBeCloseTo(unit.attack * MELEE_CLEAVE_SECONDARY);
+    expect(behind.hp).toBe(behind.maxHp); expect(far.hp).toBe(far.maxHp);
   });
   it('grants total 24 rage for a critical swing and ignores 35% armor', () => {
     const { state, unit, physical } = setup(); state.seed = 1;
@@ -48,7 +50,9 @@ describe('Khai Thiên Tổ Thần', () => {
     executeAttackGeometry(state, unit, target, physical);
     expect(distant.maxHp - distant.hp).toBeCloseTo(unit.attack * 1.8);
     expect(distant.bleed).toEqual({ remaining: 3, bonusDamage: .1 });
-    expect(distant.z).toBeCloseTo(unit.z - .6);
+    // Knockback pushes away from Bàn Cổ along the rift, not toward the lane start.
+    expect(distant.x).toBeCloseTo(unit.x + 8.9 + .6);
+    expect(distant.z).toBeCloseTo(unit.z);
     expect(side.hp).toBe(side.maxHp); expect(unit.attackCount).toBe(3);
     expect(state.events.at(-1)).toMatchObject({ geometry: 'linear_pierce', skillId: 'nth-h01B' });
   });
@@ -66,7 +70,9 @@ describe('Khai Thiên Tổ Thần', () => {
   it('gains five rage from a successful incoming hit outside windup', () => {
     const { state, unit } = setup(); unit.orderMode = 'hold'; unit.cooldown = 10;
     enemy(state, unit, { x: unit.x, z: unit.z, attack: 10, target: unit.id });
-    combatStep(state, .05); expect(unit.energy).toBe(5); expect(unit.hp).toBeLessThan(unit.maxHp);
+    // The monster's hit lands after its wind-up; one swing fits in 0.6 s.
+    for (let tick = 0; tick < 12; tick++) combatStep(state, .05);
+    expect(unit.energy).toBe(5); expect(unit.hp).toBeLessThan(unit.maxHp);
   });
   it('auto-cast never falls through to a normal attack in the same windup tick', () => {
     const { state, unit } = setup(); state.phase = 'combat'; unit.energy = 100; unit.cooldown = 0;
@@ -85,15 +91,15 @@ describe('Khai Thiên Tổ Thần', () => {
     combatStep(state, .05);
     expect(state.enemies[target.id]).toBeUndefined(); expect(unit.kills).toBe(0); expect(ally.kills).toBe(1);
   });
-  it('tests guaranteed crit before applying its own stun; bosses receive both debuffs', () => {
+  it('guarantees crit on already-sundered or wounded targets and never stuns', () => {
     const { state, unit, physical, pure } = setup(); state.seed = nonCriticalSeed();
-    const healthy = enemy(state, unit), stunned = enemy(state, unit, { stun: 1, kind: 'boss' });
+    const healthy = enemy(state, unit), stunned = enemy(state, unit, { kind: 'boss', sunder: { remaining: 1, amount: .1, percent: true } });
     const low = enemy(state, unit, { hp: 49999 });
     panguAbility(state, unit, healthy, { x: 1, z: 0 }, physical, pure);
     expect(healthy.maxHp - healthy.hp).toBeCloseTo(unit.attack * (4.8 + 1.5));
     expect(stunned.maxHp - stunned.hp).toBeCloseTo(unit.attack * (4.8 * 2.2 + 1.5));
     expect(49999 - low.hp).toBeCloseTo(unit.attack * (4.8 * 2.2 + 1.5));
-    expect(stunned.stun).toBe(2.2); expect(stunned.sunder).toMatchObject({ amount: .5, remaining: 6, percent: true });
+    expect(stunned.stun ?? 0).toBe(0); expect(stunned.sunder).toMatchObject({ amount: .5, remaining: 6, percent: true });
   });
   it('hits all main lanes with true damage and empowers only deployed owner allies', () => {
     const { state, unit, physical, pure } = setup();

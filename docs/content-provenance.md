@@ -61,7 +61,17 @@ skills and `evidence.status: unverified` in the older skill inventory describe
 that boundary; roster registration and name lines prove identity, not skill behavior. The
 [ability inventory](../plans/261013-0017-hero-skills-assets-animation/reports/ability-evidence-inventory.md)
 records the source evidence and earlier representative designs; the Linh/Huyền
-combat specification is now in `content/tier-hero-design.ts`.
+combat specification is now in `content/tier-hero-design.ts`. At runtime the
+`HERO_STATS_OVERRIDES` table in `content/catalog.ts` overrides those Linh/Huyền
+stats, traits and skill text, so later web tuning lives there.
+
+The 19-10-2026 Linh–Tiên rework keeps every kit but changes three things:
+hard control stays only on control specialists, ally heals/shields add a share
+of the recipient's max HP, and no damage reads enemy HP. For Siêu/Tiên heroes
+the player's brief in `content/tier3-tier4-brief.json` is left as the record of
+that brief; `content/tier3-tier4-rework.ts` applies exact text substitutions and
+the changed numbers on top, and fails loudly if the brief text drifts. These are
+web design decisions, not map evidence.
 
 ## Visual and audio sources
 
@@ -95,6 +105,12 @@ Warcraft ability parity are outside this catalog's claims.
 ## Pangu override (2026-10-15)
 
 The user-authored Supreme Creator design supersedes generated h01B combat values at runtime in `content/catalog.ts`, with ability constants in `content/pangu-design.ts`. Recipe, name, element and source identity are preserved. Generated JSON and Warcraft archive were not edited. `provenance: original` describes this explicit web design. See [Pangu combat](pangu-combat.md) for exact rules and pending user validation.
+
+## New brief roster mapping (2026-10-19)
+
+The newer user brief names five characters absent from the extracted roster. Runtime overrides in `content/catalog.ts` reuse the retired slots h03W (Nhiên Đăng), h03X (Bồ Đề), h01I (Đế Tuấn), h01J (Như Lai) and h014 (Nguyên Thủy, now tier 6). Their web stats and abilities follow `content/new-divine-design.ts` and the [gameplay specification](gameplay-spec.md). The numeric IDs in the brief were AI-assigned placeholders, so identity is matched by name for existing characters. All 24 named characters receive the brief's crafting recipes mapped by character name. Old source synergies no longer assign the five replaced identities to unrelated character groups. The generated `content/data/catalog.json` still describes the older extracted map and has not been hand edited; runtime names, combat and recipes are adapted user content, not map-proven identities. The user will provide the omitted final character; h015 remains the old Thái Bạch slot provisionally so the playable catalog retains 70 entries, not as the selected replacement. At the user's request, h015 now has a complete stylized sprite and portrait bundle in `assets/sprites/tier5-tier6/h015/`; this art addition does not decide the omitted roster identity or alter gameplay.
+
+On 2026-10-19 the user asked the agent to design h015 Thái Bạch Kim Tinh itself. Its stats and skills (`content/thaibach-design.ts`) are an original web design, not map evidence. The same rebalance is also web-only. It covers tier-scaled hard-control chances (`packages/game-core/src/crowd-control.ts`), the removal of all enemy %-health damage in favour of attack-scaled values, and the tier 5–6 stat and skill changes recorded in the [gameplay specification](gameplay-spec.md). The numbers are initial proposals awaiting playtest tuning.
 
 ## Linh and Huyền visual replacement (2026-10-15)
 

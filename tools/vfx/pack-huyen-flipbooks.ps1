@@ -1,13 +1,14 @@
+param([string[]]$Kinds = @('bell', 'vines', 'sand', 'sword', 'shield', 'flower', 'sniper',
+  'soul', 'ice', 'bloom', 'song', 'seed', 'hammer', 'fire-sweep',
+  'coin', 'tower', 'dragon', 'rock', 'peacock', 'judgement', 'seal', 'wheel', 'hound'))
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $workspace = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
 $source = Join-Path $workspace 'assets\vfx-source\huyen-flipbooks'
 $runtime = Join-Path $workspace 'apps\client\public\assets'
-$kinds = @('bell', 'vines', 'sand', 'sword', 'shield', 'flower', 'sniper',
-  'soul', 'ice', 'bloom', 'song', 'seed', 'hammer', 'fire-sweep')
-
-foreach ($kind in $kinds) {
+foreach ($kind in $Kinds) {
   $frameDir = Join-Path $source "$kind\frames"
   $frames = @(Get-ChildItem -LiteralPath $frameDir -Filter 'frame-*.png' | Sort-Object Name)
   if ($frames.Count -ne 12) { throw "$kind needs 12 rendered frames, found $($frames.Count)" }

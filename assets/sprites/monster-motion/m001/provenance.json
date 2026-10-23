@@ -1,0 +1,95 @@
+{
+  "schema": "sprite-art-provenance.v1",
+  "date": "2026-10-22",
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": null,
+  "estimatedCostUsd": null,
+  "routeRequest": "exec-3ead1417-a271-47a5-9bd3-244656771046",
+  "generatedSource": "source/master-generated-v2-raw.png",
+  "acceptedMaster": "source/master-v2/master_rgba.png",
+  "prompt": "source/master-prompt.txt",
+  "styleReference": "assets/sprites/pangu-topdown/source/south-master.png",
+  "routeVerified": true,
+  "revisionNotes": "First master read too upright; edited to a true quadruped.",
+  "warnings": [],
+  "sourceSha256": "7a04a9ed63afc758848227a44f99cc15af59c9a73db5dd2ce10d10b82872a2e2",
+  "masterSha256": "3ce906bec0bcbeaeb32605781de120417c299d013f91818ab5020b456e005526",
+  "directions": {
+    "south": {
+      "source": "source/directions/south/master-final/master_rgba.png",
+      "reviewContact": "source/directions/contact.webp",
+      "status": "directions-approved",
+      "warnings": []
+    },
+    "west": {
+      "source": "source/directions/west/master-final/master_rgba.png",
+      "reviewContact": "source/directions/contact.webp",
+      "status": "directions-approved",
+      "warnings": [
+        "master_still.width_limited: artwork spans x=16..1008; no clipping observed"
+      ]
+    },
+    "north": {
+      "source": "source/directions/north/master-final/master_rgba.png",
+      "reviewContact": "source/directions/contact.webp",
+      "status": "directions-approved",
+      "warnings": []
+    },
+    "east": {
+      "source": "source/directions/east/master-final/master_rgba.png",
+      "reviewContact": "source/directions/contact.webp",
+      "status": "directions-approved",
+      "warnings": []
+    }
+  },
+  "actionAttempts": [
+    {
+      "action": "walk",
+      "direction": "south",
+      "revision": "v1",
+      "source": "source/actions/walk/south/sheet-raw.png",
+      "routeRequest": "exec-ac741689-b3ee-46e0-aea4-655e195da3ad",
+      "prompt": "source/actions/walk/south/prompt.txt",
+      "qa": "source/actions/walk/south/qa",
+      "frameQa": "source/actions/walk/south/qa-frames",
+      "status": "needs_revision",
+      "result": "spill warn; frame QA fail: head-size drift and repeated half-cycle lead pairs"
+    },
+    {
+      "action": "walk",
+      "direction": "south",
+      "revision": "v2",
+      "source": "source/actions/walk/south/sheet-raw-v2.png",
+      "routeRequest": "exec-d62c04be-8b4e-4024-8f7b-60e1ee15bbac",
+      "qa": "source/actions/walk/south/qa-v2",
+      "frameQa": "source/actions/walk/south/qa-frames-v2",
+      "status": "needs_revision",
+      "result": "spill warn; frame QA fail: identity_head_ratio, phase_coverage, leg_alternation, torso_drift, row_baseline"
+    },
+    {
+      "action": "walk",
+      "direction": "south",
+      "revision": "v3",
+      "source": "source/actions/walk/south/sheet-raw-v3.png",
+      "routeRequest": "exec-9cfa7b5c-b8a4-4c47-b7d6-ea27593c021d",
+      "prompt": "source/actions/walk/south/prompt-v3.txt",
+      "qa": "source/actions/walk/south/qa-v3",
+      "frameQa": "source/actions/walk/south/qa-frames-v3b",
+      "status": "needs_revision",
+      "result": "spill warn; frame QA warn: no grounded wide-stride contact in both half-cycles, mixed/unclear leg alternation, torso drift 7 game px, row baseline 10.62 game px, loop/seam warning"
+    },
+    {
+      "action": "attack",
+      "direction": "south",
+      "revision": "v1",
+      "source": "source/actions/attack/south/sheet-raw.png",
+      "routeRequest": "exec-fc895bb8-e3cf-47c5-a35f-1af7b1da116f",
+      "prompt": "source/actions/attack/south/prompt.txt",
+      "qa": "source/actions/attack/south/qa",
+      "frameQa": "source/actions/attack/south/qa-frames",
+      "status": "rejected",
+      "result": "spill fail: 3 solid/visible cross-cell components; frame QA unavailable because head template did not fit"
+    }
+  ]
+}

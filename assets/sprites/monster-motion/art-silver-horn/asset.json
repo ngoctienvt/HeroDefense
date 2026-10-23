@@ -1,0 +1,68 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "art-silver-horn",
+  "displayName": "Ngân Giác",
+  "category": "boss-group-member",
+  "identity": "Tall slender silver-gray yokai with one curved silver horn, narrow shoulders, flowing blue-violet sleeves and pale jade flask.",
+  "palette": [
+    "silver",
+    "cool blue",
+    "muted violet"
+  ],
+  "camera": "orthographic, top-down 45-degree battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master/master_rgba.png",
+  "anchor": [
+    405.5,
+    860.0
+  ],
+  "motionEnvelopePx": [
+    710,
+    700
+  ],
+  "displayHeightWorld": 6.6,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "walk": {
+      "framesPerDirection": 8,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 8,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "pending",
+    "motion": "pending",
+    "packaged": "pending",
+    "integrated": "pending",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        405.5,
+        860.0
+      ],
+      "source": "source/master/master_rgba.png"
+    }
+  }
+}

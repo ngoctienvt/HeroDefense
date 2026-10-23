@@ -1,0 +1,65 @@
+{
+  "heroId": "h01J",
+  "asset": "buddha-palm-descent-sheet",
+  "type": "S16",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-89ff94de-9d6e-46c1-aaf9-7f845cd83afb.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/buddha-palm-descent-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/buddha-palm-descent-sheet.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "rectRule": "round(i*1254/4); alternate 313/314 px cells, no stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "S16 4x4 confirmed; unrelated petals removed, magical palm reads during descent/contact, last cell near empty. Checked light/dark.",
+  "sha256": "dbe2b932dcc51a1c70dd3591bcdc1e0406f6c2aee95d5ca3d3a652a61d383cb0",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/buddha-palm-descent-sheet-light-dark.jpg",
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime scale, timing, depth and routing remain to be integrated and checked."
+  ],
+  "promptUsedForRecordedOutput": "Edit this exact palm sheet to remove all pink petals/flowers, which do not belong to Như Lai. Replace them with restrained gold-brown stone/cloud engraving only. Keep exactly the magical five-finger palm silhouette and the existing motion/timing. Do not add flowers, lotus motifs, character hands, or figures. Keep 4x4 square, transparent background, same fixed anchor and painterly ivory-gold art. Make frame 16 almost empty, not a large golden orb.",
+  "generationOutputs": [
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-27baf4fb-5f85-4125-a3ec-3610ff037ed5.png",
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-89ff94de-9d6e-46c1-aaf9-7f845cd83afb.png"
+  ],
+  "iterations": [
+    "assets/vfx-source/tier56-codex-art/iterations/buddha-palm-descent-sheet-attempt-01.png"
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/buddha-palm-descent-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

@@ -83,7 +83,7 @@ void main() {
 const WALL_VERTEX = `precision highp float;
 attribute vec3 position; attribute vec2 uv; attribute vec2 uv2; attribute vec2 uv3;
 uniform mat4 worldViewProjection;
-uniform float uRadius, uCrash, uHeight, uThick, uTime;
+uniform float uRadius, uCrash, uHeight, uThick, uTime, uLinear, uSpan, uBend;
 varying vec2 vUv; varying float vY;
 void main() {
   float a = uv.x * 6.2831853;
@@ -93,7 +93,10 @@ void main() {
   float r = max(.05, uRadius + pr.x * uThick);
   float y = pr.y * h * uHeight;
   vUv = uv; vY = pr.y / 1.62;
-  gl_Position = worldViewProjection * vec4(r * cos(a), y, r * sin(a), 1.0);
+  vec3 ring = vec3(r * cos(a), y, r * sin(a));
+  float side = uv.x * 2.0 - 1.0;
+  vec3 wall = vec3(pr.x * uThick - uBend * side * side, y, side * uSpan * .5);
+  gl_Position = worldViewProjection * vec4(mix(ring, wall, uLinear), 1.0);
 }`;
 
 const WALL_FRAGMENT = `precision highp float;
@@ -192,15 +195,38 @@ void main() {
   gl_FragColor = vec4(color, clamp(alpha, 0.0, 1.0) * uAlpha * kitMask(vec2(a / 6.2831853 + .5, vLocal.y + .5)));
 }`;
 
+// Neutral guard bubble shared by every element: soft white fresnel rim, one slow glass sheen band and a dissolve edge for
+// the break. No flowing/water noise on the surface, so it reads the same over fire, wood or ice heroes.
+const GUARD_FRAGMENT = `precision highp float;
+varying vec3 vNormal, vWorld, vLocal;
+uniform vec3 cameraPosition;
+uniform float uTime, uAlpha, uDissolve;
+${PALETTE}${NOISE}
+void main() {
+  vec3 v = normalize(cameraPosition - vWorld);
+  float fres = pow(1.0 - abs(dot(normalize(vNormal), v)), 2.2);
+  float crack = fbm(vLocal.xz * 5.0 + vLocal.y * 3.0);
+  if (crack < uDissolve) discard;
+  float edge = 1.0 - smoothstep(0.0, .09, crack - uDissolve) ;
+  float sweep = fract(uTime * .22) * 3.0 - 1.5;
+  float sheen = 1.0 - smoothstep(0.0, .16, abs(dot(vLocal.xy, vec2(.8, .6)) * 2.0 - sweep));
+  float rim = smoothstep(.55, .85, fres);
+  vec3 color = mix(uBody, uEdge, fres);
+  color = mix(color, uFoam, max(rim * .7, max(sheen * .45, edge * uDissolve * 4.0)));
+  float foot = smoothstep(-.5, -.38, vLocal.y);
+  float alpha = (fres * .5 + rim * .35 + sheen * .12 * (1.0 - fres) + .04 + edge * .4 * step(.001, uDissolve)) * foot;
+  gl_FragColor = vec4(color, clamp(alpha, 0.0, 1.0) * uAlpha);
+}`;
+
 // Basic attack: crescent of water across the front half (local +V = forward), sweeping right -> left.
 const CLEAVE_FRAGMENT = `precision highp float;
 varying vec2 vUv;
-uniform float uTime, uAlpha, uHead, uTail;
+uniform float uTime, uAlpha, uHead, uTail, uArc;
 ${PALETTE}${NOISE}${MASK}
 void main() {
   vec2 p = vUv * 2.0 - 1.0;
   float r = length(p), ang = atan(p.x, p.y);
-  const float H = 1.72;
+  float H = uArc;
   if (abs(ang) > H) discard;
   float s = 1.0 - (ang + H) / (2.0 * H);
   if (s > uHead || s < uTail) discard;
@@ -220,6 +246,31 @@ void main() {
   gl_FragColor = vec4(color, band * (.88 + .12 * n) * uAlpha * kitMask(vUv));
 }`;
 
+
+// Ribbon from A (u=0) to B (u=1) on a stretched ground plane: bolts, chains, sound/vital threads.
+// uHead/uTail sweep it like the slash; uWave wobbles the centre line; uTaper 1 narrows it to a point at B.
+const LINK_FRAGMENT = `precision highp float;
+varying vec2 vUv;
+uniform float uTime, uAlpha, uHead, uTail, uWave, uTaper;
+${PALETTE}${NOISE}${MASK}
+void main() {
+  float s = vUv.x;
+  if (s > uHead || s < uTail) discard;
+  float local = (s - uTail) / max(.001, uHead - uTail);
+  float centre = .5 + sin(s * 21.0 - uTime * 16.0) * uWave * .22;
+  float halfW = mix(1.0, 1.0 - s, uTaper) * (.35 + .65 * smoothstep(0.0, .3, local));
+  float d = (vUv.y - centre) / max(.02, halfW * .5);
+  float band = 1.0 - smoothstep(.62, 1.0, abs(d));
+  if (band <= 0.0) discard;
+  float n = fbm(vec2(s * 14.0 - uTime * 6.0, d * 2.0));
+  vec3 color = mix(uDeep, uBody, smoothstep(.25, .6, n + (1.0 - abs(d)) * .35));
+  color = mix(color, uEdge, smoothstep(.55, .72, n) * .6);
+  float core = 1.0 - smoothstep(.0, .38, abs(d));
+  color = mix(color, uFoam, core * step(.3, n + core * .4) * smoothstep(.0, .6, local));
+  color = mix(color, uInk, smoothstep(.72, .95, abs(d)) * .7);
+  gl_FragColor = vec4(color, band * uAlpha * kitMask(vUv));
+}`;
+
 export interface KitShaderSource { vertex: string; fragment: string; attributes: string[]; uniforms: string[] }
 
 const PALETTE_UNIFORMS = ['uDeep', 'uBody', 'uEdge', 'uFoam', 'uInk'];
@@ -228,11 +279,15 @@ export const KIT_SHADER_SOURCES = {
   kitGround: { vertex: FLAT_VERTEX, fragment: GROUND_FRAGMENT, attributes: ['position', 'uv'],
     uniforms: ['worldViewProjection', 'uTime', 'uAlpha', 'uFill', 'uRim', 'uSwirl', 'uRings', 'uBand', 'uSpiral', ...PALETTE_UNIFORMS] },
   kitWall: { vertex: WALL_VERTEX, fragment: WALL_FRAGMENT, attributes: ['position', 'uv', 'uv2', 'uv3'],
-    uniforms: ['worldViewProjection', 'uRadius', 'uCrash', 'uHeight', 'uThick', 'uTime', 'uAlpha', 'uDissolve', ...PALETTE_UNIFORMS] },
+    uniforms: ['worldViewProjection', 'uRadius', 'uCrash', 'uHeight', 'uThick', 'uTime', 'uAlpha', 'uDissolve', 'uLinear', 'uSpan', 'uBend', ...PALETTE_UNIFORMS] },
   kitCrust: { vertex: FLAT_VERTEX, fragment: ICE_FRAGMENT, attributes: ['position', 'uv'],
     uniforms: ['worldViewProjection', 'uTime', 'uAlpha', 'uSpread', 'uShatter', ...PALETTE_UNIFORMS] },
   kitShell: { vertex: WARD_VERTEX, fragment: WARD_FRAGMENT, attributes: ['position', 'normal'],
     uniforms: ['world', 'worldViewProjection', 'cameraPosition', 'uTime', 'uAlpha', 'uDissolve', ...PALETTE_UNIFORMS] },
+  kitGuard: { vertex: WARD_VERTEX, fragment: GUARD_FRAGMENT, attributes: ['position', 'normal'],
+    uniforms: ['world', 'worldViewProjection', 'cameraPosition', 'uTime', 'uAlpha', 'uDissolve', ...PALETTE_UNIFORMS] },
   kitSlash: { vertex: FLAT_VERTEX, fragment: CLEAVE_FRAGMENT, attributes: ['position', 'uv'],
-    uniforms: ['worldViewProjection', 'uTime', 'uAlpha', 'uHead', 'uTail', ...PALETTE_UNIFORMS] },
+    uniforms: ['worldViewProjection', 'uTime', 'uAlpha', 'uHead', 'uTail', 'uArc', ...PALETTE_UNIFORMS] },
+  kitLink: { vertex: FLAT_VERTEX, fragment: LINK_FRAGMENT, attributes: ['position', 'uv'],
+    uniforms: ['worldViewProjection', 'uTime', 'uAlpha', 'uHead', 'uTail', 'uWave', 'uTaper', ...PALETTE_UNIFORMS] },
 } satisfies Record<string, KitShaderSource>;

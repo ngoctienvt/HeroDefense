@@ -1,179 +1,123 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
-import { TransformNode } from '@babylonjs/core/Meshes/transformNode.js';
+import type { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
+import { HIENVIEN as H } from '../../../content/hienvien-design.js';
 import { debug } from './debug.js';
+import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { unitDirection } from './visual-kit-timeline.js';
+import { HienvienAccents } from './visual-hienvien-accents.js';
+import { HienvienMarks } from './visual-hienvien-marks.js';
+import { HienvienReplay } from './visual-hienvien-replay.js';
+import { HienvienStrike } from './visual-hienvien-strike.js';
+import { ARRAY_SIZE, DEFAULT_WINDUP, GIANT_SIZE, PAD_RADIUS } from './visual-hienvien-timeline.js';
 
-type Flight = { root: TransformNode; age: number; life: number; from: Vector3; to: Vector3 };
-type Monument = { root: TransformNode; touched: boolean };
+/** Painted planes alive at once: 4 strikes × 10 (sword, array, 8 cauldrons) + 96 rain/hit/dust items. */
+const PAINTED_CAPACITY = 140;
 
-/** Solid gold blades and bronze ritual vessels for Hiên Viên's confirmed events. */
-export class VisualHienvien {
-  private flights: Flight[] = [];
-  private bladePool: TransformNode[] = [];
-  private monuments = new Map<string, Monument>();
-  private monumentPool: TransformNode[] = [];
-  private blessing = new Map<string, { root: TransformNode; touched: boolean }>();
-  private blessingPool: TransformNode[] = [];
-  private readonly gold: StandardMaterial;
-  private readonly edge: StandardMaterial;
-  private readonly bronze: StandardMaterial;
+/**
+ * Hiên Viên Vạn Kiếm Trấn Cửu Châu (h01F) on the kit, Codex art from tier56-codex-art (palette `xuanyuan`).
+ * Windup (`cast`): the giant imperial sword gathers above the locked point, the nine-pad array grows in.
+ * Impact (`ability skill-h01F`, R8.5): plunge, cracked earth, shock ring, cauldrons drop onto the pads.
+ * Hold (`xuanyuan-sword` ground, 5 s): sword planted, 15 `sword-rain-h01F` pulses each hit R1.5 at the event.
+ * Status: blessing ring under allies with critBlessing (6 s, snapshot); the crit/haste/armor-break icons are the
+ * game-wide shared marks (visual-status-marks.ts) fed by battlefield.ts.
+ * Basic `trait-h01F`: five sword-qi streaks along the server fan. Presentation only; server decides hits.
+ */
+export class VisualHienvien implements HeroVfx {
+  readonly heroId = H.id;
+  private art: KitPainted;
+  private accents: HienvienAccents;
+  private strike: HienvienStrike;
+  private marks: HienvienMarks;
+  private preview = new HienvienReplay(this);
+  private time = 0;
+  private rains = 0;
 
-  constructor(private readonly scene: Scene) {
-    this.gold = this.material('hienvien-blade', '#dfaf35', .35);
-    this.edge = this.material('hienvien-blade-edge', '#fff1a5', .45);
-    this.bronze = this.material('hienvien-ding', '#795d36', .12);
+  constructor(scene: Scene) {
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'hienvien');
+    this.accents = new HienvienAccents(scene, this.art);
+    this.strike = new HienvienStrike(scene, this.art, this.accents);
+    this.marks = new HienvienMarks(scene);
+    debug('visual.hienvien.layout', { giant: GIANT_SIZE, array: +ARRAY_SIZE.toFixed(2),
+      pads: +PAD_RADIUS.toFixed(2), radius: H.giantRadius });
   }
 
-  private material(name: string, color: string, glow: number): StandardMaterial {
-    const mat = new StandardMaterial(name, this.scene);
-    mat.diffuseColor = Color3.FromHexString(color);
-    mat.emissiveColor = mat.diffuseColor.scale(glow);
-    mat.specularColor = Color3.FromHexString('#e5c686');
-    mat.backFaceCulling = false;
-    return mat;
+  /** Idempotent; a texture that failed or is still loading keeps the shader rim and retries on use. */
+  prepare(): void {
+    this.art.prepare('giant', '/assets/vfx-hienvien-giant.webp', { foreground: true });
+    // Same art for the 5 s hold, in the world pass so monsters draw over it; ALWAYS keeps the crack below y = 0.
+    this.art.prepare('giant-hold', '/assets/vfx-hienvien-giant.webp', { depthAlways: true });
+    this.art.prepare('rain', '/assets/vfx-hienvien-rain.webp', { foreground: true });
+    this.art.prepare('hit', '/assets/vfx-hienvien-hit.webp', { foreground: true });
+    this.art.prepare('array', '/assets/vfx-hienvien-array.webp');
+    this.art.prepare('cauldron', '/assets/vfx-hienvien-cauldron.webp');
+    this.art.prepare('arrival', '/assets/vfx-hienvien-arrival.webp');
   }
 
-  private blade(): TransformNode {
-    const root = new TransformNode('hienvien-solid-sword', this.scene);
-    const body = MeshBuilder.CreateCylinder('sword-blade', {
-      height: 2.6, diameterTop: .08, diameterBottom: .39, tessellation: 4,
-    }, this.scene);
-    body.parent = root; body.position.y = 1.8; body.rotation.y = Math.PI / 4; body.material = this.gold;
-    const glint = MeshBuilder.CreateBox('sword-edge', { width: .08, height: 2.45, depth: .08 }, this.scene);
-    glint.parent = root; glint.position.set(.16, 1.78, .16); glint.material = this.edge;
-    const guard = MeshBuilder.CreateBox('sword-crossguard', { width: 1.1, height: .17, depth: .24 }, this.scene);
-    guard.parent = root; guard.position.y = .45; guard.material = this.gold;
-    const grip = MeshBuilder.CreateCylinder('sword-grip', { height: .85, diameter: .18, tessellation: 8 }, this.scene);
-    grip.parent = root; grip.position.y = -.04; grip.material = this.bronze;
-    for (const mesh of [body, glint, guard, grip]) mesh.isPickable = false;
-    return root;
+  cast(event: GameEvent, at: Vector3, reduced: boolean): boolean {
+    if (event.skillId !== `skill-${H.id}`) return false;
+    this.prepare();
+    this.strike.cast(at, event.windup ?? DEFAULT_WINDUP, reduced, event.source);
+    debug('visual.hienvien.cast', { eventId: event.id, windup: event.windup ?? DEFAULT_WINDUP, reduced });
+    return true;
   }
 
-  private dingRing(): TransformNode {
-    const root = new TransformNode('hienvien-nine-ding', this.scene);
-    const monumentSword = this.blade();
-    monumentSword.parent = root;
-    monumentSword.scaling.setAll(3.5);
-    monumentSword.position.y = 1;
-    for (let i = 0; i < 9; i++) {
-      const angle = i * Math.PI * 2 / 9;
-      const ding = new TransformNode(`ding-${i}`, this.scene);
-      ding.parent = root; ding.position.set(Math.cos(angle) * 7.1, 0, Math.sin(angle) * 7.1);
-      const bowl = MeshBuilder.CreateCylinder('ding-bowl', {
-        height: .9, diameterTop: 1.25, diameterBottom: .85, tessellation: 10,
-      }, this.scene);
-      bowl.parent = ding; bowl.position.y = .86; bowl.material = this.bronze;
-      const lip = MeshBuilder.CreateTorus('ding-rim', { diameter: 1.24, thickness: .11, tessellation: 12 }, this.scene);
-      lip.parent = ding; lip.position.y = 1.34; lip.material = this.gold;
-      for (let leg = 0; leg < 3; leg++) {
-        const a = leg * Math.PI * 2 / 3;
-        const foot = MeshBuilder.CreateCylinder('ding-foot', { height: .43, diameter: .15, tessellation: 6 }, this.scene);
-        foot.parent = ding; foot.position.set(Math.cos(a) * .32, .22, Math.sin(a) * .32);
-        foot.material = this.bronze; foot.isPickable = false;
+  ability(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {
+    this.prepare();
+    switch (event.skillId) {
+      case `skill-${H.id}`:
+        if (event.kind !== 'ability') return false;
+        this.strike.impact(at, reduced, event.source);
+        this.rains = 0;
+        debug('visual.hienvien.impact', { eventId: event.id, targets: event.targets?.length ?? 0, reduced });
+        return true;
+      case `sword-rain-${H.id}`:
+        this.accents.rain(at, reduced);
+        debug('visual.hienvien.rain', { eventId: event.id, pulse: ++this.rains, targets: event.targets?.length ?? 0 });
+        return true;
+      case `imperial-blessing-${H.id}`:
+        for (const ally of extra?.targets.length ? extra.targets : [at]) this.accents.blessing(ally, reduced);
+        debug('visual.hienvien.blessing', { eventId: event.id, allies: extra?.targets.length ?? 0 });
+        return true;
+      case `trait-${H.id}`: {
+        const direction = unitDirection(event, origin);
+        if (!direction) { debug('visual.hienvien.fan.skip', { eventId: event.id, reason: 'no-direction' }); return true; }
+        this.accents.fan(origin, direction, extra?.targets ?? [], reduced);
+        debug('visual.hienvien.fan', { eventId: event.id, targets: extra?.targets.length ?? 0, reduced });
+        return true;
       }
-      bowl.isPickable = lip.isPickable = false;
+      default: return false;
     }
-    return root;
   }
 
-  private fly(from: Vector3, to: Vector3, size: number, life: number): void {
-    if (this.flights.length >= 36) return;
-    const root = this.bladePool.pop() ?? this.blade();
-    root.setEnabled(true); root.scaling.setAll(size);
-    root.position.copyFrom(from);
-    this.flights.push({ root, from, to, age: 0, life });
+  /** Snapshot marker `blessing`: an ally with critBlessing (the shared crit/haste icons come from battlefield). */
+  mark(kind: string, id: string, at: Vector3, reduced: boolean): void {
+    if (kind === 'blessing') this.marks.mark(id, at, reduced);
   }
 
-  cast(event: GameEvent, at: Vector3, reduced: boolean): void {
-    const count = reduced ? 1 : 5;
-    for (let i = 0; i < count; i++) {
-      const angle = i * Math.PI * 2 / count;
-      const point = at.add(new Vector3(Math.cos(angle) * 2.1, 2.7, Math.sin(angle) * 2.1));
-      this.fly(point.add(new Vector3(0, .7, 0)), point, .5, event.windup ?? .25);
-    }
-    debug('visual.hienvien.cast', { eventId: event.id, reduced });
+  /** `xuanyuan-sword` ground snapshot with its server `remaining`. */
+  markZone(id: string, at: Vector3, remaining: number, reduced: boolean): void {
+    if (!Number.isFinite(remaining) || remaining <= 0) return;
+    this.prepare();
+    this.strike.markZone(id, at, remaining, reduced);
   }
 
-  attack(event: GameEvent, from: Vector3, to: Vector3, reduced: boolean): void {
-    const count = reduced ? 1 : 5;
-    for (let i = 0; i < count; i++) {
-      const offset = (i - (count - 1) / 2) * .55;
-      this.fly(from.add(new Vector3(offset, 2.1, 0)), to.add(new Vector3(offset, 1.3, 0)), .55, .23);
-    }
-    debug('visual.hienvien.attack', { eventId: event.id, swords: count });
-  }
-
-  impact(event: GameEvent, at: Vector3, reduced: boolean): void {
-    this.fly(at.add(new Vector3(0, reduced ? 10 : 23, 0)), at, reduced ? 2.5 : 6, .38);
-    debug('visual.hienvien.impact', { eventId: event.id, reduced });
-  }
-
-  rain(event: GameEvent, at: Vector3, reduced: boolean): void {
-    this.fly(at.add(new Vector3(0, reduced ? 5 : 10, 0)), at.add(new Vector3(0, .15, 0)),
-      reduced ? .48 : .8, reduced ? .14 : .22);
-    debug('visual.hienvien.rain', { eventId: event.id });
-  }
-
-  markMonument(id: string, at: Vector3): void {
-    let marker = this.monuments.get(id);
-    if (!marker) {
-      if (this.monuments.size >= 8) return;
-      marker = { root: this.monumentPool.pop() ?? this.dingRing(), touched: false };
-      this.monuments.set(id, marker); marker.root.setEnabled(true);
-    }
-    marker.root.position.copyFrom(at); marker.touched = true;
-  }
-
-  markBlessing(id: string, at: Vector3): void {
-    let marker = this.blessing.get(id);
-    if (!marker) {
-      if (this.blessing.size >= 32) return;
-      const root = this.blessingPool.pop() ?? this.makeBlessing();
-      marker = { root, touched: false }; this.blessing.set(id, marker); root.setEnabled(true);
-    }
-    marker.root.position.copyFrom(at); marker.touched = true;
-  }
-
-  private makeBlessing(): TransformNode {
-    const root = new TransformNode('hienvien-blessing', this.scene);
-    for (let i = 0; i < 3; i++) {
-      const sword = this.blade(); sword.parent = root;
-      const angle = i * Math.PI * 2 / 3;
-      sword.position.set(Math.cos(angle) * .75, 2.3, Math.sin(angle) * .75);
-      sword.scaling.setAll(.2);
-    }
-    return root;
-  }
-
-  tick(dt: number): void {
-    for (let i = this.flights.length - 1; i >= 0; i--) {
-      const flight = this.flights[i]; flight.age += dt;
-      if (flight.age >= flight.life) {
-        flight.root.setEnabled(false); this.bladePool.push(flight.root);
-        this.flights.splice(i, 1); continue;
-      }
-      flight.root.position.copyFrom(Vector3.Lerp(flight.from, flight.to, flight.age / flight.life));
-    }
-    for (const [id, marker] of this.monuments) {
-      if (marker.touched) marker.touched = false;
-      else { marker.root.setEnabled(false); this.monumentPool.push(marker.root); this.monuments.delete(id); }
-    }
-    for (const [id, marker] of this.blessing) {
-      if (marker.touched) marker.touched = false;
-      else { marker.root.setEnabled(false); this.blessingPool.push(marker.root); this.blessing.delete(id); }
-    }
+  tick(dt: number, time = this.time + dt): void {
+    this.time = time;
+    this.preview.tick(dt);
+    this.accents.tick(dt, time); // Refreshes camera screen-up before the strike places its billboards.
+    this.strike.tick(dt, time);
+    this.marks.tick(dt, time);
   }
 
   clear(): void {
-    for (const flight of this.flights) { flight.root.setEnabled(false); this.bladePool.push(flight.root); }
-    this.flights.length = 0;
-    for (const marker of this.monuments.values()) { marker.root.setEnabled(false); this.monumentPool.push(marker.root); }
-    this.monuments.clear();
-    for (const marker of this.blessing.values()) { marker.root.setEnabled(false); this.blessingPool.push(marker.root); }
-    this.blessing.clear();
+    this.preview.clear(); this.marks.clear(); this.strike.clear(); this.accents.clear(); this.art.clear();
+    this.time = 0; this.rains = 0;
+  }
+
+  replay(kind: string, at: Vector3, reduced: boolean, origin = at): boolean {
+    this.prepare();
+    return this.preview.start(kind, at, reduced, origin);
   }
 }

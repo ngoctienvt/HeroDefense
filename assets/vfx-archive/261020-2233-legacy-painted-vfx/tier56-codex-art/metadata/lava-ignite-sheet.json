@@ -1,0 +1,54 @@
+{
+  "heroId": "h01H",
+  "asset": "lava-ignite-sheet",
+  "type": "P16",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-3fb75c1a-5203-415d-8620-932917158680.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/lava-ignite-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/lava-ignite-sheet.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "visualQA": "P16 lower-leg lava status; open center, distinct flame/lava forms, no character; checked light/dark.",
+  "sha256": "b7cde4b5f7604e3a739f2c2b5ab1754f19e03705de1453ef99ae0222e074a186",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/lava-ignite-sheet-light-dark.jpg",
+  "limitations": [
+    "Raw art only; not processed, built, run or approved in game.",
+    "Runtime mapping, scale, timing and lifecycle remain for integration."
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "rectRule": "rounded boundaries; preserve true 313/314 px source cells"
+  },
+  "promptUsedForRecordedOutput": "Create one transparent square 4x4 P16 sheet for Chúc Dung's lava-ignite status. Thick sticky orange-red lava clings only around the unseen enemy's lower legs and sides, with small flame tongues and basalt crumbs; keep a large transparent body center, do not make a full-body fire shell. Palette deep red, black basalt, molten orange, amber. Frames 1-4 lava splashes and sticks, 5-12 burn steadily with varied moving lava lobes and small tongues, 13-16 cools and flakes away. This status is only for a surviving target that actually received burn from Chúc Dung's ultimate; do not show a new area explosion or ground DPS zone. Detailed painterly fantasy VFX, fixed orthographic battlefield camera elevated 42°, same anchor/scale/light, 3% cell margins. Exact 4x4 grid, transparent background; no character, text, gridlines, borders, scenery, UI or watermark.",
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/lava-ignite-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

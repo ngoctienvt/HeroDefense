@@ -1,9 +1,12 @@
 import type { HeroDirection, HeroPose } from './hero-motion.js';
 import layout from './stylized-layout.json';
 
-/** Installed only after all requested generated bundles are published. */
+/** Installed only after each generated bundle is published. */
 export const STYLIZED_HEROES = ['h001', 'h002', 'h003', 'h004', 'h005', 'h006', 'h007', 'h008',
-  'h009', 'h00A', 'h00B', 'h00C', 'h00D', 'h00E', 'h00F', 'h00G', 'h00H', 'h00I', 'h03O', 'h03P'] as const;
+  'h009', 'h00A', 'h00B', 'h00C', 'h00D', 'h00E', 'h00F', 'h00G', 'h00H', 'h00I', 'h03O', 'h03P',
+  'h00J', 'h00K', 'h00L', 'h00M', 'h00N', 'h00O', 'h00P', 'h00Q', 'h03Q', 'h03R', 'h03S',
+  'h00R', 'h00S', 'h00T', 'h00U', 'h00V', 'h00W', 'h00X', 'h00Y', 'h00Z', 'h010',
+  'h03T', 'h03U', 'h03V', 'h03W', 'h03X', 'h011', 'h012', 'h013', 'h014', 'h015', 'h016', 'h017', 'h018', 'h019', 'h01A', 'h01G', 'h01H', 'h01I', 'h01J', 'h03Y', 'h03Z', 'h040', 'h041', 'h01C', 'h01D', 'h01E', 'h01F', 'h01K'] as const;
 const heroes = new Set<string>(STYLIZED_HEROES);
 export const hasStylizedMotion = (heroId: string): boolean => heroes.has(heroId);
 export const STYLIZED_PLANE_HEIGHT = 6;

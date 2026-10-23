@@ -1,13 +1,11 @@
-import { DIFFICULTIES, DUNGEONS } from '../../../content/catalog.js';
 import { CONTENT_VERSION, type CommandResult, type Difficulty, type GameState } from '../../contracts/src/types.js';
-import { slotPosition } from './rules.js';
+import { RUN_WAVES, slotPosition } from './rules.js';
 
 export function createGame(code: string, seed: number, difficulty: Difficulty = 'normal'): GameState {
   return {
     version: CONTENT_VERSION, roomCode: code, host: '', seed: (seed >>> 0) || 1, tick: 0, serial: 0, elapsed: 0,
-    phase: 'lobby', difficulty, wave: 0, maxWaves: DIFFICULTIES.find(d => d.id === difficulty)!.waves,
+    phase: 'lobby', difficulty, wave: 0, maxWaves: RUN_WAVES,
     remaining: 0, baseHp: 100, maxBaseHp: 100, speed: 1, players: {}, units: {}, enemies: {},
-    dungeons: DUNGEONS.map(d => ({ id: d.id, unlocked: false, cleared: false, active: false, attempts: 0, owner: null, remaining: 0 })),
     events: [], notice: 'Sẵn sàng lập đội bảo vệ Thiên Đạo.', stars: 0, spawned: 0, spawnBudget: 0, spawnTimer: 0,
   };
 }

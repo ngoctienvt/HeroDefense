@@ -1,148 +1,109 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { KIMTHIEN as K } from '../../../content/kimthien-design.js';
 import { debug } from './debug.js';
+import { screenUp } from './visual-kit-billboard.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { KitFxBank } from './visual-kit-fx-bank.js';
+import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { KimthienBowls } from './visual-kimthien-bowls.js';
+import { KimthienReplay } from './visual-kimthien-replay.js';
+import { KimthienWindup } from './visual-kimthien-windup.js';
+import { BOWL_SIZE, DEFAULT_WINDUP } from './visual-kimthien-timeline.js';
 
-type Bowl = { dome: Mesh; funnel: Mesh; lotus: Mesh; touched: boolean; age: number };
-type Pulse = { mesh: Mesh; age: number; life: number };
+/** Painted planes alive at once: 4 bowls × (rear, front, 2 swirls, bud) + 4 windup swirls. */
+const PAINTED_CAPACITY = 32;
 
-/** The event marks the impact; active bowl geometry exists only while its server zone does. */
-export class VisualKimthien {
-  private bowls = new Map<string, Bowl>();
-  private pool: Bowl[] = [];
-  private pulses: Pulse[] = [];
-  private pulsePool: Mesh[] = [];
-  private warning: StandardMaterial;
-  private gold: StandardMaterial;
-  private light: StandardMaterial;
-  private lotus: StandardMaterial;
+/**
+ * Kim Thiền Tử (h013) Tử Kim Bát Vu Thu Yêu Trận on the kit, Codex art from tier56-codex-art (palettes `jade`, sprays `bagua`/`kunlun`).
+ * Windup (`cast skill-h013`, locked point): the R7 edge lights and a jade-gold swirl gathers at the point.
+ * Resolve (`ability skill-h013`): the rear wall (under monsters) and the front lip (over them) open together over the
+ * point, an inward swirl of wind, stones and leaves loops between them, dust and petals run toward the centre for as
+ * long as the `golden-bowl` ground effect reports `remaining`; when it runs out the bowl folds shut and a few petals fall.
+ * There is no end blast (the server deals none). Basic `trait-h013`: a small jade contact ring on the hit monster.
+ * Presentation only; the server pulls and hurts.
+ */
+export class VisualKimthien implements HeroVfx {
+  readonly heroId = K.id;
+  private art: KitPainted;
+  private bank: KitFxBank;
+  private windup: KimthienWindup;
+  private bowls: KimthienBowls;
+  private preview = new KimthienReplay(this);
 
   constructor(private scene: Scene) {
-    this.gold = new StandardMaterial('kimthien-gold-bowl', scene);
-    this.gold.diffuseColor = Color3.FromHexString('#9f642b');
-    this.gold.emissiveColor = Color3.FromHexString('#dbad4a').scale(.18);
-    this.gold.specularColor = Color3.FromHexString('#ffe8aa');
-    this.gold.alpha = .82; this.gold.backFaceCulling = false;
-    this.gold.disableDepthWrite = true;
-
-    this.light = new StandardMaterial('kimthien-emerald-cone', scene);
-    this.light.diffuseColor = Color3.FromHexString('#84bd6a');
-    this.light.emissiveColor = Color3.FromHexString('#b9e48b').scale(.2);
-    this.light.alpha = .16; this.light.backFaceCulling = false;
-    this.light.disableDepthWrite = true;
-
-    this.warning = new StandardMaterial('kimthien-warning', scene);
-    this.warning.emissiveColor = Color3.FromHexString('#b9d774');
-    this.warning.alpha = .52; this.warning.disableDepthWrite = true;
-
-    const texture = new DynamicTexture('kimthien-nine-petal-lotus', { width: 512, height: 512 }, scene, false);
-    const ctx = texture.getContext() as unknown as CanvasRenderingContext2D;
-    ctx.clearRect(0, 0, 512, 512);
-    ctx.translate(256, 256);
-    for (let i = 0; i < 9; i++) {
-      ctx.save(); ctx.rotate(i * Math.PI * 2 / 9);
-      ctx.beginPath(); ctx.moveTo(0, -72);
-      ctx.bezierCurveTo(-36, -126, -40, -194, 0, -224);
-      ctx.bezierCurveTo(40, -194, 36, -126, 0, -72);
-      ctx.fillStyle = 'rgba(147,190,96,.28)'; ctx.fill();
-      ctx.strokeStyle = '#dfc872'; ctx.lineWidth = 6; ctx.stroke(); ctx.restore();
-    }
-    ctx.beginPath(); ctx.arc(0, 0, 82, 0, Math.PI * 2);
-    ctx.strokeStyle = '#f0d57a'; ctx.lineWidth = 12; ctx.stroke();
-    texture.hasAlpha = true; texture.update();
-    this.lotus = new StandardMaterial('kimthien-lotus-seal', scene);
-    this.lotus.diffuseTexture = texture; this.lotus.useAlphaFromDiffuseTexture = true;
-    this.lotus.emissiveColor = Color3.FromHexString('#bfc36b').scale(.12);
-    this.lotus.backFaceCulling = false; this.lotus.disableDepthWrite = true;
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'kimthien');
+    this.bank = new KitFxBank(scene, new KitFlipbooks(scene));
+    this.windup = new KimthienWindup(this.art, this.bank);
+    this.bowls = new KimthienBowls(this.art, this.bank);
+    debug('visual.kimthien.layout', { radius: K.zoneRadius, bowl: +BOWL_SIZE.toFixed(2) });
   }
 
-  private pulse(at: Vector3, life: number, radius = K.zoneRadius): void {
-    if (this.pulses.length >= 12) return;
-    const mesh = this.pulsePool.pop() ?? MeshBuilder.CreateTorus('kimthien-zone-pulse',
-      { diameter: K.zoneRadius * 2, thickness: .09, tessellation: 48 }, this.scene);
-    mesh.material = this.warning; mesh.position.set(at.x, .08, at.z);
-    mesh.scaling.setAll(radius / K.zoneRadius); mesh.visibility = 1; mesh.isPickable = false; mesh.setEnabled(true);
-    this.pulses.push({ mesh, age: 0, life });
+  /** Idempotent; art still loading keeps the shader ring and the next use retries. */
+  prepare(): void {
+    // Rear wall, swirl and bud draw before every actor (monsters over them); `depthAlways` stops the ground clipping the base.
+    this.art.prepare('rear', '/assets/vfx-kimthien-bowl-rear.webp', { depthAlways: true });
+    this.art.prepare('suction', '/assets/vfx-kimthien-suction.webp', { depthAlways: true });
+    this.art.prepare('collapse', '/assets/vfx-kimthien-collapse.webp', { depthAlways: true });
+    // Front lip: over monsters, under heroes and health.
+    this.art.prepare('front', '/assets/vfx-kimthien-bowl-front.webp', { foreground: true });
   }
 
-  cast(event: GameEvent, at: Vector3): void {
-    this.pulse(at, event.windup ?? .25);
-    debug('visual.kimthien.cast', { eventId: event.id });
+  cast(event: GameEvent, at: Vector3, reduced: boolean): boolean {
+    if (event.skillId !== `skill-${K.id}`) return false;
+    this.prepare();
+    this.windup.begin(at, event.windup ?? DEFAULT_WINDUP, reduced, event.source);
+    debug('visual.kimthien.cast', { eventId: event.id, windup: event.windup ?? DEFAULT_WINDUP, reduced });
+    return true;
   }
 
-  impact(event: GameEvent, at: Vector3): void {
-    this.pulse(at, .45);
-    debug('visual.kimthien.impact', { eventId: event.id });
-  }
-
-  attack(event: GameEvent, at: Vector3): void {
-    this.pulse(at, .28, K.splashRadius);
-    debug('visual.kimthien.attack', { eventId: event.id, targets: event.targets?.length ?? 0 });
-  }
-
-  markBowl(id: string, at: Vector3, reduced: boolean): void {
-    let bowl = this.bowls.get(id);
-    if (!bowl) {
-      if (this.bowls.size >= 8) return;
-      bowl = this.pool.pop() ?? this.createBowl();
-      bowl.dome.setEnabled(true); bowl.lotus.setEnabled(true); bowl.funnel.setEnabled(!reduced);
-      bowl.age = 0; this.bowls.set(id, bowl);
-      debug('visual.kimthien.zone-start', { id });
-    }
-    bowl.dome.setEnabled(!reduced);
-    bowl.funnel.setEnabled(!reduced);
-    bowl.lotus.position.set(at.x, .065, at.z);
-    bowl.dome.position.set(at.x, 5.1, at.z);
-    bowl.funnel.position.set(at.x, 2.8, at.z);
-    bowl.touched = true;
-  }
-
-  private createBowl(): Bowl {
-    const dome = MeshBuilder.CreateSphere('kimthien-inverted-bowl',
-      { diameter: K.zoneRadius * 1.5, segments: 24, slice: .5 }, this.scene);
-    dome.scaling.y = .3; dome.rotation.x = Math.PI; dome.material = this.gold;
-    dome.isPickable = false;
-    const funnel = MeshBuilder.CreateCylinder('kimthien-light-funnel',
-      { height: 5.5, diameterTop: 1, diameterBottom: K.zoneRadius * 2, tessellation: 32, cap: Mesh.NO_CAP }, this.scene);
-    funnel.material = this.light; funnel.isPickable = false;
-    const lotus = MeshBuilder.CreateGround('kimthien-nine-petal-zone',
-      { width: K.zoneRadius * 2, height: K.zoneRadius * 2 }, this.scene);
-    lotus.material = this.lotus; lotus.isPickable = false;
-    return { dome, funnel, lotus, touched: false, age: 0 };
-  }
-
-  tick(dt: number): void {
-    if (!Number.isFinite(dt) || dt <= 0) return;
-    for (let i = this.pulses.length - 1; i >= 0; i--) {
-      const pulse = this.pulses[i]; pulse.age += dt;
-      if (pulse.age >= pulse.life) {
-        pulse.mesh.setEnabled(false); this.pulsePool.push(pulse.mesh); this.pulses.splice(i, 1);
-      } else pulse.mesh.visibility = 1 - pulse.age / pulse.life;
-    }
-    for (const [id, bowl] of this.bowls) {
-      if (!bowl.touched) {
-        bowl.dome.setEnabled(false); bowl.funnel.setEnabled(false); bowl.lotus.setEnabled(false);
-        this.pool.push(bowl); this.bowls.delete(id);
-        debug('visual.kimthien.zone-end', { id });
-      } else {
-        bowl.touched = false; bowl.age += dt;
-        bowl.lotus.rotation.y += dt * .4;
+  ability(event: GameEvent, _origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {
+    this.prepare();
+    switch (event.skillId) {
+      case `skill-${K.id}`: {
+        if (event.kind !== 'ability') return false;
+        const lead = this.windup.take(event.source ?? '');
+        const started = this.bowls.begin(at, lead?.alpha ?? 0, reduced);
+        debug('visual.kimthien.impact', { eventId: event.id, hadCast: Boolean(lead), started, reduced });
+        return true;
       }
+      case `trait-${K.id}`:
+        this.basic(event, at, extra?.targets ?? [at], reduced);
+        return true;
+      default: return false;
     }
+  }
+
+  tick(dt: number, time: number): void {
+    const up = screenUp(this.scene);
+    this.preview.tick(dt);
+    this.windup.tick(dt, up);
+    this.bowls.tick(dt, up);
+    this.bank.tick(dt, time);
+  }
+
+  /** Ground snapshot marker for `golden-bowl` (every frame while the zone exists): `remaining` is the server clock. */
+  markBowl(id: string, at: Vector3, remaining: number, reduced: boolean): void {
+    this.prepare();
+    this.bowls.mark(id, at, remaining, reduced);
   }
 
   clear(): void {
-    for (const pulse of this.pulses) { pulse.mesh.setEnabled(false); this.pulsePool.push(pulse.mesh); }
-    this.pulses.length = 0;
-    for (const bowl of this.bowls.values()) {
-      bowl.dome.setEnabled(false); bowl.funnel.setEnabled(false); bowl.lotus.setEnabled(false); this.pool.push(bowl);
-    }
-    this.bowls.clear();
+    this.preview.clear(); this.windup.clear(); this.bowls.clear(); this.bank.clear(); this.art.clear();
+  }
+
+  replay(kind: string, at: Vector3, reduced: boolean, origin = at): boolean {
+    this.prepare();
+    return this.preview.start(kind, at, reduced, origin);
+  }
+
+  /** The lotus lands on its one target: a small jade contact ring and a few petals, nothing wider. */
+  private basic(event: GameEvent, at: Vector3, targets: readonly Vector3[], reduced: boolean): void {
+    const target = targets[0] ?? at;
+    this.bank.ring(target, 1.3, 'jade', { life: .3, fill: .25, rim: 1, alpha: .8, hold: true, reduced, order: 5 });
+    if (!reduced) this.bank.spray('bagua').ring(new Vector3(target.x, 0, target.z), .3, 6, .2, 1.1, 2.2);
+    debug('visual.kimthien.attack', { eventId: event.id, targets: event.targets?.length ?? 0, reduced });
   }
 }

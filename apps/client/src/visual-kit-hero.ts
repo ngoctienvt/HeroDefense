@@ -29,6 +29,9 @@ export function heroIdFromSkillId(skillId?: string): string {
 export interface AbilityExtra {
   readonly targets: readonly Vector3[];
   readonly hasOrigin: boolean;
+  readonly main?: Vector3;
+  /** Positions resolved only from server-confirmed unit IDs in the viewed zone. */
+  readonly supportTargets?: readonly Vector3[];
 }
 
 /**
@@ -41,7 +44,7 @@ export interface HeroVfx {
   readonly aliases?: readonly string[];
   /** Ensure atlases/materials when the hero appears on the field (idempotent). */
   prepare(): void;
-  cast?(event: GameEvent, at: Vector3, reduced: boolean): boolean;
+  cast?(event: GameEvent, at: Vector3, reduced: boolean, origin?: Vector3): boolean;
   ability?(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean;
   /** Snapshot marker (aura, ward, frozen…); called every frame the state is present. */
   mark?(kind: string, id: string, at: Vector3, reduced: boolean): void;
@@ -72,8 +75,8 @@ export class HeroVfxRegistry {
     debug('visual.kit.registry.prepare', { heroId });
   }
 
-  cast(event: GameEvent, at: Vector3, reduced: boolean): boolean {
-    return this.heroes.get(heroIdFromSkillId(event.skillId))?.cast?.(event, at, reduced) ?? false;
+  cast(event: GameEvent, at: Vector3, reduced: boolean, origin?: Vector3): boolean {
+    return this.heroes.get(heroIdFromSkillId(event.skillId))?.cast?.(event, at, reduced, origin) ?? false;
   }
 
   ability(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {

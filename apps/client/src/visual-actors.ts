@@ -8,8 +8,12 @@ import { HERO_BY_ID } from '../../../content/catalog.js';
 import type { Enemy, Unit } from '../../../packages/contracts/src/types.js';
 import { VisualMaterials } from './visual-materials.js';
 import { createHeroSprite, createMonsterSprite } from './visual-sprites.js';
+import { createMedicinalTree } from './visual-shennong-tree.js';
 import { heroDirection, type HeroPose } from './hero-motion.js';
-import { animateMonster } from './visual-monster-motion.js';
+import type { SharedMark } from './visual-shared-status.js';
+import { assignActorDrawGroups, configureCombatDrawOrder } from './visual-kit-draw-order.js';
+import { createMotionTrack, sampleMotionTrack, updateMovingState, type MotionTrack } from './actor-interpolation.js';
+import { enemyRankScale } from './visual-enemy-skill-routing.js';
 
 export type VisualActor = {
   root: TransformNode; barRoot: TransformNode; body: Mesh; head: Mesh; weapon: Mesh;
@@ -18,24 +22,92 @@ export type VisualActor = {
   barWidth: number;
   target: Vector3; hp: number; zone: number; size: number; phase: number; fireBurning: boolean;
   status?: 'stun' | 'root' | 'sunder' | 'slow' | 'poison' | 'charged' | 'shield' | 'ward' | 'haste'
-    | 'berserk' | 'soulLink' | 'frost' | 'stoneShield';
-  action: 'idle' | 'attack' | 'cast' | 'hit' | 'death'; actionTime: number; dying: boolean;
+    | 'berserk' | 'soulLink' | 'frost' | 'stoneShield' | 'pureLand' | 'sealed';
+  action: 'idle' | 'attack' | 'cast' | 'hit' | 'death'; actionTime: number; actionDuration: number; dying: boolean;
+  /** Freezes only the animation clock (impact punch); position keeps following the server. */
   hitStop: number;
   hitFlashTime: number;
+  /** Snapshot interpolation buffer; absent on hand-built actors, which fall back to easing toward `target`. */
+  track?: MotionTrack;
+  /** Monster swing phase: hold the wind-up pose until the server's hit, then play the strike. */
+  attackPhase?: 'windup' | 'strike';
   facingX: number; facingZ: number;
   monsterId?: Enemy['monsterId'];
+  skinHeroId?: string;
+  enemyRank?: Enemy['rank'];
+  enemyKit?: Enemy['kit'];
+  enraged?: boolean;
+  authoredMonsterArt: boolean;
   stoneShield?: boolean;
+  blackWaterShield?: boolean;
+  /** Holds a shield from Kim Tra's golden bell (battlefield-kimtra tracker). */
+  kimtraBell?: boolean;
+  /** Mộc Tra in Cuồng Vũ (snapshot `berserk`, battlefield-moctra tracker): the thorn wreath. */
+  moctraFrenzy?: boolean;
+  /** Hình Thiên's snapshot `berserk.remaining` (seconds, > 0 while the immortal berserk holds): the armour/flame shell. */
+  xingtianBerserk?: number;
+  /** Kim Sí in berserk (snapshot `berserk.remaining` > 0): the golden feather bands. */
+  kimsiBerserk?: boolean;
+  /** Enemy bleeding from Kim Sí's feathers (snapshot `bleed.remaining` > 0 with an h016 `casterId`): the scar. */
+  kimsiBleed?: boolean;
+  /** Holds the ward Cự Linh Thần gave it (snapshot `ward`, battlefield-culinh tracker): the iron bulwark ring. */
+  culinhBulwark?: boolean;
+  /** Snapshot shield amount, used by Cự Linh's visual bulwark. */
+  culinhShield?: number;
+  /** Enemy slowed by Cự Linh's hammer quake (server `quake-h00E` event, 1.2 s). */
+  culinhSlowed?: boolean;
+  /** Enemy poisoned by Mộc Tra's vine shots (snapshot `poison` from an h00A caster): poison spores. */
+  moctraPoison?: boolean;
+  /** Enemy set alight by Thiết Phiến's detonation (snapshot `burn` from an h00B caster): ignition flare, then embers. */
+  thietphienEmber?: 'start' | 'hold';
+  /** Ally holding Mẫu Đơn's haste buff (snapshot `haste` +35% with attackBonus .15, battlefield-mandon tracker): the petal ring. */
+  mandonHaste?: boolean;
+  /** Monster Mạnh Bà just linked and the snapshot still holds `soulLink` (battlefield-manhba tracker): the Đồng Mệnh water ring. */
+  manhbaBond?: boolean;
+  /** Ally holding Nhiếp Tiểu Thiến's Frost Shield (snapshot `frostShield`, battlefield-nhieptieuthien tracker): the ice shell. */
+  nhiepShield?: boolean;
+  /** Enemy burning from Hồng Hài Nhi's skill (snapshot `burn` whose caster is h00C, battlefield-honghainhi tracker): the flame column. */
+  honghainhiBurn?: boolean;
+  lanternShielded?: boolean;
+  buddhaShielded?: boolean;
+  /** Game-wide statuses drawn from the snapshot with one neutral design for every element (shield bubble, stun/freeze/invulnerable sheets, marks). */
+  shared?: readonly SharedMark[];
+  bodhiBlessed?: boolean;
+  /** Server `bodhiBlessing.remaining` (seconds): the leaf pair splits and pulls in over its last .3 s. */
+  bodhiRemaining?: number;
+  primordialBlessed?: boolean;
+  primordialMarked?: boolean;
+  peachBlessed?: boolean;
+  /** Thái Bạch (h015): snapshot shows haste / divineImmortal on this hero (drawn only for recipients of her events). */
+  starHaste?: boolean;
+  starImmortal?: boolean;
+  shadowAssault?: boolean;
+  phoenixEgg?: boolean;
+  exposed?: boolean;
   heroId?: string;
+  summonKind?: Unit['summonKind'];
+  nuwaShielded?: boolean;
+  /** Seconds left of Nữ Oa's five-colour ward (0 = none); drawn by her module. */
+  nuwaWard?: number;
+  hienvienBlessed?: boolean;
+  thunderBlessed?: boolean;
+  truongFrozen?: boolean;
+  truongSunder?: boolean;
   sprite?: ReturnType<typeof createHeroSprite> | ReturnType<typeof createMonsterSprite>; spriteShown: boolean; fallbackParts: Mesh[];
 };
 
-export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit | Enemy, ownerColor = '#9de8c2', seat = 0): VisualActor {
+export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit | Enemy, _ownerColor = '#9de8c2', _seat = 0,
+  spriteActive = true): VisualActor {
   const hero = 'heroId' in entity ? HERO_BY_ID[entity.heroId] : undefined;
   const role = hero?.role ?? ('kind' in entity ? entity.kind : 'warrior');
   const enemy = !hero;
+  const skinHeroId = enemy && 'skinHeroId' in entity ? entity.skinHeroId : undefined;
+  const enemyRank = enemy && 'rank' in entity ? entity.rank : undefined;
+  const enemyKit = enemy && 'kit' in entity ? entity.kit : undefined;
+  const chieftain = enemyRank === 'chieftain';
   const authoredMonster = enemy && 'monsterId' in entity && Boolean(entity.monsterId);
-  const boss = role === 'boss';
-  const size = boss ? 2.3 : role === 'guardian' ? 1.4 : 1.25;
+  const boss = role === 'boss' || enemyRank === 'boss';
+  const size = boss ? 2.3 : chieftain ? 1.55 : role === 'guardian' ? 1.4 : 1.25;
   const colors: Record<string, string> = {
     warrior: '#c78c6d', ranger: '#75af92', mage: '#819fd0', guardian: '#bdab89', support: '#b8a3d9',
     melee: '#a87677', ranged: '#9d9a77', boss: '#6e9a78',
@@ -60,19 +132,19 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   };
   const body = piece('tunic', 'cylinder', [0, .88, 0], [1, 1.15, 1]);
   const head = piece('chibi-head', 'sphere', [0, 1.83, 0], [1.05, 1.05, .94], skin);
-  for (const side of authoredMonster ? [] : [-1, 1]) {
+  for (const side of authoredMonster || skinHeroId ? [] : [-1, 1]) {
     piece('eye', 'sphere', [side * .23, 1.91, -.42], [.12, .13, .08], eye);
     piece('arm', 'sphere', [side * .6, 1.05, 0], [.44, .73, .46], boss ? skin : material);
     piece('foot', 'sphere', [side * .29, .24, -.12], [.4, .34, .55], material);
   }
-  if (boss && !authoredMonster) {
+  if (boss && !authoredMonster && !skinHeroId) {
     // Bone fists and crown give bosses a recognizable silhouette at wide camera zoom.
     for (const side of [-1, 1]) {
       piece('bone-fist', 'sphere', [side * .94, .66, -.12], [.55, .52, .55], skin);
       piece('horn', 'cylinder', [side * .48, 2.36, 0], [.35, .7, .35], skin).rotation.z = side * .45;
     }
     piece('rib-plate', 'box', [0, 1.08, -.46], [.88, .35, .1], skin);
-  } else if (authoredMonster) {
+  } else if (authoredMonster || skinHeroId) {
     // The authored billboard supplies the silhouette; keep only a cheap load fallback.
   } else if (role === 'ranger') {
     piece('hood', 'sphere', [0, 2.04, .2], [1.1, .75, .9], material);
@@ -95,12 +167,27 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   const weapon = piece('weapon', role === 'ranger' ? 'cylinder' : 'box', [.8, 1.15, -.1], role === 'ranger' ? [.1, 1.5, .1] : [.12, 1.52, .18], metal);
   weapon.rotation.z = -.3;
   const fallbackParts = parts.slice();
-  const sprite = hero ? createHeroSprite(scene, palette, hero.id, root)
-    : 'monsterId' in entity && entity.monsterId ? createMonsterSprite(scene, palette, entity.monsterId, root) : undefined;
+  if ('summonKind' in entity && entity.summonKind === 'ancient-tree') {
+    for (const part of fallbackParts) part.visibility = 0;
+  }
+  const sprite = 'summonKind' in entity && entity.summonKind === 'ancient-tree' ? createMedicinalTree(scene, palette, root)
+    : hero ? createHeroSprite(scene, palette, hero.id, root)
+    : skinHeroId ? createHeroSprite(scene, palette, skinHeroId, root, {
+      scale: enemyRankScale(enemyRank),
+      actorKind: 'enemy',
+      rank: enemyRank,
+    })
+    : 'monsterId' in entity && entity.monsterId ? createMonsterSprite(scene, palette, entity.monsterId, root,
+      { active: spriteActive })
+    : undefined;
+  const spriteParts: { mesh: Mesh; meshes?: Mesh[] } | undefined = sprite;
+  const spriteMeshes = spriteParts?.meshes ?? (sprite ? [sprite.mesh] : []);
+  const authoredMonsterArt = Boolean(sprite && !hero && !skinHeroId && 'kind' in entity
+    && (entity.kind === 'boss' || ('monsterId' in entity && entity.monsterId)));
 
   const isHero = Boolean(hero);
   const isBoss = boss || ('monsterId' in entity && entity.monsterId === 'b001');
-  const shadowRadius = isBoss ? 1.5 : isHero ? 0.75 : 0.5;
+  const shadowRadius = isBoss ? 2.3 : chieftain ? 1.35 : enemyRank === 'elite' ? 1.0 : isHero ? 0.75 : 0.85;
   const shadow = MeshBuilder.CreateDisc(`shadow-${entity.id}`, { radius: shadowRadius, tessellation: 20 }, scene);
   shadow.parent = root;
   shadow.rotation.x = Math.PI / 2;
@@ -110,12 +197,13 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
 
   const barRoot = new TransformNode(`bar-root-${entity.id}`, scene);
   barRoot.parent = root;
-  barRoot.billboardMode = Mesh.BILLBOARDMODE_Y;
-  const initialHpY = boss ? 3.7 : 2.75;
+  barRoot.billboardMode = Mesh.BILLBOARDMODE_ALL;
+  const initialHpY = 'summonKind' in entity && entity.summonKind === 'ancient-tree' ? 5 : boss ? 3.7 : chieftain ? 3.3 : 2.75;
   barRoot.position.set(0, initialHpY, 0);
 
-  const barWidth = isBoss ? 2.6 : isHero ? 1.8 : 0.95;
-  const hpHeight = isBoss ? 0.2 : isHero ? 0.15 : 0.08;
+  const groupSize = sprite ? spriteMeshes.length : 1;
+  const barWidth = isBoss ? groupSize > 1 ? 4.2 : 3.6 : chieftain ? 2.4 : 1.8;
+  const hpHeight = isBoss ? 0.2 : isHero ? 0.15 : chieftain ? 0.13 : 0.08;
   const borderPad = 0.035 * size;
   const barBorderMat = palette.get('wc3-bar-border', '#090b10');
 
@@ -133,7 +221,7 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   bar.isPickable = false;
 
   let shieldBar: Mesh | undefined;
-  if (hero || boss && 'monsterId' in entity && entity.monsterId === 'b001') {
+  if (hero || isBoss || chieftain) {
     shieldBar = MeshBuilder.CreateBox('shield-fill', { width: barWidth, height: hpHeight * .4, depth: .11 }, scene);
     shieldBar.parent = barRoot;
     shieldBar.position.set(0, hpY + hpHeight * .75, -.025);
@@ -160,13 +248,30 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   }
 
   root.position.set(entity.x, 0, entity.z);
+  configureCombatDrawOrder(scene);
+  assignActorDrawGroups('heroId' in entity, [...parts, ...spriteMeshes], barRoot.getChildMeshes());
   return { root, barRoot, body, head, weapon, shadow, bar, barBack, shieldBar, manaBar, manaBack, barWidth,
     target: new Vector3(entity.x, 0, entity.z), hp: entity.hp, zone: entity.zone, size,
     phase: entity.id.split('').reduce((sum, c) => sum + c.charCodeAt(0), 0) * .31, fireBurning: false,
-    action: 'idle', actionTime: 0, hitStop: 0, hitFlashTime: 0, dying: false,
+    action: 'idle', actionTime: 0, actionDuration: .38, hitStop: 0, hitFlashTime: 0, dying: false,
+    track: createMotionTrack(entity.x, entity.z, performance.now() / 1000),
     facingX: 0, facingZ: 1, heroId: 'heroId' in entity ? entity.heroId : undefined,
     monsterId: 'monsterId' in entity ? entity.monsterId : undefined,
+    skinHeroId,
+    enemyRank,
+    enemyKit,
+    enraged: enemy && 'enraged' in entity ? entity.enraged : undefined,
+    authoredMonsterArt,
     sprite, spriteShown: false, fallbackParts };
+}
+
+/**
+ * Clip progress for a monster swing: the wind-up plays the first half of the attack clip
+ * (legacy atlas: the anticipation cell) and holds it; the strike starts on the impact half.
+ */
+export function swingProgress(actor: Pick<VisualActor, 'attackPhase' | 'action'>, local: number): number {
+  if (actor.action !== 'attack' || !actor.attackPhase) return local;
+  return actor.attackPhase === 'windup' ? Math.min(.5, local * .5) : .52 + .48 * local;
 }
 
 export function faceActorTowards(actor: VisualActor, x: number, z: number): void {
@@ -175,30 +280,43 @@ export function faceActorTowards(actor: VisualActor, x: number, z: number): void
 }
 
 export function animateActor(actor: VisualActor, dt: number, time: number, reduced: boolean,
-  cameraX = 0, cameraZ = 1, cameraAlpha = Math.PI / 2, cameraBeta = 0.66): void {
+  cameraX = 0, cameraZ = 1, _cameraAlpha = Math.PI / 2, _cameraBeta = 0.66): void {
   const frozen = actor.hitStop > 0;
   actor.hitStop = Math.max(0, actor.hitStop - dt);
-  const distance = actor.target.subtract(actor.root.position);
-  const moving = distance.lengthSquared() > .012;
-  if (!frozen) actor.root.position.addInPlace(distance.scale(Math.min(1, dt * 11)));
-  if (moving && actor.actionTime <= 0) {
-    actor.facingX = distance.x; actor.facingZ = distance.z;
-    if (!actor.spriteShown) actor.root.rotation.y = Math.atan2(distance.x, distance.z);
+  let headingX: number, headingZ: number, moving: boolean;
+  if (actor.track) {
+    const motion = sampleMotionTrack(actor.track, performance.now() / 1000);
+    actor.root.position.x = motion.x; actor.root.position.z = motion.z;
+    moving = updateMovingState(actor.track, Math.hypot(motion.vx, motion.vz), dt);
+    headingX = motion.vx; headingZ = motion.vz;
+  } else {
+    const distance = actor.target.subtract(actor.root.position);
+    moving = distance.lengthSquared() > (actor.monsterId || actor.authoredMonsterArt || actor.skinHeroId ? .0016 : .012);
+    actor.root.position.addInPlace(distance.scale(Math.min(1, dt * 11)));
+    headingX = distance.x; headingZ = distance.z;
+  }
+  if (moving && actor.actionTime <= 0 && headingX * headingX + headingZ * headingZ > 1e-4) {
+    actor.facingX = headingX; actor.facingZ = headingZ;
+    if (!actor.spriteShown) actor.root.rotation.y = Math.atan2(headingX, headingZ);
   }
   if (!frozen) actor.actionTime = Math.max(0, actor.actionTime - dt);
-  if (!actor.actionTime && actor.action !== 'death') actor.action = 'idle';
+  if (!actor.actionTime && actor.action !== 'death') { actor.action = 'idle'; actor.attackPhase = undefined; }
   const pulse = reduced ? 0 : Math.sin(time * (moving ? 13 : 2.3) + actor.phase);
 
   // Hit flash (White Flash) using Babylon's native renderOverlay
   if (actor.hitFlashTime > 0) {
     actor.hitFlashTime = Math.max(0, actor.hitFlashTime - dt);
     if (actor.sprite?.mesh && !reduced) {
-      actor.sprite.mesh.renderOverlay = true;
-      actor.sprite.mesh.overlayColor = Color3.White();
-      actor.sprite.mesh.overlayAlpha = Math.min(0.85, (actor.hitFlashTime / 0.08) * 0.85);
+      const spriteMeshes = 'meshes' in actor.sprite ? actor.sprite.meshes : [actor.sprite.mesh];
+      for (const mesh of spriteMeshes) {
+        mesh.renderOverlay = true;
+        mesh.overlayColor = Color3.White();
+        mesh.overlayAlpha = Math.min(0.85, (actor.hitFlashTime / 0.08) * 0.85);
+      }
     }
   } else if (actor.sprite?.mesh?.renderOverlay) {
-    actor.sprite.mesh.renderOverlay = false;
+    const spriteMeshes = 'meshes' in actor.sprite ? actor.sprite.meshes : [actor.sprite.mesh];
+    spriteMeshes.forEach(mesh => { mesh.renderOverlay = false; });
   }
 
   // Attack Lunge (Lao người ra đòn)
@@ -207,10 +325,11 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
   const dirZ = actor.facingZ / len;
   let lungeX = 0, lungeZ = 0;
   if (actor.action === 'attack' && !reduced) {
-    const duration = .38;
-    const progress = Math.max(0, Math.min(1, 1 - actor.actionTime / duration));
-    const strike = Math.sin(progress * Math.PI);
-    const lungeDist = 0.38 * strike;
+    // Wind-up leans back; the strike lunges forward and recovers.
+    const local = Math.max(0, Math.min(1, 1 - actor.actionTime / Math.max(.001, actor.actionDuration)));
+    const lungeDist = actor.attackPhase === 'windup' ? -.12 * Math.min(1, local * 1.6)
+      : actor.attackPhase === 'strike' ? .38 * Math.sin((.5 + local * .5) * Math.PI)
+      : .38 * Math.sin(Math.max(0, Math.min(1, 1 - actor.actionTime / .38)) * Math.PI);
     lungeX = dirX * lungeDist;
     lungeZ = dirZ * lungeDist;
   }
@@ -223,41 +342,46 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
     actor.body.scaling.y = actor.action === 'hit' && !reduced ? actor.size * .88 : actor.size * 1.15;
   }
   if (actor.sprite) {
+    const spriteMeshes = 'meshes' in actor.sprite ? actor.sprite.meshes : [actor.sprite.mesh];
+    const motionRoot = 'motionRoot' in actor.sprite ? actor.sprite.motionRoot : actor.sprite.mesh;
     const ready = actor.spriteShown || actor.sprite.ready();
     if (ready !== actor.spriteShown) {
-      actor.sprite.mesh.setEnabled(ready);
+      if ('setVisible' in actor.sprite) actor.sprite.setVisible(ready);
+      else spriteMeshes.forEach(mesh => mesh.setEnabled(ready));
       for (const part of actor.fallbackParts) part.dispose();
       actor.fallbackParts.length = 0;
       if (actor.sprite.healthBarY !== undefined) {
         // Move the bar with the anchored billboard after its texture is ready.
-        actor.barRoot.parent = actor.sprite.mesh;
-        actor.barRoot.billboardMode = Mesh.BILLBOARDMODE_NONE;
-        actor.barRoot.position.set(0, actor.sprite.healthBarY, 0);
+        actor.barRoot.parent = motionRoot;
+        actor.barRoot.billboardMode = motionRoot === actor.sprite.mesh ? Mesh.BILLBOARDMODE_NONE : Mesh.BILLBOARDMODE_ALL;
+        actor.barRoot.position.set(0, actor.sprite.healthBarY / Math.max(.001, motionRoot.scaling.y), 0);
       } else actor.barRoot.position.y = actor.sprite.restY * 2 + .45;
       actor.spriteShown = ready;
     }
     if (ready) {
-      // Maintain depth sorting index
-      actor.sprite.mesh.alphaIndex = Math.round(actor.root.position.z * 100);
+      // Maintain depth sorting index along camera viewing direction
+      const depth = cameraX * actor.root.position.x + cameraZ * actor.root.position.z;
+      spriteMeshes.forEach((mesh, index) => { mesh.alphaIndex = Math.round(depth * 100) + index; });
 
       // Position sprite with lunge offset
-      actor.sprite.mesh.position.x = lungeX;
-      actor.sprite.mesh.position.z = lungeZ;
+      motionRoot.position.x = lungeX;
+      motionRoot.position.z = lungeZ;
 
       if (actor.sprite.animated) {
         const pose: HeroPose = actor.action !== 'idle' ? actor.action
           : moving ? reduced || Math.floor(time * 8 + actor.phase) % 2 === 0 ? 'walk-a' : 'walk-b' : 'idle';
-        const duration = actor.action === 'cast' ? actor.heroId === 'h01B' ? .35 : .3 : .38;
-        const progress = Math.max(0, Math.min(1, 1 - actor.actionTime / duration));
+        const duration = actor.monsterId || actor.authoredMonsterArt || actor.skinHeroId ? actor.actionDuration
+          : actor.action === 'cast' ? actor.heroId === 'h01B' ? .35 : .3 : .38;
+        const progress = swingProgress(actor, Math.max(0, Math.min(1, 1 - actor.actionTime / Math.max(0.001, duration))));
         actor.sprite.setFrame(heroDirection(actor.facingX, actor.facingZ, cameraX, cameraZ), pose,
           frozen ? 0 : dt, actor.heroId === 'h01B' && actor.action === 'cast' ? .35 : progress, reduced);
-        actor.sprite.mesh.position.y = actor.sprite.restY + (actor.heroId === 'h01B' && actor.action === 'cast' && !reduced ? Math.sin(progress * Math.PI) * .65 : 0);
-      } else if (actor.monsterId) {
-        animateMonster(actor.sprite.mesh, actor.monsterId, actor.action, actor.actionTime,
-          actor.sprite.restY, actor.phase, time, moving, reduced);
+        if (actor.authoredMonsterArt && actor.sprite.healthBarY !== undefined) {
+          actor.barRoot.position.y = actor.sprite.healthBarY / Math.max(.001, motionRoot.scaling.y);
+        }
+        motionRoot.position.y = actor.sprite.restY + (actor.heroId === 'h01B' && actor.action === 'cast' && !reduced ? Math.sin(progress * Math.PI) * .65 : 0);
       } else {
-        const duration = actor.action === 'cast' ? .3 : .38;
-        const progress = Math.max(0, Math.min(1, 1 - actor.actionTime / duration));
+        const duration = actor.attackPhase ? actor.actionDuration : actor.action === 'cast' ? .3 : .38;
+        const progress = swingProgress(actor, Math.max(0, Math.min(1, 1 - actor.actionTime / Math.max(0.001, duration))));
         const strike = Math.sin(progress * Math.PI);
 
         // Walk hop: bounces up on each step
@@ -267,7 +391,7 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
         // Idle breathing: subtle height oscillation
         const breathe = reduced || moving ? 0 : Math.sin(time * 3 + actor.phase) * 0.025;
 
-        actor.sprite.mesh.position.y = actor.sprite.restY + hop
+        motionRoot.position.y = actor.sprite.restY + hop
           + (reduced ? 0 : actor.action === 'cast' ? .24 * strike : actor.action === 'attack' ? -.08 * strike : 0);
         actor.sprite.mesh.rotation.z = sway + (reduced ? 0 : actor.action === 'hit' ? .09 * strike
           : actor.action === 'cast' ? -.14 * strike : actor.action === 'attack' ? .14 * Math.sin(progress * Math.PI * 1.5) : 0);
@@ -284,7 +408,8 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
   // Update drop shadow scale & grounding
   actor.shadow.setEnabled(!actor.dying && actor.hp > 0);
   if (!reduced && actor.sprite?.mesh) {
-    const jumpHeight = Math.max(0, actor.sprite.mesh.position.y - actor.sprite.restY);
+    const motionRoot = 'motionRoot' in actor.sprite ? actor.sprite.motionRoot : actor.sprite.mesh;
+    const jumpHeight = Math.max(0, motionRoot.position.y - actor.sprite.restY);
     const shadowScale = Math.max(0.65, 1 - jumpHeight * 0.25);
     actor.shadow.scaling.set(shadowScale, shadowScale, shadowScale);
   }

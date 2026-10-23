@@ -9,7 +9,7 @@ export function el<K extends keyof HTMLElementTagNameMap>(tag: K, className = ''
   const node = document.createElement(tag); node.className = className;
   if (text !== undefined) node.textContent = text; return node;
 }
-export function button(text: string, action: () => void, className = '', disabled = false): HTMLButtonElement {
+export function button(text: string, action: (event: MouseEvent) => void, className = '', disabled = false): HTMLButtonElement {
   const node = el('button', className, text); node.type = 'button'; node.disabled = disabled; node.addEventListener('click', action); return node;
 }
 export function heading(text: string, description?: string): HTMLElement {

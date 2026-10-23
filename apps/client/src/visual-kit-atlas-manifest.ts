@@ -9,6 +9,8 @@ import manifest from './visual-kit-atlases.json';
 export interface KitAtlas {
   id: string; url: string; frames: number; cell: number; tile: string; size: string;
   capacity: number; ortho: number; targetZ: number; source: string; framesDir: string;
+  /** false: no depth pre-pass, so actors drawn later always stay on top (tall sprites seated on a hero). */
+  depthWrite?: boolean;
 }
 
 /** Returns a list of problems (empty = valid); shared with the manifest test. */
@@ -17,9 +19,10 @@ export function validateAtlas(atlas: Partial<KitAtlas>): string[] {
   for (const key of ['id', 'url', 'tile', 'size', 'source', 'framesDir'] as const) {
     if (typeof atlas[key] !== 'string' || atlas[key] === '') problems.push(`${key} missing`);
   }
-  for (const key of ['frames', 'cell', 'capacity', 'ortho', 'targetZ'] as const) {
+  for (const key of ['frames', 'cell', 'capacity', 'ortho'] as const) {
     if (typeof atlas[key] !== 'number' || !Number.isFinite(atlas[key]) || atlas[key] <= 0) problems.push(`${key} must be > 0`);
   }
+  if (typeof atlas.targetZ !== 'number' || !Number.isFinite(atlas.targetZ)) problems.push('targetZ must be finite');
   const grid = /^(\d+)x(\d+)$/.exec(atlas.tile ?? '');
   if (!grid) problems.push('tile must look like 4x4');
   else if ((atlas.frames ?? 0) > Number(grid[1]) * Number(grid[2])) problems.push('frames exceed tile capacity');

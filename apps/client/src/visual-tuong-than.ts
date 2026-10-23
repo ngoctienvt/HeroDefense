@@ -1,146 +1,131 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
-import { TransformNode } from '@babylonjs/core/Meshes/transformNode.js';
+import type { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
+import { TUONG_THAN as T } from '../../../content/tuong-than-design.js';
 import { debug } from './debug.js';
+import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { KitSpray } from './visual-kit-spray.js';
+import { prepareTuongThanArt } from './visual-tuong-than-assets.js';
+import { TuongThanClaw } from './visual-tuong-than-claw.js';
+import { TuongThanDrain } from './visual-tuong-than-drain.js';
+import { TuongThanFlow } from './visual-tuong-than-flow.js';
+import { TuongThanGenerals } from './visual-tuong-than-generals.js';
+import { TuongThanPieces } from './visual-tuong-than-pieces.js';
+import { TuongThanReplay } from './visual-tuong-than-replay.js';
+import { TuongThanSea } from './visual-tuong-than-sea.js';
+import { TuongThanSurge } from './visual-tuong-than-surge.js';
 
-type Zone = { root: TransformNode; touched: boolean };
-type Pulse = { root: TransformNode; age: number; life: number };
+/** Painted planes alive at once: transient pieces (cap 64) + surge decals/ripples + sea decals + general decals. */
+const PAINTED_CAPACITY = 100;
+const PIECE_CAP = 64;
 
-export class VisualTuongThan {
-  private readonly zones = new Map<string, Zone>();
-  private readonly pool: TransformNode[] = [];
-  private readonly pulses: Pulse[] = [];
-  private readonly blood: StandardMaterial;
-  private readonly blackBlood: StandardMaterial;
-  private readonly bone: StandardMaterial;
+/**
+ * Tướng Thần (h03Z) on the kit: Huyết Hải Vạn Thi Trận and everything it spawns.
+ * Server events: `cast skill-h03Z` (0.25 s windup on the caster) → `ability skill-h03Z` (every monster in R8.5 takes 460 %
+ * + 100 % true damage, caster healed to full, allies shielded, four generals summoned) → `blood-general-h03Z` per
+ * general (its real spawn point) → snapshot `blood-sea` (radius, 8 s) and the generals' `summonDuration` (8 s) →
+ * `blood-general-hit-h03Z` per general strike. The normal attack and blood-warrior events keep the old shock ring.
+ * The facade keeps the entry points `VisualEffects` already calls (markZone, markGeneral, generalHit, prepare).
+ */
+export class VisualTuongThan implements HeroVfx {
+  readonly heroId = T.id;
+  private art: KitPainted;
+  private spray: KitSpray;
+  private pieces: TuongThanPieces;
+  private flow: TuongThanFlow;
+  private surge: TuongThanSurge;
+  private drain: TuongThanDrain;
+  private sea: TuongThanSea;
+  private generals: TuongThanGenerals;
+  private claw: TuongThanClaw;
+  private preview = new TuongThanReplay(this);
 
-  constructor(private readonly scene: Scene) {
-    this.blood = this.material('blood-sea-red', '#b51b34', .1, .52);
-    this.blackBlood = this.material('blood-sea-dark', '#30101b', .02, .68);
-    this.bone = this.material('blood-sea-bone', '#d8bb93', .08, .85);
+  constructor(scene: Scene) {
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'tuongthan');
+    this.spray = new KitSpray(scene, 'blood');
+    this.pieces = new TuongThanPieces(this.art, PIECE_CAP, 'pieces');
+    this.flow = new TuongThanFlow(scene);
+    this.surge = new TuongThanSurge(scene, this.art, this.pieces, this.spray, this.flow);
+    this.drain = new TuongThanDrain(scene, this.art, this.pieces, this.spray);
+    this.sea = new TuongThanSea(scene, this.art, this.spray, this.flow);
+    this.generals = new TuongThanGenerals(scene, this.art, this.pieces, this.spray);
+    this.claw = new TuongThanClaw(scene);
   }
 
-  private material(name: string, color: string, glow: number, alpha: number): StandardMaterial {
-    const material = new StandardMaterial(name, this.scene);
-    material.diffuseColor = Color3.FromHexString(color);
-    material.emissiveColor = material.diffuseColor.scale(glow);
-    material.alpha = alpha; material.backFaceCulling = false;
-    material.disableDepthWrite = true;
-    return material;
+  /** Atlases load only once a Tướng Thần is on the field (idempotent). */
+  prepare(): void { prepareTuongThanArt(this.art); }
+
+  /** The cast belongs to the caster himself (the event point is his own position). */
+  cast(event: GameEvent, at: Vector3, reduced: boolean, origin?: Vector3): boolean {
+    if (event.skillId !== `skill-${T.id}`) return false;
+    this.prepare();
+    this.surge.cast(event.source ?? 'unknown', origin ?? at, event.windup ?? .25, reduced);
+    return true;
   }
 
-  private makeSea(): TransformNode {
-    const root = new TransformNode('tuong-than-blood-sea', this.scene);
-    const pool = MeshBuilder.CreateCylinder('blood-lake-dark-surface', {
-      diameter: 17, height: .04, tessellation: 48,
-    }, this.scene);
-    pool.parent = root; pool.position.y = .025;
-    pool.material = this.blackBlood; pool.isPickable = false;
-    for (const radius of [3.3, 5.7, 8.25]) {
-      const ripple = MeshBuilder.CreateTorus('blood-lake-ripple', {
-        diameter: radius * 2, thickness: .16, tessellation: 48,
-      }, this.scene);
-      ripple.parent = root; ripple.position.y = .075;
-      ripple.material = this.blood; ripple.isPickable = false;
-    }
-    for (let i = 0; i < 10; i++) {
-      const a = i * Math.PI * 2 / 10;
-      const r = i % 2 ? 5.4 : 7.4;
-      const hand = MeshBuilder.CreateBox('bone-hand-rising', {
-        width: .22, height: .75, depth: .16,
-      }, this.scene);
-      hand.parent = root;
-      hand.position.set(Math.cos(a) * r, .36, Math.sin(a) * r);
-      hand.rotation.z = Math.sin(a) * .38;
-      hand.material = this.bone; hand.isPickable = false;
-      for (let finger = -1; finger <= 1; finger++) {
-        const claw = MeshBuilder.CreateCylinder('bone-finger', {
-          height: .43, diameterTop: .025, diameterBottom: .07, tessellation: 4,
-        }, this.scene);
-        claw.parent = hand; claw.position.set(finger * .31, .45, 0);
-        claw.rotation.z = finger * .34;
-        claw.material = this.bone; claw.isPickable = false;
+  ability(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {
+    switch (event.skillId) {
+      case `skill-${T.id}`: {
+        if (event.kind !== 'ability') return false;
+        this.prepare();
+        const caster = extra?.hasOrigin ? origin : at;
+        this.surge.impact(event.source ?? 'unknown', caster, reduced);
+        this.drain.launch(caster, extra?.targets ?? [], reduced);
+        return true;
       }
+      case `blood-general-${T.id}`:
+        this.prepare();
+        this.generals.summon(event.target, at, reduced);
+        return true;
+      case `trait-${T.id}`:
+      case `blood-warrior-${T.id}`:
+        this.claw.attack(event, at, reduced);
+        return true;
+      default: return false;
     }
-    return root;
   }
 
-  markZone(id: string, at: Vector3): void {
-    let zone = this.zones.get(id);
-    if (!zone) {
-      if (this.zones.size >= 8) return;
-      zone = { root: this.pool.pop() ?? this.makeSea(), touched: false };
-      zone.root.setEnabled(true); this.zones.set(id, zone);
-      debug('visual.tuongthan.sea.start', { id });
-    }
-    zone.root.position.copyFrom(at); zone.touched = true;
+  /** Snapshot: `blood-sea` ground effect (called every frame it lasts). */
+  markZone(id: string, at: Vector3, radius: number, remaining: number, reduced = false): void {
+    this.prepare();
+    this.sea.mark(id, at, radius, remaining, reduced);
   }
 
-  cast(event: GameEvent, at: Vector3, reduced: boolean): void {
-    this.pulse(at, reduced ? 1.5 : 3.5, reduced ? .2 : .45);
-    debug('visual.tuongthan.cast', { eventId: event.id });
+  /** Snapshot: a blood general with `summonDuration` left. */
+  markGeneral(id: string, at: Vector3, remaining: number, reduced = false): void {
+    this.prepare();
+    this.generals.mark(id, at, remaining, reduced);
   }
 
-  attack(event: GameEvent, at: Vector3, reduced: boolean): void {
-    this.pulse(at, reduced ? 1.2 : 3.6, reduced ? .12 : .25);
-    debug('visual.tuongthan.claw', { eventId: event.id });
+  /** `blood-general-hit-h03Z` on the struck monster. */
+  generalHit(event: GameEvent, at: Vector3, reduced: boolean): void {
+    this.prepare();
+    this.generals.hit(at, reduced);
+    debug('visual.tuongthan.general.hit', { eventId: event.id, reduced });
   }
 
-  impact(event: GameEvent, at: Vector3, reduced: boolean, targets: Vector3[]): void {
-    this.pulse(at, 8.5, reduced ? .2 : .55);
-    if (!reduced && this.pulses.length < 12 && targets.length) {
-      const root = new TransformNode('blood-reversal-streams', this.scene);
-      for (const source of targets.slice(0, 8)) {
-        const from = source.clone(); from.y = .9;
-        const to = at.clone(); to.y = 1.5;
-        const middle = from.add(to).scale(.5);
-        const stream = MeshBuilder.CreateBox('reverse-blood-stream', {
-          width: .12, height: .1, depth: Vector3.Distance(from, to),
-        }, this.scene);
-        stream.parent = root; stream.position.copyFrom(middle);
-        stream.rotation.y = Math.atan2(to.x - from.x, to.z - from.z);
-        stream.material = this.blood; stream.isPickable = false;
-      }
-      this.pulses.push({ root, age: 0, life: .42 });
-    }
-    debug('visual.tuongthan.impact', { eventId: event.id });
-  }
-
-  private pulse(at: Vector3, radius: number, life: number): void {
-    if (this.pulses.length >= 12) return;
-    const root = new TransformNode('tuong-than-blood-shock', this.scene);
-    root.position.copyFrom(at);
-    const wave = MeshBuilder.CreateTorus('blood-wave-front', {
-      diameter: radius * 2, thickness: .32, tessellation: 48,
-    }, this.scene);
-    wave.parent = root; wave.position.y = .18;
-    wave.material = this.blood; wave.isPickable = false;
-    this.pulses.push({ root, age: 0, life });
-  }
-
-  tick(dt: number): void {
-    for (const [id, zone] of this.zones) {
-      if (zone.touched) zone.touched = false;
-      else { zone.root.setEnabled(false); this.pool.push(zone.root); this.zones.delete(id); }
-    }
-    for (let i = this.pulses.length - 1; i >= 0; i--) {
-      const pulse = this.pulses[i]; pulse.age += dt;
-      if (pulse.age >= pulse.life) {
-        pulse.root.dispose(false, false); this.pulses.splice(i, 1);
-      }
-    }
+  tick(dt: number, time = 0): void {
+    this.preview.tick(dt);
+    this.surge.tick(dt, time);
+    this.sea.tick(dt, time);
+    this.generals.tick(dt, time);
+    this.flow.tick(dt, time);
+    this.pieces.tick(dt);
+    this.claw.tick(dt);
   }
 
   clear(): void {
-    for (const zone of this.zones.values()) {
-      zone.root.setEnabled(false); this.pool.push(zone.root);
-    }
-    this.zones.clear();
-    for (const pulse of this.pulses) pulse.root.dispose(false, false);
-    this.pulses.length = 0;
+    this.preview.clear();
+    this.surge.clear(); this.sea.clear(); this.generals.clear(); this.flow.clear();
+    this.pieces.clear(); this.claw.clear();
+    this.spray.clear(); this.art.clear();
+    debug('visual.tuongthan.clear', {});
+  }
+
+  /** `?debug=1` replay (`__vfxReplay('h03Z', kind?)`); presentation only. */
+  replay(kind: string, caster: Vector3, reduced: boolean): boolean {
+    this.prepare();
+    return this.preview.start(kind, caster, reduced);
   }
 }

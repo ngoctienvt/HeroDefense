@@ -1,0 +1,65 @@
+{
+  "heroId": "h01J",
+  "asset": "five-finger-mountain-rear-sheet",
+  "type": "P16",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-f7bc2686-a5ca-4ef4-a81c-93dfdae214a8.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/five-finger-mountain-rear-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/five-finger-mountain-rear-sheet.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "rectRule": "round(i*1254/4); alternate 313/314 px cells, no stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "P16 4x4 confirmed; corrected from island-like first output to connected five-peak ridge. Wide center lane, subtle hold movement. Checked light/dark.",
+  "sha256": "bda011a1058dbc8ebdb80b731938e8522f87239b132b871fbdd4eb34874add66",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/five-finger-mountain-rear-sheet-light-dark.jpg",
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime scale, timing, depth and routing remain to be integrated and checked."
+  ],
+  "promptUsedForRecordedOutput": "Edit the attached mountain sheet while preserving its 4x4 square grid and same 16-frame P16 timeline. The current subject looks like an island ring; correct it into a wide, connected, solid ridge of five tall ancient stone peaks arranged like five fingers, with layered dark ochre strata and an obvious palm-shaped base. Keep the lower-middle viewing lane open but do not create circular donut holes. Less bright haze, more painted stone texture and strong silhouette. Frames 1-4 grow, 5-12 hold with subtle stone changes, 13-16 erode nearly away. Keep transparent background, fixed camera and anchor; no text/grid/borders/scenery.",
+  "generationOutputs": [
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-34521a32-add3-4c2b-9359-0d6ad50288c6.png",
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-f7bc2686-a5ca-4ef4-a81c-93dfdae214a8.png"
+  ],
+  "iterations": [
+    "assets/vfx-source/tier56-codex-art/iterations/five-finger-mountain-rear-sheet-attempt-01.png"
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/five-finger-mountain-rear-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

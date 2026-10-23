@@ -1,0 +1,77 @@
+{
+  "schema": "sprite-art-provenance.v1",
+  "date": "2026-10-22",
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": null,
+  "estimatedCostUsd": null,
+  "routeRequest": "exec-0cd0b2c3-db7f-431a-a6fa-68d3717f1194",
+  "generatedSource": "source/master-generated-raw.png",
+  "acceptedMaster": "source/master/master_rgba.png",
+  "prompt": "source/master-prompt.txt",
+  "styleReference": "assets/sprites/pangu-topdown/source/south-master.png",
+  "routeVerified": true,
+  "revisionNotes": "First master spread the wings; edit compacted it for perched idle.",
+  "warnings": [],
+  "sourceSha256": "6ae02f9d49b0585f08f5286ffb67355dfb084e3bc21df57e18ed864c5cb6f095",
+  "masterSha256": "b6d001ede17892c9c501354c7e9680f8beb796f67ee6a6692c170be9b835e3da",
+  "directions": {
+    "south": {
+      "source": "source/master/master_rgba.png",
+      "status": "directions-approved"
+    },
+    "west": {
+      "source": "source/directions/west/master/master_rgba.png",
+      "raw": "source/directions/west/direction-generated-raw.png",
+      "prompt": "source/directions/west/prompt.txt",
+      "routeRequest": "exec-55f180ba-a5d6-4216-99f6-a4f78e375870",
+      "status": "directions-approved",
+      "warnings": []
+    },
+    "north": {
+      "source": "source/directions/north/master/master_rgba.png",
+      "raw": "source/directions/north/direction-generated-raw.png",
+      "prompt": "source/directions/north/prompt.txt",
+      "routeRequest": "exec-683b6364-6b29-4dee-b2a8-bd9ba257e024",
+      "status": "directions-approved",
+      "warnings": []
+    },
+    "east": {
+      "source": "source/directions/east/master/master_rgba.png",
+      "raw": "source/directions/east/direction-generated-raw.png",
+      "prompt": "source/directions/east/prompt.txt",
+      "routeRequest": "exec-3f0977f1-5ab1-4a73-a198-f94f1ed36c32",
+      "status": "directions-approved",
+      "warnings": []
+    }
+  },
+  "directionContact": [
+    "source/directions/contact-light.webp",
+    "source/directions/contact-dark.webp"
+  ],
+  "actionAttempts": [
+    {
+      "action": "flight",
+      "direction": "south",
+      "revision": "v1",
+      "source": "source/actions/flight/south/sheet-raw.png",
+      "routeRequest": "exec-ff254e4f-6bab-417b-89d3-c76acc2b7deb",
+      "prompt": "source/actions/flight/south/prompt.txt",
+      "qa": "source/actions/flight/south/qa",
+      "frameQa": "source/actions/flight/south/qa-frames",
+      "status": "rejected",
+      "result": "spill fail: cross-cell components, visible spill, and sheet-edge hit; frame QA fail: head identity ratio, torso drift, row baseline and seam"
+    },
+    {
+      "action": "flight",
+      "direction": "south",
+      "revision": "v2",
+      "source": "source/actions/flight/south/sheet-raw-v2.png",
+      "routeRequest": "exec-eb20b0ff-4c01-498c-8495-81dd10d951ea",
+      "prompt": "source/actions/flight/south/prompt-v2.txt",
+      "qa": "source/actions/flight/south/qa-v2",
+      "status": "rejected",
+      "result": "spill fail: cross-cell components, visible spill and empty cells; requested wider 2x3 layout returned as 3x2"
+    }
+  ]
+}

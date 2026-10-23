@@ -14,7 +14,7 @@ import { debug } from './debug.js';
 import { VisualFireAccents } from './visual-fire-accents.js';
 import { VisualFireProjectiles } from './visual-fire-projectiles.js';
 
-const FIRE_HEROES = new Set(['h003', 'h00B', 'h00C', 'h00V', 'h017', 'h01H', 'h01K', 'h041']);
+const FIRE_HEROES = new Set(['h003', 'h00B', 'h00C', 'h00V', 'h011', 'h017', 'h01H', 'h01K', 'h041']);
 const MAX_FLAMES = 48;
 const MAX_BURNING = 24;
 const MAX_GROUND_BURNING = 16;

@@ -1,150 +1,114 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { KHUONGTU as K } from '../../../content/khuongtu-nha-design.js';
 import { debug } from './debug.js';
+import { screenUp } from './visual-kit-billboard.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { KitFxBank } from './visual-kit-fx-bank.js';
+import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { KhuongtuBolts } from './visual-khuongtu-nha-bolts.js';
+import { KhuongtuChain } from './visual-khuongtu-nha-chain.js';
+import { KhuongtuReplay } from './visual-khuongtu-nha-replay.js';
+import { ARRAY_SIZE, BOLT_SIZE, DEFAULT_WINDUP, SCROLL_SIZE } from './visual-khuongtu-nha-timeline.js';
+import { KhuongtuZones } from './visual-khuongtu-nha-zones.js';
 
-type Bolt = { mesh: Mesh; age: number; life: number };
-type Zone = { ring: Mesh; scroll: Mesh; beam: Mesh; touched: boolean };
+/** Painted planes alive at once: 8 zones × (scroll + seal), 12 bolt strikes, 24 chain links. */
+const PAINTED_CAPACITY = 56;
 
-/** Scroll, jade prison light and eight discrete lightning impacts. */
-export class VisualKhuongTuNha {
-  private zones = new Map<string, Zone>();
-  private zonePool: Zone[] = [];
-  private bolts: Bolt[] = [];
-  private boltPool: Mesh[] = [];
-  private warning: Bolt[] = [];
-  private warningPool: Mesh[] = [];
-  private scrollMat: StandardMaterial;
-  private boltMat: StandardMaterial;
-  private zoneMat: StandardMaterial;
-  private coneMat: StandardMaterial;
+/**
+ * Khương Tử Nha Phong Thần Pháp Trận (h019) on the kit, Codex art from tier56-codex-art (palette jade + gold).
+ * Windup (`cast`, T0): the investiture scroll unfurls at the locked point in 0.2 s while the seal's lines gather in.
+ * Resolve (`ability skill-h019`, R7): the zone is confirmed and a shock ring marks the exact edge; the 5 s that follow
+ * come from the `phong-than` ground effect (snapshot `remaining`), which also ends it: the scroll rolls into its axle and
+ * the seal retracts to the centre in 0.35 s. Each `bolt-h019` (eight, 0.625 s apart, one target each) is one thunder
+ * strike on that single point, never a zone blast. Basic `trait-h019`: the thunder chain along the server's targets.
+ * Seals on bosses come from the shared status marks. Presentation only; the server decides every hit.
+ */
+export class VisualKhuongTuNha implements HeroVfx {
+  readonly heroId = K.id;
+  private art: KitPainted;
+  private bank: KitFxBank;
+  private zones: KhuongtuZones;
+  private bolts: KhuongtuBolts;
+  private chain: KhuongtuChain;
+  private preview = new KhuongtuReplay(this);
 
   constructor(private scene: Scene) {
-    const scroll = new DynamicTexture('phong-than-scroll', { width: 256, height: 128 }, scene, false);
-    const ctx = scroll.getContext() as unknown as CanvasRenderingContext2D;
-    ctx.clearRect(0, 0, 256, 128);
-    ctx.fillStyle = '#b88838'; ctx.fillRect(18, 14, 220, 100);
-    ctx.fillStyle = '#f8e7a9'; ctx.fillRect(25, 20, 206, 88);
-    for (const x of [18, 238]) {
-      ctx.fillStyle = '#755328'; ctx.fillRect(x - 7, 6, 14, 116);
-      ctx.fillStyle = '#f6cb59'; ctx.fillRect(x - 4, 6, 8, 116);
-    }
-    ctx.fillStyle = '#315f73';
-    for (let row = 0; row < 3; row++) for (let col = 0; col < 6; col++) {
-      const x = 44 + col * 30, y = 32 + row * 27;
-      ctx.fillRect(x, y, 15, 3); ctx.fillRect(x + 4, y + 5, 3, 10);
-    }
-    scroll.hasAlpha = true; scroll.update();
-    this.scrollMat = new StandardMaterial('phong-than-parchment', scene);
-    this.scrollMat.diffuseTexture = scroll; this.scrollMat.useAlphaFromDiffuseTexture = true;
-    this.scrollMat.backFaceCulling = false; this.scrollMat.disableDepthWrite = true;
-
-    const bolt = new DynamicTexture('ngoc-hu-thunder', { width: 64, height: 256 }, scene, false);
-    const draw = bolt.getContext() as unknown as CanvasRenderingContext2D;
-    draw.clearRect(0, 0, 64, 256);
-    draw.beginPath(); draw.moveTo(28, 0); draw.lineTo(15, 56); draw.lineTo(43, 91);
-    draw.lineTo(18, 150); draw.lineTo(38, 193); draw.lineTo(29, 255);
-    draw.strokeStyle = '#24718c'; draw.lineWidth = 18; draw.stroke();
-    draw.strokeStyle = '#e4f9de'; draw.lineWidth = 7; draw.stroke();
-    bolt.hasAlpha = true; bolt.update();
-    this.boltMat = new StandardMaterial('ngoc-hu-solid-lightning', scene);
-    this.boltMat.diffuseTexture = bolt; this.boltMat.useAlphaFromDiffuseTexture = true;
-    this.boltMat.emissiveColor = Color3.FromHexString('#6dbcc2').scale(.45);
-    this.boltMat.backFaceCulling = false; this.boltMat.disableDepthWrite = true;
-
-    this.zoneMat = new StandardMaterial('phong-than-boundary', scene);
-    this.zoneMat.diffuseColor = Color3.FromHexString('#67aabc');
-    this.zoneMat.emissiveColor = Color3.FromHexString('#d4c475').scale(.2);
-    this.zoneMat.alpha = .68; this.zoneMat.disableDepthWrite = true;
-    this.coneMat = new StandardMaterial('phong-than-jade-prison', scene);
-    this.coneMat.diffuseColor = Color3.FromHexString('#6caaad');
-    this.coneMat.emissiveColor = Color3.FromHexString('#8ec7ad').scale(.15);
-    this.coneMat.alpha = .12; this.coneMat.backFaceCulling = false;
-    this.coneMat.disableDepthWrite = true;
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'khuongtu');
+    this.bank = new KitFxBank(scene, new KitFlipbooks(scene));
+    this.zones = new KhuongtuZones(this.art, this.bank);
+    this.bolts = new KhuongtuBolts(this.art, this.bank);
+    this.chain = new KhuongtuChain(scene, this.art, this.bank);
+    debug('visual.khuongtu.layout', { radius: K.zoneRadius, array: +ARRAY_SIZE.toFixed(2), scroll: SCROLL_SIZE, bolt: BOLT_SIZE });
   }
 
-  private createZone(): Zone {
-    const ring = MeshBuilder.CreateTorus('phong-than-radius',
-      { diameter: K.zoneRadius * 2, thickness: .12, tessellation: 48 }, this.scene);
-    const scroll = MeshBuilder.CreatePlane('phong-than-scroll', { width: 4.4, height: 2.1 }, this.scene);
-    const beam = MeshBuilder.CreateCylinder('phong-than-light',
-      { height: 4.2, diameterTop: 2.5, diameterBottom: K.zoneRadius * 2, tessellation: 32 }, this.scene);
-    ring.material = this.zoneMat; scroll.material = this.scrollMat; beam.material = this.coneMat;
-    scroll.billboardMode = Mesh.BILLBOARDMODE_ALL;
-    ring.isPickable = scroll.isPickable = beam.isPickable = false;
-    return { ring, scroll, beam, touched: false };
+  /** Idempotent; art still loading keeps the shader rings, and the next use retries. */
+  prepare(): void {
+    this.art.prepare('scroll', '/assets/vfx-khuongtu-nha-scroll.webp', { foreground: true });
+    this.art.prepare('boltHit', '/assets/vfx-khuongtu-nha-bolt-hit.webp', { foreground: true });
+    this.art.prepare('bolt', '/assets/vfx-khuongtu-nha-bolt.webp', { foreground: true });
+    this.art.prepare('array', '/assets/vfx-khuongtu-nha-array.webp');
   }
 
-  mark(id: string, at: Vector3, reduced: boolean): void {
-    let zone = this.zones.get(id);
-    if (!zone) {
-      if (this.zones.size >= 8) return;
-      zone = this.zonePool.pop() ?? this.createZone(); this.zones.set(id, zone);
-      zone.ring.setEnabled(true); zone.scroll.setEnabled(!reduced); zone.beam.setEnabled(!reduced);
-    }
-    zone.touched = true;
-    zone.ring.position.set(at.x, .06, at.z);
-    zone.scroll.position.set(at.x, 4.4, at.z);
-    zone.beam.position.set(at.x, 2.1, at.z);
-    zone.scroll.setEnabled(!reduced); zone.beam.setEnabled(!reduced);
+  cast(event: GameEvent, at: Vector3, reduced: boolean): boolean {
+    if (event.skillId !== `skill-${K.id}`) return false;
+    this.prepare();
+    this.zones.cast(event.source, at, event.windup ?? DEFAULT_WINDUP, reduced);
+    return true;
   }
 
-  cast(event: GameEvent, at: Vector3): void {
-    const mesh = this.warningPool.pop() ?? MeshBuilder.CreateTorus('phong-than-warning',
-      { diameter: K.zoneRadius * 2, thickness: .18, tessellation: 48 }, this.scene);
-    mesh.material = this.zoneMat; mesh.position.set(at.x, .07, at.z);
-    mesh.isPickable = false; mesh.setEnabled(true); mesh.visibility = 1;
-    this.warning.push({ mesh, age: 0, life: event.windup ?? .25 });
-    debug('visual.khuongtu.cast', { eventId: event.id });
-  }
-
-  impact(event: GameEvent): void {
-    debug('visual.khuongtu.impact', { eventId: event.id, targets: event.targets?.length ?? 0 });
-  }
-
-  bolt(event: GameEvent, at: Vector3, reduced: boolean): void {
-    if (this.bolts.length >= 16) return;
-    const mesh = this.boltPool.pop() ?? MeshBuilder.CreatePlane('ngoc-hu-bolt',
-      { width: 1.1, height: 5.5 }, this.scene);
-    mesh.material = this.boltMat; mesh.billboardMode = Mesh.BILLBOARDMODE_ALL;
-    mesh.position.set(at.x, 2.75, at.z); mesh.visibility = 1;
-    mesh.isPickable = false; mesh.setEnabled(true);
-    this.bolts.push({ mesh, age: 0, life: reduced ? .16 : .32 });
-    debug('visual.khuongtu.bolt', { eventId: event.id, target: event.target });
-  }
-
-  tick(dt: number): void {
-    if (!Number.isFinite(dt) || dt <= 0) return;
-    for (const [items, pool] of [[this.bolts, this.boltPool], [this.warning, this.warningPool]] as const) {
-      for (let i = items.length - 1; i >= 0; i--) {
-        const fx = items[i]; fx.age += dt;
-        if (fx.age >= fx.life) {
-          fx.mesh.setEnabled(false); pool.push(fx.mesh); items.splice(i, 1);
-        } else fx.mesh.visibility = 1 - fx.age / fx.life;
+  ability(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {
+    this.prepare();
+    switch (event.skillId) {
+      case `skill-${K.id}`: {
+        if (event.kind !== 'ability') return false;
+        const hadCast = this.zones.confirm(event.source, at, reduced);
+        debug('visual.khuongtu.impact', { eventId: event.id, hadCast, targets: event.targets?.length ?? 0, reduced });
+        return true;
       }
+      case `bolt-${K.id}`: {
+        const accepted = this.bolts.strike(at, reduced);
+        this.zones.pulse(at);
+        debug('visual.khuongtu.bolt', { eventId: event.id, accepted, reduced });
+        return true;
+      }
+      case `trait-${K.id}`: {
+        const links = this.chain.launch(origin, extra?.targets?.length ? extra.targets : [at], reduced);
+        debug('visual.khuongtu.chain', { eventId: event.id, links, targets: extra?.targets.length ?? 1, reduced });
+        return true;
+      }
+      default: return false;
     }
-    for (const [id, zone] of this.zones) {
-      if (zone.touched) { zone.touched = false; continue; }
-      zone.ring.setEnabled(false); zone.scroll.setEnabled(false); zone.beam.setEnabled(false);
-      this.zonePool.push(zone); this.zones.delete(id);
-    }
+  }
+
+  /** Kit snapshot marker `zone` (no `remaining`: the zone ends when the marker stops); the field uses `markZone`. */
+  mark(kind: string, id: string, at: Vector3, reduced: boolean): void {
+    if (kind === 'zone') this.zones.mark(id, at, undefined, reduced);
+  }
+
+  /** `phong-than` ground effect, every frame while it exists: `remaining` ≤ 0.35 s starts the closing. */
+  markZone(id: string, at: Vector3, remaining: number | undefined, reduced: boolean): void {
+    this.prepare();
+    this.zones.mark(id, at, remaining, reduced);
+  }
+
+  tick(dt: number, time: number): void {
+    this.preview.tick(dt);
+    const up = screenUp(this.scene);
+    this.zones.tick(dt, time, up);
+    this.bolts.tick(dt, up);
+    this.chain.tick(dt);
+    this.bank.tick(dt, time);
   }
 
   clear(): void {
-    for (const [items, pool] of [[this.bolts, this.boltPool], [this.warning, this.warningPool]] as const) {
-      for (const fx of items) { fx.mesh.setEnabled(false); pool.push(fx.mesh); }
-      items.length = 0;
-    }
-    for (const zone of this.zones.values()) {
-      zone.ring.setEnabled(false); zone.scroll.setEnabled(false); zone.beam.setEnabled(false);
-      this.zonePool.push(zone);
-    }
-    this.zones.clear();
+    this.preview.clear(); this.zones.clear(); this.bolts.clear(); this.chain.clear(); this.bank.clear(); this.art.clear();
+  }
+
+  replay(kind: string, at: Vector3, reduced: boolean, origin = at): boolean {
+    this.prepare();
+    return this.preview.start(kind, at, reduced, origin);
   }
 }

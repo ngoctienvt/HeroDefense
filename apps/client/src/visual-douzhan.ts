@@ -1,144 +1,124 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
-import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture.js';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial.js';
-import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { DOUZHAN as D } from '../../../content/douzhan-design.js';
 import { debug } from './debug.js';
+import { screenUp } from './visual-kit-billboard.js';
+import { KitFlipbooks } from './visual-kit-flipbooks.js';
+import { KitFxBank } from './visual-kit-fx-bank.js';
+import type { AbilityExtra, HeroVfx } from './visual-kit-hero.js';
+import { KitPainted } from './visual-kit-painted.js';
+import { unitDirection } from './visual-kit-timeline.js';
+import { DouzhanClones } from './visual-douzhan-clones.js';
+import { DouzhanImpacts } from './visual-douzhan-impact.js';
+import { DouzhanLanes } from './visual-douzhan-lane.js';
+import { DouzhanReplay } from './visual-douzhan-replay.js';
+import { DouzhanStaffs } from './visual-douzhan-staff.js';
+import { DouzhanStrikes } from './visual-douzhan-strike.js';
+import { DEFAULT_WINDUP, FRACTURE_LENGTH, STAFF_LENGTH } from './visual-douzhan-timeline.js';
 
-type Effect = { mesh: Mesh; kind: 'warning' | 'staff' | 'crack' | 'shadow'; age: number; life: number };
-type CloneMarker = { mesh: Mesh; touched: boolean };
+/** Painted planes alive at once: 3 casts × 3 clouds, 4 × 5 bursts, 4 fractures, 24 clone seals, 12 clone strikes. */
+const PAINTED_CAPACITY = 96;
 
-/** Solid staff and ground fracture follow the server's lane impact; clones follow snapshots. */
-export class VisualDouzhan {
-  private active: Effect[] = [];
-  private pools: Record<Effect['kind'], Mesh[]> = { warning: [], staff: [], crack: [], shadow: [] };
-  private clones = new Map<string, CloneMarker>();
-  private clonePool: Mesh[] = [];
-  private gold: StandardMaterial;
-  private warning: StandardMaterial;
-  private crack: StandardMaterial;
+/**
+ * Đấu Chiến Thắng Phật Pháp Thiên Tượng Địa & Vạn Phật Triều Tông (h012) on the kit, Codex art from tier56-codex-art.
+ * Windup (`cast skill-h012`, server-locked direction): the 14 × 4.5 lane telegraph, gold clouds spiral into the pivot and a solid
+ * Thiết Bổng mesh (painted surface, clamped UV, seam on the far side) grows and lifts. Resolve (`ability skill-h012`): the staff
+ * slams onto the lane and rebounds; at touchdown the top-down fracture ribbon, rock-and-dust bursts and a flare on every listed
+ * monster play, and the fracture closes over 0.7 s. `summon-h012` arms the arrival cloud; each clone (snapshot marker `clone`,
+ * every frame) gets a cloud at its real position and a seal while it lives, folding away when the unit is gone. A clone's own
+ * strike (`clone-attack-h012`, `clone-crit-h012`) and the hero's crit echo (`buddha-shadow-h012`) play the staff-hit sheet.
+ * The basic attack is not handled here (it stays on the generic chain). Presentation only; the server decides hits and the clones.
+ */
+export class VisualDouzhan implements HeroVfx {
+  readonly heroId = D.id;
+  private art: KitPainted;
+  private bank: KitFxBank;
+  private staffs: DouzhanStaffs;
+  private lanes: DouzhanLanes;
+  private strikes: DouzhanStrikes;
+  private impacts: DouzhanImpacts;
+  private clones: DouzhanClones;
+  private preview = new DouzhanReplay(this);
 
   constructor(private scene: Scene) {
-    const staffTexture = new DynamicTexture('douzhan-engraved-gold', { width: 512, height: 256 }, scene, false);
-    const ctx = staffTexture.getContext() as unknown as CanvasRenderingContext2D;
-    ctx.fillStyle = '#9c6021'; ctx.fillRect(0, 0, 512, 256);
-    ctx.fillStyle = '#eebc50';
-    for (let x = 0; x < 512; x += 64) ctx.fillRect(x, 0, 22, 256);
-    ctx.strokeStyle = '#fff0ac'; ctx.lineWidth = 6;
-    for (let x = 34; x < 512; x += 64) {
-      ctx.beginPath(); ctx.moveTo(x, 28); ctx.lineTo(x + 18, 64); ctx.lineTo(x, 100);
-      ctx.lineTo(x + 18, 136); ctx.lineTo(x, 172); ctx.lineTo(x + 18, 208); ctx.stroke();
-    }
-    staffTexture.update();
-    this.gold = new StandardMaterial('douzhan-solid-gold', scene);
-    this.gold.diffuseTexture = staffTexture;
-    this.gold.emissiveColor = Color3.FromHexString('#b78631').scale(.18);
-    this.gold.specularColor = Color3.FromHexString('#ffe8a4');
-
-    this.warning = new StandardMaterial('douzhan-lane-warning', scene);
-    this.warning.diffuseColor = Color3.FromHexString('#c67c2a');
-    this.warning.emissiveColor = Color3.FromHexString('#e4a442').scale(.28);
-    this.warning.alpha = .38; this.warning.disableDepthWrite = true;
-
-    const crackTexture = new DynamicTexture('douzhan-fractured-stone', { width: 256, height: 512 }, scene, false);
-    const cracks = crackTexture.getContext() as unknown as CanvasRenderingContext2D;
-    cracks.clearRect(0, 0, 256, 512); cracks.strokeStyle = '#3b2b28'; cracks.lineWidth = 9;
-    const paths = [[128, 8, 96, 72, 130, 140, 64, 220, 116, 290, 50, 390, 110, 500],
-      [122, 100, 188, 128, 152, 205, 230, 270, 174, 340, 220, 450, 165, 508]];
-    for (const path of paths) {
-      cracks.beginPath(); cracks.moveTo(path[0], path[1]);
-      for (let i = 2; i < path.length; i += 2) cracks.lineTo(path[i], path[i + 1]);
-      cracks.stroke();
-    }
-    cracks.strokeStyle = '#bd8347'; cracks.lineWidth = 3;
-    for (const path of paths) {
-      cracks.beginPath(); cracks.moveTo(path[0], path[1]);
-      for (let i = 2; i < path.length; i += 2) cracks.lineTo(path[i], path[i + 1]);
-      cracks.stroke();
-    }
-    crackTexture.hasAlpha = true; crackTexture.update();
-    this.crack = new StandardMaterial('douzhan-ground-crack', scene);
-    this.crack.diffuseTexture = crackTexture; this.crack.useAlphaFromDiffuseTexture = true;
-    this.crack.emissiveColor = Color3.FromHexString('#a26d36').scale(.12);
-    this.crack.backFaceCulling = false; this.crack.disableDepthWrite = true;
+    this.art = new KitPainted(scene, PAINTED_CAPACITY, 'douzhan');
+    this.bank = new KitFxBank(scene, new KitFlipbooks(scene));
+    this.staffs = new DouzhanStaffs(scene);
+    this.lanes = new DouzhanLanes(scene);
+    this.strikes = new DouzhanStrikes(this.art, this.bank, this.staffs, this.lanes);
+    this.impacts = new DouzhanImpacts(scene, this.art, this.bank);
+    this.clones = new DouzhanClones(scene, this.art);
+    debug('visual.douzhan.layout', { lane: [D.staffLength, D.staffWidth], staff: +STAFF_LENGTH.toFixed(1), fracture: +FRACTURE_LENGTH.toFixed(2),
+      clones: D.cloneCount });
   }
 
-  private spawn(kind: Effect['kind'], at: Vector3, direction: { x: number; z: number }, life: number): void {
-    if (this.active.length >= 24) return;
-    const mesh = this.pools[kind].pop() ?? (kind === 'staff'
-      ? MeshBuilder.CreateCylinder('douzhan-staff', { height: D.staffLength, diameter: 1.5, tessellation: 24 }, this.scene)
-      : kind === 'shadow' ? MeshBuilder.CreateCylinder('douzhan-shadow-staff', { height: 2.8, diameter: .35, tessellation: 12 }, this.scene)
-        : MeshBuilder.CreateGround(kind === 'warning' ? 'douzhan-warning' : 'douzhan-crack',
-          { width: D.staffWidth, height: D.staffLength }, this.scene));
-    mesh.material = kind === 'staff' || kind === 'shadow' ? this.gold : kind === 'warning' ? this.warning : this.crack;
-    mesh.isPickable = false; mesh.visibility = 1; mesh.scaling.setAll(1);
-    mesh.rotation.set(0, Math.atan2(direction.x, direction.z), 0);
-    if (kind === 'staff') mesh.rotation.x = Math.PI / 2;
-    mesh.position.set(at.x + direction.x * D.staffLength / 2,
-      kind === 'staff' ? 7 : kind === 'shadow' ? 1.4 : kind === 'warning' ? .08 : .09,
-      at.z + direction.z * D.staffLength / 2);
-    mesh.setEnabled(true);
-    this.active.push({ mesh, kind, age: 0, life });
+  /** Idempotent; art still loading keeps the lane telegraph, and the next use retries. */
+  prepare(): void {
+    this.art.prepare('cloud', '/assets/vfx-douzhan-arrival.webp', { foreground: true });
+    this.art.prepare('cloud-hold', '/assets/vfx-douzhan-arrival.webp', { depthAlways: true });
+    this.art.prepare('slam', '/assets/vfx-douzhan-slam.webp', { foreground: true });
+    this.art.prepare('hit', '/assets/vfx-douzhan-hit.webp', { foreground: true });
+    this.art.prepare('fracture', '/assets/vfx-douzhan-fracture.webp', { depthAlways: true });
   }
 
-  cast(event: GameEvent, at: Vector3): void {
-    this.spawn('warning', at, event.direction ?? { x: 0, z: 1 }, event.windup ?? .25);
-    debug('visual.douzhan.cast', { eventId: event.id });
+  cast(event: GameEvent, at: Vector3, reduced: boolean, origin?: Vector3): boolean {
+    if (event.skillId !== `skill-${D.id}`) return false;
+    this.prepare();
+    const from = origin ?? at, dir = unitDirection(event, from);
+    if (!dir) { debug('visual.douzhan.cast.skip', { eventId: event.id, reason: 'no-direction' }); return true; }
+    this.strikes.begin(event.source ?? '', from, dir, event.windup ?? DEFAULT_WINDUP, reduced);
+    debug('visual.douzhan.cast', { eventId: event.id, windup: event.windup ?? DEFAULT_WINDUP, reduced });
+    return true;
   }
 
-  impact(event: GameEvent, at: Vector3, reduced: boolean): void {
-    const direction = event.direction ?? { x: 0, z: 1 };
-    if (!reduced) this.spawn('staff', at, direction, .65);
-    this.spawn('crack', at, direction, reduced ? .28 : 1.25);
-    debug('visual.douzhan.impact', { eventId: event.id, targets: event.targets?.length ?? 0, reduced });
-  }
-
-  shadowHit(event: GameEvent, at: Vector3, reduced: boolean): void {
-    if (reduced) return;
-    this.spawn('shadow', at.add(new Vector3(0, 0, -D.staffLength / 2)), { x: 0, z: 1 }, .24);
-    debug('visual.douzhan.shadow', { eventId: event.id, skillId: event.skillId });
-  }
-
-  markClone(id: string, at: Vector3): void {
-    let marker = this.clones.get(id);
-    if (!marker) {
-      if (this.clones.size >= 32) return;
-      const mesh = this.clonePool.pop() ?? MeshBuilder.CreateTorus('douzhan-clone-seal',
-        { diameter: 1.8, thickness: .07, tessellation: 24 }, this.scene);
-      mesh.material = this.warning; mesh.isPickable = false; mesh.setEnabled(true);
-      marker = { mesh, touched: false }; this.clones.set(id, marker);
-      debug('visual.douzhan.clone-start', { id });
-    }
-    marker.mesh.position.set(at.x, .06, at.z); marker.touched = true;
-  }
-
-  tick(dt: number): void {
-    if (!Number.isFinite(dt) || dt <= 0) return;
-    for (let i = this.active.length - 1; i >= 0; i--) {
-      const effect = this.active[i]; effect.age += dt;
-      if (effect.age >= effect.life) {
-        effect.mesh.setEnabled(false); this.pools[effect.kind].push(effect.mesh);
-        this.active.splice(i, 1); continue;
+  ability(event: GameEvent, origin: Vector3, at: Vector3, reduced: boolean, extra?: AbilityExtra): boolean {
+    this.prepare();
+    switch (event.skillId) {
+      case `skill-${D.id}`: {
+        if (event.kind !== 'ability') return false;
+        const from = extra?.hasOrigin ? origin : at, dir = unitDirection(event, from);
+        if (!dir) { debug('visual.douzhan.slam.skip', { eventId: event.id, reason: 'no-direction' }); return true; }
+        const hadCast = this.strikes.resolve(event.source ?? '', from, dir, extra?.targets ?? [], reduced, event.windup ?? DEFAULT_WINDUP);
+        debug('visual.douzhan.slam', { eventId: event.id, hadCast, targets: event.targets?.length ?? 0, reduced });
+        return true;
       }
-      const t = effect.age / effect.life;
-      effect.mesh.visibility = 1 - t;
-      if (effect.kind === 'staff') effect.mesh.position.y = .76 + 6.24 * Math.max(0, 1 - t * 3);
+      case `summon-${D.id}`:
+        this.clones.arm(at);
+        debug('visual.douzhan.summon', { eventId: event.id, count: event.value ?? D.cloneCount });
+        return true;
+      case `clone-attack-${D.id}`:
+      case `clone-crit-${D.id}`:
+      case `buddha-shadow-${D.id}`:
+        this.clones.hit(at, origin, reduced, event.skillId !== `clone-attack-${D.id}`);
+        debug('visual.douzhan.hit', { eventId: event.id, skillId: event.skillId, reduced });
+        return true;
+      default: return false;
     }
-    for (const [id, marker] of this.clones) {
-      if (marker.touched) { marker.touched = false; continue; }
-      marker.mesh.setEnabled(false); this.clonePool.push(marker.mesh); this.clones.delete(id);
-      debug('visual.douzhan.clone-end', { id });
-    }
+  }
+
+  /** Snapshot marker `clone` (every frame the Kim Thân Hầu Vương unit is in the snapshot). */
+  mark(kind: string, id: string, at: Vector3, reduced: boolean): void {
+    if (kind === 'clone') this.clones.mark(id, at, reduced);
+  }
+
+  tick(dt: number, time: number): void {
+    this.preview.tick(dt);
+    const up = screenUp(this.scene);
+    this.lanes.tick(time);
+    this.strikes.tick(dt, up, (origin, dir, targets, reduced) => this.impacts.strike(origin, dir, targets, reduced));
+    this.impacts.tick(dt, up);
+    this.clones.tick(dt, time, up);
+    this.bank.tick(dt, time);
   }
 
   clear(): void {
-    for (const effect of this.active) { effect.mesh.setEnabled(false); this.pools[effect.kind].push(effect.mesh); }
-    this.active.length = 0;
-    for (const marker of this.clones.values()) { marker.mesh.setEnabled(false); this.clonePool.push(marker.mesh); }
-    this.clones.clear();
+    this.preview.clear(); this.strikes.clear(); this.impacts.clear(); this.clones.clear();
+    this.staffs.clear(); this.lanes.clear(); this.bank.clear(); this.art.clear();
+  }
+
+  replay(kind: string, at: Vector3, reduced: boolean, origin = at): boolean {
+    this.prepare();
+    return this.preview.start(kind, at, reduced, origin);
   }
 }
