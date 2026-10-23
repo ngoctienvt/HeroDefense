@@ -1,0 +1,487 @@
+/* Ghép Tướng overlay (craft-board.ts). */
+/* Craft Overlay & Board */
+.craft-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  display: grid;
+  place-items: center;
+  padding: var(--s3);
+  background: rgba(6, 12, 16, 0.45);
+  backdrop-filter: none;
+  pointer-events: auto;
+}
+.panel-content.craft-layout {
+  width: min(96vw, 1420px);
+  height: min(90vh, 920px);
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  gap: 0;
+  background: rgba(12, 22, 26, 0.96);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), 0 0 24px rgba(220, 180, 100, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.craft-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  padding: var(--s3) var(--s4);
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+.craft-intro-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.craft-intro-block h2 {
+  font-size: var(--lg);
+  color: var(--gold);
+  margin: 0;
+}
+.craft-intro-block p {
+  font-size: var(--xs);
+  margin: 0;
+}
+.craft-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.legend-dot.direct { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+.legend-dot.sub { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.legend-dot.ready { background: var(--c-hp-high); box-shadow: 0 0 6px var(--c-hp-high); }
+
+.craft-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  min-height: 0;
+  flex: 1;
+}
+.craft-gallery {
+  padding: var(--s4);
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.craft-tier-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+.craft-tier-section.tier-1 { --craft-rim: var(--c-tier-1); }
+.craft-tier-section.tier-2 { --craft-rim: var(--c-tier-2); }
+.craft-tier-section.tier-3 { --craft-rim: var(--c-tier-3); }
+.craft-tier-section.tier-4 { --craft-rim: var(--c-tier-4); }
+.craft-tier-section.tier-5 { --craft-rim: var(--c-tier-5); }
+.craft-tier-section.tier-6 { --craft-rim: var(--c-tier-6); }
+
+.craft-tier-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--craft-rim, var(--gold));
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.craft-tier-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.25;
+}
+.craft-band-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.craft-icon {
+  position: relative;
+  width: 64px;
+  min-height: 84px;
+  padding: 0;
+  border: 2px solid var(--craft-rim, var(--line));
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.craft-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border-color: var(--text-bright);
+  z-index: 2;
+}
+.craft-icon .portrait {
+  width: 100%;
+  height: 56px;
+  border: 0;
+  flex-shrink: 0;
+}
+.craft-icon .portrait-tier { display: none; }
+.craft-icon.unowned .portrait {
+  filter: grayscale(1) brightness(0.6);
+}
+.craft-name {
+  display: block;
+  width: 100%;
+  font-size: 0.625rem;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 3px 2px;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.6);
+  margin-top: auto;
+}
+.craft-count {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1px 4px;
+  background: var(--ink-0);
+  color: var(--gold);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1.2;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+}
+.craft-ingredient-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1px 4px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  line-height: 1.2;
+  border-bottom-left-radius: 4px;
+  z-index: 3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+/* Selected Hero in Craft Board */
+.craft-icon.selected {
+  outline: 2px solid var(--text-bright);
+  outline-offset: 1px;
+  border-color: var(--text-bright) !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.05);
+  z-index: 10;
+  opacity: 1 !important;
+  filter: none !important;
+}
+.craft-icon.selected .portrait {
+  filter: none !important;
+}
+
+/* Direct Ingredient Highlight (Amber / Gold) */
+.craft-icon.is-direct-ingredient {
+  border-color: var(--amber) !important;
+  animation: craft-pulse-gold 1.5s ease-in-out infinite;
+  transform: scale(1.04);
+  z-index: 8;
+  opacity: 1 !important;
+  filter: none !important;
+}
+.craft-icon.is-direct-ingredient .portrait {
+  filter: none !important;
+}
+.craft-icon.is-direct-ingredient .craft-ingredient-badge {
+  background: var(--amber);
+  color: var(--text-bright);
+  box-shadow: 0 0 8px rgba(217, 119, 6, 0.8);
+}
+
+/* Direct Ingredient Ready (Emerald / Green) */
+.craft-icon.is-direct-ingredient.ingredient-ready {
+  border-color: var(--c-hp-high) !important;
+  animation: craft-pulse-ready 1.5s ease-in-out infinite;
+}
+.craft-icon.is-direct-ingredient.ingredient-ready .craft-ingredient-badge {
+  background: var(--c-faction-self-low);
+  color: var(--text-bright);
+  box-shadow: 0 0 8px rgba(5, 150, 105, 0.8);
+}
+
+/* Sub-Ingredient Highlight (Cyan / Blue) */
+.craft-icon.is-sub-ingredient {
+  border-color: var(--cyan) !important;
+  animation: craft-pulse-cyan 2s ease-in-out infinite;
+  z-index: 6;
+  opacity: 1 !important;
+  filter: none !important;
+}
+.craft-icon.is-sub-ingredient .portrait {
+  filter: none !important;
+}
+.craft-icon.is-sub-ingredient .craft-ingredient-badge {
+  background: var(--cyan);
+  color: var(--text-bright);
+  box-shadow: 0 0 6px rgba(8, 145, 178, 0.8);
+}
+
+/* Dim unrelated heroes when inspecting a recipe */
+.craft-icon.is-dimmed {
+  opacity: 0.32;
+  filter: grayscale(0.75) brightness(0.6);
+}
+.craft-icon.is-dimmed:hover {
+  opacity: 0.92;
+  filter: none;
+}
+
+@keyframes craft-pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.7), inset 0 0 8px rgba(245, 158, 11, 0.3);
+    border-color: var(--amber);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 1), inset 0 0 12px rgba(245, 158, 11, 0.5);
+    border-color: var(--amber-soft);
+  }
+}
+
+@keyframes craft-pulse-ready {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.7), inset 0 0 8px rgba(16, 185, 129, 0.3);
+    border-color: var(--green-soft);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 1), inset 0 0 12px rgba(16, 185, 129, 0.5);
+    border-color: var(--green-pale);
+  }
+}
+
+@keyframes craft-pulse-cyan {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(6, 182, 212, 0.6), inset 0 0 6px rgba(6, 182, 212, 0.25);
+    border-color: var(--cyan);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.9), inset 0 0 10px rgba(6, 182, 212, 0.45);
+    border-color: var(--cyan-pale);
+  }
+}
+
+/* Detail Panel Styles */
+.craft-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  min-width: 0;
+  overflow-y: auto;
+  border-left: 1px solid var(--line);
+  padding: var(--s4);
+  background: rgba(0, 0, 0, 0.25);
+}
+.craft-result {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--line);
+}
+.craft-result .portrait { width: 68px; height: 78px; border-radius: 4px; }
+.craft-result h3 { font-size: 1.2rem; color: var(--gold); margin: 0; }
+.craft-result p { font-size: var(--xs); }
+.craft-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px var(--s2);
+  font-size: var(--xs);
+  color: var(--muted);
+  padding: 4px 0;
+}
+.craft-stats-grid strong {
+  color: var(--text);
+}
+.craft-ability-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: var(--s2) var(--s3);
+  font-size: var(--xs);
+}
+.craft-ability-title {
+  font-weight: 700;
+  color: var(--jade);
+  margin-bottom: 3px;
+}
+.craft-subtitle {
+  font-size: var(--sm);
+  color: var(--gold);
+  margin-top: var(--s2);
+  margin-bottom: 2px;
+}
+.craft-ingredients {
+  display: grid;
+  gap: var(--s2);
+}
+.craft-ingredient {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 48px;
+  font-size: var(--sm);
+  padding: var(--s2);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.craft-ingredient:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--gold);
+}
+.craft-ingredient .portrait { width: 40px; height: 46px; border-radius: 2px; }
+.craft-ingredient .portrait-tier { display: none; }
+.craft-ingredient-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.craft-ingredient-info strong {
+  font-size: var(--sm);
+  color: var(--text);
+}
+.craft-ingredient-info small {
+  font-size: var(--xs);
+  color: var(--muted);
+}
+.craft-ingredient-status {
+  font-size: var(--xs);
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.craft-ingredient.ready .craft-ingredient-status {
+  color: var(--jade);
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.craft-ingredient.missing .craft-ingredient-status {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+.craft-sub-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--s2) 0;
+}
+.craft-sub-title {
+  font-size: var(--xs);
+  color: var(--muted);
+  margin: 0;
+}
+.craft-sub-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.craft-sub-chip {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  color: var(--cyan-pale);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.craft-sub-chip:hover {
+  background: rgba(6, 182, 212, 0.28);
+}
+.craft-tier1-uses {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.craft-use-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  font-size: var(--xs);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.craft-use-chip:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--gold);
+}
+.craft-use-chip .portrait {
+  width: 32px;
+  height: 36px;
+}
+
+/* Craft Board Header Owned Bar & Quick Buy */
+.craft-owned-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+.craft-owned-label {
+  font-size: 0.72rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+.craft-owned-chip {
+  padding: 2px 7px;
+  font-size: 0.68rem;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: var(--green-pale);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+.craft-owned-chip:hover {
+  background: rgba(16, 185, 129, 0.3);
+  border-color: var(--green-soft);
+  color: var(--text-bright);
+  transform: translateY(-1px);
+}

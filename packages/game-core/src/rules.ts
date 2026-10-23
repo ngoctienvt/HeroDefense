@@ -8,9 +8,17 @@ export const SUMMON_PACKS = {
   tien: { cost: 4, wave: 6, success: .45, tiers: [2, 3] as const, tierChance: .70 },
   thien: { cost: 8, wave: 15, success: .25, tiers: [3, 4] as const, tierChance: .65 },
 } as const;
+/** Failed Tiên/Thiên pulls before the next one is guaranteed, and Linh Đan granted per failure. */
+export const SUMMON_PITY = { tien: 4, thien: 5 } as const;
+export const SUMMON_FAIL_PELLETS = { tien: 1, thien: 3 } as const;
 export const PELLET_PRICES = { 'chest-1': 2, 'chest-2': 5, 'embryo-3': 12, 'embryo-4': 25 } as const;
 export const summonWave = (state: GameState): number => state.phase === 'preparation' ? state.wave + 1 : Math.max(1, state.wave);
 export const equipmentCost = (level: number) => 80 * (level + 1) ** 2;
+/** What selling a hero returns: half its summon value in Đạo Duyên and half the Linh Thạch spent on its gear. */
+export function sellRefund(unit: Pick<Unit, 'rank' | 'equipment'>): { souls: number; gold: number } {
+  const gearSpent = unit.equipment.reduce((sum, level) => sum + Array.from({ length: level }, (_, i) => equipmentCost(i)).reduce((a, b) => a + b, 0), 0);
+  return { souls: Math.max(1, Math.floor(RANDOM_SUMMON_COST * 3 ** (unit.rank - 1) / 2)), gold: Math.floor(gearSpent / 2) };
+}
 export const distance = (a: Vec, b: Vec) => Math.hypot(a.x - b.x, a.z - b.z);
 export function random(state: GameState): number {
   let x = state.seed | 0;

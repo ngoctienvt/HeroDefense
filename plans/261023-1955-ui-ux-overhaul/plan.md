@@ -1,7 +1,7 @@
 ---
 title: "Hoàn thiện UI/UX: gọn, đồng bộ phong cách, dễ phân biệt"
 description: "Dọn HUD/bảng DOM và chỉ báo trên chiến trường: một hệ token màu, bộ icon SVG vẽ tay theo phong cách game, rail còn 5 nút, menu cài đặt, tooltip kỹ năng khi rê chuột, thanh máu phân biệt phe."
-status: pending
+status: implemented-unverified
 priority: P1
 effort: 32h
 branch: feat/ui-ux-overhaul
@@ -42,16 +42,26 @@ Người chơi mới nhìn một lần là biết: đang ở đợt mấy, còn 
 
 | # | Phase | Trạng thái | Phụ thuộc | Effort |
 |---|---|---|---|---|
-| 0 | [Chuẩn bị: tách nhánh, ảnh gốc, thuật ngữ](phase-00-baseline-branch-glossary.md) | pending | — | 2h |
-| 1 | [Token màu + tách styles.css theo bề mặt](phase-01-design-tokens-css-split.md) | pending | 0 | 4h |
-| 2 | [Bộ icon SVG theo phong cách game](phase-02-hand-drawn-svg-icon-set.md) | pending | 1 | 6h |
-| 3 | [Thanh trên + menu Cài đặt](phase-03-top-hud-settings-menu.md) | pending | 1, 2 | 3h |
-| 4 | [Dock, chiêu mộ nhanh, thanh hành động, tooltip kỹ năng](phase-04-dock-action-bar-skill-tooltip.md) | pending | 1, 2 | 7h |
-| 5 | [Rail 5 nút, gộp/tách bảng, ẩn Admin](phase-05-rail-panels-admin-hidden.md) | pending | 1, 2 | 5h |
-| 6 | [Chỉ báo chiến trường: phe, vòng chọn, rê chuột](phase-06-battlefield-indicators.md) | pending | 1, 4 | 3h |
-| 7 | [Dọn mã chết, test hồi quy, tài liệu](phase-07-cleanup-tests-docs.md) | pending | 3–6 | 2h |
+| 0 | [Chuẩn bị: tách nhánh, ảnh gốc, thuật ngữ](phase-00-baseline-branch-glossary.md) | code xong, chờ nghiệm thu | — | 2h |
+| 1 | [Token màu + tách styles.css theo bề mặt](phase-01-design-tokens-css-split.md) | code xong, chờ nghiệm thu | 0 | 4h |
+| 2 | [Bộ icon SVG theo phong cách game](phase-02-hand-drawn-svg-icon-set.md) | code xong, chờ nghiệm thu | 1 | 6h |
+| 3 | [Thanh trên + menu Cài đặt](phase-03-top-hud-settings-menu.md) | code xong, chờ nghiệm thu | 1, 2 | 3h |
+| 4 | [Dock, chiêu mộ nhanh, thanh hành động, tooltip kỹ năng](phase-04-dock-action-bar-skill-tooltip.md) | code xong, chờ nghiệm thu | 1, 2 | 7h |
+| 5 | [Rail 5 nút, gộp/tách bảng, ẩn Admin](phase-05-rail-panels-admin-hidden.md) | code xong, chờ nghiệm thu | 1, 2 | 5h |
+| 6 | [Chỉ báo chiến trường: phe, vòng chọn, rê chuột](phase-06-battlefield-indicators.md) | code xong, chờ nghiệm thu | 1, 4 | 3h |
+| 7 | [Dọn mã chết, test hồi quy, tài liệu](phase-07-cleanup-tests-docs.md) | code xong, chờ nghiệm thu | 3–6 | 2h |
 
 Phase 3, 4 và 5 đều sửa `main.ts`, nên làm tuần tự theo thứ tự 3 → 4 → 5. Không chạy song song.
+
+## Trạng thái (2026-10-23)
+
+Mã nguồn của 8 phase đã được sửa và commit trên nhánh `feat/ui-ux-overhaul`. Agent **chưa** chạy typecheck, test, build hay game (theo AGENTS.md); các file chỉ được esbuild parse cú pháp. Bộ icon đã được kết xuất ra ảnh và xem ở 16/20/28 px trên nền tối và sáng. HUD trong game chưa được nghiệm thu bằng hình ảnh.
+
+Khác plan ban đầu:
+- **Nhấp nháy khi máu thấp:** thanh máu trên sân chỉ sẫm màu khi dưới 35%, không nhấp nháy.
+- **Tín hiệu hình dạng cho phe:** chỉ có vạch vàng ở tướng mình và khung vàng dày ở boss/đầu lĩnh; bỏ ý tưởng khung góc nhọn cho quái.
+- **Admin trong Ghép Tướng:** bảng Ghép Tướng từng hiện nút Admin "Nhận test" và "+ Mua" cho mọi người chơi; các nút này đã được gỡ để đúng quyết định ẩn Admin.
+- **Logic dùng chung với server:** `sellRefund`, `SUMMON_PITY` và `SUMMON_FAIL_PELLETS` được tách sang `game-core/rules.ts` để client dùng chung thay vì chép số; hành vi server giữ nguyên.
 
 ## Kiến trúc đích (client)
 

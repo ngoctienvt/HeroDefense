@@ -1,9 +1,10 @@
 import { CRAFT_RECIPES, HEROES, HERO_BY_ID } from '../../../content/catalog.js';
-import { ATTACK_GEOMETRY_NAMES, ON_HIT_TRAIT_NAMES } from '../../../packages/contracts/src/combat-profiles.js';
 import type { CraftRecipe, Unit } from '../../../packages/contracts/src/types.js';
-import type { PanelContext } from './panels.js';
+import type { PanelContext } from './panel-context.js';
+import { heroDetail } from './hero-detail.js';
 import { debug } from './debug.js';
-import { button, el, elements, heroPortrait, number, roles } from './ui.js';
+import { button, el, heroPortrait, iconButton } from './ui.js';
+import { elementLabel, roleLabel, starText, tierLabel, TIER_TITLES } from './ui-labels.js';
 
 let selectedHeroId = CRAFT_RECIPES[0].heroId;
 let craftOnlyShowRelated = false;
@@ -52,14 +53,6 @@ export function getIngredientTree(targetHeroId: string, recipeByHero: Map<string
   return { directCounts, subCounts, baseTier1Counts, hasRecipe: true };
 }
 
-const tierTitles: Record<number, string> = {
-  1: 'Phẩm 1 · Nhân Vật Khởi Đầu',
-  2: 'Phẩm 2 · Tiên Nhân',
-  3: 'Phẩm 3 · Chân Quân',
-  4: 'Phẩm 4 · Kim Tiên',
-  5: 'Phẩm 5 · Đại Thánh',
-  6: 'Phẩm 6 · Hỗn Độn Chí Tôn',
-};
 
 export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): void {
   container.classList.add('craft-layout');
@@ -75,7 +68,7 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
   const intro = el('div', 'craft-intro-block');
   intro.append(
     el('h2', '', 'Bát Quái Đồ · Ghép Tướng'),
-      el('p', 'muted', `Chọn tướng để xem công thức. Linh Phôi bậc 3: ${embryos?.tier3 ?? 0} · bậc 4: ${embryos?.tier4 ?? 0}.`)
+      el('p', 'muted', `Chọn tướng để xem công thức. Linh Phôi Phẩm 3: ${embryos?.tier3 ?? 0} · Phẩm 4: ${embryos?.tier4 ?? 0}.`)
   );
 
   const legend = el('div', 'craft-legend');
@@ -113,7 +106,7 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
     for (const [hId, units] of heroGroups.entries()) {
       const h = HERO_BY_ID[hId];
       if (!h) continue;
-      const rankSummary = units.map(u => (u.rank <= 6 ? '★'.repeat(u.rank) : `${u.rank}★`)).join(',');
+      const rankSummary = units.map(u => starText(u.rank)).join(',');
       const chip = button(`${h.name} (${rankSummary})`, () => {
         selectHero(hId);
         const targetIcon = gallery.querySelector<HTMLButtonElement>(`[data-hero-id="${hId}"]`);
@@ -128,7 +121,7 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
 
   header.append(
     intro,
-    button('Đóng [Esc/C]', () => container.dispatchEvent(new CustomEvent('panel', { bubbles: true, detail: null })), 'text-button')
+    iconButton('dong', 'Đóng [Esc]', () => ctx.openPanel(null), 'ghost')
   );
 
   // --- MAIN CONTENT ---
@@ -229,51 +222,19 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
     const info = el('div', 'craft-result-info');
     info.append(
       el('h3', '', hero.name),
-      el('p', 'muted', `${roles[hero.role]} · Hành ${elements[hero.element]} · Phẩm ${hero.tier}`)
+      el('p', 'muted', `${roleLabel(hero.role)} · Hành ${elementLabel(hero.element)} · ${tierLabel(hero.tier)}`)
     );
 
-    const quickStars = el('div', 'craft-quick-stars');
-    quickStars.append(el('span', 'craft-quick-label', 'Nhận test:'));
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(star => {
-      quickStars.append(
-        button(`${star}★`, () => {
-          debug('client.admin-get-hero', { heroId: hero.id, rank: star, deploy: false });
-          ctx.send({ type: 'admin-get-hero', heroId: hero.id, rank: star, deploy: false });
-        }, 'craft-star-mini-btn')
-      );
-    });
-    info.append(quickStars);
 
     title.append(heroPortrait(hero), info);
     detail.append(title);
 
-    // Stats Grid
-    const stats = el('div', 'craft-stats-grid');
-    stats.append(
-      el('span', '', `Công: `), el('strong', '', number(hero.attack)),
-      el('span', '', `Sinh lực: `), el('strong', '', number(hero.hp)),
-      el('span', '', `Giáp: `), el('strong', '', number(hero.armor)),
-      el('span', '', `Tầm đánh: `), el('strong', '', String(hero.range))
-    );
-    detail.append(stats);
-
-    // Active Skill Card
-    const abilityCard = el('div', 'craft-ability-card');
-    abilityCard.append(
-      el('div', 'craft-ability-title', hero.ability ? `Kỹ năng: ${hero.ability.name}` : `Đặc tính: ${hero.trait?.name ?? 'Đánh thường'}`),
-      el('p', 'muted', hero.ability?.description ?? hero.trait?.description ?? '')
-    );
-    if (hero.attackGeometry && hero.onHitTrait) {
-      abilityCard.append(
-        el('p', 'muted', `🗡️ ${ATTACK_GEOMETRY_NAMES[hero.attackGeometry.type]} · ✨ ${ON_HIT_TRAIT_NAMES[hero.onHitTrait.type]}`)
-      );
-    }
-    detail.append(abilityCard);
+    detail.append(heroDetail(hero));
 
     // Tier 1 Hero (No recipe to craft)
     if (!recipe) {
       detail.append(
-        el('p', 'hint', 'Nhân vật phẩm 1 là nguyên liệu khởi đầu từ Chiêu Mộ Đàn [B], không cần công thức ghép.')
+        el('p', 'hint', 'Tướng Phẩm 1 là nguyên liệu khởi đầu từ Chiêu Mộ [B], không cần công thức ghép.')
       );
 
       const usedIn = CRAFT_RECIPES.filter(r => r.ingredients.includes(selectedHeroId));
@@ -286,7 +247,7 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
           const chip = el('div', 'craft-use-chip');
           chip.append(
             heroPortrait(targetHero),
-            el('span', '', `${targetHero.name} (Phẩm ${targetHero.tier})`)
+            el('span', '', `${targetHero.name} (${tierLabel(targetHero.tier)})`)
           );
           chip.title = `Nhấp để xem công thức ghép ${targetHero.name}`;
           chip.addEventListener('click', () => {
@@ -321,17 +282,11 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
       const ingInfo = el('div', 'craft-ingredient-info');
       ingInfo.append(
         el('strong', '', ingredient.name),
-        el('small', '', `${roles[ingredient.role]} · Phẩm ${ingredient.tier}`)
+        el('small', '', `${roleLabel(ingredient.role)} · ${tierLabel(ingredient.tier)}`)
       );
       const haveCount = count(id);
       const status = el('span', 'craft-ingredient-status', `${Math.min(haveCount, needed)}/${needed} ${haveCount >= needed ? '✓' : ''}`);
-      const buyIngBtn = button('+ Mua', (e) => {
-        e.stopPropagation();
-        debug('client.admin-get-hero', { heroId: id, rank: 1, deploy: false });
-        ctx.send({ type: 'admin-get-hero', heroId: id, rank: 1, deploy: false });
-      }, 'craft-admin-buy-btn');
-      buyIngBtn.title = `Admin: Nhận ngay 1 ${ingredient.name} (1★) vào kho để ghép`;
-      row.append(ingInfo, status, buyIngBtn);
+      row.append(ingInfo, status);
       row.title = `Nhấp để xem công thức ghép ${ingredient.name}`;
       row.style.cursor = 'pointer';
       row.addEventListener('click', () => {
@@ -373,15 +328,15 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
       const substitute = ingredients.querySelector<HTMLElement>('.craft-ingredient.missing');
       substitute?.classList.replace('missing', 'ready');
       const status = substitute?.querySelector<HTMLElement>('.craft-ingredient-status');
-      if (status) status.textContent = `Linh Phôi bậc ${missingTier} ✓`;
+      if (status) status.textContent = `Linh Phôi ${tierLabel(missingTier)} ✓`;
     }
     const ready = missing.length === 0 || useEmbryo;
-    detail.append(button(ready ? `Ghép ${hero.name}${useEmbryo ? ` · dùng phôi bậc ${missingTier}` : ''}` : `Thiếu ${missing.length} nguyên liệu`, () => {
+    detail.append(button(ready ? `Ghép ${hero.name}${useEmbryo ? ` · dùng Linh Phôi ${tierLabel(missingTier)}` : ''}` : `Thiếu ${missing.length} nguyên liệu`, () => {
       debug('client.craft-selected', { heroId: selectedHeroId });
       ctx.send({ type: 'craft', heroId: selectedHeroId });
     }, 'primary', !ready));
 
-    detail.append(el('p', 'hint', 'Dùng tướng đúng công thức; có thể thay một nguyên liệu bậc 3 hoặc 4 còn thiếu bằng Linh Phôi cùng bậc. Tướng mới vào bộ sưu tập; giữ cấp trang bị cao nhất từng nhóm.'));
+    detail.append(el('p', 'hint', 'Dùng tướng đúng công thức; có thể thay một nguyên liệu Phẩm 3 hoặc 4 còn thiếu bằng Linh Phôi cùng phẩm. Tướng mới vào bộ sưu tập; giữ cấp trang bị cao nhất từng nhóm.'));
   };
 
   // Build Gallery Bands
@@ -390,14 +345,14 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
     const section = el('section', `craft-tier-section tier-${tier}`);
     section.setAttribute('aria-label', `Phẩm ${tier}`);
 
-    const label = el('div', 'craft-tier-label', `${tierTitles[tier] || `Phẩm ${tier}`} (${heroesInTier.length})`);
+    const label = el('div', 'craft-tier-label', `${TIER_TITLES[tier] ?? tierLabel(tier)} (${heroesInTier.length})`);
     const grid = el('div', 'craft-band-grid');
 
     for (const hero of heroesInTier) {
       const total = ownedCount(hero.id);
       const icon = button('', () => selectHero(hero.id), `craft-icon ${total ? 'owned' : 'unowned'}`);
       icon.dataset.heroId = hero.id;
-      icon.title = `${hero.name} (Phẩm ${tier} · ${roles[hero.role] || hero.role}) · Đang có ${total}`;
+      icon.title = `${hero.name} (${tierLabel(tier)} · ${roleLabel(hero.role)}) · Đang có ${total}`;
       icon.setAttribute('aria-label', `${hero.name}, phẩm ${tier}, đang có ${total}`);
       icon.append(heroPortrait(hero));
       icon.append(el('span', 'craft-name', hero.name));

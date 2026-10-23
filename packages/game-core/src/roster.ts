@@ -1,6 +1,6 @@
 import { CRAFT_RECIPES, HERO_BY_ID } from '../../../content/catalog.js';
 import type { Command, CommandResult, GameState, Unit } from '../../contracts/src/types.js';
-import { RANDOM_SUMMON_COST, equipmentCost, slotPosition } from './rules.js';
+import { equipmentCost, sellRefund, slotPosition } from './rules.js';
 import { refreshStats } from './stats.js';
 import { summonCommand } from './summoning.js';
 import { createUnit } from './unit-factory.js';
@@ -68,8 +68,9 @@ export function rosterCommand(state: GameState, id: string, command: Command): C
   }
   if (command.type === 'sell') {
     if (unit.zone) return fail('Không bán nhân vật trong phụ bản.');
-    player.souls += Math.max(1, Math.floor(RANDOM_SUMMON_COST * 3 ** (unit.rank - 1) / 2));
-    player.gold += Math.floor(unit.equipment.reduce((sum, level) => sum + Array.from({ length: level }, (_, i) => equipmentCost(i)).reduce((a, b) => a + b, 0), 0) / 2);
+    const refund = sellRefund(unit);
+    player.souls += refund.souls;
+    player.gold += refund.gold;
     delete state.units[unit.id]; refreshStats(state, id); return { ok: true };
   }
   if (command.type === 'equip') {

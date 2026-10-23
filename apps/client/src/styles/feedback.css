@@ -1,0 +1,21 @@
+/* Toast, connection banner, result screen and the drag-select marquee. */
+.toast { position: fixed; left: var(--s3); bottom: calc(var(--dock-h) + var(--s3) + 70px); z-index: 40; max-width: min(480px, calc(100vw - 48px)); padding: var(--s2) var(--s4); font-size: var(--sm); background: var(--surface-strong); border: 1px solid var(--edge); border-left: 3px solid var(--gold); border-radius: var(--radius); box-shadow: var(--shadow); }
+.connection-banner { position: fixed; z-index: 50; top: 0; width: 100%; display: flex; align-items: center; justify-content: center; gap: var(--s4); padding: var(--s2); background: var(--surface-strong); border-bottom: 2px solid var(--c-hp-low); }
+
+.result-screen {
+  position: fixed; left: 50%; top: 45%; transform: translate(-50%, -50%); z-index: 40; pointer-events: auto;
+  width: min(460px, calc(100vw - 32px)); padding: var(--s8) var(--s6); display: flex; flex-direction: column; align-items: center; gap: var(--s3); text-align: center;
+  background: var(--surface-strong); border: 1px solid var(--edge); border-top: 3px solid var(--gold); border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgb(0 0 0 / .7);
+}
+.result-screen[data-outcome="lost"] { border-top-color: var(--c-hp-low); }
+.result-screen h1 { font-size: 2.4rem; color: var(--text-bright); }
+.result-stars { display: flex; gap: 2px; }
+.result-screen .primary { margin-top: var(--s2); min-width: 200px; min-height: 44px; }
+
+.selection-marquee { position: fixed; z-index: 30; box-sizing: border-box; pointer-events: none; border: 1px solid var(--c-selection); background: color-mix(in oklab, var(--c-selection) 13%, transparent); }
+
+/* Dev-only icon review sheet (?icons=1, icon-preview.ts). */
+.icon-preview { position: fixed; inset: var(--s4); z-index: 60; overflow: auto; padding: var(--s3); background: var(--surface-strong); border: 1px solid var(--edge); border-radius: var(--radius-lg); }
+.icon-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: var(--s2); margin-bottom: var(--s3); }
+.icon-preview-grid figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: var(--s2); background: var(--ink-2); font-size: .66rem; color: var(--muted); }
+.icon-preview-row { display: flex; flex-wrap: wrap; gap: var(--s2); padding: var(--s2); margin-bottom: 4px; }

@@ -14,11 +14,14 @@ import type { SharedMark } from './visual-shared-status.js';
 import { assignActorDrawGroups, configureCombatDrawOrder } from './visual-kit-draw-order.js';
 import { createMotionTrack, sampleMotionTrack, updateMovingState, type MotionTrack } from './actor-interpolation.js';
 import { enemyRankScale } from './visual-enemy-skill-routing.js';
+import { PALETTE } from './ui-palette.js';
 
 export type VisualActor = {
   root: TransformNode; barRoot: TransformNode; body: Mesh; head: Mesh; weapon: Mesh;
   shadow: Mesh;
   bar: Mesh; barBack: Mesh; shieldBar?: Mesh; manaBar?: Mesh; manaBack?: Mesh;
+  /** Small gold tab at the left of the bar on the local player's own heroes (shape cue beside colour). */
+  ownMark?: Mesh;
   barWidth: number;
   target: Vector3; hp: number; zone: number; size: number; phase: number; fireBurning: boolean;
   status?: 'stun' | 'root' | 'sunder' | 'slow' | 'poison' | 'charged' | 'shield' | 'ward' | 'haste'
@@ -102,7 +105,7 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   const role = hero?.role ?? ('kind' in entity ? entity.kind : 'warrior');
   const enemy = !hero;
   const skinHeroId = enemy && 'skinHeroId' in entity ? entity.skinHeroId : undefined;
-  const enemyRank = enemy && 'rank' in entity ? entity.rank : undefined;
+  const enemyRank = enemy && !('heroId' in entity) ? entity.rank : undefined;
   const enemyKit = enemy && 'kit' in entity ? entity.kit : undefined;
   const chieftain = enemyRank === 'chieftain';
   const authoredMonster = enemy && 'monsterId' in entity && Boolean(entity.monsterId);
@@ -204,8 +207,11 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   const groupSize = sprite ? spriteMeshes.length : 1;
   const barWidth = isBoss ? groupSize > 1 ? 4.2 : 3.6 : chieftain ? 2.4 : 1.8;
   const hpHeight = isBoss ? 0.2 : isHero ? 0.15 : chieftain ? 0.13 : 0.08;
-  const borderPad = 0.035 * size;
-  const barBorderMat = palette.get('wc3-bar-border', '#090b10');
+  // Bosses and chieftains get a thicker gold frame so they read apart from minions at a glance.
+  const elite = isBoss || chieftain;
+  const borderPad = (elite ? .06 : .035) * size;
+  const barBorderMat = elite ? palette.get('bar-frame-elite', PALETTE['elite-frame']) : palette.get('wc3-bar-border', '#090b10');
+  const manaBorderMat = palette.get('wc3-bar-border', '#090b10');
 
   const hpY = hero ? 0.06 * size : 0;
   const barBack = MeshBuilder.CreateBox('hp-back', { width: barWidth + borderPad * 2, height: hpHeight + borderPad * 2, depth: 0.08 }, scene);
@@ -217,7 +223,7 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   const bar = MeshBuilder.CreateBox('hp-fill', { width: barWidth, height: hpHeight, depth: 0.1 }, scene);
   bar.parent = barRoot;
   bar.position.set(0, hpY, -0.015);
-  bar.material = palette.get('wc3-hp-high', '#22c55e', 0.45);
+  bar.material = palette.get('faction-enemy', PALETTE['faction-enemy'], 0.45);
   bar.isPickable = false;
 
   let shieldBar: Mesh | undefined;
@@ -237,13 +243,13 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
     manaBack = MeshBuilder.CreateBox('mana-back', { width: barWidth + borderPad * 2, height: manaHeight + borderPad * 2, depth: 0.08 }, scene);
     manaBack.parent = barRoot;
     manaBack.position.set(0, manaY, 0);
-    manaBack.material = barBorderMat;
+    manaBack.material = manaBorderMat;
     manaBack.isPickable = false;
 
     manaBar = MeshBuilder.CreateBox('mana-fill', { width: barWidth, height: manaHeight, depth: 0.1 }, scene);
     manaBar.parent = barRoot;
     manaBar.position.set(0, manaY, -0.015);
-    manaBar.material = palette.get('wc3-mana-blue', '#2563eb', 0.45);
+    manaBar.material = palette.get('mana-bar', PALETTE.mana, 0.45);
     manaBar.isPickable = false;
   }
 

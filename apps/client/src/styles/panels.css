@@ -1,0 +1,77 @@
+/* Drawer panel internals: shared sections and tabs, Chiêu Mộ, Đội Hình, Duyên & Trận, Cẩm Nang. */
+.panel-content { padding: var(--s4); display: flex; flex-direction: column; gap: var(--s4); }
+.panel-section { display: flex; flex-direction: column; gap: var(--s2); }
+.panel-section.is-highlight { padding: var(--s3); border: 1px solid var(--amber); border-radius: var(--radius); background: color-mix(in oklab, var(--amber) 8%, transparent); }
+.section-heading { display: flex; flex-direction: column; gap: 2px; position: relative; }
+.section-heading h2 { font-size: var(--md); color: var(--text-bright); }
+.section-heading p { font-size: var(--xs); }
+.section-sub { font-size: var(--xs); text-transform: uppercase; letter-spacing: .08em; color: var(--gold); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.hint { font-size: var(--xs); color: var(--muted); line-height: 1.6; }
+.panel-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: calc(-1 * var(--s2)) 0 0; }
+.panel-tabs button { flex: 1; border-radius: var(--radius) var(--radius) 0 0; border-bottom: 0; background: transparent; position: relative; }
+.panel-tabs button.selected { background: var(--ink-2); color: var(--gold); border-color: var(--edge); }
+.badge-dot { min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--c-hp-high); color: var(--ink-0); font-size: .62rem; font-weight: 800; display: grid; place-items: center; }
+.filter-row { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
+.filter-search { flex: 1; min-width: 160px; min-height: 34px; }
+
+/* Chiêu Mộ */
+.shop-pack-row { display: grid; grid-template-columns: auto 1fr; gap: var(--s3); align-items: center; padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+.shop-odds { margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 2px; font-size: .7rem; color: var(--text-soft); }
+.shop-balance { position: absolute; right: 0; top: 0; display: inline-flex; align-items: center; gap: 4px; font-size: var(--sm); color: var(--text-bright); }
+.store-row { display: grid; grid-template-columns: auto 1fr auto; gap: var(--s3); align-items: center; padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+.store-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.store-info strong { font-size: var(--sm); }
+.store-buy { min-width: 72px; }
+
+/* Đội Hình */
+.roster-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--s2); }
+.roster-slot, .roster-bench { --el: var(--line); position: relative; padding: var(--s2); display: flex; flex-direction: column; gap: 6px; background: var(--ink-0); border: 1px solid var(--line); border-left: 3px solid var(--el); border-radius: var(--radius); }
+.roster-slot[data-element="1"], .roster-bench[data-element="1"] { --el: var(--c-element-1); } .roster-slot[data-element="2"], .roster-bench[data-element="2"] { --el: var(--c-element-2); }
+.roster-slot[data-element="3"], .roster-bench[data-element="3"] { --el: var(--c-element-3); } .roster-slot[data-element="4"], .roster-bench[data-element="4"] { --el: var(--c-element-4); }
+.roster-slot[data-element="5"], .roster-bench[data-element="5"] { --el: var(--c-element-5); }
+.roster-slot.is-empty { align-items: center; justify-content: center; min-height: 110px; border-style: dashed; border-left-width: 1px; color: var(--muted); text-align: center; }
+.roster-slot-label { position: absolute; top: 4px; right: 6px; font-size: .66rem; color: var(--gold); font-weight: 700; }
+.roster-head { display: flex; align-items: center; gap: var(--s2); min-width: 0; }
+.roster-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.roster-name { display: flex; align-items: center; gap: 4px; font-size: var(--sm); }
+.roster-name strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.roster-meta { font-size: .68rem; color: var(--muted); }
+.roster-badge { margin-left: auto; align-self: flex-start; font-size: .62rem; font-weight: 700; padding: 1px 6px; border-radius: 9px; color: var(--ink-0); background: var(--amber); white-space: nowrap; }
+.roster-bench.can-merge { border-color: var(--amber); }
+.roster-bench-list { display: flex; flex-direction: column; gap: var(--s2); }
+.roster-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.roster-actions button { flex: 1; }
+.gear-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.gear-button { min-height: 44px; flex-direction: column; gap: 0; padding: 2px; }
+.gear-button > .icon { margin-bottom: 1px; }
+.gear-level { font-size: .72rem; font-weight: 700; color: var(--text-bright); line-height: 1; }
+.gear-price { display: inline-flex; align-items: center; gap: 2px; font-size: .6rem; color: var(--cyan-soft); line-height: 1.2; font-variant-numeric: tabular-nums; }
+
+/* Duyên & Trận */
+.bond-row, .formation-row { padding: var(--s2) var(--s3); display: flex; flex-direction: column; gap: 6px; background: var(--ink-0); border: 1px solid var(--line); border-radius: var(--radius); }
+.bond-row.is-active { border-color: var(--c-hp-high); }
+.formation-row.is-current { border-color: var(--gold); box-shadow: var(--glow-gold); }
+.bond-head { display: flex; align-items: center; gap: var(--s2); }
+.bond-head strong { font-size: var(--sm); color: var(--text-bright); }
+.bond-row.is-active .bond-head strong { color: var(--c-hp-high); }
+.bond-count, .formation-level { font-size: .7rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bond-steps { margin-left: auto; display: flex; gap: 3px; }
+.bond-steps span { min-width: 20px; height: 18px; display: grid; place-items: center; font-size: .62rem; border-radius: 3px; background: var(--ink-3); color: var(--muted); }
+.bond-steps span.is-reached { background: var(--c-hp-high); color: var(--ink-0); font-weight: 800; }
+.bond-desc { font-size: .72rem; color: var(--text-soft); }
+.bond-members { display: flex; flex-wrap: wrap; gap: 3px; }
+
+/* Cẩm Nang */
+.guide-section { display: flex; flex-direction: column; gap: var(--s2); }
+.key-table { display: flex; flex-direction: column; gap: 6px; }
+.key-row { display: grid; grid-template-columns: 150px 1fr; gap: var(--s3); align-items: center; font-size: var(--xs); color: var(--text-soft); }
+.key-combo { display: flex; flex-wrap: wrap; align-items: center; gap: 3px; }
+.key-or { color: var(--muted); font-size: .62rem; }
+.codex-list { display: flex; flex-direction: column; }
+.codex-entry { border-bottom: 1px solid var(--line); }
+.codex-entry summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; gap: var(--s2); font-size: var(--sm); list-style: none; }
+.codex-entry summary::-webkit-details-marker { display: none; }
+.codex-entry summary strong { flex: 1; }
+.codex-entry summary::after { content: '+'; color: var(--muted); }
+.codex-entry[open] summary::after { content: '−'; }
+.codex-entry > .hero-detail { padding: 0 0 var(--s3); }

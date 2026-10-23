@@ -1,0 +1,57 @@
+/* Top HUD (hud-top.ts): stats left, Linh Trụ centre, actions + ⚙ right; players / room code below; boss strip. */
+.game { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+
+.hud-top {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20; pointer-events: auto;
+  padding: 6px var(--s4) 4px; display: flex; flex-direction: column; gap: 2px;
+  background: linear-gradient(180deg, var(--surface-strong) 0%, color-mix(in oklab, var(--ink-0) 70%, transparent) 75%, transparent 100%);
+  border-bottom: 1px solid color-mix(in oklab, var(--gold) 22%, transparent);
+}
+.top-main { display: grid; grid-template-columns: 1fr minmax(260px, 420px) 1fr; align-items: center; gap: var(--s4); }
+.top-group { display: flex; align-items: center; gap: var(--s3); min-width: 0; }
+.top-right { justify-content: flex-end; }
+.top-stat { display: flex; align-items: center; gap: 6px; }
+.top-stat-text { display: flex; flex-direction: column; line-height: 1.15; }
+.top-stat-text small { color: var(--muted); font-size: .68rem; white-space: nowrap; }
+.top-stat-text strong { color: var(--gold); font-size: var(--sm); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.top-stat.phase-combat strong { color: var(--c-faction-enemy); }
+.top-stat.is-urgent strong { color: var(--c-hp-mid); }
+
+.base-block { display: flex; align-items: center; gap: var(--s2); width: 100%; }
+.base-meter { height: 16px; border-radius: 3px; border-color: var(--edge); }
+.base-meter .meter-label { font-size: .7rem; }
+
+.top-select { width: auto; min-height: 32px; padding: 2px var(--s2); font-size: var(--xs); background: var(--surface-strong); border-color: var(--edge); }
+.top-hint { font-size: var(--xs); color: var(--muted); white-space: nowrap; }
+.settings-toggle.is-open { background: var(--ink-3); border-color: var(--edge); }
+
+.top-sub { display: flex; align-items: center; gap: var(--s2); min-height: 22px; }
+.room-code { min-height: 24px; padding: 0 var(--s2); font-size: var(--xs); color: var(--gold); background: var(--surface-strong); border-color: var(--edge); font-variant-numeric: tabular-nums; }
+.top-players { display: flex; flex-wrap: wrap; gap: 4px; }
+.player-chip { min-height: 22px; padding: 0 var(--s2); gap: 5px; font-size: .7rem; border-radius: 11px; background: color-mix(in oklab, var(--ink-0) 80%, transparent); border-color: var(--line); }
+.player-chip.self { border-color: var(--c-faction-self); }
+.player-chip.dc { opacity: .55; }
+.player-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.player-chip.ready .player-dot, .player-chip.online .player-dot { background: var(--c-hp-high); }
+.player-chip.waiting .player-dot { background: var(--c-hp-mid); }
+.player-chip.dc .player-dot { background: var(--c-hp-low); }
+.player-chip-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.boss-holder { position: fixed; top: calc(var(--top-h) - 4px); left: 50%; transform: translateX(-50%); z-index: 19; pointer-events: auto; width: min(560px, calc(100vw - 2 * var(--rail-w) - 32px)); }
+.boss-strip { display: flex; flex-direction: column; gap: 4px; }
+.boss-row { padding: 6px var(--s3); background: var(--surface-strong); border: 1px solid var(--c-faction-elite); border-top: 2px solid var(--c-elite-frame); border-radius: var(--radius); box-shadow: var(--shadow); }
+.boss-head { display: flex; align-items: center; gap: var(--s2); font-size: var(--sm); margin-bottom: 4px; }
+.boss-head strong { font-family: var(--display); font-size: var(--base); color: var(--text-bright); }
+.boss-state { font-size: var(--xs); color: var(--muted); }
+.boss-skill { margin-left: auto; font-size: var(--xs); color: var(--amber-soft); font-variant-numeric: tabular-nums; }
+.boss-meter { height: 12px; }
+.boss-meter .meter-fill { background: linear-gradient(180deg, var(--c-faction-enemy), var(--c-faction-elite)); }
+.boss-row.is-enraged { border-color: var(--c-hp-low); }
+.boss-row.is-enraged .boss-state { color: var(--c-hp-low); font-weight: 700; }
+.boss-row.is-imminent { box-shadow: 0 0 0 2px var(--c-hp-mid), var(--shadow); }
+.boss-row.is-imminent .boss-skill { color: var(--c-hp-mid); font-weight: 700; }
+
+@media (max-width: 1100px) {
+  .top-main { grid-template-columns: auto 1fr auto; gap: var(--s2); }
+  .top-stat-text small { display: none; }
+}

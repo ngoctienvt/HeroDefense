@@ -1,0 +1,79 @@
+/* Element defaults and the shared button / meter / portrait vocabulary. */
+* { box-sizing: border-box; }
+body { margin: 0; font-size: var(--base); line-height: 1.5; }
+button, input, select { font: inherit; }
+button, select { cursor: pointer; }
+h1, h2, h3, h4, p { margin: 0; }
+h1, h2, h3 { line-height: 1.2; text-wrap: balance; }
+h1, h2 { font-family: var(--display); font-weight: 400; }
+h2 { font-size: var(--lg); } h3 { font-size: var(--base); font-weight: 600; }
+p { text-wrap: pretty; }
+small { font-size: var(--xs); }
+label { font-size: var(--sm); font-weight: 600; }
+hr { border: 0; border-top: 1px solid var(--line); margin: var(--s1) 0; width: 100%; }
+kbd { font-family: var(--body); font-size: .72em; color: var(--gold); padding: 1px 5px; border: 1px solid var(--edge); border-radius: 3px; background: var(--ink-0); }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--jade); outline-offset: 3px; }
+.muted { color: var(--muted); }
+
+/* Buttons: primary (gold), secondary (ink + edge), ghost (text only), danger (red text), danger-solid (confirm). */
+button {
+  min-height: 36px; padding: var(--s1) var(--s3); display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 1px solid var(--line); border-radius: var(--radius); color: var(--text); background: var(--surface-raised); font-size: var(--sm);
+  transition: color var(--time) var(--ease), background-color var(--time) var(--ease), border-color var(--time) var(--ease), transform var(--time) var(--ease);
+}
+button:hover:enabled:not([aria-disabled="true"]) { background: var(--ink-3); border-color: var(--edge); }
+button:active:enabled:not([aria-disabled="true"]) { transform: translateY(1px); }
+button:disabled, button[aria-disabled="true"], select:disabled { color: var(--muted); opacity: .55; cursor: not-allowed; }
+button.primary { background: var(--gold); color: var(--ink-0); border-color: var(--gold); font-weight: 700; }
+button.primary:hover:enabled { background: var(--text-bright); border-color: var(--text-bright); }
+button.secondary { background: var(--surface-raised); border-color: var(--edge); }
+button.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+button.ghost:hover:enabled { color: var(--text); background: color-mix(in oklab, var(--ink-3) 60%, transparent); }
+button.danger { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 40%, transparent); }
+button.danger-solid { background: var(--c-hp-low); border-color: var(--c-hp-low); color: var(--text-bright); font-weight: 700; }
+button.selected, button.is-active { border-color: var(--gold); color: var(--gold); }
+button.small { min-height: 30px; padding: 2px var(--s2); font-size: var(--xs); }
+button.icon-button { min-height: 36px; width: 36px; padding: 0; background: transparent; border-color: transparent; }
+button.icon-button:hover:enabled { background: color-mix(in oklab, var(--ink-3) 70%, transparent); }
+.with-icon > span { white-space: nowrap; }
+.icon-text { display: inline-flex; align-items: center; gap: 4px; }
+
+input, select { min-height: 40px; width: 100%; padding: var(--s2) var(--s3); color: var(--text); background: var(--ink-0); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--sm); }
+input::placeholder { color: var(--muted); }
+
+/* Segmented control (tier filters, speed). */
+.segmented { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 2px; background: var(--ink-0); border: 1px solid var(--line); border-radius: var(--radius); }
+.segmented button { min-height: 26px; padding: 0 var(--s2); font-size: var(--xs); background: transparent; border-color: transparent; }
+.segmented button.selected { background: var(--ink-3); border-color: var(--edge); }
+
+/* Meter: thin bar with an optional centred label. Colour comes from the modifier class. */
+.meter { position: relative; height: 6px; width: 100%; background: var(--ink-black); border: 1px solid rgb(0 0 0 / .8); border-radius: 2px; overflow: hidden; }
+.meter-fill { height: 100%; background: var(--jade); transition: width 180ms linear; }
+.meter-label { position: absolute; inset: 0; display: grid; place-items: center; font-size: .66rem; font-weight: 700; color: var(--text-bright); text-shadow: 0 1px 2px #000; font-variant-numeric: tabular-nums; }
+.meter.hp-high .meter-fill { background: var(--c-hp-high); }
+.meter.hp-mid .meter-fill { background: var(--c-hp-mid); }
+.meter.hp-low .meter-fill { background: var(--c-hp-low); }
+.meter.energy.cooldown .meter-fill { background: var(--c-mana); }
+.meter.energy.rage .meter-fill { background: var(--c-rage); }
+.meter.energy.is-full .meter-fill { filter: brightness(1.25); box-shadow: 0 0 6px currentColor; }
+.meter.enemy .meter-fill { background: var(--c-faction-enemy); }
+
+/* Portrait: art fills the frame; border and tier badge use the tier ladder colour. */
+.portrait { --tier-color: var(--c-tier-1); width: 56px; height: 64px; flex-shrink: 0; position: relative; display: grid; place-items: center; background: var(--ink-3); overflow: hidden; border: 1px solid var(--line); border-bottom: 2px solid var(--tier-color); border-radius: 3px; }
+.portrait[data-tier="2"] { --tier-color: var(--c-tier-2); } .portrait[data-tier="3"] { --tier-color: var(--c-tier-3); }
+.portrait[data-tier="4"] { --tier-color: var(--c-tier-4); } .portrait[data-tier="5"] { --tier-color: var(--c-tier-5); } .portrait[data-tier="6"] { --tier-color: var(--c-tier-6); }
+.portrait.has-art { background-repeat: no-repeat; }
+.portrait.has-art .portrait-glyph { display: none; }
+.portrait-tier { position: absolute; bottom: 0; left: 0; right: 0; font-size: .6rem; line-height: 1; padding: 2px 0; text-align: center; white-space: nowrap; background: color-mix(in oklab, var(--ink-0) 85%, transparent); color: var(--tier-color); font-weight: 700; }
+.portrait-xs { width: 32px; height: 36px; } .portrait-sm { width: 44px; height: 50px; } .portrait-md { width: 52px; height: 60px; } .portrait-lg { width: 84px; height: 96px; }
+.portrait.is-off { filter: grayscale(.9) brightness(.6); }
+
+/* Tags (element / role / tier) used in tooltips and lists. */
+.tag { display: inline-flex; align-items: center; gap: 3px; font-size: .68rem; padding: 1px 6px; border-radius: 10px; background: var(--ink-0); border: 1px solid var(--line); color: var(--text-soft); white-space: nowrap; }
+.tag.elem-1 { color: var(--c-element-1); } .tag.elem-2 { color: var(--c-element-2); } .tag.elem-3 { color: var(--c-element-3); } .tag.elem-4 { color: var(--c-element-4); } .tag.elem-5 { color: var(--c-element-5); }
+.tier-tag.tier-1 { color: var(--c-tier-1); } .tier-tag.tier-2 { color: var(--c-tier-2); } .tier-tag.tier-3 { color: var(--c-tier-3); }
+.tier-tag.tier-4 { color: var(--c-tier-4); } .tier-tag.tier-5 { color: var(--c-tier-5); } .tier-tag.tier-6 { color: var(--c-tier-6); }
+.tag.rank-boss, .tag.rank-chieftain { color: var(--c-elite-frame); border-color: var(--c-faction-elite); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; animation-iteration-count: 1 !important; } }

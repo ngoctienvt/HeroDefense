@@ -1,0 +1,57 @@
+/* Floating layer (hud-overlay.ts): popovers, tooltip, confirm dialog, and the shared hero detail block. */
+.hud-overlay-layer { position: fixed; inset: 0; z-index: 45; pointer-events: none; }
+.hud-overlay-layer > * { pointer-events: auto; }
+
+.hud-popover { position: fixed; background: var(--surface-strong); border: 1px solid var(--edge); border-top: 2px solid var(--gold); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+.hud-popover-body { padding: var(--s3); }
+.popover-head { display: flex; align-items: center; gap: var(--s2); margin-bottom: var(--s2); }
+.popover-head strong { flex: 1; font-family: var(--display); font-size: var(--base); color: var(--gold); }
+
+/* ⚙ menu under the top-right corner. */
+.settings-popover { top: calc(var(--top-h) - 8px); right: var(--s4); width: 260px; }
+.settings-menu { display: flex; flex-direction: column; gap: 4px; }
+.settings-row { display: flex; align-items: center; gap: var(--s2); font-size: var(--sm); min-height: 36px; }
+.settings-code { font-variant-numeric: tabular-nums; letter-spacing: .08em; color: var(--gold); margin-right: auto; }
+.settings-row .segmented { margin-left: auto; }
+.menu-item { justify-content: flex-start; width: 100%; background: transparent; border-color: transparent; }
+.menu-item:hover:enabled { background: var(--ink-3); }
+.menu-item.danger { color: var(--danger); }
+
+/* Pending summon choice above the summon bar; the fight keeps running underneath. */
+.summon-choice-popover { left: var(--s3); bottom: calc(var(--dock-h) + var(--s4)); width: min(460px, calc(100vw - 32px)); border-top-color: var(--amber); }
+.choice-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); }
+.choice-card { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: var(--s2); text-align: center; background: var(--ink-0); border: 1px solid var(--line); border-radius: var(--radius); }
+.choice-card.tier-3 { border-color: var(--c-tier-3); } .choice-card.tier-4 { border-color: var(--c-tier-4); }
+.choice-card:hover { border-color: var(--gold); }
+.choice-name { font-size: var(--sm); color: var(--text-bright); }
+.choice-tags { display: flex; align-items: center; gap: 4px; font-size: .68rem; color: var(--muted); }
+.choice-skill { font-size: .68rem; color: var(--muted); min-height: 2.4em; }
+.choice-card .primary { width: 100%; min-height: 30px; }
+
+/* Tooltip: never takes pointer input, so it cannot block clicks on the battlefield. */
+.hud-tooltip { position: fixed; left: 0; top: 0; z-index: 2; max-width: 320px; padding: var(--s2) var(--s3); pointer-events: none !important; background: var(--surface-strong); border: 1px solid var(--edge); border-radius: var(--radius); box-shadow: var(--shadow); font-size: var(--xs); }
+.pack-tooltip ul { margin: 4px 0 0; padding-left: 16px; display: flex; flex-direction: column; gap: 2px; color: var(--text-soft); }
+
+/* Confirm dialog */
+.hud-confirm-backdrop { position: fixed; inset: 0; display: grid; place-items: center; background: rgb(4 8 10 / .55); z-index: 3; }
+.hud-confirm { width: min(380px, calc(100vw - 32px)); padding: var(--s4); display: flex; flex-direction: column; gap: var(--s3); background: var(--surface-strong); border: 1px solid var(--edge); border-top: 2px solid var(--danger); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+.hud-confirm h2 { font-size: var(--md); color: var(--text-bright); }
+.hud-confirm p { font-size: var(--sm); color: var(--text-soft); }
+.hud-confirm-actions { display: flex; justify-content: flex-end; gap: var(--s2); }
+
+/* Hero detail (hero-detail.ts): tooltip, codex entries, craft detail. */
+.hero-detail { display: flex; flex-direction: column; gap: 6px; }
+.hero-detail-head { display: flex; align-items: center; gap: var(--s2); }
+.hero-detail-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.hero-detail-name { font-family: var(--display); font-size: var(--base); color: var(--text-bright); }
+.hero-detail-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+.hero-detail-stars { font-size: .7rem; color: var(--amber-soft); }
+.hero-detail-section { display: flex; flex-direction: column; gap: 2px; }
+.hero-detail-title { display: flex; align-items: center; gap: 5px; }
+.hero-detail-title strong { font-size: var(--xs); color: var(--gold); }
+.hero-detail-extra { margin-left: auto; font-size: .66rem; color: var(--muted); white-space: nowrap; }
+.hero-detail-section p { font-size: .72rem; color: var(--text-soft); line-height: 1.45; }
+.hero-detail-stats { display: flex; flex-wrap: wrap; gap: 4px var(--s2); font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hero-detail-buffs { font-size: .68rem; color: var(--c-hp-high); }
+.hero-detail-note { font-size: .66rem; color: var(--muted); }
+.hero-detail .meter { height: 12px; }

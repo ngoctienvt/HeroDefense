@@ -1,4 +1,7 @@
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera.js';
+import { barColorKey, barFaction } from './bar-style.js';
+import { energyState } from './hero-status.js';
+import { PALETTE } from './ui-palette.js';
 import '@babylonjs/core/Culling/ray.js';
 import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
@@ -104,6 +107,10 @@ export class Battlefield {
   onSelect: (id: string, append: boolean) => void = () => {};
   onAreaSelect: (ids: string[], append: boolean) => void = () => {};
   onOrder: (target: string | null, x: number, z: number) => void = () => {};
+  /** Pointer over a living hero or enemy on the current island (null when it leaves); client coordinates for the tooltip. */
+  onHover: (id: string | null, x: number, y: number) => void = () => {};
+  private hovered: string | null = null;
+  private hoverRing: ReturnType<typeof MeshBuilder.CreateTorus> | null = null;
   cancelDrag: () => void = () => {};
 
   constructor(private canvas: HTMLCanvasElement) {
@@ -207,10 +214,35 @@ export class Battlefield {
         this.pan(dx, dy);
         return;
       }
-      if (!start) return;
+      if (!start) { hoverAt(event); return; }
       const x = Math.min(start.x, event.clientX), y = Math.min(start.y, event.clientY), width = Math.abs(event.clientX - start.x), height = Math.abs(event.clientY - start.y);
       marquee.hidden = width < 6 && height < 6;
       Object.assign(marquee.style, { left: `${x}px`, top: `${y}px`, width: `${width}px`, height: `${height}px` });
+    };
+
+    // Hover picking is throttled (~16 picks/s) and skips summons, the dead and other islands.
+    let hoverPickAt = 0;
+    const hoverAt = (event: PointerEvent) => {
+      const now = performance.now();
+      if (now - hoverPickAt >= 60) {
+        hoverPickAt = now;
+        const id = pickAt(event)?.pickedMesh?.metadata?.actorId as string | undefined;
+        const actor = id ? this.actors.get(id) : undefined;
+        const next = id && actor && !actor.summonKind && !actor.dying && actor.hp > 0 && actor.zone === this.zone ? id : null;
+        if (next !== this.hovered) {
+          this.hovered = next;
+          canvas.classList.toggle('hover-enemy', !!next && !actor?.heroId);
+          canvas.classList.toggle('hover-ally', !!next && !!actor?.heroId);
+          if (!next) this.onHover(null, event.clientX, event.clientY);
+        }
+      }
+      if (this.hovered) this.onHover(this.hovered, event.clientX, event.clientY);
+    };
+    const leave = (event: PointerEvent) => {
+      if (!this.hovered) return;
+      this.hovered = null;
+      canvas.classList.remove('hover-enemy', 'hover-ally');
+      this.onHover(null, event.clientX, event.clientY);
     };
 
     const up = (event: PointerEvent) => {
@@ -328,6 +360,7 @@ export class Battlefield {
 
     canvas.addEventListener('pointerdown', down);
     canvas.addEventListener('pointermove', move);
+    canvas.addEventListener('pointerleave', leave);
     canvas.addEventListener('pointerup', up);
     canvas.addEventListener('pointercancel', cancel);
     canvas.addEventListener('lostpointercapture', cancel);
@@ -344,6 +377,7 @@ export class Battlefield {
     this.unsubscribe = () => {
       canvas.removeEventListener('pointerdown', down);
       canvas.removeEventListener('pointermove', move);
+      canvas.removeEventListener('pointerleave', leave);
       canvas.removeEventListener('pointerup', up);
       canvas.removeEventListener('pointercancel', cancel);
       canvas.removeEventListener('lostpointercapture', cancel);
@@ -643,7 +677,7 @@ export class Battlefield {
 
   setAudioEnabled(enabled: boolean): void { this.audio.setEnabled(enabled); debug('battlefield.audio', { enabled }); }
 
-  update(state: GameState, _selfId: string, selected: string[]): void {
+  update(state: GameState, selfId: string, selected: string[]): void {
     this.tier6.update(state);
     this.tier3.update(state);
     this.selected = new Set(selected);
@@ -782,13 +816,22 @@ export class Battlefield {
             : entity.summonKind === 'blood-general' ? .76 : 1
         : 1);
 
-      // Overhead Warcraft 3 HP bar (color shift: Green > 70%, Yellow 35-70%, Red <= 35%)
+      // Overhead HP bar: hue = faction (own / ally / enemy / elite), darker hue below 35%; length = HP.
       const hpRatio = Math.max(0, Math.min(1, entity.maxHp > 0 ? entity.hp / entity.maxHp : 0));
-      const hpColorKey = hpRatio > 0.7 ? 'wc3-hp-high' : hpRatio > 0.35 ? 'wc3-hp-mid' : 'wc3-hp-low';
-      const hpColorHex = hpRatio > 0.7 ? '#22c55e' : hpRatio > 0.35 ? '#eab308' : '#ef4444';
-      actor.bar.material = this.palette.get(hpColorKey, hpColorHex, 0.45);
+      const isHeroEntity = 'heroId' in entity;
+      const faction = barFaction({ hero: isHeroEntity, owner: entity.owner, kind: 'kind' in entity ? entity.kind : undefined,
+        rank: 'rank' in entity && typeof entity.rank === 'string' ? entity.rank : undefined }, selfId);
+      const barKey = barColorKey(faction, hpRatio);
+      actor.bar.material = this.palette.get(barKey, PALETTE[barKey], 0.45);
       actor.bar.scaling.x = Math.max(0.001, hpRatio);
       actor.bar.position.x = -actor.barWidth * (1 - hpRatio) * 0.5;
+      if (faction === 'self' && !actor.ownMark) {
+        // Gold tab at the bar's left end: a shape cue for "mine" that does not rely on colour alone.
+        const mark = MeshBuilder.CreateBox('own-mark', { width: .16, height: .26, depth: .12 }, this.scene);
+        mark.parent = actor.barRoot; mark.position.set(-actor.barWidth * .5 - .16, actor.bar.position.y, -.02);
+        mark.material = this.palette.get('self-mark', PALETTE['self-mark']); mark.isPickable = false;
+        actor.ownMark = mark;
+      }
       if (actor.shieldBar) {
         const shield = 'heroId' in entity ? entity.shield : entity.shield ?? 0;
         const shieldRatio = Math.max(0, Math.min(1, entity.maxHp > 0 ? shield / entity.maxHp : 0));
@@ -797,24 +840,14 @@ export class Battlefield {
         actor.shieldBar.position.x = -actor.barWidth * (1 - shieldRatio) * .5;
       }
 
-      // Overhead Warcraft 3 Mana bar (for heroes)
+      // Skill bar under the HP bar (heroes with an active skill): blue cooldown or orange Nộ, same rules as the HUD.
       if (actor.manaBar && 'heroId' in entity) {
-        const hero = HERO_BY_ID[entity.heroId];
-        const isRage = entity.energyType === 'rage_on_attack' || entity.energyType === 'rage_on_hit';
-        let manaRatio = 0;
-        if (isRage) {
-          manaRatio = Math.max(0, Math.min(1, (entity.energy ?? 0) / (entity.maxEnergy ?? 100)));
-        } else {
-          const maxCd = hero?.ability ? hero.ability.cooldown / (1 + .1 * (entity.equipment?.[2] ?? 0)) : 0;
-          manaRatio = Math.max(0, Math.min(1, maxCd > 0 ? 1 - (entity.abilityCooldown ?? 0) / maxCd : 1));
-        }
+        const energy = energyState(entity, HERO_BY_ID[entity.heroId]);
+        const manaRatio = energy.kind === 'none' ? 0 : energy.percent / 100;
         actor.manaBar.scaling.x = Math.max(0.001, manaRatio);
         actor.manaBar.position.x = -actor.barWidth * (1 - manaRatio) * 0.5;
-        if (isRage) {
-          actor.manaBar.material = this.palette.get('rage-bar', '#f97316', 0.45);
-        } else {
-          actor.manaBar.material = this.palette.get('mana-bar', '#38bdf8', 0.45);
-        }
+        const manaKey = energy.kind === 'rage' ? 'rage' : 'mana';
+        actor.manaBar.material = this.palette.get(energy.ready ? `${manaKey}-bar-full` : `${manaKey}-bar`, PALETTE[manaKey], energy.ready ? .8 : .45);
       }
 
       if (actor.manaBar && actor.manaBack && 'heroId' in entity) {
@@ -1576,9 +1609,20 @@ export class Battlefield {
     for (const id of this.selected) {
       const actor = this.actors.get(id); if (!actor) continue;
       let ring = this.rings.get(id);
-      if (!ring) { ring = MeshBuilder.CreateTorus('selection', { diameter: 3.4, thickness: .13, tessellation: 32 }, this.scene); ring.material = this.palette.get('selection', '#f2d58f', .55); ring.isPickable = false; this.rings.set(id, ring); }
+      if (!ring) { ring = MeshBuilder.CreateTorus('selection', { diameter: 3.4, thickness: .13, tessellation: 32 }, this.scene); ring.material = this.palette.get('selection', PALETTE.selection, .55); ring.isPickable = false; this.rings.set(id, ring); }
       ring.setEnabled(actor.zone === this.zone && actor.hp > 0); ring.position.set(actor.root.position.x, .2, actor.root.position.z);
     }
+    const hoveredActor = this.hovered ? this.actors.get(this.hovered) : undefined;
+    if (hoveredActor && hoveredActor.zone === this.zone && hoveredActor.hp > 0 && !hoveredActor.dying && !this.selected.has(this.hovered!)) {
+      if (!this.hoverRing) {
+        this.hoverRing = MeshBuilder.CreateTorus('hover-ring', { diameter: 3.1, thickness: .08, tessellation: 32 }, this.scene);
+        this.hoverRing.isPickable = false;
+      }
+      const ringKey = hoveredActor.heroId ? 'faction-ally' : hoveredActor.enemyRank === 'boss' || hoveredActor.enemyRank === 'chieftain' ? 'faction-elite' : 'faction-enemy';
+      this.hoverRing.material = this.palette.get(`hover-${ringKey}`, PALETTE[ringKey], .6);
+      this.hoverRing.setEnabled(true);
+      this.hoverRing.position.set(hoveredActor.root.position.x, .18, hoveredActor.root.position.z);
+    } else this.hoverRing?.setEnabled(false);
     this.effects.tick(dt);
     const shake = this.effects.cameraShake(); this.camera.targetScreenOffset.set(shake.x, shake.y);
     this.scene.render();
