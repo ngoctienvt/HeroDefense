@@ -6,7 +6,7 @@
 
 | Vùng | Module | Nội dung |
 |---|---|---|
-| Thanh trên | `hud-top.ts` | Trái: đợt, pha, đồng hồ. Giữa: thanh Linh Trụ. Phải: nút chính theo pha, tốc độ và độ khó (chủ phòng), ⚙. Dòng phụ: mã phòng (chỉ ở sảnh), người chơi. |
+| Thanh trên | `hud-top.ts` | Trái: đợt, pha, đồng hồ. Giữa: thanh Linh Trụ. Phải: nút chính theo pha, độ khó (chủ phòng, ở sảnh), nhãn tốc độ khi khác 1×, ⚙ (đổi tốc độ nằm trong ⚙ vì thanh này dựng lại mỗi giây). Dòng phụ: mã phòng (chỉ ở sảnh), người chơi. |
 | Dải boss | `hud-top.ts` `renderBossStrip` | Mỗi boss còn sống một hàng: tên, thanh máu dày, chiêu kế, Tiến quân / Giao chiến / Cuồng Nộ. |
 | Dock (dưới trái) | `hud-summon-bar.ts`, `hud-dock.ts` | Thanh chiêu mộ nhanh 3 gói; badge tài nguyên; 5 thẻ tướng. |
 | Thanh hành động | `hud-action-bar.ts` | Nút kỹ năng `[Q]` có quạt hồi chiêu; Neo, Hợp nhất, Về bộ sưu tập. Không có nút Bán. |

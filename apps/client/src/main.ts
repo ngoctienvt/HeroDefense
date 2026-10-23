@@ -225,7 +225,9 @@ function render(force = false): void {
   const player = state.players[view.selfId]; if (!player) return;
   const ctx = context(state);
 
-  hudTop.replaceChildren(...renderTopHud(state, view.selfId, {
+  // Skip the rebuild while a native <select> on the bar (difficulty) is open, or it would snap shut.
+  const topSelectOpen = document.activeElement instanceof HTMLSelectElement && hudTop.contains(document.activeElement);
+  if (!topSelectOpen) hudTop.replaceChildren(...renderTopHud(state, view.selfId, {
     send, copyRoomCode: () => copyRoomCode(state.roomCode), focusLane: index => battlefield.resetCamera(index),
     settingsOpen: overlay.isOpen(SETTINGS_POPOVER), toggleSettings,
   }));
@@ -242,7 +244,7 @@ function render(force = false): void {
   const ownRoster = Object.values(state.units).filter(u => u.owner === view.selfId);
   const panelState = panel === 'shop' ? [player.souls, player.pellets, player.summonFailures, player.pendingChoice, player.embryos, state.wave, state.phase]
     : panel === 'craft' ? [player.embryos, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot, u.zone])]
-    : panel === 'roster' ? [player.gold, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot, u.zone, u.equipment, Math.floor(u.hp), u.maxHp, u.attack, u.armor])]
+    : panel === 'roster' ? [player.gold, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot, u.zone, u.equipment, Math.floor((u.hp / Math.max(1, u.maxHp)) * 10), u.attack, u.armor])]
     : panel === 'bonds' ? [player.activeSynergies, player.formation, player.formationLevels, player.formationPoints, state.wave >= 16, ownRoster.map(u => [u.heroId, u.slot])]
     : panel === 'admin' ? [player.gold, player.souls, player.pellets, player.formationPoints, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot])] : null;
   const signature = JSON.stringify([panel, panelTab, panelState]);
@@ -253,7 +255,17 @@ function render(force = false): void {
     panelSignature = signature;
     try {
       if (panel === 'craft') craftOverlay.replaceChildren(renderPanel(panel, ctx));
-      else if (panel !== null) { drawerTitle.textContent = PANEL_TITLES[panel]; drawerBody.replaceChildren(renderPanel(panel, ctx)); }
+      else if (panel !== null) {
+        // A rebuild must not steal the search box or jump the list: restore focus, caret and scroll.
+        const focused = document.activeElement instanceof HTMLInputElement && drawerBody.contains(document.activeElement) ? document.activeElement : null;
+        const focusClass = focused?.className, caret = focused?.selectionStart ?? null, scroll = drawerBody.scrollTop;
+        const samePanel = drawerBody.dataset.panel === `${panel}:${panelTab ?? ''}`;
+        drawerTitle.textContent = PANEL_TITLES[panel]; drawerBody.replaceChildren(renderPanel(panel, ctx));
+        drawerBody.dataset.panel = `${panel}:${panelTab ?? ''}`;
+        if (samePanel) drawerBody.scrollTop = scroll;
+        const again = focusClass ? drawerBody.querySelector<HTMLInputElement>(`input.${focusClass.split(' ')[0]}`) : null;
+        if (again) { again.focus(); if (caret !== null) again.setSelectionRange(caret, caret); }
+      }
       else drawerBody.replaceChildren();
     } catch (error) {
       debug('ui.panel-error', { panel, message: error instanceof Error ? error.message : String(error) });

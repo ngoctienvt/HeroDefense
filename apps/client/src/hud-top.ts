@@ -64,13 +64,8 @@ function primaryActions(state: GameState, selfId: string, send: (command: Comman
     if (host) nodes.push(iconButton('dot', `Bắt đầu đợt ${state.wave + 1}`, () => send({ type: 'next-wave' }), 'primary'));
     else nodes.push(el('span', 'top-hint', 'Chủ phòng sẽ gọi đợt'));
   }
-  if (host && state.phase !== 'won' && state.phase !== 'lost') {
-    const speed = el('select', 'top-select speed-select');
-    speed.setAttribute('aria-label', 'Tốc độ trận');
-    [1, 2, 4].forEach(value => { const option = el('option', '', `${value}×`); option.value = String(value); option.selected = state.speed === value; speed.append(option); });
-    speed.addEventListener('change', () => send({ type: 'speed', speed: Number(speed.value) }));
-    nodes.push(speed);
-  }
+  // Speed is changed from the ⚙ menu: this bar is rebuilt every second, which would close a native <select>.
+  if (state.speed !== 1) nodes.push(el('span', 'top-speed', `${state.speed}×`));
   return nodes;
 }
 

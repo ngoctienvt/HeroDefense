@@ -22,8 +22,9 @@ button {
   border: 1px solid var(--line); border-radius: var(--radius); color: var(--text); background: var(--surface-raised); font-size: var(--sm);
   transition: color var(--time) var(--ease), background-color var(--time) var(--ease), border-color var(--time) var(--ease), transform var(--time) var(--ease);
 }
-button:hover:enabled:not([aria-disabled="true"]) { background: var(--ink-3); border-color: var(--edge); }
-button:active:enabled:not([aria-disabled="true"]) { transform: translateY(1px); }
+/* :where() keeps these at element specificity so every component hover rule overrides them. */
+button:where(:hover:enabled:not([aria-disabled="true"])) { background: var(--ink-3); border-color: var(--edge); }
+button:where(:active:enabled:not([aria-disabled="true"])) { transform: translateY(1px); }
 button:disabled, button[aria-disabled="true"], select:disabled { color: var(--muted); opacity: .55; cursor: not-allowed; }
 button.primary { background: var(--gold); color: var(--ink-0); border-color: var(--gold); font-weight: 700; }
 button.primary:hover:enabled { background: var(--text-bright); border-color: var(--text-bright); }
@@ -32,6 +33,7 @@ button.ghost { background: transparent; border-color: transparent; color: var(--
 button.ghost:hover:enabled { color: var(--text); background: color-mix(in oklab, var(--ink-3) 60%, transparent); }
 button.danger { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 40%, transparent); }
 button.danger-solid { background: var(--c-hp-low); border-color: var(--c-hp-low); color: var(--text-bright); font-weight: 700; }
+button.danger-solid:hover:enabled { background: var(--danger); border-color: var(--danger); }
 button.selected, button.is-active { border-color: var(--gold); color: var(--gold); }
 button.small { min-height: 30px; padding: 2px var(--s2); font-size: var(--xs); }
 button.icon-button { min-height: 36px; width: 36px; padding: 0; background: transparent; border-color: transparent; }
