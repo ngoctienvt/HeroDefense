@@ -1,5 +1,5 @@
-import { CRAFT_RECIPES, HERO_BY_ID } from '../../../content/catalog.js';
 import type { GameState } from '../../../packages/contracts/src/types.js';
+import { craftableHeroIds } from './craft-state.js';
 import { RAIL_ITEMS } from './hud-keymap.js';
 import type { Panel, PanelTab } from './panel-context.js';
 import { summonPackStates } from './hud-summon-bar.js';
@@ -12,22 +12,9 @@ import { icon } from './ui-icons.js';
  */
 export interface Rail { root: HTMLElement; update: (state: GameState, selfId: string, active: Panel | null) => void }
 
-/** True when some recipe can be crafted now with rank-1 heroes outside dungeons, allowing one Linh Phôi for a missing Phẩm 3/4. */
+/** True when some recipe can be crafted now (shared rule in craft-state.ts). */
 export function canCraftAny(state: GameState, selfId: string): boolean {
-  const player = state.players[selfId];
-  const available = Object.values(state.units).filter(unit => unit.owner === selfId && unit.rank === 1 && unit.zone === 0);
-  const have = new Map<string, number>();
-  for (const unit of available) have.set(unit.heroId, (have.get(unit.heroId) ?? 0) + 1);
-  return CRAFT_RECIPES.some(recipe => {
-    const need = new Map<string, number>();
-    for (const id of recipe.ingredients) need.set(id, (need.get(id) ?? 0) + 1);
-    const missing: string[] = [];
-    for (const [id, count] of need) for (let i = have.get(id) ?? 0; i < count; i++) missing.push(id);
-    if (!missing.length) return true;
-    if (missing.length !== 1 || !player) return false;
-    const tier = HERO_BY_ID[missing[0]]?.tier;
-    return tier === 3 && player.embryos.tier3 > 0 || tier === 4 && player.embryos.tier4 > 0;
-  });
+  return craftableHeroIds(Object.values(state.units), selfId, state.players[selfId]?.embryos).size > 0;
 }
 
 export function createRail(onToggle: (panel: Panel, tab?: PanelTab) => void): Rail {

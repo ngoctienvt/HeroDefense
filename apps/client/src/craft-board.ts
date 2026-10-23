@@ -2,11 +2,14 @@ import { CRAFT_RECIPES, HEROES, HERO_BY_ID } from '../../../content/catalog.js';
 import type { CraftRecipe, Unit } from '../../../packages/contracts/src/types.js';
 import type { PanelContext } from './panel-context.js';
 import { heroDetail } from './hero-detail.js';
+import { craftableHeroIds } from './craft-state.js';
 import { debug } from './debug.js';
 import { button, el, heroPortrait, iconButton } from './ui.js';
 import { elementLabel, roleLabel, starText, tierLabel, TIER_TITLES } from './ui-labels.js';
 
 let selectedHeroId = CRAFT_RECIPES[0].heroId;
+/** Until the player picks a hero, the board opens on the first recipe they can craft right now. */
+let craftUserPicked = false;
 let craftOnlyShowRelated = false;
 
 export interface IngredientTreeInfo {
@@ -62,6 +65,8 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
   const count = (id: string) => available.filter(unit => unit.heroId === id).length;
   const ownedCount = (id: string) => owned.filter(unit => unit.heroId === id).length;
   const recipeByHero = new Map(CRAFT_RECIPES.map(recipe => [recipe.heroId, recipe]));
+  const craftable = craftableHeroIds(Object.values(ctx.state.units), ctx.selfId, embryos);
+  if (!craftUserPicked && craftable.size && !craftable.has(selectedHeroId)) selectedHeroId = [...craftable][0];
 
   // --- HEADER ---
   const header = el('header', 'craft-header');
@@ -91,8 +96,26 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
     updateHighlights();
   }, `craft-filter-btn ${craftOnlyShowRelated ? 'active' : ''}`);
 
-  legend.append(itemDirect, itemSub, itemReady, filterBtn);
+  const itemCraftable = el('span', 'legend-item');
+  itemCraftable.append(el('span', 'legend-dot craftable'), el('span', '', 'Ghép được ngay'));
+  legend.append(itemCraftable, itemDirect, itemSub, itemReady, filterBtn);
   intro.append(legend);
+
+  if (craftable.size) {
+    const readyBar = el('div', 'craft-ready-bar');
+    readyBar.append(el('span', 'craft-ready-label', `Ghép được ngay (${craftable.size}):`));
+    for (const id of craftable) {
+      const hero = HERO_BY_ID[id];
+      if (!hero) continue;
+      const chip = button(`${hero.name} · ${tierLabel(hero.tier)}`, () => {
+        selectHero(id);
+        gallery.querySelector<HTMLButtonElement>(`[data-hero-id="${id}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 'craft-ready-chip');
+      chip.dataset.heroId = id;
+      readyBar.append(chip);
+    }
+    intro.append(readyBar);
+  }
 
   if (owned.length > 0) {
     const ownedBar = el('div', 'craft-owned-bar');
@@ -205,7 +228,7 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
   };
 
   const selectHero = (heroId: string) => {
-    selectedHeroId = heroId;
+    selectedHeroId = heroId; craftUserPicked = true;
     debug('client.craft-preview', { heroId });
     updateHighlights();
     updateDetail();
@@ -350,13 +373,15 @@ export function renderCraftBoard(container: HTMLElement, ctx: PanelContext): voi
 
     for (const hero of heroesInTier) {
       const total = ownedCount(hero.id);
-      const icon = button('', () => selectHero(hero.id), `craft-icon ${total ? 'owned' : 'unowned'}`);
+      const canCraft = craftable.has(hero.id);
+      const icon = button('', () => selectHero(hero.id), `craft-icon ${total ? 'owned' : 'unowned'} ${canCraft ? 'can-craft' : ''}`.trim());
       icon.dataset.heroId = hero.id;
       icon.title = `${hero.name} (${tierLabel(tier)} · ${roleLabel(hero.role)}) · Đang có ${total}`;
       icon.setAttribute('aria-label', `${hero.name}, phẩm ${tier}, đang có ${total}`);
       icon.append(heroPortrait(hero));
       icon.append(el('span', 'craft-name', hero.name));
       if (total) icon.append(el('small', 'craft-count', `x${total}`));
+      if (canCraft) icon.append(el('span', 'craft-ready-tag', 'Ghép được'));
 
       const badge = el('span', 'craft-ingredient-badge');
       badge.hidden = true;

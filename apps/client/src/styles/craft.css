@@ -485,3 +485,14 @@
   color: var(--text-bright);
   transform: translateY(-1px);
 }
+
+/* Heroes craftable right now: green frame + tag; stays readable even when another recipe dims the board. */
+.legend-dot.craftable { background: var(--c-hp-high); box-shadow: 0 0 6px var(--c-hp-high); }
+.craft-icon.can-craft { border-color: var(--c-hp-high); box-shadow: 0 0 0 2px var(--c-hp-high), 0 0 14px color-mix(in oklab, var(--c-hp-high) 60%, transparent); }
+.craft-icon.can-craft .portrait { filter: none; opacity: 1; }
+.craft-icon.can-craft.is-dimmed { opacity: .9; filter: none; }
+.craft-ready-tag { position: absolute; top: 2px; right: 2px; z-index: 1; padding: 0 4px; font-size: .58rem; font-weight: 800; line-height: 1.5; white-space: nowrap; color: var(--ink-0); background: var(--c-hp-high); border-radius: 6px; pointer-events: none; }
+.craft-ready-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; }
+.craft-ready-label { font-size: .72rem; font-weight: 700; color: var(--c-hp-high); }
+.craft-ready-chip { min-height: 26px; padding: 0 var(--s2); font-size: .7rem; font-weight: 700; color: var(--ink-0); background: var(--c-hp-high); border-color: var(--c-hp-high); border-radius: 13px; }
+.craft-ready-chip:hover:enabled { background: var(--green-soft); border-color: var(--green-soft); }
