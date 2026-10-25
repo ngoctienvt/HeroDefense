@@ -20,7 +20,7 @@ Không dùng ảnh AI hay asset ngoài; mọi thứ do script trong repo sinh ra
 
 | Thành phần | Nguồn | Lệnh |
 |---|---|---|
-| Mesh đảo (`island-main.json`, `island-dungeon.json`) | `assets/terrain/island_geometry.py` (flat top + viền + vách phân tầng flat-shaded, màu đỉnh cel baked) | `python assets/terrain/island_geometry.py apps/client/public/assets/terrain` |
+| Mesh đảo (`island-main.json`; `island-dungeon.json` lưu ở `assets/terrain/` vì client hiện chỉ tải đảo `main`) | `assets/terrain/island_geometry.py` (flat top + viền + vách phân tầng flat-shaded, màu đỉnh cel baked) | `python assets/terrain/island_geometry.py apps/client/public/assets/terrain` |
 | `.blend` + render preview | `assets/terrain/build-floating-island.py` (Blender 5.2, nền) | `blender -b -P assets/terrain/build-floating-island.py -- assets/terrain/preview` |
 | Tile đất/cỏ liền mạch | `assets/terrain/ground/make-ground-tiles.py` (WebP 1024/512) | `python assets/terrain/ground/make-ground-tiles.py` |
 | Mask vệt mòn theo route | Vẽ lúc chạy từ `enemyRoute` (`visual-terrain-ground.ts`), nên khớp 1–4 làn | — |

@@ -1,3 +1,4 @@
+import { BOSS_REACH_GROWTH } from '../crowd-movement.js';
 import type { Enemy, EnemySkillState, GameState } from '../../../contracts/src/types.js';
 import { BALANCE_SCALE } from '../balance-curve.js';
 import { clampToZone } from '../battlefield-layout.js';
@@ -165,7 +166,7 @@ export function resolveNguuMaThietPhienSkill(
       break;
     }
     case 'boss-earth-splitter': {
-      const radius = 4.8;
+      const radius = 4.8 + BOSS_REACH_GROWTH;
       const damage = Math.round(enemy.attack * 1.9 * powerScale);
       const hits = units.filter(u => u.zone === 0 && isDeployed(u) && distance(u, enemy) <= radius);
       for (const unit of hits) {
@@ -191,7 +192,7 @@ export function resolveNguuMaThietPhienSkill(
     }
     case 'boss-fan-gale': {
       const direction = locked.direction ?? { x: 0, z: 1 };
-      const radius = 7.5;
+      const radius = 7.5 + BOSS_REACH_GROWTH;
       const damage = Math.round(enemy.attack * 1.55 * powerScale);
       const hits = unitsInCone(units, enemy, direction, radius, 75);
       for (const unit of hits) {
@@ -218,7 +219,7 @@ export function resolveNguuMaThietPhienSkill(
     }
     case 'boss-fire-tempest': {
       const point = locked.point ?? { x: enemy.x, z: enemy.z };
-      const radius = 4.5;
+      const radius = 4.5 + BOSS_REACH_GROWTH;
       const damage = Math.round(enemy.attack * 1.75 * powerScale);
       const hits = units.filter(u => u.zone === 0 && isDeployed(u) && distance(u, point) <= radius);
       for (const unit of hits) {

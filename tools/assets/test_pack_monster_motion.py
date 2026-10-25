@@ -81,6 +81,7 @@ class PackMonsterMotionTests(unittest.TestCase):
         self.assertEqual(runtime["schema"], "monster-motion-runtime.v1")
         self.assertEqual(len(runtime["clips"]), 12)
         self.assertTrue(runtime["pages"])
+        self.assertEqual(runtime["anchor"], [8, 15])
 
         web = self.asset_root / "web"
         review_manifest = json.loads((web / "monster-motion-art-test.json").read_text(encoding="utf-8"))
@@ -88,6 +89,41 @@ class PackMonsterMotionTests(unittest.TestCase):
         self.assertTrue(all((web / page).is_file() for page in review_manifest["pages"]))
         self.assertEqual(qa["visualReview"], "pending-human-review")
         self.assertTrue(all((web / preview).is_file() for preview in qa["previews"]))
+
+    def test_motion_bounds_preserve_art_below_the_ground_root(self) -> None:
+        profile_path = self.asset_root / "asset.json"
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        profile["anchor"] = [4, 4]
+        profile["motionBoundsPx"] = [0, 0, 8, 8]
+        for record in profile["directionAnchors"].values():
+            record["anchorPx"] = [4, 4]
+        profile_path.write_text(json.dumps(profile), encoding="utf-8")
+        frame = Image.new("RGBA", (8, 8))
+        frame.putpixel((3, 7), (180, 100, 70, 255))
+        frame.save(self.asset_root / "source" / "frame.png")
+        output = self.root / "public-assets"
+
+        with patch.object(PACKER, "SOURCE", self.root / "assets"), patch.object(PACKER, "OUTPUT", output):
+            PACKER.pack_profile(self.asset_id)
+
+        runtime = json.loads((output / "monster-motion-art-test.json").read_text(encoding="utf-8"))
+        self.assertEqual(runtime["anchor"], [8, 8])
+        with Image.open(output / runtime["pages"][0]) as page:
+            alpha = page.convert("RGBA").getchannel("A")
+            self.assertIsNotNone(alpha.crop((0, 9, 16, 16)).getbbox())
+
+    def test_invalid_motion_bounds_fail_before_output_is_written(self) -> None:
+        profile_path = self.asset_root / "asset.json"
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        profile["motionBoundsPx"] = [0, 4, 8, 4]
+        profile_path.write_text(json.dumps(profile), encoding="utf-8")
+        output = self.root / "public-assets"
+
+        with patch.object(PACKER, "SOURCE", self.root / "assets"), patch.object(PACKER, "OUTPUT", output):
+            with self.assertRaisesRegex(ValueError, "non-empty box"):
+                PACKER.pack_profile(self.asset_id)
+
+        self.assertFalse(output.exists())
 
     def test_refuses_path_syntax_in_profile_action_names(self) -> None:
         profile_path = self.asset_root / "asset.json"

@@ -32,6 +32,8 @@ export interface AbilityExtra {
   readonly main?: Vector3;
   /** Positions resolved only from server-confirmed unit IDs in the viewed zone. */
   readonly supportTargets?: readonly Vector3[];
+  readonly resourceTarget?: Vector3;
+  readonly displacements?: readonly { from: Vector3; to: Vector3 }[];
 }
 
 /**

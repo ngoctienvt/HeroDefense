@@ -49,14 +49,23 @@ export function resolveUnitCollisions(units: Iterable<Unit>): void {
   }
 }
 
+/**
+ * Boss footprint matches the painted body (about ±3.3 world units at leg height for the
+ * 2× boss sprites), so heroes fight shoulder to shoulder with it instead of standing inside it.
+ */
+export const BOSS_BODY_RADIUS = 3.3;
+/** Growth over the previous 2.3 footprint; boss skill radii (measured from the boss centre) add it. */
+export const BOSS_REACH_GROWTH = BOSS_BODY_RADIUS - 2.3;
+
 export function monsterRadius(
   monsterId?: Enemy['monsterId'],
   kind?: Enemy['kind'],
   rank?: Enemy['rank'],
 ): number {
-  if (rank === 'boss' || kind === 'boss' || monsterId === 'b001') return 2.3;
-  if (rank === 'chieftain') return 1.75;
-  if (rank === 'elite' || monsterId === 'm003' || monsterId === 'm004') return 1.55;
+  if (rank === 'boss' || kind === 'boss' || monsterId === 'b001') return BOSS_BODY_RADIUS;
+  // Elites and chieftains are drawn at 1× (minions at 0.8×), so their footprint is the minion's scaled up.
+  if (rank === 'chieftain' || rank === 'elite') return 1.75;
+  if (monsterId === 'm003' || monsterId === 'm004') return 1.55;
   return 1.4;
 }
 

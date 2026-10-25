@@ -20,6 +20,12 @@ export function sellRefund(unit: Pick<Unit, 'rank' | 'equipment'>): { souls: num
   return { souls: Math.max(1, Math.floor(RANDOM_SUMMON_COST * 3 ** (unit.rank - 1) / 2)), gold: Math.floor(gearSpent / 2) };
 }
 export const distance = (a: Vec, b: Vec) => Math.hypot(a.x - b.x, a.z - b.z);
+/** Attack ranges above this are ranged attackers (heroes and monsters alike). */
+export const MELEE_MAX_RANGE = 4;
+/** Shared rule: every ranged attacker, hero or monster, shoots from twice its listed range. */
+export const RANGED_REACH_SCALE = 2;
+export const scaledAttackRange = (listed: number): number =>
+  listed > MELEE_MAX_RANGE ? listed * RANGED_REACH_SCALE : listed;
 export function random(state: GameState): number {
   let x = state.seed | 0;
   x ^= x << 13; x ^= x >>> 17; x ^= x << 5;

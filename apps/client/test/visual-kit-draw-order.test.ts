@@ -13,12 +13,13 @@ describe('combat foreground VFX', () => {
     expect(paintedFrameUvs(base,16,4,4)).toBeUndefined();
     expect(paintedFrameUvs(base,0,0,4)).toBeUndefined();
   });
-  it('draws skills over monsters while allies and their health stay clear above them', () => {
+  it('depth-sorts heroes and monsters in one actor pass above skill art, with health bars on top', () => {
     const monster = { renderingGroupId:99 }, hero = { renderingGroupId:99 }, fallback = { renderingGroupId:99 };
     const enemyHp = { renderingGroupId:0 }, heroHp = { renderingGroupId:0 }, mana = { renderingGroupId:0 };
     assignActorDrawGroups(false,[monster],[enemyHp]);
     assignActorDrawGroups(true,[hero,fallback],[heroHp,mana]);
-    expect(monster.renderingGroupId).toBeLessThan(COMBAT_DRAW_GROUP.skill);
+    // Same pass: a hero behind a large monster is occluded by it instead of drawn over its body.
+    expect(monster.renderingGroupId).toBe(hero.renderingGroupId);
     expect(hero.renderingGroupId).toBeGreaterThan(COMBAT_DRAW_GROUP.skill);
     expect(fallback.renderingGroupId).toBe(hero.renderingGroupId);
     for (const bar of [enemyHp,heroHp,mana]) expect(bar.renderingGroupId).toBeGreaterThan(hero.renderingGroupId);

@@ -14,6 +14,8 @@
 .join-row { display: grid; grid-template-columns: 1fr auto; gap: var(--s2); }
 .join-row input { min-height: 44px; }
 .lobby-footnote { white-space: pre-line; font-size: var(--xs); color: var(--muted); line-height: 1.8; }
+.preload-status { margin-top: var(--s3); font-size: var(--xs); color: var(--muted); font-variant-numeric: tabular-nums; }
+.preload-status.is-done { color: var(--gold); }
 .form-error { color: var(--danger); min-height: var(--s6); font-size: var(--sm); }
 .lobby-lore { align-self: end; margin: var(--s16); padding: var(--s6); background: var(--surface); max-width: 480px; border-top: 2px solid var(--gold); box-shadow: var(--shadow); }
 .lobby-lore h2 { font-size: var(--xl); margin-bottom: var(--s3); }

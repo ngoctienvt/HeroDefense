@@ -177,9 +177,11 @@ export interface Unit extends Vec {
   target: string | null; destination: Vec | null; savedPosition: Vec | null; stopped: boolean;
   orderMode?: 'auto' | 'move' | 'attack' | 'attack-move' | 'hold'; engageAt?: Vec | null; guardPosition?: Vec | null;
   equipment: [number, number, number]; deaths: number; respawn: number; shield: number;
+  /** Deaths in the current wave; deaths remains the whole-match statistic. */
+  waveDeaths?: number;
   stun?: number;
-  ward?: { remaining: number; reduction: number; kind?: 'black-water' | 'five-color' };
-  haste?: { remaining: number; amount: number; attackBonus?: number; cooldownReduction?: number };
+  ward?: { remaining: number; reduction: number; kind?: 'black-water' | 'five-color'; sourceSkillId?: string };
+  haste?: { remaining: number; amount: number; attackBonus?: number; cooldownReduction?: number; sourceSkillId?: string };
   critBlessing?: { remaining: number; chance: number };
   fuxiBlessing?: { remaining: number; attackBonus: number; skillBonus: number };
   thunderBlessing?: { remaining: number; power: number };
@@ -202,7 +204,9 @@ export interface Unit extends Vec {
   reflect?: { amount: number };
   mistShield?: { remaining: number; amount: number };
   frostShield?: { remaining: number; amount: number; attackSlow: number };
-  berserk?: { remaining: number; attackSpeed: number; lifesteal: number; immortal?: boolean; critChance?: number };
+  berserk?: { remaining: number; attackSpeed: number; lifesteal: number; immortal?: boolean; critChance?: number;
+    /** Optional server provenance for a skill-specific presentation; never used to calculate combat. */
+    sourceSkillId?: string };
   heatStacks?: number;
   /** Carry passive runtime state (server-authoritative, mirrored in snapshots). */
   carryFervor?: { stacks: number; remaining: number };
@@ -305,6 +309,12 @@ export interface GameEvent {
   targets?: string[];
   /** Optional presentation recipients; never damage targets or client selection input. */
   supportTargets?: string[];
+  /** Server-selected resource recipient, separate from healing or damage recipients. */
+  resourceTarget?: string;
+  /** Original/end positions of a server-confirmed displacement; presentation only. */
+  displacements?: { id: string; from: Vec; to: Vec }[];
+  /** Locked area center when x/z describes a random pulse focus instead. */
+  areaCenter?: Vec;
   x?: number;
   z?: number;
   value?: number;
@@ -333,6 +343,8 @@ export interface GameState {
   players: Record<string, Player>; units: Record<string, Unit>; enemies: Record<string, Enemy>;
   events: GameEvent[]; notice: string; stars: number;
   spawned: number; spawnBudget: number; spawnTimer: number;
+  /** Events through this id belong to combat cleared on wave completion. */
+  combatResetEventId?: number;
   groundEffects?: { x: number; z: number; zone: number; radius: number; remaining: number; damagePerSecond: number; casterId: string;
     kind?: 'pangu-rift' | 'golden-bowl' | 'phong-than' | 'beidou' | 'lantern-cage' | 'five-finger' | 'chucdung-ember' | 'chucdung-lava' | 'xuanyuan-sword' | 'shennong-grove' | 'fuxi-bagua' | 'blood-sea' | 'phoenix-carpet' | 'tier-fire' | 'tier-water' | 'tier-gold'; id?: string; direction?: Vec; length?: number; width?: number; slowStrength?: number;
     healPerSecond?: number; pullSpeed?: number; controlRolls?: Record<string, boolean>; boltsRemaining?: number; boltClock?: number; boltDamage?: number; burnDps?: number; rainRemaining?: number }[];

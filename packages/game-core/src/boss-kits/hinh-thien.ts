@@ -1,3 +1,4 @@
+import { BOSS_REACH_GROWTH } from '../crowd-movement.js';
 import type { Enemy, EnemySkillState, GameState } from '../../../contracts/src/types.js';
 import { BALANCE_SCALE } from '../balance-curve.js';
 import {
@@ -104,7 +105,7 @@ export function resolveHinhThienSkill(
   switch (skill.id) {
     case 'boss-axe-cleave': {
       const direction = locked.direction ?? { x: 0, z: 1 };
-      const radius = 4.8;
+      const radius = 4.8 + BOSS_REACH_GROWTH;
       const damage = Math.round(enemy.attack * 1.85 * powerScale);
       const hits = unitsInCone(units, enemy, direction, radius, 120);
       for (const unit of hits) {
@@ -129,7 +130,7 @@ export function resolveHinhThienSkill(
       break;
     }
     case 'boss-shield-bash': {
-      const radius = 4.4;
+      const radius = 4.4 + BOSS_REACH_GROWTH;
       const damage = Math.round(enemy.attack * 1.6 * powerScale);
       const hits = units.filter(u => u.zone === 0 && isDeployed(u) && distance(u, enemy) <= radius);
       for (const unit of hits) {
@@ -154,7 +155,7 @@ export function resolveHinhThienSkill(
       break;
     }
     case 'boss-defiant-roar': {
-      const radius = 6.0;
+      const radius = 6.0 + BOSS_REACH_GROWTH;
       const damage = Math.round(enemy.attack * 1.5 * powerScale);
       const hits = units.filter(u => u.zone === 0 && isDeployed(u) && distance(u, enemy) <= radius);
       for (const unit of hits) {

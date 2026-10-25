@@ -1,5 +1,6 @@
 import { HERO_BY_ID } from '../../../content/catalog.js';
 import { TIER3_REPLAY_IDS } from './visual-tier3-heroes.js';
+import { TIER4_REPLAY_IDS } from './visual-tier4-heroes.js';
 import { replayHero } from './visual-kit-replay.js';
 import { debug, debugLog } from './debug.js';
 
@@ -10,7 +11,7 @@ export function installReplayReview(canvas: HTMLCanvasElement): () => void {
   bar.style.cssText = 'position:fixed;top:4px;left:50%;transform:translateX(-50%);z-index:4000;background:#17252cf5;color:#fff;padding:5px;display:flex;gap:6px;align-items:center;font:12px sans-serif;max-width:96vw;flex-wrap:wrap';
   const hero = document.createElement('select'); hero.setAttribute('aria-label', 'Tướng VFX');
   hero.style.cssText = 'width:170px;min-width:0;height:28px;padding:2px;font-size:12px';
-  for (const id of [...TIER3_REPLAY_IDS, 'h00Q', 'h01G', 'h041']) {
+  for (const id of [...TIER3_REPLAY_IDS, ...TIER4_REPLAY_IDS, 'h00Q', 'h01G', 'h041']) {
     const option = document.createElement('option'); option.value = id; option.textContent = HERO_BY_ID[id]?.name ?? id; hero.append(option);
   }
   const kind = document.createElement('select'); kind.setAttribute('aria-label', 'Pha VFX');

@@ -4,7 +4,6 @@ import type { Enemy, GameState } from '../../contracts/src/types.js';
 import { combatStep } from './combat.js';
 import {
   flushWaveTtkSummary,
-  recordEnemyLeak,
   recordEnemySpawn,
   recordWaveStart,
 } from './combat-ttk-telemetry.js';
@@ -16,6 +15,7 @@ import {
   waveSpawnAt,
 } from './wave-plan.js';
 import { enemyRadius, MONSTER_ROW_SPACING, monsterRadius } from './crowd-movement.js';
+import { resetWaveCombat } from './wave-reset.js';
 
 function spawnClear(state: GameState, x: number, z: number, radius: number): boolean {
   return Object.values(state.enemies).every(other => other.zone !== 0 || other.hp <= 0
@@ -45,11 +45,12 @@ function findBossSpawnPoint(state: GameState, preferredX: number, preferredZ: nu
 export function beginWave(state: GameState): void {
   state.wave++;
   state.phase = 'combat';
+  for (const unit of Object.values(state.units)) unit.waveDeaths = 0;
   state.spawned = 0;
   const plan = wavePlanFor(state.wave);
   state.spawnBudget = waveLaneBudget(plan) + (plan.bosses?.length ? 1 : 0);
   state.spawnTimer = 0;
-  state.remaining = plan.duration;
+  state.remaining = 0;
   state.notice = `Đợt ${state.wave}: ${plan.name}`;
   recordWaveStart(state);
   event(state, { kind: 'wave', text: state.notice });
@@ -171,6 +172,7 @@ function spawnBatch(state: GameState): void {
 
 function finishWave(state: GameState): void {
   flushWaveTtkSummary(state);
+  resetWaveCombat(state);
   for (const player of Object.values(state.players)) {
     player.gold += 180 + state.wave * 40;
     player.souls += 4 + Math.floor(state.wave / 10);
@@ -203,7 +205,7 @@ export function stepGame(state: GameState, dt: number): void {
   let pending = dt * state.speed;
   while (pending > .000001 && state.phase !== 'won' && state.phase !== 'lost') {
     const delta = Math.min(.05, pending); pending -= delta; state.tick++; state.elapsed += delta;
-    state.remaining = Math.max(0, state.remaining - delta);
+    if (state.phase === 'preparation') state.remaining = Math.max(0, state.remaining - delta);
     if (state.phase === 'preparation' && state.remaining <= 0) beginWave(state);
     if (state.phase === 'combat') {
       state.spawnTimer -= delta;
@@ -220,19 +222,7 @@ export function stepGame(state: GameState, dt: number): void {
       state.notice = 'Linh Trụ đã sụp đổ. Hãy điều chỉnh đội hình và thử lại.';
       event(state, { kind: 'info', text: state.notice });
     } else if (state.phase === 'combat') {
-      if (state.remaining <= 0) {
-        for (const enemy of Object.values(state.enemies)) if (enemy.zone === 0) {
-          recordEnemyLeak(state, enemy);
-          state.baseHp = Math.max(0, state.baseHp - enemy.leak);
-          delete state.enemies[enemy.id];
-        }
-        state.spawned = state.spawnBudget;
-        if (state.baseHp <= 0) {
-          flushWaveTtkSummary(state);
-          state.phase = 'lost';
-          state.notice = 'Không chặn được đợt tấn công. Linh Trụ đã sụp đổ.';
-        } else finishWave(state);
-      } else if (state.spawned >= state.spawnBudget && !Object.values(state.enemies).some(e => e.zone === 0)) {
+      if (state.spawned >= state.spawnBudget && !Object.values(state.enemies).some(e => e.zone === 0)) {
         finishWave(state);
       }
     }

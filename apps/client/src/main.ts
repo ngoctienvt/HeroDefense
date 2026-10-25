@@ -22,16 +22,28 @@ import { debug } from './debug.js';
 import { Selection } from './selection.js';
 import { installReplayReview } from './visual-kit-review.js';
 import { maybeShowIconPreview } from './icon-preview.js';
+import { AudioManager } from './audio-manager.js';
+import { Tools } from '@babylonjs/core/Misc/tools.js';
+import assetManifestData from 'virtual:asset-manifest';
+import { assetUrl, installAssetManifest } from './asset-version.js';
+import { AssetPreloader, type PreloadProgress } from './asset-preloader.js';
 
 applyPaletteToCss();
+// Versioned asset URLs must be in place before the battlefield creates its first texture.
+installAssetManifest(assetManifestData);
+Tools.PreprocessUrl = assetUrl;
+debug('visual.asset-manifest', { version: assetManifestData.version, files: Object.keys(assetManifestData.files).length });
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const canvas = el('canvas', 'battlefield'); canvas.setAttribute('aria-label', 'Chiến trường Thiên Đạo. Chuột trái chọn tướng, chuột phải ra lệnh.'); canvas.tabIndex = 0;
 app.append(canvas); const battlefield = new Battlefield(canvas); const session = new GameSession();
+/** Music and SFX for the whole session; sound starts on the first click or key press (browser autoplay rule). */
+const audio = new AudioManager(); audio.install(); battlefield.setSfx(audio.sfx);
 const uninstallReplayReview = installReplayReview(canvas);
+let preloadPercent = 0;
 let selected = '', zone = 0, lastRender = 0, panelSignature = '', hudSignature = '', settingsSignature = '', choiceSignature = '', renderTimer = 0, attackMode = false;
 let panel: Panel | null = null;
 let panelTab: PanelTab | undefined;
-let audioEnabled = false;
+let audioEnabled = audio.current.enabled;
 /** Esc tucks the pending summon choice into a "Chọn tướng" button instead of dismissing it. */
 let choiceMinimized = false;
 let hover: HoverTarget | null = null, hoverTimer = 0;
@@ -87,6 +99,22 @@ const reconnect = button('Kết nối lại phiên trước', () => session.reco
 const lobbyError = el('p', 'form-error'); lobbyError.setAttribute('role', 'alert'); form.append(lobbyError); lobbyCard.append(form, el('p', 'lobby-footnote', 'Co-op 1–4 người · Chơi một mình để luyện tập\nChơi trên máy tính với chuột và bàn phím'));
 const lore = el('aside', 'lobby-lore'); lore.append(el('h2', '', 'Cùng một đường thủ.'), el('p', '', `Mỗi người giữ một làn; quái hội tụ ở đường giữa. Chiêu mộ 70 tướng và phối hợp trấn giữ ${BASE_NAME} qua ${RUN_WAVES} đợt đại kiếp.`));
 lobby.append(lobbyCard, lore);
+
+// --- Asset preload: starts on page open so the download overlaps name entry and the room lobby. ---
+const preloadStatus = el('p', 'preload-status'); preloadStatus.setAttribute('role', 'status');
+lobbyCard.append(preloadStatus);
+const preloader = new AssetPreloader(assetManifestData.preload);
+const megabytes = (bytes: number): string => (bytes / 1048576).toFixed(0);
+function showPreload(progress: PreloadProgress): void {
+  const percent = progress.finished ? 100 : progress.bytesTotal ? Math.min(99, Math.floor(progress.bytesDone * 100 / progress.bytesTotal)) : 100;
+  preloadStatus.textContent = progress.finished
+    ? progress.failed ? `Đã tải tài nguyên (${progress.failed} tệp lỗi, sẽ tải lại khi cần).` : 'Đã tải xong tài nguyên trận.'
+    : `Đang tải tài nguyên trận ${percent}% · ${megabytes(progress.bytesDone)}/${megabytes(progress.bytesTotal)} MB`;
+  preloadStatus.classList.toggle('is-done', progress.finished);
+  if (percent !== preloadPercent) { preloadPercent = percent; render(true); }
+}
+const unsubscribePreload = preloader.subscribe(showPreload);
+void preloader.start();
 maybeShowIconPreview();
 
 function context(state: GameState): PanelContext {
@@ -185,9 +213,12 @@ function renderSettings(state: GameState): void {
   if (signature === settingsSignature) return;
   settingsSignature = signature;
   overlay.openPopover(SETTINGS_POPOVER, 'settings-popover').replaceChildren(renderSettingsMenu({
-    isHost: host, roomCode: state.roomCode, speed: state.speed, audioEnabled, send,
+    isHost: host, roomCode: state.roomCode, speed: state.speed, audioEnabled, musicVolume: audio.current.music, sfxVolume: audio.current.sfx, send,
     copyRoomCode: () => copyRoomCode(state.roomCode),
-    toggleAudio: () => { audioEnabled = !audioEnabled; battlefield.setAudioEnabled(audioEnabled); debug('ui.settings', { action: 'audio', enabled: audioEnabled }); render(true); },
+    toggleAudio: () => { audioEnabled = !audioEnabled; audio.setEnabled(audioEnabled); debug('ui.settings', { action: 'audio', enabled: audioEnabled }); render(true); },
+    // Dragging updates the bus live; the value is saved when the slider is released. Not in the signature,
+    // so the popover is never rebuilt under the pointer mid-drag.
+    setVolume: (channel, value, commit) => { audio.setVolumes(channel === 'music' ? { music: value } : { sfx: value }, commit); },
     cycleCamera: () => { const view = battlefield.cycleCameraView(); showToast(`Góc nhìn: ${view}`); debug('ui.settings', { action: 'camera' }); },
     openGuide: () => { overlay.closePopover(SETTINGS_POPOVER); setPanel('guide', 'controls'); },
     leave: confirmLeave,
@@ -214,7 +245,7 @@ function render(force = false): void {
   const view = session.view, state = view.state; if (!state) return;
   if (!force && performance.now() - lastRender < 200) { if (!renderTimer) renderTimer = window.setTimeout(() => { renderTimer = 0; render(true); }, 200); return; }
   const activeBosses = Object.values(state.enemies).filter(enemy => enemy.kind === 'boss' && enemy.hp > 0);
-  const hudKey = JSON.stringify([selected, selection.ids, panel, panelTab, zone, audioEnabled, choiceMinimized, overlay.isOpen(SETTINGS_POPOVER), state.roomCode, state.phase, state.wave, Math.ceil(state.remaining), state.baseHp, state.speed, state.difficulty, state.stars,
+  const hudKey = JSON.stringify([preloadPercent, selected, selection.ids, panel, panelTab, zone, audioEnabled, choiceMinimized, overlay.isOpen(SETTINGS_POPOVER), state.roomCode, state.phase, state.wave, Math.ceil(state.remaining), state.baseHp, state.speed, state.difficulty, state.stars,
     activeBosses.map(enemy => [enemy.id, enemy.name, Math.floor(enemy.hp), enemy.maxHp, enemy.enraged, Math.round(enemy.z), (enemy.skills ?? []).map(s => Math.ceil(s.cooldown))]),
     Object.values(state.players).map(p => [p.id, p.name, p.connected, p.ready, p.gold, p.souls, p.pellets, p.summonFailures, p.pendingChoice, p.embryos, p.formation, p.formationLevels, p.formationPoints, p.activeSynergies]),
     Object.values(state.units).filter(u => u.owner === view.selfId).map(u => [u.id, u.heroId, u.slot, u.rank, Math.floor(u.hp), u.maxHp, u.attack, u.armor, Math.ceil(u.abilityCooldown), Math.floor(u.energy ?? 0), Math.ceil(u.respawn), u.equipment, u.zone, u.orderMode, u.savedPosition, u.kills, Math.floor(u.shield), u.ward && Math.ceil(u.ward.remaining), u.haste && Math.ceil(u.haste.remaining)])]);
@@ -229,7 +260,7 @@ function render(force = false): void {
   const topSelectOpen = document.activeElement instanceof HTMLSelectElement && hudTop.contains(document.activeElement);
   if (!topSelectOpen) hudTop.replaceChildren(...renderTopHud(state, view.selfId, {
     send, copyRoomCode: () => copyRoomCode(state.roomCode), focusLane: index => battlefield.resetCamera(index),
-    settingsOpen: overlay.isOpen(SETTINGS_POPOVER), toggleSettings,
+    settingsOpen: overlay.isOpen(SETTINGS_POPOVER), toggleSettings, preloadRatio: preloadPercent / 100,
   }));
   const boss = renderBossStrip(state);
   bossHolder.hidden = !boss; bossHolder.replaceChildren(...(boss ? [boss] : []));
@@ -309,10 +340,11 @@ const unsubscribe = session.subscribe((view: SessionView) => {
   if (!view.state) {
     lobby.hidden = false; game.hidden = true; craftOverlay.hidden = true; hudDrawer.hidden = true;
     overlay.closePopover(SETTINGS_POPOVER); overlay.closePopover(SUMMON_CHOICE_POPOVER); setHover(null); choiceMinimized = false;
-    setPanel(null); selected = ''; selection.clear(); panelSignature = ''; canvas.classList.remove('playing'); battlefield.clear(); battlefield.resizeCanvas(); battlefield.resetCamera(); return;
+    setPanel(null); selected = ''; selection.clear(); panelSignature = ''; canvas.classList.remove('playing'); battlefield.clear(); battlefield.resizeCanvas(); battlefield.resetCamera();
+    audio.update({ phase: 'lobby', enemies: {} }); return;
   }
   selection.prune(view.state, view.selfId, zone);
-  battlefield.update(view.state, view.selfId, selection.ids); render();
+  battlefield.update(view.state, view.selfId, selection.ids); audio.update(view.state); render();
 });
 
 const keyboard = (event: KeyboardEvent) => {
@@ -404,7 +436,7 @@ const keyboard = (event: KeyboardEvent) => {
 
 window.addEventListener('keydown', keyboard);
 window.addEventListener('pagehide', () => {
-  uninstallReplayReview(); unsubscribe(); window.removeEventListener('keydown', keyboard);
+  uninstallReplayReview(); unsubscribe(); unsubscribePreload(); window.removeEventListener('keydown', keyboard);
   window.clearTimeout(renderTimer); window.clearTimeout(toastTimer); window.clearTimeout(hoverTimer);
-  dockObserver.disconnect(); overlay.dispose(); battlefield.dispose(); debug('client.disposed');
+  dockObserver.disconnect(); overlay.dispose(); battlefield.dispose(); audio.dispose(); debug('client.disposed');
 }, { once: true });

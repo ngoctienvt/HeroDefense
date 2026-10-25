@@ -4,8 +4,31 @@ import { Scene } from '@babylonjs/core/scene.js';
 import type { Enemy } from '../../../packages/contracts/src/types.js';
 import { createActor } from '../src/visual-actors.js';
 import { VisualMaterials } from '../src/visual-materials.js';
+import { VisualEnemyTelegraph } from '../src/visual-enemy-telegraph.js';
+import { resolveEnemyTelegraph } from '../src/visual-enemy-skill-routing.js';
 
 describe('hero-skinned enemy actors', () => {
+  it.each(['marks', 'none'] as const)('skips %s without allocating ground telegraph meshes', (shape) => {
+    const engine = new NullEngine();
+    const scene = new Scene(engine);
+    try {
+      const telegraph = new VisualEnemyTelegraph(scene);
+      const spec = resolveEnemyTelegraph({
+        id: 1, kind: 'cast', skillId: 'enemy-slam-windup', telegraph: shape,
+      }, { x: 0, z: 0 });
+      expect(spec).toBeDefined();
+      if (!spec) throw new Error('Missing telegraph specification');
+      telegraph.show(spec, 'enemy-slam-windup', false);
+      telegraph.tick(1);
+      telegraph.clear();
+      expect(scene.meshes).toHaveLength(0);
+      expect(scene.transformNodes).toHaveLength(0);
+    } finally {
+      scene.dispose();
+      engine.dispose();
+    }
+  });
+
   it('creates scaled hero sprites and rank-appropriate health bars for hero-skinned enemies', () => {
     const engine = new NullEngine();
     const scene = new Scene(engine);
@@ -23,9 +46,11 @@ describe('hero-skinned enemy actors', () => {
         attack: 120,
         armor: 10,
         speed: 4.1,
-        interval: 1.25,
+        attackInterval: 1.25,
         cooldown: 0,
-        waypoint: 0,
+        pathIndex: 0,
+        target: null,
+        leak: 1,
         x: 0,
         z: -20,
         slow: 0,
@@ -62,6 +87,30 @@ describe('hero-skinned enemy actors', () => {
       expect(bossActor.barWidth).toBe(3.6);
       expect(bossActor.shieldBar).toBeDefined();
       expect((bossActor.sprite?.healthBarY ?? 0)).toBeGreaterThan(chieftainActor.sprite?.healthBarY ?? 0);
+
+      const minionMonster: Enemy = {
+        ...baseEnemy,
+        id: 'e3',
+        name: 'Thanh Lang Tiểu Yêu',
+        monsterId: 'm001',
+        skinHeroId: undefined,
+        rank: 'minion',
+      };
+      const eliteMonster: Enemy = {
+        ...baseEnemy,
+        id: 'e4',
+        name: 'Thạch Giáp Cự Quái',
+        monsterId: 'm003',
+        skinHeroId: undefined,
+        rank: 'elite',
+      };
+      const minionActor = createActor(scene, palette, minionMonster);
+      const eliteActor = createActor(scene, palette, eliteMonster);
+      expect(minionActor.size).toBeCloseTo(1.25 * 0.8, 5);
+      expect(eliteActor.size).toBeCloseTo(1.25 * 1.25, 5);
+      expect(chieftainActor.size).toBeCloseTo(1.25 * 1.5, 5);
+      expect(bossActor.size).toBeCloseTo(1.25 * 2.0, 5);
+      expect((eliteActor.sprite?.healthBarY ?? 0)).toBeGreaterThan(minionActor.sprite?.healthBarY ?? 0);
     } finally {
       scene.dispose();
       engine.dispose();

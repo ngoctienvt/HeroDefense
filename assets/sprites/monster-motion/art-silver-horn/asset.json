@@ -3,7 +3,7 @@
   "id": "art-silver-horn",
   "displayName": "Ngân Giác",
   "category": "boss-group-member",
-  "identity": "Tall slender silver-gray yokai with one curved silver horn, narrow shoulders, flowing blue-violet sleeves and pale jade flask.",
+  "identity": "Tall slender silver-gray yokai with one curved silver horn, long white hair, blue-violet flowing robes, pale jade flask held in anatomical LEFT hand and a free RIGHT hand for palm strikes.",
   "palette": [
     "silver",
     "cool blue",
@@ -18,14 +18,14 @@
   ],
   "sourceMaster": "source/master/master_rgba.png",
   "anchor": [
-    405.5,
-    860.0
+    500,
+    800
   ],
   "motionEnvelopePx": [
-    710,
-    700
+    680,
+    555
   ],
-  "displayHeightWorld": 6.6,
+  "displayHeightWorld": 7.693714285714285,
   "actions": {
     "idle": {
       "framesPerDirection": 1,
@@ -49,20 +49,50 @@
   ],
   "status": {
     "master": "master-approved",
-    "directions": "pending",
-    "motion": "pending",
-    "packaged": "pending",
-    "integrated": "pending",
+    "directions": "directions-approved",
+    "motion": "motion-approved",
+    "packaged": "library-packaged",
+    "integrated": "not-routed-current-encounter",
     "built": "pending",
     "inGameApproved": "pending"
   },
   "directionAnchors": {
     "south": {
       "anchorPx": [
-        405.5,
-        860.0
+        500,
+        800
       ],
-      "source": "source/master/master_rgba.png"
+      "source": "source/export-frames-v1/idle/south/frame-00.png"
+    },
+    "west": {
+      "anchorPx": [
+        500,
+        800
+      ],
+      "source": "source/export-frames-v1/idle/west/frame-00.png"
+    },
+    "north": {
+      "anchorPx": [
+        500,
+        800
+      ],
+      "source": "source/export-frames-v1/idle/north/frame-00.png"
+    },
+    "east": {
+      "anchorPx": [
+        500,
+        800
+      ],
+      "source": "source/export-frames-v1/idle/east/frame-00.png"
     }
-  }
+  },
+  "motionBoundsPx": [
+    160,
+    267,
+    840,
+    822
+  ],
+  "restBodyHeightPx": 500,
+  "restBodyHeightWorld": 4.95,
+  "displayScaleRationale": "Group member target rest silhouette 6.6*0.75 world units before encounter/rank scaling; compensate motion canvas once."
 }

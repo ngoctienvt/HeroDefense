@@ -1,6 +1,6 @@
-# Roster đã duyệt: 20 quái và 20 boss
+# Roster sản xuất: 20 quái và 19 boss
 
-Người dùng đã duyệt roster/brief ngày 22-10-2026 để sản xuất. Có **40 cá thể; 5 nâng cấp + 35 mới**. ID `art-*` là ID kế hoạch, chưa phải network ID. Tên/phân loại/vũ khí mới là thiết kế riêng cho bản web, không phải chứng cứ phục dựng từ map. Mỗi cá thể cần master, bốn hướng và đủ bộ hành động trong [art-contract](./art-contract.md).
+Người dùng đã duyệt roster ban đầu ngày 22-10-2026. Ngày 23-10-2026 yêu cầu bỏ Hiện thân Ngũ Hành vì hình không đạt; không tạo mẫu thay thế. Scope sản xuất hiện tại là **39 cá thể: 5 nâng cấp + 34 thiết kế mới**. ID `art-*` là ID kế hoạch, chưa phải network ID. Tên/phân loại/vũ khí mới là thiết kế riêng cho bản web, không phải chứng cứ phục dựng từ map. Mỗi cá thể cần master, bốn hướng và đủ bộ hành động trong [art-contract](./art-contract.md).
 
 ## 20 quái: đa dạng cả cấu trúc cơ thể
 
@@ -31,7 +31,7 @@ Palette là mảng chính/phụ/điểm sáng; không dùng màu làm cách duy 
 
 Không dùng toàn bộ quái thành người cầm vũ khí. Nhóm này có thú bốn chân, humanoid, chim/dơi, côn trùng, thân trườn, khôi lỗi và linh thể; cùng mức chăm chút alpha, pose và nguồn như tướng.
 
-## 20 boss: đủ boss có tên và thêm 7 thiết kế độc lập
+## 19 boss: đủ boss có tên và 7 thiết kế độc lập
 
 Tỉ lệ kích thước là **mục tiêu art so với thân tướng chuẩn ở cùng camera**, chưa phải collision hay chỉ số đã duyệt. Không đo bằng bbox có khoảng trống hoặc chiều dài vũ khí. Thử khoảng 1,6–2,2× cho boss thường, 2,2–2,8× cho đại boss; ưu tiên ngang/rộng và tư thế thay vì ép tất cả cao lớn. Cá thể trong nhóm có thể chỉ 1,3–1,6× để nhóm không che đảo.
 
@@ -49,7 +49,6 @@ Tỉ lệ kích thước là **mục tiêu art so với thân tướng chuẩn �
 | art-ma-parasol | Ma Gia — Bảo Tán, Bất Chu Thiên Quan | Tán nghiêng sau vai, thân giáp dài; tím/đen/vàng | Tán có thể tích và mặt dưới, không che cả đội hình |
 | art-ma-beast | Ma Gia — Linh Thú, Bất Chu Thiên Quan | Giáp thú văn, tay giữ linh thú cuộn trên vai; trắng xương/nâu/đồng | Hai silhouette kết hợp trong một thiết kế; linh thú không tự gây damage |
 | art-chaos-dijiang | Đế Giang — Tinh Không | Dị thú sáu chân/bốn cánh, thân tròn không mặt; đỏ thẫm/than/vàng | Giải phẫu khác hẳn rồng/tướng; cánh mở theo tầng, bóng tiếp đất rõ |
-| art-fivefold-avatar | Hiện thân Ngũ Hành — Ngũ Hành Linh Giới | Khối lõi ngọc với năm mảng kim/mộc/thủy/hỏa/thổ bất đối xứng | Một silhouette thống nhất, năm vật chất đọc được; không chỉ năm màu phát sáng |
 | art-cinder-qilin | Xích Diệm Lân Vương — mới | Lân bốn chân, giáp vảy lớn, sừng chẻ, đuôi bó; đỏ gạch/than/vàng | Ngực/thế chân oai vệ, lửa có ngọn riêng; không sao chép Phượng Hoàng |
 | art-bone-abbot | Bạch Cốt Pháp Vương — mới | Vua xương nhiều tay xếp sau lưng, trượng chuông sọ; ngà/đen/tím | Vòm tay như kiến trúc, số tay nhất quán bốn hướng; không dùng hào quang làm hình chính |
 | art-frost-wyrm | Huyền Băng Ngư Giao — mới | Giao long thân dài, hai chi trước, vây băng bản lớn; xanh băng/chàm/trắng | Đầu/cổ cong chiếm khối ngang, vảy băng gãy có chiều sâu |
@@ -74,7 +73,7 @@ Tên từng Ma Gia trong bảng là nhãn art theo pháp khí, chưa xác nhận
 Theo chỉ đạo người dùng ngày 2026-10-23, ưu tiên hoàn thiện boss trước để tránh dồn thời gian vào một cá thể:
 
 1. Boss pilot còn thiếu bundle: b001, Kim Giác, Ngân Giác. Đế Giang chỉ tiếp tục nếu đạt brief nhanh; nếu không thì bỏ qua và không ghi hoàn chỉnh.
-2. Lô B — 9 boss phụ bản: Thụ Yêu, Quy Vương, Thạch Cơ, Lục Áp, bốn Ma Gia, Hiện thân Ngũ Hành.
+2. Lô B — 8 boss phụ bản: Thụ Yêu, Quy Vương, Thạch Cơ, Lục Áp và bốn Ma Gia.
 3. Lô C — 7 boss mới.
 4. Hoàn thiện monster legacy m001–m004 sau các batch boss.
 5. Lô D — 16 quái mới theo nhóm cơ thể.

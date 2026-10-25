@@ -42,6 +42,14 @@ function birdImage(): string {
   return canvas.toDataURL('image/png');
 }
 
+/**
+ * Sprites are camera-facing quads: one centred just under the rim still pokes `size / 2` above the
+ * island top and, seen from the camera, covers the lane as a white haze. Keep the whole quad, plus its
+ * bob, below y = 0 so the island's depth hides it.
+ */
+const BOB_MARGIN = 1.5;
+export function belowTop(size: number, extraDepth: number): number { return -(size / 2) - BOB_MARGIN - extraDepth; }
+
 interface Cloud { sprite: Sprite; x: number; y: number; z: number; speed: number; phase: number }
 interface Mist { sprite: Sprite; angle: number; radius: number; speed: number; y: number; phase: number }
 interface Bird { sprite: Sprite; radius: number; angle: number; speed: number; y: number; flap: number; size: number }
@@ -63,20 +71,21 @@ export function buildCloudsAndBirds(scene: Scene): SkyCreatures {
   for (let i = 0; i < 70; i++) {
     const angle = rnd() * Math.PI * 2, distance = 70 + Math.sqrt(rnd()) * 330;
     const far = distance / 400;
-    add(Math.cos(angle) * distance, -46 - rnd() * 22, Math.sin(angle) * distance, 70 + rnd() * 70,
+    const size = 70 + rnd() * 70;
+    add(Math.cos(angle) * distance, belowTop(size, 10 + rnd() * 22), Math.sin(angle) * distance, size,
       [1 - far * .22, 1 - far * .12, 1], .95 - far * .3, (i % 2 ? 1 : -1) * (1.5 + rnd() * 1.5));
   }
   // Drifting banks around the island's belly, clear of the playable top.
   for (let i = 0; i < 36; i++) {
-    const side = i % 2 ? 1 : -1, x = side * (62 + rnd() * 110), z = -90 + rnd() * 190;
-    add(x, -4 - rnd() * 24, z, 24 + rnd() * 26, [1, 1, 1], .88, side * -(2 + rnd() * 2.5));
+    const side = i % 2 ? 1 : -1, x = side * (62 + rnd() * 110), z = -90 + rnd() * 190, size = 24 + rnd() * 26;
+    add(x, belowTop(size, rnd() * 20), z, size, [1, 1, 1], .88, side * -(2 + rnd() * 2.5));
   }
 
   // Mist hugging the cliffs: slow orbits just outside the island rim, never over the playable top.
   const mist: Mist[] = Array.from({ length: 22 }, (_, i) => {
     const sprite = new Sprite('mist', puffs);
     sprite.size = 30 + rnd() * 22; sprite.color = new Color4(.93, .96, 1, .42); sprite.angle = rnd() * 3;
-    return { sprite, angle: rnd() * 6.28, radius: 58 + rnd() * 16, speed: (.012 + rnd() * .012) * (i % 2 ? 1 : -1), y: -3 - rnd() * 16, phase: rnd() * 6.28 };
+    return { sprite, angle: rnd() * 6.28, radius: 58 + rnd() * 16, speed: (.012 + rnd() * .012) * (i % 2 ? 1 : -1), y: belowTop(sprite.size, rnd() * 12), phase: rnd() * 6.28 };
   });
 
   const birdManager = new SpriteManager('island-birds', birdImage(), 16, { width: 128, height: 64 }, scene);

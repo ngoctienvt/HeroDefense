@@ -1,0 +1,16 @@
+{
+  "app": "vfx-editor",
+  "kind": "project",
+  "version": 1,
+  "id": "vfx-e601076c-2121-46b5-9b8a-6c114401932c",
+  "name": "HeroDefense",
+  "settings": {
+    "effectDataPath": ".",
+    "outputPath": "out/vfx",
+    "assetRootPath": ".",
+    "allowExternalOutput": false,
+    "lastEffectFile": "starter-cone.json"
+  },
+  "createdAt": "2026-10-16T06:42:30.458Z",
+  "updatedAt": "2026-10-16T06:42:30.458Z"
+}

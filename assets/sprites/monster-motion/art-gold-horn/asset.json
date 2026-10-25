@@ -18,14 +18,14 @@
   ],
   "sourceMaster": "source/master/master_rgba.png",
   "anchor": [
-    663.5,
-    860.0
+    500,
+    800
   ],
   "motionEnvelopePx": [
-    576,
-    700
+    630,
+    599
   ],
-  "displayHeightWorld": 6.6,
+  "displayHeightWorld": 7.128,
   "actions": {
     "idle": {
       "framesPerDirection": 1,
@@ -49,34 +49,50 @@
   ],
   "status": {
     "master": "master-approved",
-    "directions": "pending",
-    "motion": "pending",
-    "packaged": "pending",
-    "integrated": "pending",
+    "directions": "directions-approved",
+    "motion": "motion-approved",
+    "packaged": "library-packaged",
+    "integrated": "not-routed-current-encounter",
     "built": "pending",
     "inGameApproved": "pending"
   },
   "directionAnchors": {
     "south": {
       "anchorPx": [
-        663.5,
-        860.0
+        500,
+        800
       ],
-      "source": "source/master/master_rgba.png"
+      "source": "source/export-frames-v1/idle/south/frame-00.png"
     },
     "west": {
       "anchorPx": [
-        613.0,
-        860.0
+        500,
+        800
       ],
-      "source": "source/directions/west/master/master_rgba.png"
+      "source": "source/export-frames-v1/idle/west/frame-00.png"
     },
     "north": {
       "anchorPx": [
-        648.5,
-        860.0
+        500,
+        800
       ],
-      "source": "source/directions/north/master/master_rgba.png"
+      "source": "source/export-frames-v1/idle/north/frame-00.png"
+    },
+    "east": {
+      "anchorPx": [
+        500,
+        800
+      ],
+      "source": "source/export-frames-v1/idle/east/frame-00.png"
     }
-  }
+  },
+  "motionBoundsPx": [
+    185,
+    226,
+    815,
+    825
+  ],
+  "restBodyHeightPx": 500,
+  "restBodyHeightWorld": 4.95,
+  "displayScaleRationale": "Group member target rest silhouette 6.6*0.75 world units before encounter/rank scaling; compensate motion canvas once."
 }

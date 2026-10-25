@@ -1,0 +1,64 @@
+{
+  "wings": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8604240282685512,
+    "bounds": {
+      "left": 0.11979166666666667,
+      "top": 0.22395833333333334,
+      "right": 0.9791666666666666,
+      "bottom": 0.8671875
+    }
+  },
+  "vortex": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8804878048780488,
+    "bounds": {
+      "left": 0.18489583333333334,
+      "top": 0.0390625,
+      "right": 0.9348958333333334,
+      "bottom": 0.8854166666666666
+    }
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.860655737704918,
+    "bounds": {
+      "left": 0.12239583333333333,
+      "top": 0.125,
+      "right": 0.9661458333333334,
+      "bottom": 0.8671875
+    }
+  },
+  "ground": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "radialEdge": 0.432951,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  },
+  "lance": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 5.417989417989418,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

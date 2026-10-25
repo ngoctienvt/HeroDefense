@@ -9,7 +9,7 @@ dependencies: [2]
 
 ## Overview
 
-Xây tuyến manifest runtime và mở rộng từ pilot sang thư viện 40. Theo yêu cầu người dùng, phần resolver/atlas consumer được làm song song khi art tiếp tục sản xuất; chỉ tích hợp asset sau khi đủ source/action/QA. Chưa có nghiệm thu trong game.
+Xây tuyến manifest runtime và mở rộng từ pilot sang thư viện 39. Theo yêu cầu người dùng, phần resolver/atlas consumer được làm song song khi art tiếp tục sản xuất; chỉ tích hợp asset sau khi đủ source/action/QA. Chưa có nghiệm thu trong game.
 
 ## Requirements
 
@@ -71,8 +71,10 @@ Kim/Ngân Giác và Ma Gia giữ 2/4 sprite con, một root/HP/hitbox và một 
 
 ## Success Criteria
 
-Nguồn và asset tích hợp nhất quán; đủ thư viện 40; gameplay hiện tại giữ nguyên. Phân biệt completion của sản xuất art với nghiệm thu chạy thật; không tuyên bố tất cả 40 đã xuất hiện tự nhiên khi 23 mẫu chưa có slot gameplay.
+Nguồn và asset tích hợp nhất quán; đủ thư viện 39; gameplay hiện tại giữ nguyên. Phân biệt completion của sản xuất art với nghiệm thu chạy thật; không tuyên bố tất cả 39 đã xuất hiện tự nhiên khi 23 mẫu chưa có slot gameplay.
 
 ## Risk Assessment
 
 Client generic enemy và dungeon chưa có art ID có thể bỏ qua resolver: scout luồng dựng actor trước khi sửa. Group che nhân vật/HP hoặc không vừa đảo: giảm spacing/pose/scale theo cùng profile, kiểm tra camera thật; không đổi collision. Nếu budget không đạt, chia atlas/load theo khu vực và giảm overdraw, không bỏ hướng hoặc giả animation bằng biến dạng.
+
+- 2026-10-25 current-state audit: `dungeon-boss-visuals.ts` không tồn tại; `visual-actors.ts` chọn hero qua skinHeroId hoặc monsterId, preloader chỉ lấy legacy ở zone0. Các ghi chép mapping nhóm trước đó là lịch sử, không là bằng chứng đã tích hợp. Kim Giác đã có library bundle; chưa tự khôi phục mapping hoặc đổi spawn/gameplay, cần đối chiếu encounter hiện tại khi làm routing.

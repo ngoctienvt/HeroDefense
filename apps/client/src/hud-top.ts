@@ -16,6 +16,8 @@ export interface TopHudHandlers {
   focusLane: (index: number) => void;
   settingsOpen: boolean;
   toggleSettings: () => void;
+  /** Lobby asset preload, 0..1; below 1 the Ready button waits so nobody joins combat mid-download. */
+  preloadRatio: number;
 }
 
 const SETTINGS_KEY = 'settings';
@@ -43,12 +45,15 @@ function playersRow(state: GameState, selfId: string, focusLane: (index: number)
   return row;
 }
 
-function primaryActions(state: GameState, selfId: string, send: (command: Command) => void): HTMLElement[] {
+function primaryActions(state: GameState, selfId: string, send: (command: Command) => void, preloadRatio: number): HTMLElement[] {
   const player = state.players[selfId];
   const host = state.host === selfId;
   const nodes: HTMLElement[] = [];
   if (state.phase === 'lobby' && player) {
-    nodes.push(iconButton('xac-nhan', player.ready ? 'Hủy sẵn sàng' : 'Sẵn sàng', () => send({ type: 'ready', ready: !player.ready }), player.ready ? 'secondary' : 'primary'));
+    const loading = !player.ready && preloadRatio < 1;
+    nodes.push(loading
+      ? iconButton('dong-ho', `Đang tải ${Math.floor(preloadRatio * 100)}%`, () => undefined, 'secondary preload-wait', true)
+      : iconButton('xac-nhan', player.ready ? 'Hủy sẵn sàng' : 'Sẵn sàng', () => send({ type: 'ready', ready: !player.ready }), player.ready ? 'secondary' : 'primary'));
     if (host) {
       const allReady = Object.values(state.players).every(p => p.ready && p.connected);
       nodes.push(iconButton('dot', allReady ? 'Khai trận' : 'Chờ mọi người sẵn sàng', () => send({ type: 'start' }), allReady ? 'primary' : 'secondary', !allReady));
@@ -74,7 +79,7 @@ export function renderTopHud(state: GameState, selfId: string, handlers: TopHudH
   const left = el('div', 'top-group top-left');
   left.append(
     stat('dot', `Đợt ${state.wave} / ${state.maxWaves}`, phaseLabel(state, player?.ready ?? false), `phase-${state.phase}`),
-    stat('dong-ho', state.phase === 'combat' ? 'Còn lại' : 'Đợt kế tiếp', `${Math.ceil(state.remaining)}s`,
+    stat('dong-ho', state.phase === 'combat' ? 'Thời gian vòng' : 'Đợt kế tiếp', state.phase === 'combat' ? 'Không giới hạn' : `${Math.ceil(state.remaining)}s`,
       state.phase === 'preparation' && state.remaining <= 10 ? 'is-urgent' : ''),
   );
 
@@ -86,7 +91,7 @@ export function renderTopHud(state: GameState, selfId: string, handlers: TopHudH
   center.append(baseBlock);
 
   const right = el('div', 'top-group top-right');
-  right.append(...primaryActions(state, selfId, handlers.send));
+  right.append(...primaryActions(state, selfId, handlers.send, handlers.preloadRatio));
   const settings = button('', handlers.toggleSettings, `icon-button settings-toggle ${handlers.settingsOpen ? 'is-open' : ''}`.trim());
   settings.dataset.popoverToggle = SETTINGS_KEY;
   settings.setAttribute('aria-label', 'Cài đặt');
@@ -136,12 +141,33 @@ export interface SettingsHandlers {
   roomCode: string;
   speed: number;
   audioEnabled: boolean;
+  /** 0–1 slider positions for the music and effects buses. */
+  musicVolume: number;
+  sfxVolume: number;
   send: (command: Command) => void;
   copyRoomCode: () => void;
   toggleAudio: () => void;
+  /** `commit` is false while dragging (live preview) and true on release (saved). */
+  setVolume: (channel: 'music' | 'sfx', value: number, commit: boolean) => void;
   cycleCamera: () => void;
   openGuide: () => void;
   leave: () => void;
+}
+
+/** One labelled 0–100 slider; disabled (but still showing its value) while sound is off. */
+function volumeRow(label: string, channel: 'music' | 'sfx', value: number, disabled: boolean,
+  setVolume: SettingsHandlers['setVolume']): HTMLElement {
+  const row = el('label', 'settings-row volume-row');
+  const slider = document.createElement('input');
+  slider.type = 'range'; slider.min = '0'; slider.max = '100'; slider.step = '5';
+  slider.value = String(Math.round(value * 100)); slider.disabled = disabled;
+  slider.setAttribute('aria-label', `Âm lượng ${label.toLowerCase()}`);
+  const readout = el('span', 'volume-value', `${slider.value}%`);
+  const read = (): number => Math.min(1, Math.max(0, Number(slider.value) / 100));
+  slider.addEventListener('input', () => { readout.textContent = `${slider.value}%`; setVolume(channel, read(), false); });
+  slider.addEventListener('change', () => setVolume(channel, read(), true));
+  row.append(el('span', 'volume-label', label), slider, readout);
+  return row;
 }
 
 /** Contents of the ⚙ popover; rebuilt only when one of these inputs changes. */
@@ -152,6 +178,8 @@ export function renderSettingsMenu(handlers: SettingsHandlers): HTMLElement {
     iconButton('sao-chep', 'Sao chép', handlers.copyRoomCode, 'ghost small'));
   menu.append(code);
   menu.append(iconButton(handlers.audioEnabled ? 'am-thanh-bat' : 'am-thanh-tat', handlers.audioEnabled ? 'Âm thanh: Bật' : 'Âm thanh: Tắt', handlers.toggleAudio, 'menu-item'));
+  menu.append(volumeRow('Nhạc', 'music', handlers.musicVolume, !handlers.audioEnabled, handlers.setVolume),
+    volumeRow('Hiệu ứng', 'sfx', handlers.sfxVolume, !handlers.audioEnabled, handlers.setVolume));
   menu.append(iconButton('goc-nhin', 'Đổi góc nhìn [Tab]', handlers.cycleCamera, 'menu-item'));
   if (handlers.isHost) {
     const row = el('div', 'settings-row');

@@ -9,6 +9,11 @@ import { GameRoom, admissionKey, issueTicket, rooms, tickets } from './game-room
 import { difficulties, playerName, RateLimit } from './validation.js';
 import { debugLog } from './debug-log.js';
 
+/** `/assets/...?v=<10 hex>` as produced by the client's asset manifest. */
+export function isVersionedAssetRequest(url: string): boolean {
+  return /^\/assets\/[^?]+\?v=[0-9a-f]{10}$/.test(url);
+}
+
 export interface RunningServer { server: Server; port: number; drain(): void; close(): Promise<void> }
 export async function startServer(port = 2567, host = '0.0.0.0'): Promise<RunningServer> {
   const rateByIp = new Map<string, { limiter: RateLimit; seen: number }>();
@@ -91,7 +96,10 @@ export async function startServer(port = 2567, host = '0.0.0.0'): Promise<Runnin
   app.use(express.static(clientDist, {
     index: false,
     setHeaders: (res, filePath) => {
-      if (filePath.endsWith('.html') || filePath.endsWith('.json')) {
+      // The client appends ?v=<content hash> (asset-version.ts); that exact URL never changes content.
+      if (isVersionedAssetRequest(res.req.originalUrl)) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else if (filePath.endsWith('.html') || filePath.endsWith('.json')) {
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.setHeader('Pragma', 'no-cache');
         res.setHeader('Expires', '0');

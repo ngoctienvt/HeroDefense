@@ -12,17 +12,17 @@ Mọi độ khó có đúng **20 vòng** (`RUN_WAVES = 20`), chia làm 4 hồi (
 - **`PRESSURE[w]` (`R(w)`)**: Chỉ số áp lực tăng nghiêm ngặt từ `0.80` (vòng 1) đến `1.40` (vòng 20).
 
 ### Công thức Máu & Công theo phân hạng (`EnemyRank`)
-- **Quái thường (`minion`)**:
+- **Quái thường (`minion`, cỡ `0.8×`)**:
   - Chết sau khoảng **10–15 đòn đánh thường** (hoặc 2–3 kỹ năng):
   - `minionHp(w, armor, hpScale, diffHp) = round(12 * A_REF[w] * (100 / (100 + armor * 5)) * hpScale * diffHp * BALANCE_SCALE.hp)`
   - `minionAttack(w, atkScale, diffAtk) = round((H_REF[w] / 18) * PRESSURE[w] * atkScale * diffAtk * BALANCE_SCALE.attack)`
-- **Tinh anh (`elite`, cỡ `1.1×`)**:
+- **Tinh anh (`elite`, cỡ `1.25×`)**:
   - `eliteHp = round(minionHp * 2.2)`
   - `eliteAttack = round(minionAttack * 1.35)`
-- **Đầu lĩnh (`chieftain`, cỡ `1.25×`, xuất hiện ở 40% thời lượng vòng thường)**:
+- **Đầu lĩnh (`chieftain`, cỡ `1.5×`, xuất hiện ở 40% thời lượng vòng thường)**:
   - `chieftainHp = round(minionHp * 4.0)`
   - `chieftainAttack = round(minionAttack * 1.65)`
-- **Boss (`boss`, cỡ `1.5×`, chung cho cả phòng ở đường giữa vào vòng 5/10/15/20)**:
+- **Boss (`boss`, cỡ `2.0×`, chung cho cả phòng ở đường giữa vào vòng 5/10/15/20)**:
   - Hệ số co-op: `partyBossFactor(players) = 1 + 0.75 * (players - 1)` (`1.0 / 1.75 / 2.50 / 3.25` cho 1–4 người).
   - `bossHp = round(150 * A_REF[w] * hpScale * partyBossFactor(players) * diffHp * BALANCE_SCALE.bossHp)`
   - `bossAttack = round((H_REF[w] / 6.5) * PRESSURE[w] * atkScale * diffAtk * BALANCE_SCALE.bossAttack)`

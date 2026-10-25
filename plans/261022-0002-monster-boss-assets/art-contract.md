@@ -1,6 +1,6 @@
 # Hợp đồng art, animation và nghiệm thu
 
-Áp dụng cho đủ 40 mẫu trong [roster](./roster.md). Chuẩn tướng là mức hoàn thiện tranh, góc camera, alpha và chuyển động; không bắt mọi con có tỉ lệ người hoặc vũ khí giống tướng.
+Áp dụng cho 39 mẫu trong [roster](./roster.md). Chuẩn tướng là mức hoàn thiện tranh, góc camera, alpha và chuyển động; không bắt mọi con có tỉ lệ người hoặc vũ khí giống tướng.
 
 ## Hình ảnh và camera
 
@@ -21,7 +21,7 @@
 | **Tổng / hướng** | **13** | **17** | Bốn hướng riêng |
 | **Tổng / cá thể** | **52** | **68** | Baseline để lập kế hoạch |
 
-20 quái × 52 + 20 boss × 68 = **2.400 frame**. Không tạo hit/death theo yêu cầu người dùng; không có bộ cast riêng. Sinh vật nhiều chi hoặc chuyển động khó có thể cần thêm frame walk/attack; baseline không phải trần chất lượng. Timing phải đo theo pose và nhịp gameplay, không chia đều cho đủ số frame. Attack art không quyết định thời điểm damage; hit-stop giữ clock. Nếu runtime có cast thì giữ pose lấy đà từ attack và chuyển theo event, không thêm action asset mới.
+20 quái × 52 + 19 boss × 68 = **2.332 frame**. Không tạo hit/death theo yêu cầu người dùng; không có bộ cast riêng. Sinh vật nhiều chi hoặc chuyển động khó có thể cần thêm frame walk/attack; baseline không phải trần chất lượng. Timing phải đo theo pose và nhịp gameplay, không chia đều cho đủ số frame. Attack art không quyết định thời điểm damage; hit-stop giữ clock. Nếu runtime có cast thì giữ pose lấy đà từ attack và chuyển theo event, không thêm action asset mới.
 
 Không tạo entrance, chuyển phase hoặc corpse riêng trong phạm vi này. Với 7 boss chưa có encounter, bàn giao idle/walk/attack và brief vật chất nhận diện, không tự thêm phase máu/kỹ năng. Khi bị hit dùng cue/VFX hiện có nếu phù hợp; khi chết dọn visual theo vòng đời hiện hữu, không đòi thêm pose hoặc giữ corpse.
 
@@ -45,6 +45,7 @@ Theo cấu trúc source/web sẵn có, dự kiến dùng `assets/sprites/monster
 - Chỉ chép texture runtime cần dùng vào `apps/client/public/assets/`; manifest runtime theo cấu trúc project. File source chất lượng cao không tải vào game.
 - Một scale từ rest pose cho cả bốn hướng và mọi action. Anchor mặt đất chung; thú bay có ground projection riêng để giữ độ cao ổn định, không lấy đáy bbox cánh làm chân.
 - Packer manifest map anchor riêng của từng hướng về anchor thế giới chung, giữ nguyên canvas/cell cho cả clip, scale từ motion envelope chung và dùng alpha premultiplied khi downscale. Không lọc connected component. Runtime JSON ghi page, rect, anchor, duration và loop; atlas nhiều trang được phép.
+- `motionBoundsPx` tùy chọn dành chỗ bên trên/dưới root theo envelope đã đo. Bounds phải khớp kích thước envelope, chứa anchor Y và có tâm X bằng anchor X; không dịch root theo từng frame. Profile không có trường này giữ placement cũ.
 - Không yêu cầu tỷ lệ blank margin cố định cho master hay từng cell. Toàn bộ silhouette cần dùng phải còn trong canvas/cell; không được crop hoặc tràn sang cell kế. Atlas padding tính theo motion envelope thực tế để tránh bleed khi sampling, không phải khoảng trắng trang trí quanh nhân vật. Cảnh báo `safe_frame` chỉ là heuristic; chỉ xem là lỗi khi có pixel/chi tiết bị cắt, cross-cell spill, hoặc bleed ở kích thước runtime.
 - Bảo toàn đầu cánh/vũ khí/rễ; downscale premultiplied alpha; không lọc largest-component khiến rơi tay/chi/tua.
 - Kích thước cell/atlas chọn sau pilot theo cỡ chơi thật; hỗ trợ hơn một trang nếu cần. Không hardcode 7 cell, 36 frame, 2048 hay một grid cho mọi sinh vật.
@@ -52,6 +53,8 @@ Theo cấu trúc source/web sẵn có, dự kiến dùng `assets/sprites/monster
 ## QA hai lớp
 
 **Kiểm tra dữ liệu:** ID/clip đầy đủ, không frame trống, alpha thật, rect trong atlas, timing dương, loop đúng, event hợp lệ, anchor/scale không nhảy, texture không thiếu. Báo WARN/FAIL nguyên trạng và xử lý hoặc ghi hạn chế rõ; số liệu không thay duyệt mắt.
+
+**Lưu ý alpha/ownership:** RGB có màu dưới alpha 0 vẫn vô hình; xác minh alpha và composite sáng/tối trước khi kết luận nền đục. Ownership có thể gộp nhiều thân qua cầu nối alpha mờ: kiểm tra từng frame còn đúng một cá thể, không chỉ đủ số file. Khi đổi solid seed, phải giữ toàn bộ phần nhìn thấy và kiểm tra đảo source origin bảo toàn pixel; raw spill FAIL vẫn được giữ.
 
 **Duyệt hình:** từng hướng/từng action ở cỡ chơi thật, nền đất sáng/tối, cạnh tướng chuẩn. Xem bàn tay/càng/chân/cánh, số chi, lưng, sự đổi vũ khí, điểm tiếp đất, nối vòng, thu thế, viền màu và bộ phận bị cắt. Preview phóng lớn chỉ hỗ trợ; không dùng làm bằng chứng chất lượng ở cỡ game.
 

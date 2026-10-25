@@ -4,6 +4,7 @@ import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
 import { VertexData } from '@babylonjs/core/Meshes/mesh.vertexData.js';
 import type { Scene } from '@babylonjs/core/scene.js';
+import { assetUrl } from './asset-version.js';
 import { debug } from './debug.js';
 import { createIslandGround } from './visual-terrain-ground.js';
 import { buildIslandRim, type RimFall, type RimRock } from './visual-terrain-rim.js';
@@ -74,7 +75,7 @@ export function buildIsland(scene: Scene, zone: number, laneCount: number): () =
   let disposeRim = () => {};
   const started = performance.now();
 
-  fetch(`/assets/terrain/island-${name}.json`)
+  fetch(assetUrl(`/assets/terrain/island-${name}.json`))
     .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
     .then(raw => {
       if (disposed) return;

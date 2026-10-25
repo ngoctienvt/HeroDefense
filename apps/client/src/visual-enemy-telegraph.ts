@@ -10,8 +10,10 @@ import type { EnemyTelegraphShape } from '../../../packages/contracts/src/types.
 import { debug } from './debug.js';
 import type { EnemyTelegraphSpec } from './visual-enemy-skill-routing.js';
 
+type GroundTelegraphShape = Extract<EnemyTelegraphShape, 'circle' | 'line' | 'cone'>;
+
 type ActiveTelegraph = {
-  shape: EnemyTelegraphShape;
+  shape: GroundTelegraphShape;
   root: TransformNode;
   fill: Mesh;
   border: Mesh;
@@ -31,7 +33,7 @@ const MAX_TELEGRAPHS = 24;
  */
 export class VisualEnemyTelegraph {
   private active: ActiveTelegraph[] = [];
-  private pools: Record<EnemyTelegraphShape, ActiveTelegraph[]> = {
+  private pools: Record<GroundTelegraphShape, ActiveTelegraph[]> = {
     circle: [],
     line: [],
     cone: [],
@@ -41,6 +43,10 @@ export class VisualEnemyTelegraph {
   constructor(private scene: Scene) {}
 
   show(spec: EnemyTelegraphSpec, skillId: string | undefined, reduced: boolean): void {
+    if (spec.shape !== 'circle' && spec.shape !== 'line' && spec.shape !== 'cone') {
+      debug('visual.enemy.telegraph-skipped', { skillId, shape: spec.shape });
+      return;
+    }
     if (this.active.length >= MAX_TELEGRAPHS) {
       const oldest = this.active.shift()!;
       this.release(oldest);
@@ -145,7 +151,7 @@ export class VisualEnemyTelegraph {
     this.active.length = 0;
   }
 
-  private acquire(shape: EnemyTelegraphShape): ActiveTelegraph {
+  private acquire(shape: GroundTelegraphShape): ActiveTelegraph {
     const pooled = this.pools[shape].pop();
     if (pooled) return pooled;
 

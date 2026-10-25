@@ -29,6 +29,9 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
   const direction = directionTo(unit, aim);
   const area = (center: Vec, radius: number): Enemy[] => enemies.filter(enemy => distance(enemy, center) <= radius);
   const ids: string[] = [];
+  let supportTargets: string[] | undefined;
+  let resourceTarget: string | undefined;
+  let displacements: { id: string; from: Vec; to: Vec }[] | undefined;
   const strike = (enemy: Enemy, power: number, penetration = 0, trueDamage = false): void => {
     ids.push(enemy.id);
     hit(unit, enemy, power, penetration, trueDamage);
@@ -73,7 +76,7 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
     }
     case 'h00U': {
       for (const enemy of enemies.filter(e => inLine(unit, direction, e, 12, 3))) strike(enemy, attack * 3.2, 0, true);
-      unit.berserk = { remaining: 6, attackSpeed: .9, lifesteal: 0 };
+      unit.berserk = { remaining: 6, attackSpeed: .9, lifesteal: 0, sourceSkillId: 'tier3-tier4-h00U' };
       unit.empower = { remaining: 6, attackBonus: 0, armorPierce: .4 };
       unit.stun = 0;
       break;
@@ -124,9 +127,12 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
       const linked = area(aim, 6.5).slice(0, 8);
       for (const enemy of linked) strike(enemy, attack * 2.5);
       const group = linked.filter(e => Boolean(state.enemies[e.id])).map(e => e.id);
-      for (const id of group) state.enemies[id].soulLink = { remaining: 5, group, sharePercent: .5 };
+      for (const id of group) state.enemies[id].soulLink = { remaining: 5, group, sharePercent: .5, casterId: unit.id };
+      supportTargets = allies.map(ally => ally.id);
       for (const ally of allies) {
+        const previousHaste = ally.haste;
         hasteAllyMax(ally, 5, .45);
+        if (ally.haste && ally.haste !== previousHaste) ally.haste.sourceSkillId = 'tier3-tier4-h00Y';
         if (!ally.berserk) ally.berserk = { remaining: 5, attackSpeed: 0, lifesteal: .15 };
         else ally.berserk.lifesteal = Math.max(ally.berserk.lifesteal, .15);
       }
@@ -156,8 +162,10 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
       break;
     }
     case 'h03T': {
+      displacements = [];
       for (const enemy of area(unit, 5.5)) {
         const front = { x: unit.x + direction.x * 1.8, z: unit.z + direction.z * 1.8 };
+        displacements.push({ id: enemy.id, from: { x: enemy.x, z: enemy.z }, to: { ...front } });
         enemy.x = front.x; enemy.z = front.z;
         strike(enemy, attack * 2.4);
         if (state.enemies[enemy.id]) enemy.attackWeak = { remaining: 5, strength: .4 };
@@ -166,7 +174,7 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
         const previous = ally.shield;
         ally.shield = Math.max(ally.shield, attack * 3 + ally.maxHp * .22);
         (ally.tierGoldShields ??= []).push({ remaining: 5, amount: ally.shield - previous });
-        ally.ward = { remaining: 5, reduction: .4 };
+        ally.ward = { remaining: 5, reduction: .4, sourceSkillId: 'tier3-tier4-h03T' };
         ally.reflect = { amount: .6 };
         ids.push(ally.id);
       }
@@ -182,6 +190,7 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
       }
       const strongest = [...allies].sort((a, b) => effectiveUnitAttack(b) - effectiveUnitAttack(a))[0];
       if (strongest) {
+        resourceTarget = strongest.id;
         if (strongest.energyType === 'cooldown') strongest.abilityCooldown = Math.max(0, strongest.abilityCooldown - 3);
         else strongest.energy = Math.min(strongest.maxEnergy ?? 100, (strongest.energy ?? 0) + 35);
       }
@@ -192,12 +201,13 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
         strike(enemy, attack * 3.7);
         if (state.enemies[enemy.id]) applyEnemyStatus(enemy, unit, 0, 'slow', 2.2, TIER3_TIER4_REWORK.h03V.slow);
       }
-      unit.haste = { remaining: 4, amount: .5 };
+      unit.haste = { remaining: 4, amount: .5, sourceSkillId: 'tier3-tier4-h03V' };
       break;
     }
   }
   event(state, { kind: 'ability', source: unit.id, target: ids[0], targets: ids, x: aim.x, z: aim.z,
-    zone: unit.zone, direction, skillId: `tier3-tier4-${unit.heroId}` });
+    zone: unit.zone, direction, skillId: `tier3-tier4-${unit.heroId}`, ...(supportTargets ? { supportTargets } : {}),
+    ...(resourceTarget ? { resourceTarget } : {}), ...(displacements ? { displacements } : {}) });
 }
 
 export function stepMonkeyClone(state: GameState, clone: Unit, hit: Hit): void {

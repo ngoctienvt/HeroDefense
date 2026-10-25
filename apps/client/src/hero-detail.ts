@@ -1,6 +1,7 @@
 import type { HeroDef, Unit } from '../../../packages/contracts/src/types.js';
 import { ATTACK_GEOMETRY_DESCRIPTIONS, ATTACK_GEOMETRY_NAMES, ON_HIT_TRAIT_DESCRIPTIONS, ON_HIT_TRAIT_NAMES } from '../../../packages/contracts/src/combat-profiles.js';
 import { controlChance } from '../../../packages/game-core/src/crowd-control.js';
+import { scaledAttackRange } from '../../../packages/game-core/src/rules.js';
 import { energyLabel, energyState, hpState } from './hero-status.js';
 import { el, heroPortrait, iconText, meter, number } from './ui.js';
 import { ELEMENT_ICONS, icon, ROLE_ICONS } from './ui-icons.js';
@@ -90,7 +91,7 @@ export function heroDetail(hero: HeroDef, unit?: Unit, options: { compact?: bool
   stats.append(
     el('span', '', `Công ${number(attack)}`),
     el('span', '', `Giáp ${number(armor)}`),
-    el('span', '', `Tầm ${hero.range}`),
+    el('span', '', `Tầm ${unit?.range ?? scaledAttackRange(hero.range)}`),
     el('span', '', `${hero.interval}s/đòn`),
   );
   if (!unit) stats.append(el('span', '', `HP ${number(hero.hp)}`), el('span', '', `Chạy ${hero.speed}`));

@@ -1,0 +1,52 @@
+{
+  "bow": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.03125,
+      "top": 0.125,
+      "right": 0.9635416666666666,
+      "bottom": 0.8515625
+    }
+  },
+  "pillar": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8606870229007634,
+    "bounds": {
+      "left": 0.20572916666666666,
+      "top": 0.026041666666666668,
+      "right": 0.8333333333333334,
+      "bottom": 0.8671875
+    }
+  },
+  "dragon": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 3.7925925925925927,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  },
+  "lane": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 4.654545454545454,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

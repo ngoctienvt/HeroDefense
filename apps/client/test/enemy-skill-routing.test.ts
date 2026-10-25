@@ -8,10 +8,10 @@ import {
 
 describe('enemy skill visual routing & telegraphs', () => {
   it('returns rank scale multipliers for hero-skinned enemies', () => {
-    expect(enemyRankScale('minion')).toBe(0.95);
-    expect(enemyRankScale('elite')).toBe(1.1);
-    expect(enemyRankScale('chieftain')).toBe(1.25);
-    expect(enemyRankScale('boss')).toBe(1.5);
+    expect(enemyRankScale('minion')).toBe(0.8);
+    expect(enemyRankScale('elite')).toBe(1);
+    expect(enemyRankScale('chieftain')).toBe(1);
+    expect(enemyRankScale('boss')).toBe(2.0);
     expect(enemyRankScale(undefined)).toBe(1);
   });
 

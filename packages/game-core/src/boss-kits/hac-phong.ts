@@ -3,7 +3,7 @@ import type { EnemySkillState } from '../../../contracts/src/types.js';
 import { BALANCE_SCALE } from '../balance-curve.js';
 import { enemyRouteFor } from '../battlefield-layout.js';
 import { recordEnemySpawn } from '../combat-ttk-telemetry.js';
-import { enemyRadius, MONSTER_ROW_SPACING, monsterRadius } from '../crowd-movement.js';
+import { enemyRadius, MONSTER_ROW_SPACING, monsterRadius, BOSS_REACH_GROWTH } from '../crowd-movement.js';
 import { type EnemySkillHelpers, pushHeroFrom } from '../enemy-skill-templates.js';
 import { distance, event, isDeployed, nextId } from '../rules.js';
 import { resolveEnemySpawn } from '../wave-plan.js';
@@ -72,7 +72,7 @@ export function resolveHacPhongSkill(helpers: EnemySkillHelpers, skill: EnemySki
   }
 
   if (skill.id === 'boss-earthquake') {
-    const radius = 4.2;
+    const radius = 4.2 + BOSS_REACH_GROWTH;
     const damage = Math.round(Math.max(45 * difficulty.attack, enemy.attack * 1.5 * BALANCE_SCALE.skillPower));
     const hits = units.filter(unit => isDeployed(unit) && unit.zone === 0 && distance(unit, enemy) <= radius);
     for (const unit of hits) {
@@ -107,7 +107,8 @@ export function resolveHacPhongSkill(helpers: EnemySkillHelpers, skill: EnemySki
       for (let row = 0; !found && row < 8; row++) {
         for (let column = 0; column < 4; column++) {
           const x = route[0].x + (column - 1.5) * MONSTER_ROW_SPACING;
-          const z = route[0].z + 0.6 - row * MONSTER_ROW_SPACING;
+          // Rows fill inward from the gate: rows behind it would sit outside the arena and never move.
+          const z = route[0].z + 0.6 + row * MONSTER_ROW_SPACING;
           if (
             Object.values(state.enemies).some(
               other =>

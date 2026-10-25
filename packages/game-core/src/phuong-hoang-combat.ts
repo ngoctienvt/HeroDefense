@@ -8,7 +8,7 @@ type Damage = (caster: Unit, enemy: Enemy, amount: number, direct?: boolean) => 
 
 export function phuongHoangAttack(state: GameState, caster: Unit, target: Enemy, hurt: Damage): void {
   const shots = Object.values(state.enemies).filter(enemy => enemy.zone === caster.zone
-    && enemy.hp > 0 && distance(enemy, caster) <= P.range)
+    && enemy.hp > 0 && distance(enemy, caster) <= caster.range)
     .sort((a, b) => (a.id === target.id ? -1 : b.id === target.id ? 1
       : distance(a, caster) - distance(b, caster))).slice(0, P.shots);
   caster.energy = Math.min(caster.maxEnergy ?? 100, (caster.energy ?? 0) + P.rageOnAttack);

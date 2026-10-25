@@ -1,3 +1,4 @@
+import { assetUrl } from './asset-version.js';
 import type { HeroDirection, HeroPose } from './hero-motion.js';
 
 export const MONSTER_MOTION_IDS = ['m001', 'm002', 'm003', 'm004', 'b001'] as const;
@@ -174,7 +175,7 @@ export function loadMonsterMotionManifest(id: MonsterMotionId): Promise<MonsterM
   }
   const cached = manifestCache.get(id);
   if (cached) return cached;
-  const request = fetch(`/assets/monster-motion-${id}.json`, { cache: 'force-cache' })
+  const request = fetch(assetUrl(`/assets/monster-motion-${id}.json`), { cache: 'force-cache' })
     .then(async response => {
       if (response.status === 404) return undefined;
       if (!response.ok) throw new Error(`Manifest request failed (${response.status})`);

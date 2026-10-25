@@ -70,6 +70,49 @@ export function sampleMotionTrack(track: MotionTrack, now: number): MotionPose {
   return { x: newest.x, z: newest.z, vx: 0, vz: 0 };
 }
 
+/** Above this the stall is treated as a pause (tab hidden, reconnect): re-anchor instead of smoothing. */
+const RESYNC_LATENESS = 1;
+const OFFSET_DRIFT = .02;
+const LATENESS_SMOOTHING = .1;
+const MAX_EXTRA_DELAY = .25;
+
+/**
+ * Timestamps snapshots on the server's timeline instead of their arrival time. Over a VPN or Wi-Fi,
+ * packets sent every 100 ms arrive in bursts (two in one frame, then a 200 ms gap); arrival stamps
+ * collapse those samples and stall interpolation, so walkers flip to idle and slide. Server time comes
+ * from `elapsed` (game seconds) divided by the game speed; the offset to the local clock follows the
+ * earliest arrivals and drifts up slowly, and `extraDelay` widens the render delay to cover the jitter.
+ */
+export class SnapshotClock {
+  private lastElapsed: number | undefined;
+  private serverTime = 0;
+  private offset = 0;
+  private lastStamp = -Infinity;
+  private lateness = 0;
+
+  /** Local-clock timestamp (seconds) for a snapshot received at `receivedAt`. */
+  stamp(receivedAt: number, elapsed: number, speed: number): number {
+    const advance = this.lastElapsed === undefined ? -1 : (elapsed - this.lastElapsed) / Math.max(1, speed);
+    this.lastElapsed = elapsed;
+    if (advance <= 0) {
+      // First sample, paused simulation or a new run: anchor to this arrival.
+      this.offset = receivedAt - this.serverTime; this.lateness = 0;
+    } else {
+      this.serverTime += advance;
+      const offset = receivedAt - this.serverTime;
+      if (offset < this.offset || offset - this.offset > RESYNC_LATENESS) this.offset = offset;
+      else this.offset += (offset - this.offset) * OFFSET_DRIFT;
+      this.lateness += (offset - this.offset - this.lateness) * LATENESS_SMOOTHING;
+    }
+    // Never step backwards: an early packet lowers the offset, but samples must stay ordered.
+    this.lastStamp = Math.max(this.serverTime + this.offset, this.lastStamp + 1e-3);
+    return this.lastStamp;
+  }
+
+  /** Extra render delay (seconds) covering the jitter observed recently. */
+  get extraDelay(): number { return Math.min(MAX_EXTRA_DELAY, Math.max(0, this.lateness * 2)); }
+}
+
 /** Walk/idle decision with hysteresis so a crowd does not flicker between poses. */
 export function updateMovingState(track: MotionTrack, speed: number, dt: number): boolean {
   if (speed >= START_MOVING_SPEED) { track.moving = true; track.stillFor = 0; }

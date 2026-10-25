@@ -61,7 +61,28 @@ describe('Tier 3 and Tier 4 designs', () => {
     resolveTier4Ability(state, other, front, (source, target, damage, penetration, trueDamage) =>
       hurtEnemy(state, source, target, damage, penetration, false, trueDamage));
     expect(front.soulLink).toMatchObject({ remaining: 5, sharePercent: .5 });
-    expect(front.soulLink?.casterId).toBeUndefined();
+    expect(front.soulLink?.casterId).toBe(other.id);
+  });
+  it('emits Ngũ Đạo support receipts without claiming a stronger existing haste', () => {
+    const state = game(), hero = deployed(state, 'h00Y'), ally = deployed(state, 'h00R', 1);
+    ally.haste = { remaining: 8, amount: .8 };
+    resolveTier4Ability(state, hero, hero, () => {});
+    expect(ally.haste).toEqual({ remaining: 8, amount: .8 });
+    expect(hero.haste?.sourceSkillId).toBe('tier3-tier4-h00Y');
+    expect(state.events.at(-1)?.supportTargets).toContain(ally.id);
+  });
+  it('records Tịnh Đàn pull origins before moving enemies and tags only its own ward', () => {
+    const state = game(), hero = deployed(state, 'h03T'); hero.x = hero.z = 0;
+    const target = enemy(state, hero, { x: 3, z: 0 });
+    resolveTier4Ability(state, hero, { x: 10, z: 0 }, () => {});
+    expect(state.events.at(-1)?.displacements).toEqual([{ id: target.id, from: { x: 3, z: 0 }, to: { x: 1.8, z: 0 } }]);
+    expect(hero.ward).toMatchObject({ remaining: 5, reduction: .4, sourceSkillId: 'tier3-tier4-h03T' });
+  });
+  it('records Kim Thân resource target independently from the healing targets', () => {
+    const state = game(), hero = deployed(state, 'h03U'), ally = deployed(state, 'h00R', 1);
+    hero.attack = 10000; ally.attack = 1;
+    resolveTier4Ability(state, hero, hero, () => {});
+    expect(state.events.at(-1)).toMatchObject({ targets: [ally.id], resourceTarget: hero.id });
   });
   it('registers every supplied hero with the supplied combat stats and skill name', () => {
     expect(brief.heroes).toHaveLength(24);

@@ -122,7 +122,7 @@ describe('death, rewards and respawn', () => {
     const killer = enemy(state, unit, { attack: 100000 });
     // Enemy hits land after their wind-up.
     for (let tick = 0; tick < 20 && unit.hp > 0; tick++) stepGame(state, .05);
-    expect(unit.hp).toBe(0); expect(unit.deaths).toBe(1); expect(unit.respawn).toBeGreaterThan(5);
+    expect(unit.hp).toBe(0); expect(unit.deaths).toBe(1); expect(unit.respawn).toBe(5);
     expect(unit.shield).toBe(0); delete state.enemies[killer.id];
     for (let n = 0; n < 120; n++) stepGame(state, .05);
     expect(unit.hp).toBe(unit.maxHp); expect(unit.zone).toBe(0); expect(unit.respawn).toBe(0);

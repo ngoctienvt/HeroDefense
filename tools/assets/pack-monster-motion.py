@@ -309,6 +309,28 @@ def pack_profile(asset_id: str) -> None:
                    for index, value in enumerate(profile_anchor))):
         raise ValueError("Profile anchor must be [x, y]")
     target_anchor = [cell_w / 2, cell_h - padding]
+    motion_bounds = profile.get("motionBoundsPx")
+    if motion_bounds is not None:
+        if (not isinstance(motion_bounds, list) or len(motion_bounds) != 4
+                or any(type(value) not in (int, float) or not math.isfinite(value)
+                       for value in motion_bounds)):
+            raise ValueError("motionBoundsPx must be four finite source coordinates")
+        left, top, right, bottom = motion_bounds
+        if not (0 <= left < right <= source_size[0]
+                and 0 <= top < bottom <= source_size[1]):
+            raise ValueError("motionBoundsPx must be a non-empty box inside the source canvas")
+        if (not math.isclose(right - left, envelope[0], abs_tol=1e-6)
+                or not math.isclose(bottom - top, envelope[1], abs_tol=1e-6)):
+            raise ValueError("motionBoundsPx dimensions must match motionEnvelopePx")
+        if (not math.isclose((left + right) / 2, profile_anchor[0], abs_tol=1e-6)
+                or not top <= profile_anchor[1] <= bottom):
+            raise ValueError("motionBoundsPx must horizontally center the source anchor and include its height")
+        # Reserve space on both sides of the ground root. Perspective feet or
+        # impact paws may project below it; moving/cropping them would slide the actor.
+        content_top = (cell_h - envelope[1] * scale) / 2
+        target_anchor[1] = content_top + (profile_anchor[1] - top) * scale
+    LOG.info("profile placement id=%s sourceAnchor=%s targetAnchor=%s bounds=%s scale=%.5f",
+             asset_id, profile_anchor, target_anchor, motion_bounds, scale)
     direction_anchors = profile.get("directionAnchors", {})
     if not isinstance(direction_anchors, dict):
         raise ValueError("Profile directionAnchors must be an object")

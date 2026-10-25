@@ -1,3 +1,4 @@
+import { assetUrl } from './asset-version.js';
 import { debug } from './debug.js';
 import { hasStylizedMotion } from './stylized-motion.js';
 
@@ -42,7 +43,7 @@ export function spriteUv(heroId: string): number[] | undefined {
 
 export function applyHeroPortrait(node: HTMLElement, heroId: string): void {
   if (hasStylizedMotion(heroId)) {
-    const url = `/assets/hero-portrait-${heroId}.webp`;
+    const url = assetUrl(`/assets/hero-portrait-${heroId}.webp`);
     let ready = stylizedLoading.get(heroId);
     if (!ready) {
       ready = new Promise<boolean>(resolve => {
@@ -69,13 +70,13 @@ export function applyHeroPortrait(node: HTMLElement, heroId: string): void {
       const image = new Image();
       image.onload = () => { debug('portrait.atlas-ready', { atlas: tile.atlas }); resolve(true); };
       image.onerror = () => { debug('portrait.atlas-fallback', { atlas: tile.atlas }); resolve(false); };
-      image.src = `/assets/hero-portraits-${tile.atlas}.webp`;
+      image.src = assetUrl(`/assets/hero-portraits-${tile.atlas}.webp`);
     });
     loading.set(tile.atlas, ready);
   }
   void ready.then(ok => {
     if (!ok) return;
-    node.style.backgroundImage = `url('/assets/hero-portraits-${tile.atlas}.webp')`;
+    node.style.backgroundImage = `url('${assetUrl(`/assets/hero-portraits-${tile.atlas}.webp`)}')`;
     node.style.backgroundSize = `${tile.columns * 100}% 200%`;
     node.style.backgroundPosition = `${(tile.tile % tile.columns) * 100 / (tile.columns - 1)}% ${tile.tile < tile.columns ? 0 : 100}%`;
     node.classList.add('has-art');

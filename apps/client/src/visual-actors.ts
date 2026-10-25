@@ -15,6 +15,9 @@ import { assignActorDrawGroups, configureCombatDrawOrder } from './visual-kit-dr
 import { createMotionTrack, sampleMotionTrack, updateMovingState, type MotionTrack } from './actor-interpolation.js';
 import { enemyRankScale } from './visual-enemy-skill-routing.js';
 import { PALETTE } from './ui-palette.js';
+import { createPigModel, PIG_HEIGHT, usesRoundOnePig } from './visual-pig-model.js';
+import { createPanguModel, PANGU_MODEL_HEIGHT } from './visual-pangu-model.js';
+import { PANGU_HERO_ID } from './pangu-motion.js';
 
 export type VisualActor = {
   root: TransformNode; barRoot: TransformNode; body: Mesh; head: Mesh; weapon: Mesh;
@@ -96,26 +99,38 @@ export type VisualActor = {
   thunderBlessed?: boolean;
   truongFrozen?: boolean;
   truongSunder?: boolean;
+  model?: ReturnType<typeof createPigModel> | ReturnType<typeof createPanguModel>;
+  modelAttackDuration?: number;
+  modelMotionSpeed?: number;
   sprite?: ReturnType<typeof createHeroSprite> | ReturnType<typeof createMonsterSprite>; spriteShown: boolean; fallbackParts: Mesh[];
 };
 
 export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit | Enemy, _ownerColor = '#9de8c2', _seat = 0,
-  spriteActive = true): VisualActor {
+  spriteActive = true, spawnWave = 0): VisualActor {
   const hero = 'heroId' in entity ? HERO_BY_ID[entity.heroId] : undefined;
   const role = hero?.role ?? ('kind' in entity ? entity.kind : 'warrior');
   const enemy = !hero;
   const skinHeroId = enemy && 'skinHeroId' in entity ? entity.skinHeroId : undefined;
-  const enemyRank = enemy && !('heroId' in entity) ? entity.rank : undefined;
+  const rawEnemyRank = enemy && !('heroId' in entity) ? entity.rank : undefined;
+  const monsterId = enemy && 'monsterId' in entity ? entity.monsterId : undefined;
+  const boss = role === 'boss' || rawEnemyRank === 'boss' || monsterId === 'b001';
+  const enemyRank: Enemy['rank'] | undefined = enemy
+    ? (rawEnemyRank ?? (boss ? 'boss' : monsterId === 'm003' || monsterId === 'm004' ? 'elite' : 'minion'))
+    : undefined;
   const enemyKit = enemy && 'kit' in entity ? entity.kit : undefined;
   const chieftain = enemyRank === 'chieftain';
   const authoredMonster = enemy && 'monsterId' in entity && Boolean(entity.monsterId);
-  const boss = role === 'boss' || enemyRank === 'boss';
-  const size = boss ? 2.3 : chieftain ? 1.55 : role === 'guardian' ? 1.4 : 1.25;
+
+  const eliteRank = enemyRank === 'elite';
+  const rankScale = enemy ? enemyRankScale(enemyRank) : 1;
+  const size = hero ? (role === 'guardian' ? 1.4 : 1.25) : 1.25 * rankScale;
   const colors: Record<string, string> = {
     warrior: '#c78c6d', ranger: '#75af92', mage: '#819fd0', guardian: '#bdab89', support: '#b8a3d9',
     melee: '#a87677', ranged: '#9d9a77', boss: '#6e9a78',
   };
   const root = new TransformNode(entity.id, scene);
+  const model = hero?.id === PANGU_HERO_ID ? createPanguModel(scene, root, spriteActive)
+    : usesRoundOnePig(entity, spawnWave) ? createPigModel(scene, root, spriteActive) : undefined;
   const material = palette.get(`actor-${role}`, colors[role] ?? '#af9fbb');
   const elementColors = ['#e8d3a0', '#82d1ad', '#8ad7e7', '#e9a47c', '#d9c28d'];
   const accent = hero ? palette.get(`hero-accent-${hero.element}`, elementColors[(hero.element - 1 + 5) % 5], .3) : material;
@@ -173,7 +188,8 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   if ('summonKind' in entity && entity.summonKind === 'ancient-tree') {
     for (const part of fallbackParts) part.visibility = 0;
   }
-  const sprite = 'summonKind' in entity && entity.summonKind === 'ancient-tree' ? createMedicinalTree(scene, palette, root)
+  const sprite = model ? undefined
+    : 'summonKind' in entity && entity.summonKind === 'ancient-tree' ? createMedicinalTree(scene, palette, root)
     : hero ? createHeroSprite(scene, palette, hero.id, root)
     : skinHeroId ? createHeroSprite(scene, palette, skinHeroId, root, {
       scale: enemyRankScale(enemyRank),
@@ -181,7 +197,7 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
       rank: enemyRank,
     })
     : 'monsterId' in entity && entity.monsterId ? createMonsterSprite(scene, palette, entity.monsterId, root,
-      { active: spriteActive })
+      { active: spriteActive, scale: rankScale })
     : undefined;
   const spriteParts: { mesh: Mesh; meshes?: Mesh[] } | undefined = sprite;
   const spriteMeshes = spriteParts?.meshes ?? (sprite ? [sprite.mesh] : []);
@@ -190,7 +206,8 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
 
   const isHero = Boolean(hero);
   const isBoss = boss || ('monsterId' in entity && entity.monsterId === 'b001');
-  const shadowRadius = isBoss ? 2.3 : chieftain ? 1.35 : enemyRank === 'elite' ? 1.0 : isHero ? 0.75 : 0.85;
+  const shadowRadius = model ? (hero ? PANGU_MODEL_HEIGHT : PIG_HEIGHT) * .31
+    : isBoss ? 3.0 : chieftain || eliteRank ? .8 : isHero ? 0.75 : 0.65;
   const shadow = MeshBuilder.CreateDisc(`shadow-${entity.id}`, { radius: shadowRadius, tessellation: 20 }, scene);
   shadow.parent = root;
   shadow.rotation.x = Math.PI / 2;
@@ -201,7 +218,7 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   const barRoot = new TransformNode(`bar-root-${entity.id}`, scene);
   barRoot.parent = root;
   barRoot.billboardMode = Mesh.BILLBOARDMODE_ALL;
-  const initialHpY = 'summonKind' in entity && entity.summonKind === 'ancient-tree' ? 5 : boss ? 3.7 : chieftain ? 3.3 : 2.75;
+  const initialHpY = 'summonKind' in entity && entity.summonKind === 'ancient-tree' ? 5 : boss ? 4.5 : chieftain ? 3.6 : eliteRank ? 3.1 : hero ? 2.75 : 2.3;
   barRoot.position.set(0, initialHpY, 0);
 
   const groupSize = sprite ? spriteMeshes.length : 1;
@@ -268,7 +285,7 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
     enemyKit,
     enraged: enemy && 'enraged' in entity ? entity.enraged : undefined,
     authoredMonsterArt,
-    sprite, spriteShown: false, fallbackParts };
+    model, sprite, spriteShown: false, fallbackParts };
 }
 
 /**
@@ -286,12 +303,14 @@ export function faceActorTowards(actor: VisualActor, x: number, z: number): void
 }
 
 export function animateActor(actor: VisualActor, dt: number, time: number, reduced: boolean,
-  cameraX = 0, cameraZ = 1, _cameraAlpha = Math.PI / 2, _cameraBeta = 0.66): void {
+  cameraX = 0, cameraZ = 1, _cameraAlpha = Math.PI / 2, _cameraBeta = 0.66,
+  /** Wall clock (s) at which to sample snapshot motion; battlefield subtracts its jitter delay. */
+  motionNow = performance.now() / 1000): void {
   const frozen = actor.hitStop > 0;
   actor.hitStop = Math.max(0, actor.hitStop - dt);
   let headingX: number, headingZ: number, moving: boolean;
   if (actor.track) {
-    const motion = sampleMotionTrack(actor.track, performance.now() / 1000);
+    const motion = sampleMotionTrack(actor.track, motionNow);
     actor.root.position.x = motion.x; actor.root.position.z = motion.z;
     moving = updateMovingState(actor.track, Math.hypot(motion.vx, motion.vz), dt);
     headingX = motion.vx; headingZ = motion.vz;
@@ -307,6 +326,15 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
   }
   if (!frozen) actor.actionTime = Math.max(0, actor.actionTime - dt);
   if (!actor.actionTime && actor.action !== 'death') { actor.action = 'idle'; actor.attackPhase = undefined; }
+  if (actor.model?.ready()) {
+    for (const part of actor.fallbackParts) part.dispose();
+    actor.fallbackParts.length = 0;
+    actor.root.rotation.y = 0;
+    actor.barRoot.position.y = (actor.heroId === PANGU_HERO_ID ? PANGU_MODEL_HEIGHT : PIG_HEIGHT) + .3;
+    actor.model.update({ moving, action: actor.action,
+      progress: swingProgress(actor, Math.max(0, Math.min(1, 1 - actor.actionTime / Math.max(.001, actor.actionDuration)))),
+      facingX: actor.facingX, facingZ: actor.facingZ, dt: dt * (actor.modelMotionSpeed ?? 1), reduced, frozen, flash: actor.hitFlashTime });
+  }
   const pulse = reduced ? 0 : Math.sin(time * (moving ? 13 : 2.3) + actor.phase);
 
   // Hit flash (White Flash) using Babylon's native renderOverlay
@@ -340,7 +368,7 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
     lungeZ = dirZ * lungeDist;
   }
 
-  if (!actor.spriteShown) {
+  if (!actor.spriteShown && !actor.model?.ready()) {
     actor.body.position.y = (.88 + (moving ? .035 : .018) * pulse) * actor.size;
     actor.head.position.y = (1.83 + (moving ? .045 : .025) * pulse) * actor.size;
     actor.weapon.rotation.z = actor.action === 'attack' ? -.3 - Math.sin((.4 - actor.actionTime) * 13) * .8

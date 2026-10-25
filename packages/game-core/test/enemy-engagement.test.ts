@@ -2,10 +2,12 @@ import { describe, expect, it } from 'vitest';
 import type { Enemy, GameState, Unit } from '../../contracts/src/types.js';
 import { combatStep, hurtEnemy } from '../src/combat.js';
 import { BOSS_KNOCKBACK_SHARE, knockEnemyBack } from '../src/combat-status.js';
-import { enemyRadius } from '../src/crowd-movement.js';
+import { BOSS_BODY_RADIUS, contactDistance, enemyRadius } from '../src/crowd-movement.js';
 import { enemyAttackInterval, enemyWindupSeconds } from '../src/enemy-behavior.js';
 import { ringCapacity, ringRadius } from '../src/enemy-engagement.js';
 import { nearestRouteSegmentEnd } from '../src/enemy-behavior.js';
+import { RANGED_REACH_SCALE, scaledAttackRange } from '../src/rules.js';
+import { HERO_BY_ID } from '../../../content/catalog.js';
 import { deployed, enemy, game } from './fixtures.js';
 
 /** One held melee hero (plus an optional second hero two slots over) in a zone-0 combat phase. */
@@ -162,6 +164,69 @@ describe('hero auto-acquire', () => {
   });
 });
 
+describe('no idle waiting', () => {
+  it('lets an enemy with no ring slot hit a hero it already touches', () => {
+    const { state, hero } = arena();
+    const probe = monster(state, hero, { speed: 0 });
+    const capacity = ringCapacity(hero, probe), radius = ringRadius(hero, probe);
+    // Every slot is claimed by an enemy still walking in from 7 units away.
+    for (let n = 0; n < capacity; n++) {
+      const foe = n === 0 ? probe : monster(state, hero, { speed: 0 });
+      foe.x = hero.x + Math.cos(n * 2 * Math.PI / capacity) * 7;
+      foe.z = hero.z + Math.sin(n * 2 * Math.PI / capacity) * 7;
+    }
+    run(state, .05);
+    const late = monster(state, hero, { speed: 0, x: hero.x + radius, z: hero.z });
+    const events = run(state, 1);
+    expect(late.engage).toBeUndefined();
+    expect(events.some(entry => entry.kind === 'attack' && entry.source === late.id)).toBe(true);
+  });
+
+  it('never parks a pack behind the fight: every enemy that cannot hit keeps moving', () => {
+    const { state, hero } = arena();
+    const pack = Array.from({ length: 20 }, (_, index) => monster(state, hero, {
+      x: hero.x + (index % 4 - 1.5) * 1.6, z: hero.z - 4 - Math.floor(index / 4) * 1.6 }));
+    run(state, 3);
+    const before = new Map(pack.map(foe => [foe.id, { x: foe.x, z: foe.z }]));
+    const events = run(state, 2);
+    const swung = new Set(events.filter(entry => entry.kind === 'attack').map(entry => entry.source));
+    for (const foe of pack) {
+      if (!state.enemies[foe.id] || swung.has(foe.id) || foe.windup) continue;
+      const from = before.get(foe.id)!;
+      expect(Math.hypot(foe.x - from.x, foe.z - from.z), foe.id).toBeGreaterThan(.5);
+    }
+  });
+
+  it('keeps archers near the far end of their doubled range', () => {
+    const { state, hero } = arena();
+    const archer = enemy(state, hero, { monsterId: 'm002', kind: 'ranged', attackRange: 7.5, speed: 1.45,
+      attack: 0, x: hero.x, z: hero.z - 16.5 });
+    const reach = 7.5 * RANGED_REACH_SCALE;
+    run(state, 4);
+    const gap = Math.hypot(archer.x - hero.x, archer.z - hero.z);
+    expect(gap).toBeGreaterThan(reach * .8);
+    expect(gap).toBeLessThanOrEqual(reach + .2);
+  });
+});
+
+describe('shared ranged reach', () => {
+  it('doubles listed ranges above melee reach for heroes and leaves melee untouched', () => {
+    expect(scaledAttackRange(7)).toBe(7 * RANGED_REACH_SCALE);
+    expect(scaledAttackRange(1.8)).toBe(1.8);
+    const state = game(1), archer = deployed(state, 'h001');
+    expect(archer.range).toBe(scaledAttackRange(HERO_BY_ID.h001.range));
+  });
+
+  it('lets a ranged hero hold its ground when a monster walks up to it', () => {
+    const state = game(1), archer = deployed(state, 'h001');
+    state.phase = 'combat'; state.wave = 1;
+    monster(state, archer, { x: archer.x + 3, z: archer.z, speed: 0 });
+    const x = archer.x, z = archer.z;
+    run(state, 1);
+    expect(Math.hypot(archer.x - x, archer.z - z)).toBeLessThan(.05);
+  });
+});
+
 describe('hero leash', () => {
   it('fights the next enemy beside it after a kill instead of walking back to its guard spot', () => {
     const { state, hero } = arena();
@@ -172,6 +237,27 @@ describe('hero leash', () => {
     const events = run(state, .05);
     expect(events.some(entry => entry.kind === 'attack' && entry.source === hero.id && entry.target === next.id)).toBe(true);
     expect(hero.z).toBeCloseTo(z);
+  });
+
+  it('holds the spot where the fight ended instead of walking back', () => {
+    const { state, hero } = arena();
+    hero.orderMode = 'auto';
+    hero.guardPosition = { x: hero.x, z: hero.z + 10 };
+    const x = hero.x, z = hero.z;
+    run(state, 2);
+    expect(Math.hypot(hero.x - x, hero.z - z)).toBeLessThan(.05);
+    expect(hero.guardPosition).toEqual({ x, z });
+  });
+});
+
+describe('boss footprint', () => {
+  it('stops a melee hero at the painted edge of the boss body, not inside it', () => {
+    const { state, hero } = arena();
+    hero.orderMode = 'auto';
+    const boss = enemy(state, hero, { monsterId: 'b001', kind: 'boss', x: hero.x + 9, z: hero.z, speed: 0, attack: 0 });
+    run(state, 4);
+    expect(Math.hypot(hero.x - boss.x, hero.z - boss.z)).toBeGreaterThanOrEqual(contactDistance(hero, boss) - .05);
+    expect(contactDistance(hero, boss)).toBeGreaterThanOrEqual(BOSS_BODY_RADIUS + 1.4);
   });
 });
 

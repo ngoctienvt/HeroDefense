@@ -6,7 +6,7 @@ import { applyAbilityStatus, applyEnemyStatus, effectiveEnemyArmor, knockEnemyBa
 import { basicAttack, passiveTraits } from './combat-traits.js';
 import { carryDamageTakenMultiplier } from './carry-passive.js';
 import { stepBoomerangs, stepOrbitAuras, triggerFollowUp } from './attack-geometry.js';
-import { contactDistance, resolveSoftCollisions, resolveUnitCollisions, retreatFromTarget } from './crowd-movement.js';
+import { contactDistance, resolveSoftCollisions, resolveUnitCollisions } from './crowd-movement.js';
 import { walkUnitWithPathing } from './unit-pathing.js';
 import { enemyAttackReach, stepEnemyBehavior, type EnemyTickContext } from './enemy-behavior.js';
 import { buildRings } from './enemy-engagement.js';
@@ -244,7 +244,9 @@ export function hurtUnit(state: GameState, unit: Unit, damage: number, attacker?
   }
   if (unit.hp <= 0) {
     recordHeroDeath(state, unit);
-    unit.hp = 0; unit.deaths++; unit.respawn = 5 + unit.deaths * .3;
+    unit.hp = 0; unit.deaths++;
+    unit.waveDeaths = (unit.waveDeaths ?? 0) + 1;
+    unit.respawn = 5 + unit.waveDeaths - 1;
     unit.destination = null; unit.target = null; unit.orderMode = 'auto'; unit.engageAt = null; unit.shield = 0; unit.ward = undefined; unit.haste = undefined; unit.critBlessing = undefined;
     unit.pendingAbility = undefined; unit.empower = undefined; unit.bonusArmor = undefined; unit.reflect = undefined; unit.mistShield = undefined; unit.frostShield = undefined; unit.berserk = undefined;
     unit.tierShield = undefined; unit.tierGoldShields = undefined; unit.nuwaShields = undefined; unit.tierBuff = undefined; unit.tierImmortal = undefined; unit.fuxiBlessing = undefined;
@@ -764,6 +766,22 @@ function chainTargets(first: Enemy, candidates: Enemy[], limit: number, jumpRang
  * Guardians (and anything with a block value) win close ties when enemies pick a hero.
  * How many enemies fight a hero at once is decided by free ring slots, not by this value.
  */
+/** Server-only: seconds a hero has been unable to close in on its chase target. */
+const heroChaseStall = new WeakMap<Unit, number>();
+const HERO_CHASE_STALL = .5;
+
+/** Accumulate blocked chase time; true (and reset) once the hero has been stuck long enough to retarget. */
+function heroChaseStalled(unit: Unit, blocked: boolean, dt: number): boolean {
+  const stalled = blocked ? (heroChaseStall.get(unit) ?? 0) + dt : 0;
+  if (stalled >= HERO_CHASE_STALL) { heroChaseStall.delete(unit); return true; }
+  heroChaseStall.set(unit, stalled);
+  return false;
+}
+
+function debugHeroRetarget(state: GameState, unit: Unit, from: string, to: string): void {
+  if (state.tick % 20 === 0) console.debug(JSON.stringify({ event: 'combat.hero-retarget', unitId: unit.id, from, to }));
+}
+
 /** Beyond attack reach, how close an enemy must be for an auto hero to fight it away from its guard spot. */
 const HERO_ACQUIRE_MARGIN = 3;
 
@@ -923,7 +941,7 @@ export function combatStep(state: GameState, dt: number): void {
     if (unit.summonKind === 'ancient-tree') continue;
     if (unit.respawn > 0) {
       unit.respawn -= dt;
-      if (unit.respawn <= 0) {
+      if (unit.respawn <= 1e-6) {
         unit.respawn = 0; unit.hp = unit.maxHp; unit.zone = 0;
         Object.assign(unit, unit.savedPosition ?? slotPosition(state, unit.owner, Math.max(0, unit.slot)));
         unit.guardPosition = { x: unit.x, z: unit.z };
@@ -977,7 +995,8 @@ export function combatStep(state: GameState, dt: number): void {
     if (mode === 'attack-move' && target && unit.engageAt && distance(unit, unit.engageAt) > 12) target = undefined;
     if (!target && mode === 'attack') { unit.orderMode = 'auto'; unit.target = null; }
     if (!target && mode !== 'attack') {
-      const radius = mode === 'hold' ? unit.range : mode === 'attack-move' ? 10 : 19;
+      const radius = mode === 'hold' ? unit.range
+        : mode === 'attack-move' ? Math.max(10, unit.range + 2) : Math.max(19, unit.range + 3);
       const candidates = Object.values(state.enemies).filter(e => e.zone === unit.zone
         && distance(e, unit) <= (mode === 'hold' ? Math.max(radius, contactDistance(unit, e) + .15) : radius)
         && (mode !== 'auto' || distance(e, guard) <= 18 || acquire(e)));
@@ -1016,17 +1035,10 @@ export function combatStep(state: GameState, dt: number): void {
       }
       continue;
     }
-    if (!target && mode === 'auto' && distance(unit, guard) > 2) {
-      walkUnitWithPathing(unit, guard, hero.speed * dt, Object.values(state.units), Object.values(state.enemies));
-      continue;
-    }
-    if (target && mode !== 'hold' && unit.range > 4 && (mode !== 'auto' || distance(unit, guard) < 17)) {
-      const preferred = Math.max(contactDistance(unit, target) + .5, unit.range * .72);
-      if (distance(unit, target) < preferred) {
-        const away = retreatFromTarget(unit, target, hero.speed * dt, unit.zone);
-        walkUnitWithPathing(unit, away, hero.speed * dt, Object.values(state.units), Object.values(state.enemies));
-      }
-    }
+    // The fight is over: hold the spot where it ended instead of walking back to the old position.
+    // (No `continue`: support heroes still cast heals/shields without an enemy target.)
+    if (!target && mode === 'auto' && distance(unit, guard) > 2) unit.guardPosition = { x: unit.x, z: unit.z };
+    // Ranged heroes hold their ground like Warcraft units; they never back away on their own.
     if (target && distance(unit, target) > Math.max(unit.range, contactDistance(unit, target) + .15)) {
       if (mode === 'hold') { unit.target = null; continue; }
       let dash = 1;
@@ -1037,9 +1049,19 @@ export function combatStep(state: GameState, dt: number): void {
         }
         if (unit.comboCount === 1) dash = 3.0;
       }
-      walkUnitWithPathing(unit, target, hero.speed * dt * dash, Object.values(state.units), Object.values(state.enemies));
+      const step = hero.speed * dt * dash, fromX = unit.x, fromZ = unit.z;
+      walkUnitWithPathing(unit, target, step, Object.values(state.units), Object.values(state.enemies));
+      if ((mode === 'auto' || mode === 'attack-move')
+        && heroChaseStalled(unit, Math.hypot(unit.x - fromX, unit.z - fromZ) < step * .2, dt)) {
+        // Walled off from the chosen enemy by the crowd: fight the nearest other one instead of standing idle.
+        const alternative = Object.values(state.enemies).filter(e => e.zone === unit.zone && e.id !== target!.id
+          && distance(e, unit) <= Math.max(19, unit.range + 3))
+          .sort((a, b) => distance(a, unit) - distance(b, unit))[0];
+        if (alternative) { unit.target = alternative.id; debugHeroRetarget(state, unit, target.id, alternative.id); }
+      }
       continue;
     }
+    heroChaseStall.delete(unit);
     if (unit.heroId === 'h008' && unit.comboCount === 1) {
       unit.comboCount = 0;
       for (const nearby of Object.values(state.enemies)) {

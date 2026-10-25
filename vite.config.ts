@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
+import { assetManifestPlugin } from './tools/assets/vite-asset-manifest.js';
 
 export default defineConfig({
   root: 'apps/client',
+  plugins: [assetManifestPlugin(process.cwd())],
   server: {
     port: 5173,
     strictPort: true,

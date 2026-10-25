@@ -1,11 +1,11 @@
 ---
-title: "Sản xuất đủ 40 bộ"
+title: "Sản xuất đủ 39 bộ"
 status: in_progress
 priority: P1
 dependencies: [1]
 ---
 
-# Phase 2: Sản xuất đủ 40 bộ
+# Phase 2: Sản xuất đủ 39 bộ
 
 ## Overview
 
@@ -14,7 +14,7 @@ Hoàn thiện các cá thể còn lại theo [roster](./roster.md), với ưu ti
 ## Requirements
 
 - [ ] Giữ chuẩn pilot và art-contract; không giảm frame/chi tiết chỉ vì là quái thường.
-- [ ] 5 cũ giữ tên/ID, 35 mới có identity riêng; đổi màu không tính thành cá thể.
+- [ ] 5 cũ giữ tên/ID, 34 thiết kế mới có identity riêng; đổi màu không tính thành cá thể.
 - [ ] Boss có diễn xuất di chuyển/attack riêng; không tạo hit/death/cast riêng. VFX thân/projectile/impact tách lớp và không tự thêm skill.
 
 ## Architecture
@@ -30,26 +30,28 @@ Một manifest/registration profile mỗi cá thể. Dùng chung công cụ pack
 ## Implementation Steps
 
 1. Boss pilot còn thiếu bundle: b001, Kim Giác và Ngân Giác. Đế Giang chỉ tiếp tục nếu đạt brief nhanh; nếu quá khó thì bỏ qua, không tính hoàn chỉnh và không chặn batch khác.
-2. Lô B thêm 9 boss phụ bản còn lại, ưu tiên quartet Ma Gia để khóa group envelope. Không đếm atlas nhóm phái sinh thành cá thể mới.
+2. Lô B thêm 8 boss phụ bản còn lại, ưu tiên quartet Ma Gia để khóa group envelope. Không đếm atlas nhóm phái sinh thành cá thể mới.
 3. Lô C thêm 7 boss mới; mỗi con có silhouette, palette, anatomy, chuyển động và brief vật chất riêng. Chưa có gameplay thì không tự tạo AoE/phase máu/đòn nhiều hit.
 4. Sau khi chạy hết boss, hoàn thiện các monster legacy m001–m004; giữ tên/ID và consistency với source đã có.
 5. Lô D thêm 16 quái mới theo nhóm cơ thể/vật chất; không đổi màu để thay thiết kế riêng.
 6. Với từng cá thể: master → bốn hướng riêng → action sprite tĩnh → alpha/anchor → preview/QA → chỉ sửa lỗi cụ thể → export. Giữ raw source, prompt, route và rejected revision; giới hạn số lượt sửa không được dùng để hạ acceptance.
 7. Tạo portrait từ art được duyệt, không sinh gương mặt khác; chỉ runtime dùng portrait khi UI cần.
-8. Tổng kiểm kê 40 manifest, baseline 2.400 frame cộng phần tăng walk/attack sau pilot; thống kê dung lượng và cảnh báo chưa giải quyết.
+8. Tổng kiểm kê 39 manifest, baseline 2.332 frame cộng phần tăng walk/attack sau pilot; thống kê dung lượng và cảnh báo chưa giải quyết.
 
 ## Todo
 
 - [ ] Boss pilot: b001, Kim Giác, Ngân Giác; Đế Giang có thể bỏ nếu không đạt brief nhanh.
-- [ ] Lô B: 9/9 boss phụ bản.
+- [ ] Lô B: 8/8 boss phụ bản.
 - [ ] Lô C: 7/7 boss mới.
 - [ ] Monster legacy m001–m004 hoàn chỉnh sau các batch boss.
 - [ ] Lô D: 16/16 quái mới.
-- [ ] Đủ 40 gói source/web/QA, trừ Đế Giang nếu người dùng đã cho phép bỏ; mọi WARN/FAIL được báo rõ.
+- [ ] Đủ 39 gói source/web/QA, trừ Đế Giang nếu người dùng đã cho phép bỏ; mọi WARN/FAIL được báo rõ.
 
 ## Progress log
 
 - 2026-10-23: Tạo batch 3 boss master candidate bằng Codex image_gen, dùng Bàn Cổ làm style reference: Xích Diệm Lân Vương (`art-cinder-qilin`), Bạch Cốt Pháp Vương (`art-bone-abbot`), Thực Nguyệt Thiên Khuyển (`art-eclipse-hound`). Đây là sprite PNG RGBA tĩnh, không image-to-video. Sidecar lưu prompt, route, reference/hash, kích thước, alpha bounds và SHA-256. Rà preview sáng/tối: cả ba silhouette/identity đọc được; hound có dáng profile lệch phải, giữ candidate để khóa hướng ở direction pass. Không pixel alpha nào nằm trên cạnh ảnh ở cả ba master; không áp ngưỡng lề trống. Preview: [boss master batch](./reports/boss-master-batch-2026-10-23.png). Chưa tạo bốn hướng/action, chưa export hoặc tích hợp.
+- 2026-10-23: Batch ba boss trên đã có các still candidate đủ bốn hướng; turnaround preview sáng/tối lưu ở [light](./reports/boss-turnarounds-2026-10-23-light.png) và [dark](./reports/boss-turnarounds-2026-10-23-dark.png). Hound master ban đầu quay phải; giữ làm identity/east candidate và sinh south view riêng. Sinh walk/attack south sheet tĩnh cho cả ba. Walk v1 yếu vì pose lặp; walk v2 thêm pose từng ô nhưng rà vẫn thấy lặp, nên dừng sửa theo giới hạn lượt. Attack có khác pose nhưng thành phần lớn qua ranh ô 4×2 theo kiểm tra connected-component; chưa slice/pack. Raw PNG, prompt, provenance và contact sheet giữ lại; mọi view/action vẫn candidate, chưa export/runtime. Chi tiết và số QA: [boss-first progress](./reports/lot-b-boss-first-progress-2026-10-23.md).
+- 2026-10-23: Batch master candidate tạo cho Hiện thân Ngũ Hành, Thiên La Chu Hậu và Hỗn Mang Liệt Giáp. Người dùng sau đó loại Ngũ Hành vì hình không đạt; master/hướng và provenance được giữ làm lịch sử nguồn, không tạo action, không đóng gói/tích hợp và không tính vào roster hiện tại. Hai boss còn lại tiếp tục production. Preview sáng/tối: [light](./reports/boss-master-batch-2026-10-23-b-light.png), [dark](./reports/boss-master-batch-2026-10-23-b-dark.png).
 - 2026-10-23: Tiếp tục batch boss-first: Quy Vương, Thạch Cơ, Lục Áp có mỗi con một master, ba hướng east/west/north và action sheet south walk/attack dạng ảnh tĩnh. Direction contact sheets đã rà sáng/tối, chưa register. Sáu raw action sheets đều spill FAIL với `safe_margin=0`: Quy Vương 5/8 crossings, Thạch Cơ walk 3 + cell [0,2] rỗng / attack 5, Lục Áp 4/6; sheet-edge cuts=0. Frame QC cho các set đủ cell báo walk còn bước/shift yếu và torso drift 15.99–58.91 px; attack head-ratio 0.918–1.122 ở hai set và torso drift 25.44–113.78 px. Near-duplicate heuristic không thấy cặp trùng, nhưng chưa duyệt hình động. Giữ raw/provenance/QA, không re-roll, không runtime; tiếp tục batch khác. Contact: [action-sheet QA](./reports/boss-action-sheets-2026-10-23-contact.png). Chi tiết: [boss-first report](./reports/lot-b-boss-first-progress-2026-10-23.md).
 - 2026-10-23: Chuyển thực thi sang boss-first theo chỉ đạo người dùng. Lô B bắt đầu với Thụ Yêu: có master candidate v2 và 3 view east/west/north riêng từ image_gen; chưa registration/duyệt. Tạo 6-frame walk south và 8-frame attack south dạng sprite sheet tĩnh. Spill QA `safe_margin=0`: walk FAIL 4 component qua cell, ownership giữ đủ và ghi 8,336 pixel ngoài owner cell; attack FAIL 7 component, ownership giữ đủ và ghi 35,541 pixel ngoài owner cell. Walk frame QC: head 1.00, identity residual max 1.16, no duplicates, torso drift 77.63 px, row baseline 12 px, seam 1.23×; pose đổi chân còn yếu. Attack: head ratio FAIL 0.909–1.01, identity residual max 1.28, torso drift 35.42 px, baseline 68 px, seam 1.27×; chưa motion-approved hoặc runtime. Song song sinh master candidate cho Quy Vương, Thạch Cơ; Lục Áp có edit v2 chuyển giáp nặng sang áo choàng gầy, vẫn cần rà likeness. Tất cả prompt/provenance/hash/alpha QA lưu cạnh ảnh; chưa build/test/game. Chi tiết: [boss-first progress report](./reports/lot-b-boss-first-progress-2026-10-23.md).
 
@@ -83,13 +85,47 @@ Một manifest/registration profile mỗi cá thể. Dùng chung công cụ pack
 
 ## Success Criteria
 
-40 cá thể có bundle hoàn chỉnh, khác biệt ngoài màu, đạt art-contract khi xem ở cỡ chơi thật. Chỉ nội dung được tích hợp và người dùng xác nhận mới được ghi đã nghiệm thu game.
+39 cá thể có bundle hoàn chỉnh, khác biệt ngoài màu, đạt art-contract khi xem ở cỡ chơi thật. Chỉ nội dung được tích hợp và người dùng xác nhận mới được ghi đã nghiệm thu game.
 
 ## Risk Assessment
 
-Style drift qua lô: so side-by-side với pilot và tướng, sửa trước lô kế. Boss quá lớn: đổi pose/canvas/scale toàn bộ theo rest pose, không crop bỏ bộ phận. Công sức tạo sinh không ổn định: dự báo lại sau mỗi lô, giữ đủ phạm vi 40 thay vì thay bằng recolor hoặc frame trùng.
+Style drift qua lô: so side-by-side với pilot và tướng, sửa trước lô kế. Boss quá lớn: đổi pose/canvas/scale toàn bộ theo rest pose, không crop bỏ bộ phận. Công sức tạo sinh không ổn định: dự báo lại sau mỗi lô, giữ đủ phạm vi roster đã duyệt hiện tại thay vì thay bằng recolor hoặc frame trùng.
 - 2026-10-22: Tiếp tục art-frost-wyrm walk bằng hai sprite-sheet tĩnh, không image-to-video. Walk v2 (4×2) có QC spill FAIL: 4 solid/5 visible crossings, pose gần lặp; walk v3 (2×2, 4 stills) có spill FAIL 3 connected components qua cell, ownership output giữ đầy đủ hình; frame QC FAIL `identity_head_ratio`, WARN phase_coverage/torso_drift 32.17 game px/row_baseline 4.5 px, seam 1.2. Hai candidate có prompt/route/hash; chưa đạt walk loop hoặc motion approval. Chi tiết tại [báo cáo lô C](./reports/lot-c-frost-wyrm-progress.md).
 - 2026-10-22: Bổ sung bốn still poses tiếp nối cho art-frost-wyrm walk south bằng image_gen; raw spill FAIL 3 solid/3 visible crossings. Ownership slice 4 frame bổ sung, pad alpha-only về canvas 669×651, scale chung lên 728 px body/814×812 canvas. QC bộ 8 frame FAIL `identity_head_ratio` (frame 0 = 1.087), WARN `leg_alternation` và torso drift 49.05 game px; seam ratio 1.25. Thử stance root-lock làm shift tới 383 px, torso drift 94.99, seam 1.64; centroid lock còn head ratio 1.075/torso drift 47.78 và vẫn leg warning. Giữ no-horizontal-lock làm candidate chẩn đoán; cần sửa pose, chưa duyệt walk/action pack. Sidecar/hash/prompt và source giữ ở `source/actions/walk/south/`; báo cáo cập nhật tại [lô C](./reports/lot-c-frost-wyrm-progress.md).
 - 2026-10-22: Nội bộ rà contact sheet art-frost-wyrm trên nền sáng/tối; master south và east/north/west chốt làm identity references production. Hướng west/east được tạo riêng, không mirror; alpha/identity/scale đọc ổn ở master view. Sidecar lưu scope duyệt chỉ cho production reference; không ghi nghiệm thu runtime/game.
 - 2026-10-22: Walk v5 art-frost-wyrm south tạo 8 still poses một sheet từ master đã duyệt production-reference. Raw spill FAIL 5 solid/5 visible crossings (boundary band 2,190 px; 21 detached specks); ownership slicing giữ đủ 8 frame, PNG/atlas/WebP exact checks pass, 703 pixel ngoài owner-cell được giữ; loop seam 0.507447 ở ownership preview/0.508238 sau scale cần review; WebP source 8 frame 4,662,124 bytes, chưa tối ưu runtime. Scale chung 1.7251× lên body 728 px, canvas 788×808, không cắt. Frame-QC dừng tại frame 2 vì head-template top-band không fit giải phẫu đầu nằm dưới của giao long; ghi là phép đo không áp dụng, không đổi threshold. Rà contact nền sáng/tối thấy identity/alpha đọc được và thân/đuôi biến đổi nhiều hơn v4; walk chưa duyệt vì alternation/continuity chưa chứng minh. Source, prompt, sidecar và QA tại `assets/sprites/monster-motion/art-frost-wyrm/source/actions/walk/south/`.
 - 2026-10-22: Attack v3 art-frost-wyrm south tạo static bite sheet 8 pose; raw spill FAIL 4/4 crossings, ownership slice giữ đủ hình. Scale 1.693×/728 px target, canvas 814×770, không clipping. Scaled frame QC FAIL `identity_head_ratio` max 1.085, PASS `identity_residual` max 1.25, WARN torso drift 43.56 game px, row baseline PASS, seam PASS 1.11. `build_animation_clips.py` tạo candidate one-shot 8 frame/800 ms/provisional 6 ticks, 0 lint warnings, QA needs visual review; filmstrip sáng/tối/checker đã rà. Source/provenance và manifest tại `assets/sprites/monster-motion/art-frost-wyrm/source/actions/attack/south/`; chưa đủ 4 hướng nên chưa runtime export.
+
+- 2026-10-23: Theo yêu cầu người dùng, loại `art-fivefold-avatar` khỏi roster sản xuất, không thay thế. Scope cập nhật từ 40 thành 39 ID (20 quái + 19 boss), baseline 2.332 frame. Candidate source vẫn được giữ, sidecar đánh dấu rejected; không tạo action hay runtime asset.
+
+- 2026-10-24: Đính chính alpha sheet Chu Hậu/Liệt Giáp (RGB nâu dưới alpha 0 không phải nền đục); ownership walk được giữ đủ component. Tạo attack south cho hai boss và walk/attack south cho b001. B001 attack south chốt pose nguồn sau review sáng/tối/checker, đã có registration translation-only không crop và clip preview một giây/0 warning; chưa đủ hướng/shared scale/runtime. Liệt Giáp attack south vẫn candidate (telegraph timing/anatomy cần rà). Chi tiết: [boss batch 2026-10-24](./reports/boss-batch-progress-2026-10-24.md).
+
+- 2026-10-24: B001 đã có đủ 64 source still theo bốn hướng × walk/attack × tám pose, tạo riêng từ từng direction master. South attack chốt pose nguồn; walk còn thiếu pass-through, north attack cần sửa hướng impact pose 4–5; các hướng còn lại cần shared registration/scale. Lưu actual prompt/native alpha/hash và ownership output, chưa runtime bundle. [Contact source](./reports/b001-action-source-review-2026-10-24.png), [báo cáo](./reports/boss-batch-progress-2026-10-24.md).
+
+- 2026-10-24: B001 north attack edit v2 đã sửa hướng nện/thu tay pose 4–6 bằng occlusion phía xa; giữ v1 lỗi. Pose art attack đủ bốn hướng được rà và chốt làm production source, source-review ghi rõ chưa shared registration/scale/runtime. Walk bốn hướng vẫn cần pass-through; không đánh dấu bundle hoàn chỉnh. [Poster v2](./reports/b001-action-source-review-2026-10-24-v2.png).
+
+- 2026-10-24: B001 walk v2 có passing poses ở bốn hướng; ownership north dùng solid seeds tách bridge alpha mờ, kiểm tra đảo origin bảo toàn chính xác pixel visible. 36 idle/walk frame đã vào canvas 700×700/root [350,600] bằng scale chung theo rest và landmark registration; preview sáng/tối ở body ~120 px, chưa chốt loop/full motion. Helper chung thêm sourceScale/asset-root + regression tests (không chạy). Còn 32 attack canonical và placement packer cho envelope dưới root. [Chi tiết](./reports/boss-batch-progress-2026-10-24.md).
+
+- 2026-10-25: B001 hoàn thành 68 canonical frame/12 clip, source review chốt export v2 theo toe-plane. Walk dùng một offset cố định mỗi hướng, attack dùng foot ROI (không lấy tay nện làm chân), không fit scale từng frame. Packer hỗ trợ motionBoundsPx bất đối xứng theo chiều dọc, giữ hành vi legacy. Đã chạy asset pack: 2 trang WebP 808.850 byte, RGBA 18 MiB chưa mipmap; chép JSON/pages vào public. QA 68 rect có alpha, không chạm cell edge, chung anchor; 68 cặp hash canonical và bản sao public/web khớp. Đã xem source và contact sheet runtime; chưa unit test/typecheck/build/game. Nhịp strike/transition và nghiệm thu trong game còn mở. [Bundle source review](../../assets/sprites/monster-motion/b001/source/motion-source-review-v2.json).
+
+- 2026-10-25: Kim Giác có attack south tám pose đã rà nguồn; walk sheet v1/v2 chưa đạt đổi chân. Tạo riêng opposite contact đúng chân trái để sửa có mục tiêu; master north phát hiện giáp vai sai bên, chưa approve direction. Không runtime/build/game. [Nguồn và nguyên trạng QA](./reports/kim-giac-source-progress-2026-10-25.md).
+
+- 2026-10-25: Kim Giác walk south đã có tám pose nguồn đổi chân đúng từ hai half-cycle, review sáng/tối và ownership pixel conservation đạt; chưa canonical ground/loop/runtime. Sửa north pauldron v2, duyệt bốn direction source trong profile. [Chi tiết và raw QA](./reports/kim-giac-source-progress-2026-10-25.md).
+
+- 2026-10-25: Kim Giác đủ 64 action source still + 4 master idle theo bốn hướng; north walk/attack dùng edit v2, giữ v1 lỗi. Rà poster, native alpha và ownership exact visible-pixel reconstruction. Chưa canonical root/scale/timing/loop hoặc runtime atlas. Hắc Phong attack duration được căn impact frame 5 tại tiến độ strike 0,52, pack lại; thêm regression đọc runtime JSON thật, chưa chạy. [Kim Giác và raw QA](./reports/kim-giac-source-progress-2026-10-25.md).
+
+- 2026-10-25: Kim Giác north walk matte v3 giảm halo thực, chọn vào inventory; 68 canonical candidate frame trong 13 nhóm/1000² đã đăng ký không crop, nguồn/output hash khớp. Còn fixed ground/toe-plane walk south/north, cross-action review, timing/loop và runtime atlas; không motion approve hoặc build/game. [Chi tiết](./reports/kim-giac-source-progress-2026-10-25.md).
+
+- 2026-10-25: Kim Giác library-packaged: 68 frame/12 clip, 2 trang995.162 byte/18MiB decoded, copy web/package khớp hash; 8 animation previews. Ground shift cố định/alpha floor/Lanczos guard đã rà, runtime-format rect/anchor/timing đạt. Chưa route trong client hiện tại, không chép public; built/inGame pending. Tiếp theo Ngân Giác để hoàn thiện cặp. [Bundle và QA](./reports/kim-giac-source-progress-2026-10-25.md).
+
+- 2026-10-25: Ngân Giác rà/duyệt bốn direction source, chuẩn flask cầm tay trái/free right palm. Tạo mới 32 attack still bốn hướng + 8 walk south candidate, bảo toàn pixel ownership sáu raw. Còn pose support south/contact order, walk east/west/north, east sleeve edge review và canonical/export. Không coi 40 source là bundle hoàn chỉnh. [Nguồn và raw QA](./reports/ngan-giac-source-progress-2026-10-25.md).
+
+- 2026-10-25: Ngân Giác library-packaged: 68 frame/12 clip, hai WebP 924.602 byte/18 MiB decoded; tám animation preview từ atlas. Nguồn đủ bốn hướng, east recovery dùng master thay frame áo bị cắt; canonical/hash/pixel-copy/rect/anchor/timing đã rà. Không route/public/build/game. [Chi tiết và raw WARN/FAIL](./reports/ngan-giac-source-progress-2026-10-25.md).
+
+- 2026-10-25: Ma Gia Kiếm có bốn direction source qua Codex image_gen; south v2 sửa chóp cờ, east/north/west tạo độc lập, không mirror. Rà identity/tay kiếm/cờ/alpha sáng tối; chỉ approve nguồn tham chiếu. Walk/attack/canonical/package chưa làm. [Nguồn và giới hạn](./reports/ma-sword-source-progress-2026-10-25.md).
+
+- 2026-10-25: Ma Gia Kiếm thêm 16 south action candidate frames (hai half-cycle walk, một cut attack). Chọn sửa đúng ô; sáu raw ownership ghép ngược pixel exact, giữ đầy đủ WARN/FAIL. Chưa motion approve: cần common registration/gait và rà blade recovery pose 6; ba hướng khác chưa tạo action. [Nguồn và QA](./reports/ma-sword-source-progress-2026-10-25.md).
+
+- 2026-10-25: Ma Gia Kiếm thêm east action source candidates, tổng 32/64. Attack sửa missing blade pose 2 và bridge pose 5/6; tám frame được chọn có solid owner. Walk east near/far alternation chưa chốt sau một edit, không motion approve. Source helper tái dùng với direction/jobs và ghi solid owner count, giữ nguyên raw QC. [Nguồn/QA/giới hạn](./reports/ma-sword-source-progress-2026-10-25.md).
+
+- 2026-10-25: Ma Gia Kiếm có 64 action source candidate references bốn hướng. North/west thêm 32 references; north blade edit v3 loại frame 6/7 gom/cắt, giữ 6 v2 và dùng master rest recovery 7. Hash/solid owner/visible pixel conservation và poster sáng/tối đã rà; chưa motion approve. Còn near/far walk east/west, recovery blade và canonical/root/timing/runtime. [Nguồn và raw QA](./reports/ma-sword-source-progress-2026-10-25.md).

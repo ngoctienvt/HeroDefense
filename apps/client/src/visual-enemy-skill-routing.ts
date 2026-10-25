@@ -39,11 +39,12 @@ export type EnemyVfxRoute =
     radius: number;
   };
 
+/** Elites and chieftains are drawn at 1× (user choice); only bosses are enlarged. */
 const RANK_SCALES: Readonly<Record<EnemyRank, number>> = {
-  minion: 0.95,
-  elite: 1.1,
-  chieftain: 1.25,
-  boss: 1.5,
+  minion: 0.8,
+  elite: 1,
+  chieftain: 1,
+  boss: 2.0,
 };
 
 /** Visual scale multiplier for hero-skinned enemies by rank. */

@@ -12,7 +12,7 @@
 | Thanh hành động | `hud-action-bar.ts` | Nút kỹ năng `[Q]` có quạt hồi chiêu; Neo, Hợp nhất, Về bộ sưu tập. Không có nút Bán. |
 | Rail (phải) | `hud-rail.ts`, `hud-keymap.ts` | 5 nút: Chiêu Mộ, Ghép Tướng, Đội Hình, Duyên & Trận, Cẩm Nang. Chấm xanh khi có việc nên làm. |
 | Drawer | `panels.ts` → `panel-*.ts` | Chiêu Mộ, Đội Hình, Duyên & Trận (tab T/F), Cẩm Nang (Điều khiển / Tàng Kinh Các), Admin. |
-| Lớp nổi | `hud-overlay.ts` | Menu ⚙, chọn tướng khi chiêu mộ, tooltip, hộp xác nhận. |
+| Lớp nổi | `hud-overlay.ts` | Menu ⚙ (bật/tắt âm thanh, thanh âm lượng Nhạc và Hiệu ứng: kéo thì nghe thử ngay, thả tay thì lưu), chọn tướng khi chiêu mộ, tooltip, hộp xác nhận. |
 
 Admin không có nút trên rail và không có trong Cẩm Nang; chỉ mở bằng phím `K`.
 

@@ -16,6 +16,11 @@
 .menu-item { justify-content: flex-start; width: 100%; background: transparent; border-color: transparent; }
 .menu-item:hover:enabled { background: var(--ink-3); }
 .menu-item.danger { color: var(--danger); }
+.volume-row { padding: 0 var(--s2); min-height: 30px; }
+.volume-label { width: 64px; color: var(--text-soft); }
+.volume-row input[type='range'] { flex: 1; min-width: 0; accent-color: var(--gold); cursor: pointer; }
+.volume-row input[type='range']:disabled { cursor: default; opacity: .45; }
+.volume-value { width: 38px; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); font-size: var(--xs); }
 
 /* Pending summon choice above the summon bar; the fight keeps running underneath. */
 .summon-choice-popover { left: var(--s3); bottom: calc(var(--dock-h) + var(--s4)); width: min(460px, calc(100vw - 32px)); border-top-color: var(--amber); }

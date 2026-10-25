@@ -1,0 +1,65 @@
+{
+  "cloud": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.0546875,
+      "top": 0.13541666666666666,
+      "right": 0.96875,
+      "bottom": 0.8880208333333334
+    }
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8386167146974063,
+    "bounds": {
+      "left": 0.08333333333333333,
+      "top": 0.044270833333333336,
+      "right": 0.9401041666666666,
+      "bottom": 0.84375
+    },
+    "contactHalfWidth": 0.44010416666666663
+  },
+  "burn": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8585526315789473,
+    "bounds": {
+      "left": 0.0546875,
+      "top": 0.1171875,
+      "right": 0.9583333333333334,
+      "bottom": 0.8723958333333334
+    }
+  },
+  "warning": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "radialEdge": 0.493968,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  },
+  "bolt": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 4.302521008403361,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

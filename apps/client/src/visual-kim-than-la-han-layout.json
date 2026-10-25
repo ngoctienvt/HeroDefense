@@ -1,0 +1,76 @@
+{
+  "cast": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.06510416666666667,
+      "top": 0.059895833333333336,
+      "right": 0.9713541666666666,
+      "bottom": 0.953125
+    }
+  },
+  "body": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8588957055214724,
+    "bounds": {
+      "left": 0.0546875,
+      "top": 0.041666666666666664,
+      "right": 0.9505208333333334,
+      "bottom": 0.8619791666666666
+    }
+  },
+  "back": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8802083333333334,
+    "bounds": {
+      "left": 0.12239583333333333,
+      "top": 0.16927083333333334,
+      "right": 0.8776041666666666,
+      "bottom": 0.8776041666666666
+    }
+  },
+  "front": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8802083333333334,
+    "bounds": {
+      "left": 0.10416666666666667,
+      "top": 0.3984375,
+      "right": 0.8958333333333334,
+      "bottom": 0.8932291666666666
+    }
+  },
+  "ray": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 6.206060606060606,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  },
+  "bead": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 1.0158730158730158,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

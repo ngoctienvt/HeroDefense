@@ -47,6 +47,7 @@ echo [%date% %time%] Building game.>>"%LAUNCH_LOG%"
 call npm run build
 if errorlevel 1 goto failed
 
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\show-radmin-invite.ps1" -Port %PORT% -LogPath "%LAUNCH_LOG%"
 start "" /b powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "%~dp0tools\open-game-when-ready.ps1" -Port %PORT% -LogPath "%LAUNCH_LOG%"
 echo Starting game. Your browser will open when the server is ready.
 echo Keep this window open while playing. Ctrl+C stops the server.

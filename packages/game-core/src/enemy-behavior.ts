@@ -1,12 +1,12 @@
 import type { Enemy, GameState, Unit, Vec } from '../../contracts/src/types.js';
-import { enemyRouteFor } from './battlefield-layout.js';
+import { clampToZone, enemyRouteFor, withinZone } from './battlefield-layout.js';
 import { contactDistance, enemyRadius, retreatFromTarget } from './crowd-movement.js';
 import {
   atSlot, claimSlot, refreshSlot, releaseSlot, RETARGET_MARGIN, ringRadius, slotApproachGoal, slotPoint, usesRing,
   wrapAngle, type Rings,
 } from './enemy-engagement.js';
 import { hasActiveEnemySkillWindup } from './enemy-skill-runner.js';
-import { distance, event, isDeployed } from './rules.js';
+import { distance, event, isDeployed, RANGED_REACH_SCALE, walk } from './rules.js';
 import type { SpatialGrid } from './spatial-grid.js';
 import { walkEnemyWithPathing } from './unit-pathing.js';
 
@@ -14,16 +14,30 @@ import { walkEnemyWithPathing } from './unit-pathing.js';
 export const ENEMY_WINDUP_SHARE = .35;
 /** Extra distance a target may drift (knockback, a step) before an ongoing swing is cancelled. */
 const WINDUP_LEASH = .8;
-const AGGRO = { melee: 8, ranged: 10 } as const;
+/** Acquisition radius: melee packs notice heroes well off their lane and swing round to surround them. */
+const AGGRO = { melee: 12, ranged: 11 } as const;
+/** Archers hold between these fractions of their range: back off when closer, stop advancing past the far one. */
+const RANGED_BAND = { near: .8, far: .95 } as const;
 /** Bonus distance that lets guardians win ties when enemies pick a hero. */
 const GUARDIAN_PULL = .35;
 /** Blocked this long short of its slot but already in reach: swing from where it stands. */
 const STALL_SWING = .4;
+/** Pace share when pushing through a crowd that leaves no free path. */
+const SQUEEZE_PACE = .6;
 /** Blocked this long out of reach: give the slot up and claim one on the reachable side. */
-const STALL_RESLOT = 1.5;
+const STALL_RESLOT = 1;
+
+/** Server-only: a hero whose ring this enemy could not reach, skipped until `until` (state.elapsed). */
+const unreachable = new WeakMap<Enemy, { heroId: string; until: number }>();
+const GIVE_UP_SECONDS = 3;
+
+function skipped(ctx: EnemyTickContext, enemy: Enemy, hero: Unit): boolean {
+  const mark = unreachable.get(enemy);
+  return Boolean(mark && mark.heroId === hero.id && ctx.state.elapsed < mark.until);
+}
 
 /** Server-only approach progress toward the ring slot (never broadcast). */
-const approachProgress = new WeakMap<Enemy, { gap: number; stalled: number }>();
+const approachProgress = new WeakMap<Enemy, { gap: number; stalled: number; reslotted?: boolean }>();
 
 function stalledFor(enemy: Enemy, gap: number, dt: number): number {
   const progress = approachProgress.get(enemy);
@@ -51,7 +65,9 @@ export type EnemyTickContext = {
 };
 
 export function enemyBaseRange(enemy: Enemy): number {
-  return enemy.attackRange ?? (enemy.kind === 'melee' ? 1.8 : 5);
+  const listed = enemy.attackRange ?? (enemy.kind === 'melee' ? 1.8 : 5);
+  // Ranged monsters follow the shared ranged-reach rule (rules.ts) like ranged heroes.
+  return enemy.kind === 'ranged' ? listed * RANGED_REACH_SCALE : listed;
 }
 
 export function enemyAttackReach(enemy: Enemy, unit: Unit): number {
@@ -78,10 +94,43 @@ function pace(enemy: Enemy, dt: number): number {
   return enemy.speed * dt * (1 - (enemy.slow ? enemy.slowStrength ?? .5 : 0));
 }
 
+/** Server-only: when each enemy last stood its ground to fight (state.elapsed). */
+const lastStood = new WeakMap<Enemy, number>();
+
+function markStanding(ctx: EnemyTickContext, enemy: Enemy): void {
+  ctx.anchored.add(enemy.id);
+  lastStood.set(enemy, ctx.state.elapsed);
+}
+
+/** Fighters hold their ground as solid bodies; walkers flow through each other (soft separation only). */
+function isSolid(ctx: EnemyTickContext, other: Enemy): boolean {
+  if (ctx.anchored.has(other.id) || other.windup) return true;
+  const stood = lastStood.get(other);
+  return stood !== undefined && ctx.state.elapsed - stood <= .15;
+}
+
+/**
+ * Enemies never stand waiting for a gap: they path around heroes and fighting enemies,
+ * and when even that is blocked they squeeze forward through the crowd at reduced pace
+ * (soft collisions then spread the bodies back out).
+ */
 function walkTo(ctx: EnemyTickContext, enemy: Enemy, goal: Vec, amount: number): boolean {
+  if (!withinZone(enemy.zone, enemy.x, enemy.z)) {
+    // Placed outside the walkable area (a spawn or push past the edge): pathing rejects every
+    // step that ends outside, so walk straight back in instead of freezing there.
+    const inside = clampToZone(enemy.zone, goal);
+    walk(enemy, inside, amount);
+    if (!withinZone(enemy.zone, enemy.x, enemy.z) && ctx.state.tick % 40 === 0)
+      console.debug(JSON.stringify({ event: 'enemy.outside-zone', enemyId: enemy.id, zone: enemy.zone }));
+    return false;
+  }
   const reach = amount + 6;
-  return walkEnemyWithPathing(enemy, goal, amount,
-    ctx.unitGrid.near(enemy, enemy.zone, reach), ctx.enemyGrid.near(enemy, enemy.zone, reach));
+  const heroes = ctx.unitGrid.near(enemy, enemy.zone, reach);
+  const solid = ctx.enemyGrid.near(enemy, enemy.zone, reach).filter(other => other === enemy || isSolid(ctx, other));
+  const x = enemy.x, z = enemy.z;
+  const arrived = walkEnemyWithPathing(enemy, goal, amount, heroes, solid);
+  if (arrived || Math.hypot(enemy.x - x, enemy.z - z) > amount * .2 || distance(enemy, goal) < .1) return arrived;
+  return walkEnemyWithPathing(enemy, goal, amount * SQUEEZE_PACE, heroes, [enemy]);
 }
 
 /** Units this enemy may consider, nearest-first with a small guardian preference. */
@@ -105,7 +154,7 @@ function continueWindup(ctx: EnemyTickContext, enemy: Enemy): boolean {
     stats(ctx.state).cancelled++;
     return false;
   }
-  ctx.anchored.add(enemy.id);
+  markStanding(ctx, enemy);
   windup.remaining -= ctx.dt;
   if (windup.remaining <= 0) {
     enemy.windup = undefined;
@@ -116,7 +165,7 @@ function continueWindup(ctx: EnemyTickContext, enemy: Enemy): boolean {
 
 /** Begin a swing: the `cast` event lets the client hold the wind-up pose until the `attack` lands. */
 function tryStartSwing(ctx: EnemyTickContext, enemy: Enemy, target: Unit): void {
-  ctx.anchored.add(enemy.id);
+  markStanding(ctx, enemy);
   if (enemy.cooldown > 0 || isDisabled(enemy)) return;
   const windup = enemyWindupSeconds(enemy);
   enemy.windup = { remaining: windup, target: target.id };
@@ -127,27 +176,35 @@ function tryStartSwing(ctx: EnemyTickContext, enemy: Enemy, target: Unit): void 
 }
 
 /**
- * A marching enemy whose straight path crosses the crowd around a surrounded hero
- * orbits that crowd instead of shoving into it (local avoidance alone gridlocks a pack).
+ * A marching enemy whose straight path crosses the crowd fighting the heroes walks
+ * around the whole cluster (all nearby fought heroes and their rings) instead of
+ * shoving into it; local avoidance alone gridlocks a pack against bunched heroes.
  */
 function crowdBypass(ctx: EnemyTickContext, enemy: Enemy, goal: Vec): Vec | undefined {
-  let best: { point: Vec; gap: number } | undefined;
-  for (const hero of ctx.unitGrid.near(enemy, enemy.zone, 14)) {
-    if (hero.zone !== enemy.zone || !(ctx.rings.get(hero.id)?.length)) continue;
-    const radius = ringRadius(hero, enemy) + enemyRadius(enemy) * 2 + .3;
-    const gap = distance(enemy, hero);
-    if (gap > radius + 6 || distance(goal, hero) < radius || (best && gap >= best.gap)) continue;
-    const sx = goal.x - enemy.x, sz = goal.z - enemy.z, length = Math.hypot(sx, sz) || 1;
-    const along = Math.max(0, Math.min(length, ((hero.x - enemy.x) * sx + (hero.z - enemy.z) * sz) / length));
-    const closest = Math.hypot(enemy.x + sx / length * along - hero.x, enemy.z + sz / length * along - hero.z);
-    if (closest >= radius) continue;
-    const current = Math.atan2(enemy.z - hero.z, enemy.x - hero.x);
-    const turn = wrapAngle(Math.atan2(goal.z - hero.z, goal.x - hero.x) - current);
-    const orbit = gap < radius - .2 ? radius + .3 : Math.min(gap, radius + 1);
-    const heading = gap < radius - .2 ? current : current + (turn >= 0 ? 1 : -1) * .6;
-    best = { gap, point: { x: hero.x + Math.cos(heading) * orbit, z: hero.z + Math.sin(heading) * orbit } };
-  }
-  return best?.point;
+  const fought = ctx.unitGrid.near(enemy, enemy.zone, 16)
+    .filter(hero => hero.zone === enemy.zone && (ctx.rings.get(hero.id)?.length ?? 0) > 0);
+  if (!fought.length) return undefined;
+  // Cluster = the fought hero nearest the enemy plus every fought hero close to it.
+  const anchor = fought.reduce((a, b) => distance(a, enemy) <= distance(b, enemy) ? a : b);
+  const cluster = fought.filter(hero => distance(hero, anchor) <= 10);
+  const center = {
+    x: cluster.reduce((sum, hero) => sum + hero.x, 0) / cluster.length,
+    z: cluster.reduce((sum, hero) => sum + hero.z, 0) / cluster.length,
+  };
+  const radius = Math.max(...cluster.map(hero => distance(hero, center) + ringRadius(hero, enemy)))
+    + enemyRadius(enemy) * 2 + .3;
+  const gap = distance(enemy, center);
+  if (gap > radius + 6 || distance(goal, center) < radius) return undefined;
+  const sx = goal.x - enemy.x, sz = goal.z - enemy.z, length = Math.hypot(sx, sz) || 1;
+  const along = Math.max(0, Math.min(length, ((center.x - enemy.x) * sx + (center.z - enemy.z) * sz) / length));
+  const closest = Math.hypot(enemy.x + sx / length * along - center.x, enemy.z + sz / length * along - center.z);
+  if (closest >= radius) return undefined;
+  const current = Math.atan2(enemy.z - center.z, enemy.x - center.x);
+  const turn = wrapAngle(Math.atan2(goal.z - center.z, goal.x - center.x) - current);
+  // Inside the crowd: step straight out first; outside: orbit toward the goal side.
+  const orbit = gap < radius - .2 ? radius + .3 : Math.min(gap, radius + 1);
+  const heading = gap < radius - .2 ? current : current + (turn >= 0 ? 1 : -1) * .6;
+  return clampToZone(enemy.zone, { x: center.x + Math.cos(heading) * orbit, z: center.z + Math.sin(heading) * orbit });
 }
 
 /** Index of the waypoint that ends the route segment closest to `point`. */
@@ -208,19 +265,24 @@ function stepRingFighter(ctx: EnemyTickContext, enemy: Enemy, rooted: boolean): 
       if (other === prey) continue;
       const gap = distance(enemy, other);
       if (gap > enemyAttackReach(enemy, other) && gap > current - RETARGET_MARGIN) continue;
-      if (claimSlot(rings, other, enemy, near(other))) { prey = other; stats(state).switched++; break; }
+      if (!skipped(ctx, enemy, other) && claimSlot(rings, other, enemy, near(other))) { prey = other; stats(state).switched++; break; }
     }
   }
   if (prey && !refreshSlot(rings, prey, enemy, near(prey))) prey = undefined;
-  if (!prey) for (const other of pool) if (claimSlot(rings, other, enemy, near(other))) { prey = other; break; }
+  if (!prey) for (const other of pool) {
+    if (!skipped(ctx, enemy, other) && claimSlot(rings, other, enemy, near(other))) { prey = other; break; }
+  }
   // Its hero just fell or left: look a little wider for the next fight before marching on.
   if (!prey && wasFighting && enemy.zone === 0) for (const other of candidates(ctx, enemy, AGGRO.melee + 4)) {
-    if (!pool.includes(other) && claimSlot(rings, other, enemy, near(other))) { prey = other; break; }
+    if (!pool.includes(other) && !skipped(ctx, enemy, other) && claimSlot(rings, other, enemy, near(other))) { prey = other; break; }
   }
 
   if (!prey) {
     enemy.target = null;
     if (pool.length) stats(state).overflow++;
+    // No ring slot anywhere, but a hero is already within reach: hit it rather than wait (Warcraft rule).
+    const touching = pool.find(other => distance(enemy, other) <= enemyAttackReach(enemy, other) + .15);
+    if (touching) { enemy.target = touching.id; tryStartSwing(ctx, enemy, touching); return; }
     if (rooted) return;
     if (enemy.zone === 0) { walkRoute(ctx, enemy); return; }
     const nearest = pool[0];
@@ -247,17 +309,25 @@ function stepRingFighter(ctx: EnemyTickContext, enemy: Enemy, rooted: boolean): 
     tryStartSwing(ctx, enemy, prey);
     return;
   }
-  if (stalled >= STALL_RESLOT) {
+  if (stalled >= STALL_RESLOT * 2) {
+    // Still walled off after a reslot: give this hero up for a while and move on (other hero or lane).
     approachProgress.delete(enemy);
     releaseSlot(rings, enemy);
+    unreachable.set(enemy, { heroId: prey.id, until: state.elapsed + GIVE_UP_SECONDS });
+    enemy.target = null;
+    return;
+  }
+  if (stalled >= STALL_RESLOT && !approachProgress.get(enemy)?.reslotted) {
+    releaseSlot(rings, enemy);
     if (!claimSlot(rings, prey, enemy, near(prey))) { enemy.target = null; return; }
+    approachProgress.get(enemy)!.reslotted = true;
   }
   walkTo(ctx, enemy, slotApproachGoal(prey, enemy, enemy.engage!.angle), pace(enemy, ctx.dt));
 }
 
 /** Archers keep a band behind the melee ring and back off when a hero closes in. */
 function stepRanged(ctx: EnemyTickContext, enemy: Enemy, rooted: boolean): void {
-  const pool = candidates(ctx, enemy, AGGRO.ranged);
+  const pool = candidates(ctx, enemy, Math.max(AGGRO.ranged, enemyBaseRange(enemy) + 2));
   let prey = enemy.target ? ctx.state.units[enemy.target] : undefined;
   if (prey && (!pool.includes(prey))) prey = undefined;
   if (prey && distance(enemy, prey) > enemyAttackReach(enemy, prey)) {
@@ -275,7 +345,7 @@ function stepRanged(ctx: EnemyTickContext, enemy: Enemy, rooted: boolean): void 
   enemy.target = prey.id;
   const range = enemyBaseRange(enemy), reach = enemyAttackReach(enemy, prey), gap = distance(enemy, prey);
   if (gap <= reach) {
-    const preferred = Math.max(contactDistance(prey, enemy) + .5, range * .75);
+    const preferred = Math.max(contactDistance(prey, enemy) + .5, range * RANGED_BAND.near);
     if (!rooted && gap < preferred) {
       const away = retreatFromTarget(enemy, prey, pace(enemy, ctx.dt), enemy.zone);
       walkTo(ctx, enemy, away, pace(enemy, ctx.dt));
@@ -283,7 +353,7 @@ function stepRanged(ctx: EnemyTickContext, enemy: Enemy, rooted: boolean): void 
     tryStartSwing(ctx, enemy, prey);
     return;
   }
-  const approach = Math.max(0, gap - range * .9);
+  const approach = Math.max(0, gap - range * RANGED_BAND.far);
   if (!rooted && approach > .05) walkTo(ctx, enemy, prey, Math.min(pace(enemy, ctx.dt), approach));
 }
 
@@ -304,7 +374,7 @@ function stepOutsideCombat(ctx: EnemyTickContext, enemy: Enemy, rooted: boolean)
 /** One tick of targeting, movement and attacking for an enemy whose statuses were already advanced. */
 export function stepEnemyBehavior(ctx: EnemyTickContext, enemy: Enemy): void {
   if (hasActiveEnemySkillWindup(enemy)) {
-    ctx.anchored.add(enemy.id);
+    markStanding(ctx, enemy);
     return;
   }
   if (enemy.windup && continueWindup(ctx, enemy)) return;

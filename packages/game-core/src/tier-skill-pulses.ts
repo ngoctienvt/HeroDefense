@@ -47,6 +47,7 @@ export function stepTierBarrages(state: GameState, dt: number, hit: Hit): void {
         }
       }
       event(state, { kind: 'trait', source: caster.id, targets, x: focus.x, z: focus.z,
+        ...(pulse.heroId === 'h00Z' ? { areaCenter: { x: pulse.x, z: pulse.z }, radius: pulse.radius } : {}),
         zone: pulse.zone, skillId: pulse.heroId === 'h01F' ? 'sword-rain-h01F'
           : `tier3-tier4-pulse-${pulse.heroId}`, value: pulse.power });
     }

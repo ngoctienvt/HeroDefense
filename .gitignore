@@ -25,6 +25,9 @@ artifacts/
 *.w3x
 *.w3m
 
+# Audio source packs: archives are kept, extracted copies are rebuilt by assets/audio-source/build-runtime-audio.sh
+assets/audio-source/**/extracted/
+
 # Python cache
 __pycache__/
 *.pyc
@@ -35,3 +38,9 @@ Thumbs.db
 Desktop.ini
 .vscode/
 .idea/
+.forge/
+
+# heavy asset sources (kept local)
+assets/sprites/**/source/
+assets/vfx-source/
+assets/3D model/

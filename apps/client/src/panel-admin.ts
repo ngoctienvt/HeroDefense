@@ -5,6 +5,7 @@ import { getIngredientTree } from './craft-board.js';
 import { debug } from './debug.js';
 import { abilityCost, controlLine } from './hero-detail.js';
 import type { PanelContext } from './panel-context.js';
+import { scaledAttackRange } from '../../../packages/game-core/src/rules.js';
 import { ownUnits } from './panel-context.js';
 import { button, el, heading, heroPortrait } from './ui.js';
 import { elementLabel, roleLabel, starText, tierLabel } from './ui-labels.js';
@@ -294,7 +295,7 @@ export function renderAdmin(container: HTMLElement, ctx: PanelContext): void {
       meta.append(
         el('strong', 'admin-hero-name', hero.name),
         el('div', 'admin-hero-badges', `${tierLabel(hero.tier)} · ${roleLabel(hero.role)} · ${elementLabel(hero.element)}`),
-        el('div', 'admin-hero-stats', `HP: ${hero.hp} · Công: ${hero.attack} · Giáp: ${hero.armor} · Tầm: ${hero.range} · Tốc: ${hero.interval}s`)
+        el('div', 'admin-hero-stats', `HP: ${hero.hp} · Công: ${hero.attack} · Giáp: ${hero.armor} · Tầm: ${scaledAttackRange(hero.range)} · Tốc: ${hero.interval}s`)
       );
       headerRow.append(heroPortrait(hero), meta);
 

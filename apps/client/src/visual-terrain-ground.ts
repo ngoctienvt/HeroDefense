@@ -103,7 +103,7 @@ function paintMask(scene: Scene, laneCount: number): DynamicTexture {
     const route = enemyRoute(laneCount, lane);
     stroke(route, 7, .35); stroke(route, 4, .5); // two passes: soft shoulder + bright core
   }
-  const bossRoute = enemyRouteFor([0], 'party');
+  const bossRoute = enemyRouteFor(['ground-mask-lane'], 'party');
   stroke(bossRoute, 8, .35); stroke(bossRoute, 4.5, .5);
   texture.update(false);
   texture.wrapU = texture.wrapV = Texture.CLAMP_ADDRESSMODE;

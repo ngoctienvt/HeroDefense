@@ -71,7 +71,12 @@ export class GameRoom extends Room {
       while (accumulated >= 0.05) {
         const readyToSpawn = this.game.phase === 'combat' && this.game.spawned < this.game.spawnBudget && this.game.spawnTimer <= 0;
         const spawnedBefore = this.game.spawned;
+        const resetBefore = this.game.combatResetEventId;
         stepGame(this.game, 0.05);
+        if (this.game.combatResetEventId !== resetBefore) {
+          debugLog('wave-combat-reset', { room: this.game.roomCode,
+            count: Object.keys(this.game.units).length, reason: `wave ${this.game.wave}: heroes restored, skills cleared` });
+        }
         if (readyToSpawn && this.game.phase === 'combat' && this.game.spawned === spawnedBefore
           && this.loggedSpawnWaitWave !== this.game.wave) {
           this.loggedSpawnWaitWave = this.game.wave;

@@ -2,6 +2,14 @@
 
 Thư viện này là nguyên liệu để làm hiệu ứng Babylon.js; chỉ những texture được liệt kê ở mục tích hợp mới được game tải. Các hiệu ứng đang chạy nằm ở `apps/client/src/visual-effects.ts`, `visual-tier-skills.ts` và `visual-fire*.ts`; texture runtime nằm trong `apps/client/public/assets/`.
 
+## Tuyệt kỹ bậc 4 — nguồn riêng (23–24-10-2026)
+
+[Nhịp bốn pha, event/snapshot, dung lượng và giới hạn từng tướng](tier4-vfx.md), [kế hoạch tuần tự](../plans/261023-tier4-sequential-vfx/plan.md). Nguồn tranh Codex có sẵn trong `assets/vfx-source/tier34-codex-art/raw/`, prompt/job manifest cùng bộ; không thêm tài nguyên bên ngoài. Mỗi thư mục tướng `assets/vfx-source/<slug>/` giữ script xử lý, `active-inventory.json` với hash nguồn/prompt/output, lưới/neo/alpha đo thật và contact sáng/tối. Chỉ các WebP thực dùng được chép vào `apps/client/public/assets/vfx-<slug>-*.webp`, tải lười qua module `HeroVfx` riêng; không tải cả thư viện.
+
+Đã hoàn tất nguồn/asset/tích hợp13 tướng h00R–h00Z,h010,h03T–h03V:62 WebP16.009.976 byte. Các raw ngoài phạm vi tuyệt kỹ (đao Dương Tiễn, đòn cường hóa Na Tra, true-fire-hit Xích Tùng Tử) giữ nguyên nguồn và không đưa vào bộ runtime mới.
+
+Action/impact ở foreground1 dưới hero2/HP3, ground ở world0; cap/pool/reduced/clear và log `visual.<slug>.*` nằm trong module, báo cáo nguồn liên kết từ từng mục. `__vfxReplay('<heroId>')` hoặc chọn tướng ở debug toolbar chỉ tạo preview client. Các cờ `BLOCKED_ART` lịch sử được giữ lại và giải thích cách xử lý; contact dùng để dựng asset, không thay nghiệm thu trong game. Theo chỉ đạo người dùng, không chạy thêm test/build/game từ h00U; kết quả ba tướng đầu là lịch sử riêng.
+
 ## Long Vương h00Q — Long Cung Triều Tịch (22-10-2026)
 
 Tuyệt kỹ riêng trên kit: `visual-long-vuong{,-wave,-ground,-art,-timeline}.ts`. Đối chiếu cách dựng Cộng Công (profile sóng đứng→đổ, toon/ink/foam, depth và shader clock), Hiên Viên/Như Lai (neo plane, snapshot, cleanup), Phượng Hoàng hiện tại (tranh foreground, tăng lực, ba lớp va chạm). Đòn thường và gameplay giữ nguyên.

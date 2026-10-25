@@ -1,3 +1,4 @@
+import { scaledAttackRange } from './rules.js';
 import { FORMATIONS, HERO_BY_ID, SYNERGIES } from '../../../content/catalog.js';
 import type { GameState, Unit } from '../../contracts/src/types.js';
 import { XINGTIAN } from '../../../content/xingtian-design.js';
@@ -32,7 +33,7 @@ export function refreshStats(state: GameState, owner: string): void {
     unit.maxHp = Math.round(h.hp * multiplier * (1 + .25 * unit.equipment[1] + bonus.health));
     unit.attack = Math.round(h.attack * multiplier * (1 + .22 * unit.equipment[0] + bonus.attack));
     unit.armor = h.armor + unit.equipment[1] * 4 + bonus.armor;
-    unit.range = h.range;
+    unit.range = scaledAttackRange(h.range);
     // Switching a health bonus preserves the fraction; toggling it cannot heal.
     if (unit.hp > 0) unit.hp = Math.min(unit.maxHp, unit.hp / oldMax * unit.maxHp);
   }

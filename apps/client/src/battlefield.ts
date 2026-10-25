@@ -1,3 +1,6 @@
+import { PANGU_ATTACK_SECONDS, panguAttackDuration } from './pangu-model-motion.js';
+import { VisualWarmup } from './visual-warmup.js';
+import { attackInterval } from '../../../packages/game-core/src/stats.js';
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera.js';
 import { barColorKey, barFaction } from './bar-style.js';
 import { energyState } from './hero-status.js';
@@ -15,9 +18,10 @@ import { HERO_BY_ID } from '../../../content/catalog.js';
 import { ARENA, clampToZone, laneCenters } from '../../../packages/game-core/src/battlefield-layout.js';
 import { debug } from './debug.js';
 import { createActor, animateActor, faceActorTowards, type VisualActor } from './visual-actors.js';
-import { pushMotionSample } from './actor-interpolation.js';
+import { pushMotionSample, SnapshotClock } from './actor-interpolation.js';
 import { preloadMonsterEncounterVisuals, releaseMonsterEncounterVisuals } from './visual-sprites.js';
-import { VisualAudio } from './visual-audio.js';
+import { resolveCue } from './audio-cue-routing.js';
+import type { SfxSink } from './audio-sfx-player.js';
 import { VisualEffects } from './visual-effects.js';
 import { hasFireBurn } from './visual-fire.js';
 import { isTierSkill } from './visual-tier-skills.js';
@@ -47,6 +51,9 @@ import { sharedStatuses } from './battlefield-shared-status.js';
 import { TIER12_RECIPES } from './visual-kit-recipes-tier12.js';
 import { Tier6Snapshot } from './battlefield-tier6-snapshot.js';
 import { Tier3Snapshot } from './battlefield-tier3-snapshot.js';
+import { Tier4Snapshot } from './battlefield-tier4-snapshot.js';
+import { tier4Presentation } from './visual-tier4-recipients.js';
+import { isModernTier4Event, isModernTier4Pulse, isTier4SupportRecipient, TIER4_REPLAY_IDS } from './visual-tier4-heroes.js';
 import { splitCoinRecipients } from './visual-trieu-cong-minh-targets.js';
 import { isModernTier3Event, isModernTier3Pulse, isTier3SupportRecipient, TIER3_REPLAY_IDS } from './visual-tier3-heroes.js';
 import { FUXI } from '../../../content/fuxi-design.js';
@@ -64,15 +71,23 @@ export class Battlefield {
   private sampledTick = -1;
   private palette: VisualMaterials;
   private effects: VisualEffects;
-  private audio = new VisualAudio();
+  private warmup: VisualWarmup;
+  /** Server-timeline stamps for snapshot interpolation (robust to bursty arrival over VPN/Wi-Fi). */
+  private snapshotClock = new SnapshotClock();
+  private jitterLoggedAt = 0;
+  /** Session-wide SFX player owned by main.ts; the battlefield only reports confirmed events to it. */
+  private sfx?: SfxSink;
+  private selfId = '';
   private rings = new Map<string, ReturnType<typeof MeshBuilder.CreateTorus>>();
   private zone = 0;
   private eventId = 0;
   private hasSnapshot = false;
+  private combatResetEventId?: number;
   private selected = new Set<string>();
   private groundEffects: NonNullable<GameState['groundEffects']> = [];
   private tier6 = new Tier6Snapshot();
   private tier3 = new Tier3Snapshot();
+  private tier4 = new Tier4Snapshot();
   private summonedPlants: { id: string; position: Vector3; zone: number }[] = [];
   private soulLinks: { key: string; from: Vector3; to: Vector3; zone: number }[] = [];
   private panguStatuses: { id: string; kind: 'armor-break' | 'attack-up' | 'armor-pierce-up' | 'critical-up' | 'haste' }[] = [];
@@ -134,6 +149,7 @@ export class Battlefield {
     this.clearTerrain = buildTerrain(this.scene, this.palette, 1, 0);
     this.laneCount = 1;
     this.effects = new VisualEffects(this.scene, this.palette);
+    this.warmup = new VisualWarmup(this.scene, this.palette, this.effects);
     const marquee = document.createElement('div'); marquee.className = 'selection-marquee'; marquee.hidden = true; document.body.append(marquee);
     let start: { x: number; y: number; append: boolean } | null = null;
     let ctrlPanDrag: { x: number; y: number } | null = null;
@@ -142,7 +158,10 @@ export class Battlefield {
 
     const pickAt = (event: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
-      return this.scene.pick((event.clientX - rect.left) * this.engine.getRenderWidth() / rect.width, (event.clientY - rect.top) * this.engine.getRenderHeight() / rect.height);
+      // Only actor bodies count: VFX planes, bars and terrain under the cursor must not turn an attack into a move.
+      return this.scene.pick((event.clientX - rect.left) * this.engine.getRenderWidth() / rect.width,
+        (event.clientY - rect.top) * this.engine.getRenderHeight() / rect.height,
+        mesh => mesh.isPickable && mesh.isEnabled() && typeof mesh.metadata?.actorId === 'string');
     };
     const groundAt = (event: PointerEvent): Vector3 | null => {
       const rect = canvas.getBoundingClientRect();
@@ -172,8 +191,11 @@ export class Battlefield {
         middleDrag = { x: event.clientX, y: event.clientY };
       } else if (event.button === 2) {
         event.preventDefault();
-        const pick = pickAt(event), point = pick?.pickedPoint ?? groundAt(event);
-        const id = pick?.pickedMesh?.metadata?.actorId as string | undefined;
+        const pick = pickAt(event), point = groundAt(event) ?? pick?.pickedPoint ?? null;
+        // A click just beside a monster's sprite still means "attack it", never "walk onto it".
+        const id = (pick?.pickedMesh?.metadata?.actorId as string | undefined)
+          ?? (point ? this.monsterNear(point.x, point.z) : undefined);
+        if (id && !pick?.pickedMesh) debug('battlefield.order-snap', { zone: this.zone, target: id });
         if (point) {
           // Clicks on cliffs, clouds or sky walk to the nearest edge instead of failing on the server.
           const inside = clampToZone(this.zone, { x: point.x, z: point.z });
@@ -411,6 +433,7 @@ export class Battlefield {
       unregisterPhoenixReplay();
       unregisterLongVuongReplay();
       for (const unregister of unregisterTier3Replays) unregister();
+      for (const unregister of unregisterTier4Replays) unregister();
       unregisterChucdungReplay();
       unregisterKimtraReplay();
       unregisterMoctraReplay();
@@ -635,6 +658,17 @@ export class Battlefield {
       this.focusOn((origin.x + at.x) / 2, (origin.z + at.z) / 2);
       return this.effects.replayTier3(heroId, kind ?? 'ultimate', origin, at);
     }));
+    const unregisterTier4Replays = TIER4_REPLAY_IDS.map(heroId => registerReplay(heroId, (kind, x, z) => {
+      if ((x !== undefined && !Number.isFinite(x)) || (z !== undefined && !Number.isFinite(z))) return false;
+      const actor = [...this.actors.values()].find(a => a.heroId === heroId && a.zone === this.zone && a.hp > 0 && !a.dying);
+      if (!actor) return false;
+      const origin = actor.root.position.clone(), right = this.camera.getDirection(Vector3.Right());
+      const dir = new Vector3(right.x, 0, right.z);
+      const at = x !== undefined && z !== undefined ? new Vector3(x, 0, z)
+        : dir.lengthSquared() > .001 ? origin.add(dir.normalize().scale(7)) : origin.clone();
+      this.focusOn((origin.x + at.x) / 2, (origin.z + at.z) / 2);
+      return this.effects.replayTier4(heroId, kind ?? 'ultimate', origin, at);
+    }));
     const unregisterLongVuongReplay = registerReplay('h00Q', (kind, x, z) => {
       if (kind !== undefined && kind !== 'ultimate' && kind !== 'skill') return false;
       if ((x !== undefined && !Number.isFinite(x)) || (z !== undefined && !Number.isFinite(z))) return false;
@@ -675,11 +709,15 @@ export class Battlefield {
     debug('battlefield.created', { style: 'floating-island', effectsCap: 64 });
   }
 
-  setAudioEnabled(enabled: boolean): void { this.audio.setEnabled(enabled); debug('battlefield.audio', { enabled }); }
+  setSfx(sink: SfxSink): void { this.sfx = sink; }
 
   update(state: GameState, selfId: string, selected: string[]): void {
+    this.selfId = selfId;
+    this.syncCombatReset(state);
+    this.warmup.update(state, selfId);
     this.tier6.update(state);
     this.tier3.update(state);
+    this.tier4.update(state);
     this.selected = new Set(selected);
     this.groundEffects = state.groundEffects ?? [];
     this.panguStatuses = [];
@@ -702,7 +740,7 @@ export class Battlefield {
     const linkedGroups = new Set<string>();
     for (const enemy of Object.values(state.enemies)) {
       if (!enemy.soulLink || enemy.soulLink.remaining <= 0) continue;
-      if (this.tier3.ownsLink(enemy.id)) continue;
+      if (this.tier3.ownsLink(enemy.id) || this.tier4.ownsLink(enemy.id)) continue;
       if (enemy.soulLink.sharePercent === FUXI.skillLinkShare) continue;
       if (this.manhba.owns(enemy.soulLink.group)) continue; // Mạnh Bà's ropes and rings draw her Đồng Mệnh
       const linked = enemy.soulLink.group.map(id => state.enemies[id])
@@ -723,6 +761,11 @@ export class Battlefield {
     // Session views also refresh on UI-only changes; sample motion once per server tick.
     const freshSnapshot = state.tick !== this.sampledTick;
     this.sampledTick = state.tick;
+    const sampleAt = freshSnapshot ? this.snapshotClock.stamp(receivedAt, state.elapsed, state.speed) : receivedAt;
+    if (freshSnapshot && this.snapshotClock.extraDelay > .05 && receivedAt - this.jitterLoggedAt > 10) {
+      debug('visual.interp-jitter', { extraDelayMs: Math.round(this.snapshotClock.extraDelay * 1000) });
+      this.jitterLoggedAt = receivedAt;
+    }
     if (this.interpolationSnaps && receivedAt - this.interpolationLoggedAt > 10) {
       debug('visual.interp', { teleports: this.interpolationSnaps, zone: this.zone });
       this.interpolationSnaps = 0; this.interpolationLoggedAt = receivedAt;
@@ -734,11 +777,16 @@ export class Battlefield {
       let actor = this.actors.get(entity.id);
       if (!actor) {
         actor = createActor(this.scene, this.palette, entity, state.players[entity.owner]?.color,
-          Math.max(0, Object.keys(state.players).indexOf(entity.owner)), entity.zone === this.zone);
+          Math.max(0, Object.keys(state.players).indexOf(entity.owner)), entity.zone === this.zone, state.wave);
         this.actors.set(entity.id, actor);
       }
       actor.target.set(entity.x, 0, entity.z); actor.hp = entity.hp; actor.zone = entity.zone;
-      if (freshSnapshot && actor.track && pushMotionSample(actor.track, receivedAt, entity.x, entity.z)) this.interpolationSnaps++;
+      if ('heroId' in entity && entity.heroId === 'h01B' && actor.model) {
+        actor.modelAttackDuration = panguAttackDuration(attackInterval(state, entity), state.speed);
+        actor.modelMotionSpeed = state.speed;
+      }
+      if (actor.zone === this.zone) actor.model?.activate();
+      if (freshSnapshot && actor.track && pushMotionSample(actor.track, sampleAt, entity.x, entity.z)) this.interpolationSnaps++;
       if (actor.zone === this.zone && actor.sprite && 'activate' in actor.sprite
           && typeof actor.sprite.activate === 'function') actor.sprite.activate();
       actor.summonKind = 'summonKind' in entity ? entity.summonKind : undefined;
@@ -876,9 +924,29 @@ export class Battlefield {
     }
   }
 
+  /** The one place combat events become sound: zone, actor role/element and ownership pick the cue. */
+  private playEventCue(event: GameEvent, state?: Pick<GameState, 'units'> & Partial<Pick<GameState, 'enemies'>>): void {
+    if (!this.sfx) return;
+    const source = this.actors.get(event.source ?? ''), target = this.actors.get(event.target ?? '');
+    const sourceUnit = event.source ? state?.units[event.source] : undefined;
+    const sourceEnemy = event.source ? state?.enemies?.[event.source] : undefined;
+    // Clones, plants and pets attack under their own ids; their skillId ends with the owning hero (e.g. monkey-clone-h00R).
+    const heroId = source?.heroId ?? sourceUnit?.heroId ?? (source?.enemyRank || sourceEnemy ? undefined : /-(h[0-9A-Z]{3})$/.exec(event.skillId ?? '')?.[1]);
+    const request = resolveCue(event, {
+      viewZone: this.zone,
+      eventZone: event.zone ?? (event.kind === 'death' ? target?.zone : source?.zone ?? target?.zone),
+      sourceHero: heroId ? HERO_BY_ID[heroId] : undefined,
+      sourceEnemyRank: heroId ? undefined : source?.enemyRank ?? sourceEnemy?.rank ?? (source || sourceEnemy ? 'minion' : undefined),
+      targetIsHero: Boolean(target?.heroId),
+      ownSource: Boolean(sourceUnit && sourceUnit.owner === this.selfId),
+    });
+    if (request) this.sfx.play(request);
+  }
+
   private handleEvent(event: GameEvent, state?: Pick<GameState, 'units'> & Partial<Pick<GameState, 'enemies'>>): void {
     this.tier6.record(event);
     this.truongStatus.record(event);
+    this.playEventCue(event, state);
     if (event.kind !== 'attack' && event.kind !== 'trait' && event.kind !== 'cast' && event.kind !== 'ability' && event.kind !== 'death') return;
     const source = this.actors.get(event.source ?? '');
     const target = this.actors.get(event.target ?? '');
@@ -928,10 +996,9 @@ export class Battlefield {
           || event.skillId === 'skill-h01F' || event.skillId === 'skill-h01D' || event.skillId === 'skill-h03Z' || event.skillId === 'skill-h041' || event.skillId === 'skill-h040'
           || event.skillId === 'skill-h03W' || event.skillId === 'skill-h03X' || event.skillId === 'skill-h01I' || event.skillId === 'skill-h01J' || event.skillId === 'skill-h014'
           || event.skillId === 'skill-h01K' || event.skillId === 'skill-h00D' || event.skillId === 'skill-h01A'
-          || event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S')
+          || event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S' || isModernTier4Event(event.skillId))
           && event.x !== undefined && event.z !== undefined
           ? new Vector3(event.x, 0, event.z) : source.root.position, source.root.position);
-        this.audio.play(event);
       }
       return;
     }
@@ -960,6 +1027,15 @@ export class Battlefield {
       if (source?.zone === this.zone) this.effects.show(event, source.root.position, source.root.position);
       return;
     }
+    if (event.kind === 'trait' && event.skillId === 'immortal-h03U') {
+      // The blessed unit is the source, not the caster: activation must not play an attack pose.
+      const blessed = event.source ? state?.units[event.source] : undefined;
+      if (source?.heroId && source.zone === this.zone && !source.dying && blessed && blessed.hp > 0
+        && blessed.zone === this.zone && blessed.respawn <= 0 && (blessed.slot >= 0 || blessed.summonDuration !== undefined)
+        && (blessed.tierImmortal?.activeRemaining ?? 0) > 0)
+        this.effects.show(event, source.root.position, undefined, [source.root.position]);
+      return;
+    }
     if (event.skillId === 'revive-h015' || event.skillId === 'star-guard-h015') {
       const hits = (event.targets ?? []).map(id => this.actors.get(id))
         .filter((actor): actor is VisualActor => Boolean(actor && actor.zone === this.zone))
@@ -970,7 +1046,6 @@ export class Battlefield {
         const spot = new Vector3(event.x, 0, event.z);
         this.effects.show(event, spot, source.root.position, [spot]);
       }
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'freeze-h018') {
@@ -980,13 +1055,14 @@ export class Battlefield {
       if (hits.length) this.effects.show(event, hits[0], source?.root.position, hits);
       return;
     }
-    if (source && event.kind !== 'death' && event.skillId !== 'bolt-h019'
+    if (source && event.kind !== 'death' && !isModernTier4Pulse(event.skillId) && event.skillId !== 'bolt-h019'
       && event.skillId !== 'shield-h01G') {
       const supportive = event.ability === 'heal' || event.ability === 'shield' || isTier3SupportRecipient(event.skillId, false);
       const stylized = hasStylizedMotion(source.heroId ?? source.skinHeroId ?? '');
       source.action = event.skillId === 'boss-earthquake' ? 'attack'
         : event.kind === 'ability' && event.skillId !== 'skill-h01B' && !stylized ? 'cast' : 'attack';
-      source.actionTime = stylized && event.kind === 'ability' ? .2 : .38;
+      source.actionTime = source.heroId === 'h01B' && source.model ? source.modelAttackDuration ?? PANGU_ATTACK_SECONDS
+        : stylized && event.kind === 'ability' ? .2 : .38;
       source.actionDuration = source.actionTime;
       // A monster hit is the impact of the wind-up it already showed: play only the strike half.
       source.attackPhase = !source.heroId && (event.kind === 'attack' || (stylized && event.kind === 'ability')) ? 'strike' : undefined;
@@ -1017,7 +1093,7 @@ export class Battlefield {
       || event.skillId === 'trait-h03Y' || event.skillId === 'shadow-hit-h03Y'
       || event.skillId === 'trait-h040'
       || event.skillId === 'water-shield-burst-h00J'
-      || isModernTier3Pulse(event.skillId)
+      || isModernTier3Pulse(event.skillId) || isModernTier4Pulse(event.skillId) || event.skillId === 'monkey-clone-h00R'
       || isEnemySkillEvent(event.skillId)
       || event.skillId === 'trait-h011' || event.skillId === 'fire-wave-h011';
     const affected = multiHit ? event.targets?.length ? event.targets : event.target ? [event.target] : []
@@ -1027,7 +1103,7 @@ export class Battlefield {
       if (!hit || hit.dying) continue;
       if (event.kind === 'death') { hit.action = 'death'; hit.actionTime = hit.sprite?.animated ? .75 : .45; hit.dying = true; hit.hp = 0; hit.barRoot.setEnabled(false); hit.shadow.setEnabled(false); }
       else if (hit !== source && event.ability !== 'heal' && event.ability !== 'shield'
-        && !isTier3SupportRecipient(event.skillId, Boolean(hit.heroId))) {
+        && !isTier3SupportRecipient(event.skillId, Boolean(hit.heroId)) && !isTier4SupportRecipient(event.skillId, Boolean(hit.heroId))) {
         // Flash only: being hit never interrupts the target's walk, wind-up, attack or cast, nor moves it.
         hit.hitFlashTime = .08;
       }
@@ -1046,11 +1122,11 @@ export class Battlefield {
           if (boss?.zone === this.zone) this.effects.showPrimordialBreak(event, boss.root.position);
         }
       }
-      this.audio.play(event); return;
+      return;
     }
     if (event.skillId === 'blood-general-hit-h03Z') {
       if (target?.zone === this.zone) this.effects.showBloodGeneralHit(event, target.root.position);
-      this.audio.play(event); return;
+      return;
     }
     if (event.skillId === 'skill-h01C' || event.skillId === 'trait-h01C'
       || event.skillId === 'stone-blessing-h01C' || event.skillId === 'blessing-h01C'
@@ -1062,7 +1138,6 @@ export class Battlefield {
         this.effects.show(event, source?.root.position ?? hits[0], source?.root.position, hits);
       if (event.skillId === 'blessing-h01C')
         for (const point of hits) this.effects.playSharedStatus('heal', point);
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h01F' || event.skillId === 'trait-h01F'
@@ -1075,7 +1150,6 @@ export class Battlefield {
           ? new Vector3(event.x, 0, event.z) : hits[0] ?? source?.root.position;
         if (center) this.effects.show(event, center, source?.root.position, hits);
       }
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h01E' || event.skillId === 'trait-h01E'
@@ -1088,7 +1162,6 @@ export class Battlefield {
           ? new Vector3(event.x, 0, event.z) : hits[0] ?? source?.root.position;
         if (center) this.effects.show(event, center, source?.root.position, hits);
       }
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h01K' || event.skillId === 'summer-h01K'
@@ -1105,7 +1178,6 @@ export class Battlefield {
           return ally ? { at: ally.root.position, zone: ally.zone, alive: ally.hp > 0 && !ally.dying } : undefined;
         });
       }
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h01D' || event.skillId === 'trait-h01D') {
@@ -1117,7 +1189,6 @@ export class Battlefield {
           ? new Vector3(event.x, 0, event.z) : hits[0] ?? source?.root.position;
         if (center) this.effects.show(event, center, source?.root.position, hits);
       }
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h03Z' || event.skillId === 'trait-h03Z'
@@ -1130,7 +1201,6 @@ export class Battlefield {
           ? new Vector3(event.x, 0, event.z) : hits[0] ?? source?.root.position;
         if (center) this.effects.show(event, center, source?.root.position, hits);
       }
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h041' || event.skillId === 'trait-h041'
@@ -1143,13 +1213,25 @@ export class Battlefield {
           ? new Vector3(event.x, 0, event.z) : hits[0] ?? source?.root.position;
         if (center) this.effects.show(event, center, source?.root.position, hits);
       }
-      this.audio.play(event);
       return;
     }
-    if ((event.kind === 'ability' && (isTierSkill(event.skillId) || isModernTier3Event(event.skillId)))
-      || event.skillId === 'water-shield-burst-h00J' || (event.kind === 'trait' && isModernTier3Pulse(event.skillId))) {
-      const coin = event.skillId === 'tier3-tier4-h03S'
-        ? splitCoinRecipients(affected, state, this.actors, this.zone) : undefined;
+    if (event.kind === 'attack' && event.skillId === 'monkey-clone-h00R') {
+      const hits = affected.map(id => this.actors.get(id)).filter((a): a is VisualActor => Boolean(a && !a.heroId && a.zone === this.zone))
+        .map(a => a.root.position.clone());
+      const origin = source?.zone === this.zone && !source.dying ? source.root.position : undefined;
+      const at = event.x !== undefined && event.z !== undefined ? new Vector3(event.x, 0, event.z) : hits[0] ?? origin;
+      if (at && (origin || hits.length)) this.effects.showMonkeyCloneSweep(event, origin, at, hits);
+      return;
+    }
+    if ((event.kind === 'ability' && (isTierSkill(event.skillId) || isModernTier3Event(event.skillId) || isModernTier4Event(event.skillId)))
+      || event.skillId === 'water-shield-burst-h00J' || (event.kind === 'trait' && (isModernTier3Pulse(event.skillId) || isModernTier4Pulse(event.skillId)))) {
+      const tier4Support = isModernTier4Event(event.skillId) ? (event.supportTargets ?? []).filter(id => {
+        const unit = state?.units[id], actor = this.actors.get(id);
+        return Boolean(unit && unit.zone === this.zone && unit.hp > 0 && unit.respawn <= 0
+          && (unit.slot >= 0 || unit.summonDuration !== undefined) && actor?.heroId && !actor.dying);
+      }) : [];
+      const coin = event.skillId === 'tier3-tier4-h03S' || isModernTier4Event(event.skillId)
+        ? splitCoinRecipients([...affected, ...tier4Support], state, this.actors, this.zone, event.skillId === 'tier3-tier4-h00V') : undefined;
       const hits = coin?.hits ?? affected.map(id => this.actors.get(id)).filter((hit): hit is VisualActor =>
         Boolean(hit && hit.zone === this.zone)).map(hit => hit.root.position.clone());
       const support = coin?.support ?? (event.skillId === 'tier3-tier4-h03Q'
@@ -1162,21 +1244,23 @@ export class Battlefield {
           .filter((ally): ally is VisualActor => Boolean(ally && ally.heroId && ally.zone === this.zone && !ally.dying))
           .map(ally => ally.root.position.clone()) : []);
       if (source?.zone !== this.zone && target?.zone !== this.zone && hits.length === 0
-        && support.length === 0 && !((isModernTier3Pulse(event.skillId) || event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S')
+        && support.length === 0 && !((isModernTier3Pulse(event.skillId) || isModernTier4Pulse(event.skillId) || event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S')
           && event.zone === this.zone)) return;
       const center = event.x !== undefined && event.z !== undefined
-        ? new Vector3(event.x, 0, event.z) : isModernTier3Event(event.skillId)
+        ? new Vector3(event.x, 0, event.z) : isModernTier3Event(event.skillId) || isModernTier4Event(event.skillId)
           ? hits[0] ?? support[0]
             ?? (target?.zone === this.zone ? target.root.position : undefined)
             ?? (source?.zone === this.zone ? source.root.position : undefined)
           : target?.root.position ?? source?.root.position;
       if (center) {
-        if (event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S') this.effects.show(event, center,
+        if (isModernTier4Event(event.skillId)) this.effects.show(event, center,
+          source?.zone === this.zone && !source.dying ? source.root.position : undefined, hits, undefined, support,
+          tier4Presentation(event, state, this.zone, id => this.actors.get(id)));
+        else if (event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S') this.effects.show(event, center,
           source?.zone === this.zone && !source.dying ? source.root.position : undefined, hits, undefined, support);
         else this.effects.show(event, center, isModernTier3Event(event.skillId)
           ? source?.zone === this.zone && !source.dying ? source.root.position : undefined : source?.root.position, hits);
       }
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'trait-h018' || event.skillId === 'trait-h019'
@@ -1185,7 +1269,6 @@ export class Battlefield {
         .filter((actor): actor is VisualActor => Boolean(actor && actor.zone === this.zone))
         .map(actor => actor.root.position.clone());
       if (hits.length) this.effects.show(event, hits[0], source?.root.position, hits);
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h03X' && event.kind === 'ability') {
@@ -1194,7 +1277,6 @@ export class Battlefield {
         .filter((actor): actor is VisualActor => Boolean(actor && actor.zone === this.zone && !actor.dying))
         .map(actor => actor.root.position.clone());
       if (source?.zone === this.zone) this.effects.show(event, source.root.position, source.root.position, chosen);
-      this.audio.play(event);
       return;
     }
     if ((event.skillId === 'skill-h011' && event.kind === 'ability') || event.skillId === 'fire-wave-h011') {
@@ -1204,7 +1286,6 @@ export class Battlefield {
         .map(hit => hit.root.position.clone());
       if (source?.zone === this.zone && event.x !== undefined && event.z !== undefined)
         this.effects.show(event, new Vector3(event.x, 0, event.z), source.root.position, hits);
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h01A' && event.kind === 'ability') {
@@ -1214,7 +1295,6 @@ export class Battlefield {
         .map(actor => actor.root.position.clone());
       if (source?.zone === this.zone && event.x !== undefined && event.z !== undefined)
         this.effects.show(event, new Vector3(event.x, 0, event.z), source.root.position, hits);
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h016' && event.kind === 'ability') {
@@ -1224,7 +1304,6 @@ export class Battlefield {
         .map(actor => actor.root.position.clone());
       if (source?.zone === this.zone && event.x !== undefined && event.z !== undefined)
         this.effects.show(event, new Vector3(event.x, 0, event.z), source.root.position, hits);
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h018') {
@@ -1233,7 +1312,6 @@ export class Battlefield {
         .filter((actor): actor is VisualActor => Boolean(actor && actor.zone === this.zone))
         .map(actor => actor.root.position.clone());
       if (source?.zone === this.zone) this.effects.show(event, source.root.position, source.root.position, hits);
-      this.audio.play(event);
       return;
     }
     if (event.skillId === 'skill-h00I' && event.kind === 'ability') {
@@ -1243,7 +1321,6 @@ export class Battlefield {
         .map(actor => actor.root.position.clone());
       this.manhba.register(event.targets ?? []);
       if (source?.zone === this.zone && hits.length) this.effects.show(event, source.root.position, source.root.position, hits);
-      this.audio.play(event);
       return;
     }
     const defensive = event.kind === 'ability' && (event.ability === 'heal' || event.ability === 'shield');
@@ -1252,7 +1329,6 @@ export class Battlefield {
         const ally = this.actors.get(id);
         if (ally?.zone === this.zone) this.effects.show(event, ally.root.position, source?.root.position);
       }
-      this.audio.play(event);
       return;
     }
     const actor = target ?? source;
@@ -1279,7 +1355,6 @@ export class Battlefield {
         previous = hit.root.position;
       }
     }
-    this.audio.play(event);
   }
 
   /** Rebuild the island when the lane count changes or the view moves between the main island and a dungeon islet. */
@@ -1316,6 +1391,17 @@ export class Battlefield {
     }
     this.resetCamera();
   }
+  /** Live monster in the viewed zone whose body is within reach of a ground click. */
+  private monsterNear(x: number, z: number, slack = 1.6): string | undefined {
+    let best: string | undefined, bestGap = slack;
+    for (const [id, actor] of this.actors) {
+      if (actor.heroId || actor.summonKind || actor.dying || actor.hp <= 0 || actor.zone !== this.zone) continue;
+      const gap = Math.hypot(actor.root.position.x - x, actor.root.position.z - z);
+      if (gap < bestGap) { best = id; bestGap = gap; }
+    }
+    return best;
+  }
+
   private disposeActorVisuals(actor: VisualActor): void {
     if (actor.sprite && 'meshes' in actor.sprite && actor.sprite.meshes.length > 1) {
       debug('sprite.monster-boss-group-cleanup', { zone: actor.zone, childCount: actor.sprite.meshes.length });
@@ -1324,11 +1410,36 @@ export class Battlefield {
     actor.root.dispose(false, false);
     if (actor.sprite && 'release' in actor.sprite && typeof actor.sprite.release === 'function') actor.sprite.release();
   }
+  /** Clear even when snapshots skip preparation; never replay a finished wave's skill events. */
+  private syncCombatReset(state: GameState): void {
+    const boundary = state.combatResetEventId;
+    if (boundary === undefined || boundary === this.combatResetEventId) return;
+    this.combatResetEventId = boundary;
+    this.eventId = Math.max(this.eventId, boundary);
+    this.tier6.clear(); this.tier3.clear(); this.tier4.clear();
+    this.effects.clear(); this.truongStatus.clear(); this.vothuong.clear();
+    this.congcong.clear(); this.kimtra.clear(); this.moctra.clear(); this.thietphien.clear();
+    this.baoquatu.clear(); this.mandon.clear(); this.manhba.clear(); this.ladongtan.clear();
+    this.nhiep.clear(); this.honghainhi.clear(); this.culinh.clear();
+    this.groundEffects = []; this.summonedPlants = []; this.soulLinks = []; this.panguStatuses = [];
+    for (const [id, actor] of this.actors) {
+      if (!state.units[id]) {
+        this.disposeActorVisuals(actor);
+        this.actors.delete(id);
+      } else {
+        actor.action = 'idle'; actor.actionTime = 0; actor.actionDuration = 0;
+        actor.hitStop = 0; actor.hitFlashTime = 0; actor.dying = false;
+      }
+    }
+    debug('visual.wave-reset', { wave: state.wave, eventId: boundary });
+  }
   resizeCanvas(): void { this.engine.resize(); }
   clear(): void {
+    this.combatResetEventId = undefined;
     releaseMonsterEncounterVisuals(this.palette);
     this.tier6.clear();
     this.tier3.clear();
+    this.tier4.clear();
     this.truongStatus.clear();
     for (const actor of this.actors.values()) this.disposeActorVisuals(actor);
     this.actors.clear(); this.effects.clear(); this.vothuong.clear();this.congcong.clear(); this.kimtra.clear(); this.moctra.clear(); this.thietphien.clear(); this.baoquatu.clear(); this.mandon.clear(); this.manhba.clear(); this.ladongtan.clear(); this.nhiep.clear(); this.honghainhi.clear(); this.culinh.clear(); this.eventId = 0; this.zone = 0; if (this.terrainZone !== 0) this.rebuildTerrain(); this.hasSnapshot = false; this.selected.clear(); this.groundEffects = []; this.summonedPlants = []; this.soulLinks = [];
@@ -1432,8 +1543,9 @@ export class Battlefield {
 
     this.sky.update(dt, this.camera.position, this.reducedMotion.matches);
     const cameraFacing = this.camera.position.subtract(this.camera.target);
+    const motionNow = performance.now() / 1000 - this.snapshotClock.extraDelay;
     for (const [id, actor] of this.actors) {
-      animateActor(actor, dt, this.time, this.reducedMotion.matches, cameraFacing.x, cameraFacing.z, this.camera.alpha, this.camera.beta);
+      animateActor(actor, dt, this.time, this.reducedMotion.matches, cameraFacing.x, cameraFacing.z, this.camera.alpha, this.camera.beta, motionNow);
       if (actor.heroId === 'h03Y') {
         if (actor.spriteShown && actor.sprite) actor.sprite.mesh.visibility = actor.shadowAssault ? 0 : 1;
         else for (const part of actor.fallbackParts) part.visibility = actor.shadowAssault ? 0 : 1;
@@ -1450,7 +1562,7 @@ export class Battlefield {
           this.effects.markPhoenixEgg(id, actor.root.position);
       }
       if (actor.dying && actor.actionTime <= 0) { actor.dying = false; actor.root.setEnabled(false); }
-      if (actor.fireBurning && actor.zone === this.zone && actor.hp > 0 && !actor.dying)
+      if (actor.fireBurning && actor.zone === this.zone && actor.hp > 0 && !actor.dying && !this.tier4.ownsBurning(id))
         this.effects.markBurning(id, actor.root.position, actor.phase);
       if (actor.summonKind === 'buddha-clone' && actor.zone === this.zone && actor.hp > 0 && !actor.dying)
         this.effects.markDouzhanClone(id, actor.root.position);
@@ -1584,9 +1696,13 @@ export class Battlefield {
         this.effects.markHero('h00D', 'array', ladongtanArrayId(ground), new Vector3(ground.x, 0, ground.z));
       else if (ground.kind === 'tier-water')
         this.effects.markLongVuongPool(`${ground.casterId}:${ground.x}:${ground.z}`, new Vector3(ground.x, 0, ground.z), ground.radius, ground.remaining);
-      else if (!this.tier3.ownsGround(ground, this.zone))
+      else if (!this.tier3.ownsGround(ground, this.zone) && !this.tier4.ownsGround(ground, this.zone))
         this.effects.markGround(`${ground.casterId}:${ground.x}:${ground.z}`, new Vector3(ground.x, 0, ground.z), ground.radius, ground.kind);
     }
+    this.tier4.draw(this.effects, this.zone, id => {
+      const actor = this.actors.get(id);
+      return actor ? { at: actor.root.position, zone: actor.zone, alive: actor.hp > 0 && !actor.dying } : undefined;
+    });
     this.tier3.draw(this.effects, this.zone, id => {
       const actor = this.actors.get(id);
       return actor ? { at: actor.root.position, zone: actor.zone, alive: actor.hp > 0 && !actor.dying } : undefined;
@@ -1641,10 +1757,11 @@ export class Battlefield {
   }
   dispose(): void {
     this.disposed = true;
+    this.warmup.dispose();
     releaseMonsterEncounterVisuals(this.palette);
     for (const actor of this.actors.values()) this.disposeActorVisuals(actor);
     this.actors.clear();
     window.removeEventListener('resize', this.resize); this.unsubscribe();
-    this.engine.stopRenderLoop(); this.audio.dispose(); this.clearTerrain(); this.sky.dispose(); this.scene.dispose(); this.engine.dispose();
+    this.engine.stopRenderLoop(); this.clearTerrain(); this.sky.dispose(); this.scene.dispose(); this.engine.dispose();
   }
 }

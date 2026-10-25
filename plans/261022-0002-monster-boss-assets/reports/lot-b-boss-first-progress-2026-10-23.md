@@ -29,6 +29,34 @@ Tất cả PNG/master/direction/action đều lưu prompt, route `Codex image_ge
 - Preview sáng/tối: [boss-master-batch-2026-10-23.png](./boss-master-batch-2026-10-23.png). Cả ba PNG 1323×1189 RGBA, alpha thật, không có pixel alpha ở bốn cạnh. Đây chỉ là thông tin clipping; không đặt ngưỡng lề trống. Prompt, hash, reference và alpha bounds được ghi trong sidecar từng ảnh.
 - Chưa có bốn hướng, walk/attack, registration, export hay runtime; không tính là bundle hoàn chỉnh. Giữ nguyên ảnh raw và không image-to-video.
 
+## Turnaround và action candidate cho ba boss
+
+- Tạo east/west/north độc lập cho cả ba boss; Cinder và Bone Abbot dùng master làm south. Hound master đầu tiên thực chất nghiêng east, vì vậy giữ nó làm identity/east candidate và tạo thêm south view trực diện xuống dưới. Preview đủ bốn hướng trên nền sáng/tối: [turnaround light](./boss-turnarounds-2026-10-23-light.png), [turnaround dark](./boss-turnarounds-2026-10-23-dark.png). Giữ toàn bộ PNG still gốc, prompt và sidecar riêng; chưa đăng ký chung scale/anchor.
+- Tạo walk v1 + attack v1 (4×2) dạng sheet tĩnh cho cả ba. Dịch vụ trả 1774×887 RGBA thay vì kích thước 2048×1024 trong prompt; không resample/crop để che sai lệch. Rà contact sheet [light](./boss-actions-2026-10-23-light.png) cho thấy attack có chuyển thế rõ hơn, nhưng walk lặp tư thế; attack vẫn còn thay đổi hướng/độ lớn cần registration và rà từng ô.
+- Walk v2 có pose chỉ định theo từng ô. Contact [walk v2 light](./boss-walk-v2-2026-10-23-light.png), [walk v2 dark](./boss-walk-v2-2026-10-23-dark.png) xác nhận các pose vẫn quá giống nhau; dừng lượt sửa này, không motion-approve.
+- Kiểm tra component alpha qua ranh lưới 4×2 (component area ≥32 px; đây là phép sàng spill, không phải tiêu chí blank margin): Cinder walk v1/v2/attack có **3/6/5** component qua ranh; Bone Abbot **7/6/1**; Hound **0/1/6**. Bone Abbot attack có 13 pixel alpha trên cạnh trên của sheet; cần xác định có bộ phận bị crop trước khi dùng. Không sheet nào được slice thẳng hoặc đóng gói runtime chỉ dựa trên các số này.
+- Giữ tất cả v1/v2 thô và provenance. Chưa có action candidate nào được xác nhận đủ bước/continuity; chưa export, tích hợp hoặc nghiệm thu game. Không áp ngưỡng lề trống; chỉ theo dõi crop thật và spill thật qua cell.
+
 ## Quyết định xử lý tiếp
 
 Giữ mọi raw source và QA; không re-roll thêm Thụ Yêu hoặc ba boss này trong lượt hiện tại. Walk yếu ở bước chân/root shift, action sheets tràn cell và còn drift; cần hướng xử lý cụ thể trước khi dùng. Tiếp tục boss-first theo batch master/direction/action; nếu một batch không đạt thì ghi candidate/FAIL và chuyển tiếp, không mắc kẹt trên một boss. Không build/test/server/game theo hướng dẫn dự án.
+
+## Batch master lô C tiếp theo
+
+- Hiện thân Ngũ Hành (`art-fivefold-avatar`) bị người dùng loại ngày 2026-10-23 vì hình không đạt. Giữ master/hướng cùng provenance trong source làm lịch sử bị loại; không tạo action, không đóng gói, không tích hợp và không tính vào roster. Không có thiết kế thay thế.
+- Thiên La Chu Hậu (`art-web-empress`): tám chân và bụng giáp lớn đọc rõ; vẫn là candidate, cần kiểm tra footprint/selection ở runtime size.
+- Hỗn Mang Liệt Giáp (`art-rift-colossus`): bốn tay, lõi hổ phách và giáp đá bất đối xứng đọc rõ; giữ khác silhouette Bàn Cổ, chưa hướng/action.
+- [Master batch nền sáng](./boss-master-batch-2026-10-23-b-light.png) và [nền tối](./boss-master-batch-2026-10-23-b-dark.png). PNG là RGBA 1323×1189; prompt, reference, route và hash trong sidecar cạnh ảnh. Không áp ngưỡng lề trống.
+- Với hai boss còn lại đã có master và ba hướng candidate; chưa có action, không tính bundle hoàn chỉnh, chưa tích hợp/export.
+
+## Scope update — 2026-10-23
+
+Roster sản xuất hiện tại là 39 ID (20 quái + 19 boss). Hiện thân Ngũ Hành bị loại theo yêu cầu người dùng; không thay thế. Tất cả source của nó chỉ là lịch sử bị loại, không được tiếp tục sinh action hoặc tính vào số lượng hoàn tất.
+
+
+## Sprite sheet pilot sau khi loại Ngũ Hành — rà lại 2026-10-24
+
+- Đính chính nhận định nền đục: nền nâu/tím trong bản xem trước là RGB ẩn dưới alpha 0. Kiểm tra pixel và contact trên checkerboard xác nhận PNG có nền trong suốt thật. Không cần tạo lại hoặc key nền vì màu xem trước.
+- Ba raw sheet walk south 1536×1024 đều FAIL spill qua ranh ô 4×2. Ownership slicing giữ nguyên component và xuất đủ tám frame/candidate trên canvas chung; atlas/WebP trong các thư mục ownership chỉ là nguồn QA, chưa phải export runtime.
+- Chu Hậu v1: frame QA FAIL head ratio 0.90–1.04, WARN torso drift 41.18 source px; đây là heuristic nhạy với bụng/giáp ở vùng đầu. Chu Hậu v2: không FAIL, còn WARN torso drift. Liệt Giáp: head-template không fit frame 6, không dùng phép đo này làm bằng chứng identity.
+- Contact checkerboard đã rà: [walk ownership review](./boss-walk-ownership-review-2026-10-23.png). Chu Hậu có đổi chân nhưng nhịp support chưa đủ rõ; Liệt Giáp có pose thay đổi mạnh nhưng cần khóa trọng tâm và trình tự bước. Không motion-approve. Giữ số lượt sửa thấp, tiếp tục action còn thiếu của batch.

@@ -1,0 +1,66 @@
+{
+  "burst": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8406169665809768,
+    "anchorX": 0.4987146529562982,
+    "bounds": {
+      "left": 0.11197916666666667,
+      "top": 0.041666666666666664,
+      "right": 0.8932291666666666,
+      "bottom": 0.8671875
+    }
+  },
+  "puff": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "anchorX": 0.5,
+    "bounds": {
+      "left": 0.0390625,
+      "top": 0.09635416666666667,
+      "right": 0.9765625,
+      "bottom": 0.8802083333333334
+    }
+  },
+  "sweep": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.850187265917603,
+    "anchorX": 0.149812734082397,
+    "bounds": {
+      "left": 0.0234375,
+      "top": 0.17447916666666666,
+      "right": 0.8671875,
+      "bottom": 0.8932291666666666
+    }
+  },
+  "unravel": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "anchorX": 0.5,
+    "bounds": {
+      "left": 0.09114583333333333,
+      "top": 0.036458333333333336,
+      "right": 0.9739583333333334,
+      "bottom": 0.9166666666666666
+    }
+  },
+  "crack": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0,
+      "right": 1,
+      "top": 0,
+      "bottom": 1
+    }
+  }
+}

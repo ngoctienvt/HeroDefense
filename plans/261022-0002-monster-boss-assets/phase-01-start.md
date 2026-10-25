@@ -13,7 +13,7 @@ Khóa [roster](./roster.md), [art-contract](./art-contract.md), chứng minh ch�
 
 ## Requirements
 
-- [x] Người dùng duyệt tỉ lệ 20 quái/20 boss, roster 40 ID và brief Ngũ Hành.
+- [x] Người dùng duyệt tỉ lệ 20 quái/20 boss, roster 40 ID và brief Ngũ Hành ngày 2026-10-22; ngày 2026-10-23 loại Ngũ Hành khỏi scope sản xuất, còn 39 ID (20 quái/19 boss).
 - [x] Giữ một entity server cho boss nhóm, thiết kế riêng từng thành viên theo quyết định đã duyệt.
 - [ ] Không chạy game/test/build nếu người dùng chưa yêu cầu rõ; nghiệm thu runtime do người dùng.
 

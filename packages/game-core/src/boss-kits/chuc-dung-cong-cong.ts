@@ -1,3 +1,4 @@
+import { BOSS_REACH_GROWTH } from '../crowd-movement.js';
 import type { EnemySkillState } from '../../../contracts/src/types.js';
 import { BALANCE_SCALE } from '../balance-curve.js';
 import { clampToZone } from '../battlefield-layout.js';
@@ -112,7 +113,7 @@ export function resolveChucDungCongCongSkill(
   switch (skill.id) {
     case 'boss-meteor-cataclysm': {
       const point = locked.point ?? { x: enemy.x, z: enemy.z };
-      const radius = 5.0;
+      const radius = 5.0 + BOSS_REACH_GROWTH;
       const damage = Math.round(enemy.attack * 2.0 * powerScale);
       const hits = units.filter(u => u.zone === 0 && isDeployed(u) && distance(u, point) <= radius);
       for (const unit of hits) {
@@ -162,7 +163,7 @@ export function resolveChucDungCongCongSkill(
       break;
     }
     case 'boss-abyssal-deluge': {
-      const radius = 5.2;
+      const radius = 5.2 + BOSS_REACH_GROWTH;
       const damage = Math.round(enemy.attack * 1.7 * powerScale);
       const hits = units.filter(u => u.zone === 0 && isDeployed(u) && distance(u, enemy) <= radius);
       for (const unit of hits) {

@@ -255,15 +255,6 @@
   box-shadow: 0 0 6px rgba(8, 145, 178, 0.8);
 }
 
-/* Dim unrelated heroes when inspecting a recipe */
-.craft-icon.is-dimmed {
-  opacity: 0.32;
-  filter: grayscale(0.75) brightness(0.6);
-}
-.craft-icon.is-dimmed:hover {
-  opacity: 0.92;
-  filter: none;
-}
 
 @keyframes craft-pulse-gold {
   0%, 100% {
@@ -486,13 +477,24 @@
   transform: translateY(-1px);
 }
 
-/* Heroes craftable right now: green frame + tag; stays readable even when another recipe dims the board. */
+/* Heroes craftable right now: green frame + tag. */
 .legend-dot.craftable { background: var(--c-hp-high); box-shadow: 0 0 6px var(--c-hp-high); }
 .craft-icon.can-craft { border-color: var(--c-hp-high); box-shadow: 0 0 0 2px var(--c-hp-high), 0 0 14px color-mix(in oklab, var(--c-hp-high) 60%, transparent); }
 .craft-icon.can-craft .portrait { filter: none; opacity: 1; }
-.craft-icon.can-craft.is-dimmed { opacity: .9; filter: none; }
 .craft-ready-tag { position: absolute; top: 2px; right: 2px; z-index: 1; padding: 0 4px; font-size: .58rem; font-weight: 800; line-height: 1.5; white-space: nowrap; color: var(--ink-0); background: var(--c-hp-high); border-radius: 6px; pointer-events: none; }
 .craft-ready-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; }
 .craft-ready-label { font-size: .72rem; font-weight: 700; color: var(--c-hp-high); }
 .craft-ready-chip { min-height: 26px; padding: 0 var(--s2); font-size: .7rem; font-weight: 700; color: var(--ink-0); background: var(--c-hp-high); border-color: var(--c-hp-high); border-radius: 13px; }
 .craft-ready-chip:hover:enabled { background: var(--green-soft); border-color: var(--green-soft); }
+
+/* Deploy the inspected hero without leaving Ghép Tướng. */
+.craft-deploy { display: grid; gap: 6px; margin: var(--s2) 0; padding: var(--s2); border: 1px solid var(--line); border-radius: 6px; background: var(--ink-2); }
+.craft-deploy-title { margin: 0; font-size: .75rem; font-weight: 700; color: var(--gold); }
+.craft-deploy-note { margin: 0; font-size: .7rem; color: var(--c-hp-high); }
+.craft-deploy-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Higher-tier heroes that use the selected hero as an ingredient (violet rim, no dimming of others). */
+.legend-dot.upgrade { background: #b98cf0; box-shadow: 0 0 6px #b98cf0; }
+.craft-icon.is-upgrade-target { border-color: #b98cf0 !important; box-shadow: 0 0 0 1px #b98cf0, 0 0 12px rgba(185, 140, 240, .65); z-index: 7; }
+.craft-icon.is-upgrade-target .portrait { filter: none; }
+.craft-icon.is-upgrade-target .craft-ingredient-badge { background: #8a5bd1; color: var(--text-bright); box-shadow: 0 0 6px rgba(185, 140, 240, .8); }

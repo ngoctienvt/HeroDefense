@@ -21,7 +21,7 @@ const MONSTER_VISUALS: Readonly<Record<string, { height: number; visibleTop: num
   m002: { height: 5.5, visibleTop: 502 / 533 },
   m003: { height: 7.3, visibleTop: 377 / 533 },
   m004: { height: 7.3, visibleTop: 309 / 533 },
-  b001: { height: 13.2, visibleTop: 343 / 533 },
+  b001: { height: 8.0, visibleTop: 343 / 533 },
 };
 const monsterMotionLogged = new Set<string>();
 
@@ -56,9 +56,11 @@ export function releaseMonsterEncounterVisuals(palette: VisualMaterials): void {
 }
 
 export function createMonsterSprite(scene: Scene, palette: VisualMaterials, monsterId: string, root: TransformNode,
-  options: { hitbox?: boolean; selectionSize?: readonly [number, number, number]; active?: boolean } = {}): MonsterSprite {
+  options: { hitbox?: boolean; selectionSize?: readonly [number, number, number]; active?: boolean; scale?: number } = {}): MonsterSprite {
   if (!isMonsterAssetId(monsterId)) throw new Error('Invalid monster art ID');
-  const { height, visibleTop } = MONSTER_VISUALS[monsterId] ?? { height: 6.5, visibleTop: .75 };
+  const scale = Math.max(0.5, Number.isFinite(options.scale) ? options.scale! : (monsterId === 'b001' ? 2.0 : 1));
+  const { height: baseHeight, visibleTop } = MONSTER_VISUALS[monsterId] ?? { height: 6.5, visibleTop: .75 };
+  const height = baseHeight * scale;
   const aspect = 480 / 533;
   const mesh = MeshBuilder.CreatePlane(`monster-art-${monsterId}`, { width: height * aspect, height }, scene);
   // Anchor the geometry at the feet: billboard rotation must leave the feet at the root.
@@ -82,9 +84,7 @@ export function createMonsterSprite(scene: Scene, palette: VisualMaterials, mons
     mesh.material = spriteMaterial;
   };
   if (options.hitbox !== false) {
-    const selectionSize = options.selectionSize ?? (monsterId === 'b001'
-      ? [4.6, height * visibleTop, 1.8] as const
-      : [2.3, height * visibleTop, 1.1] as const);
+    const selectionSize = options.selectionSize ?? ([2.3 * scale, height * visibleTop, 1.1 * scale] as const);
     const hitbox = MeshBuilder.CreateBox(`monster-hitbox-${monsterId}`, {
       width: selectionSize[0], height: selectionSize[1], depth: selectionSize[2],
     }, scene);
@@ -121,7 +121,7 @@ export function createMonsterSprite(scene: Scene, palette: VisualMaterials, mons
       const oldBottom = height * 10 / 533;
       const newBottomInBaseUnits = height * anchorBottom / cellHeight;
       mesh.bakeTransformIntoVertices(Matrix.Translation(0, oldBottom - newBottomInBaseUnits, 0));
-      runtimeScaleY = manifest.displayHeightWorld / height;
+      runtimeScaleY = manifest.displayHeightWorld * scale / height;
       runtimeScaleX = runtimeScaleY * (manifest.cellSize[0] / manifest.cellSize[1]) / (480 / 533);
       mesh.scaling.set(runtimeScaleX, runtimeScaleY, 1);
       currentFrame = '';
@@ -154,7 +154,7 @@ export function createMonsterSprite(scene: Scene, palette: VisualMaterials, mons
       releasePages?.();
     },
     get healthBarY() { return runtime?.visibleHeightWorld !== undefined
-      ? runtime.visibleHeightWorld + .45 : height * visibleTop + .45; },
+      ? runtime.visibleHeightWorld * scale + .45 : height * visibleTop + .45; },
     ready: () => active && (runtime
       ? runtime.pages.every((_, page) => palette.monsterMotionPage(monsterId, page).diffuseTexture?.isReady() ?? false)
       : (material?.diffuseTexture?.isReady() ?? false) || (fallback?.diffuseTexture?.isReady() ?? false)),

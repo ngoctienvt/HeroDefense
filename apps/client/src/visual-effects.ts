@@ -51,6 +51,19 @@ import { VisualPhanQuan } from './visual-phan-quan.js';
 import { VisualNguuMaVuong } from './visual-nguu-ma-vuong.js';
 import { VisualTramHuong } from './visual-tram-huong.js';
 import { VisualTrieuCongMinh } from './visual-trieu-cong-minh.js';
+import { VisualTonNgoKhong } from './visual-ton-ngo-khong.js';
+import { VisualDuongTang } from './visual-duong-tang.js';
+import { VisualLoiChanTu } from './visual-loi-chan-tu.js';
+import { VisualDuongTien } from './visual-duong-tien.js';
+import { VisualNaTra } from './visual-na-tra.js';
+import { VisualLyTinh } from './visual-ly-tinh.js';
+import { VisualDatKy } from './visual-dat-ky.js';
+import { VisualNguDao } from './visual-ngu-dao.js';
+import { VisualUngLong } from './visual-ung-long.js';
+import { VisualXichTungTu } from './visual-xich-tung-tu.js';
+import { VisualTinhDan } from './visual-tinh-dan.js';
+import { VisualKimThanLaHan } from './visual-kim-than-la-han.js';
+import { VisualBatBoThienLong } from './visual-bat-bo-thien-long.js';
 import { VisualKhongTuoc } from './visual-khong-tuoc.js';
 import { VisualHauNghe } from './visual-hau-nghe.js';
 import { paintTier34Ability, paintTier34Attack, paintTier34Cast, paintTier34Pulse, paintTier34Summon,
@@ -72,7 +85,7 @@ import { VisualThietphien } from './visual-thietphien.js';
 import { VisualBaoquatu } from './visual-baoquatu.js';
 import { VisualCulinh } from './visual-culinh.js';
 import { KitFlipbooks } from './visual-kit-flipbooks.js';
-import { HeroVfxRegistry } from './visual-kit-hero.js';
+import { HeroVfxRegistry, type AbilityExtra } from './visual-kit-hero.js';
 import type { HeroVfxHost } from './visual-hero-adapter.js';
 import { registerLegacyHeroes } from './visual-hero-adapters.js';
 import { VisualTayvuongmau } from './visual-tayvuongmau.js';
@@ -132,6 +145,19 @@ export class VisualEffects {
   private tramHuong: VisualTramHuong;
   private khongTuoc: VisualKhongTuoc;
   private trieuCongMinh: VisualTrieuCongMinh;
+  private tonNgoKhong: VisualTonNgoKhong;
+  private duongTang: VisualDuongTang;
+  private loiChanTu: VisualLoiChanTu;
+  private duongTien: VisualDuongTien;
+  private naTra: VisualNaTra;
+  private lyTinh: VisualLyTinh;
+  private datKy: VisualDatKy;
+  private nguDao: VisualNguDao;
+  private ungLong: VisualUngLong;
+  private xichTungTu: VisualXichTungTu;
+  private tinhDan: VisualTinhDan;
+  private kimThanLaHan: VisualKimThanLaHan;
+  private batBoThienLong: VisualBatBoThienLong;
   private khuongtu: VisualKhuongTuNha;
   /** Hero VFX built on the shared kit (Cộng Công first); asked before the per-hero if-chains. */
   private heroKit = new HeroVfxRegistry();
@@ -214,6 +240,19 @@ export class VisualEffects {
     this.tramHuong = new VisualTramHuong(scene);
     this.khongTuoc = new VisualKhongTuoc(scene);
     this.trieuCongMinh = new VisualTrieuCongMinh(scene);
+    this.tonNgoKhong = new VisualTonNgoKhong(scene);
+    this.duongTang = new VisualDuongTang(scene);
+    this.loiChanTu = new VisualLoiChanTu(scene);
+    this.duongTien = new VisualDuongTien(scene);
+    this.naTra = new VisualNaTra(scene);
+    this.lyTinh = new VisualLyTinh(scene);
+    this.datKy = new VisualDatKy(scene);
+    this.nguDao = new VisualNguDao(scene);
+    this.ungLong = new VisualUngLong(scene);
+    this.xichTungTu = new VisualXichTungTu(scene);
+    this.tinhDan = new VisualTinhDan(scene);
+    this.kimThanLaHan = new VisualKimThanLaHan(scene);
+    this.batBoThienLong = new VisualBatBoThienLong(scene);
     this.kimsi = new VisualKimsi(scene);
     this.khuongtu = new VisualKhuongTuNha(scene);
     this.heroKit.register(new VisualCongcong(scene, new KitFlipbooks(scene)));
@@ -278,6 +317,19 @@ export class VisualEffects {
     this.heroKit.register(this.tramHuong);
     this.heroKit.register(this.khongTuoc);
     this.heroKit.register(this.trieuCongMinh);
+    this.heroKit.register(this.tonNgoKhong);
+    this.heroKit.register(this.duongTang);
+    this.heroKit.register(this.loiChanTu);
+    this.heroKit.register(this.duongTien);
+    this.heroKit.register(this.naTra);
+    this.heroKit.register(this.lyTinh);
+    this.heroKit.register(this.datKy);
+    this.heroKit.register(this.nguDao);
+    this.heroKit.register(this.ungLong);
+    this.heroKit.register(this.xichTungTu);
+    this.heroKit.register(this.tinhDan);
+    this.heroKit.register(this.kimThanLaHan);
+    this.heroKit.register(this.batBoThienLong);
     // Thần Nông is a direct HeroVfx (its legacy adapter entry is gone): it owns every h01E skill id, including the whip.
     this.heroKit.register(this.shennong);
     // Như Lai registers after the legacy adapters; h01J left DIVINE_IDS, so the divine module no longer sees it.
@@ -344,7 +396,7 @@ export class VisualEffects {
   }
 
   show(event: GameEvent, position: Vector3, origin?: Vector3, targets: readonly Vector3[] = [], main?: Vector3,
-    supportTargets?: readonly Vector3[]): void {
+    supportTargets?: readonly Vector3[], presentation?: Pick<AbilityExtra, 'resourceTarget' | 'displacements'>): void {
     // Every revive (Nữ Oa h01C, Thái Bạch h015) looks the same: the shared revive sheet where each ally stands up.
     if (event.skillId?.startsWith('revive-')) {
       for (const at of (targets.length ? targets : [position]).slice(0, 8)) this.sharedStatus.play('revive', at, this.reduced.matches);
@@ -362,7 +414,7 @@ export class VisualEffects {
     }
     // Defensive events arrive once per ally: position = ally, origin = the caster.
     if (this.heroKit.ability(event, origin ?? position, position, this.reduced.matches,
-      { targets, hasOrigin: origin !== undefined, main, supportTargets: supportTargets?.map(at => at.clone()) })) return;
+      { targets, hasOrigin: origin !== undefined, main, supportTargets: supportTargets?.map(at => at.clone()), ...presentation })) return;
     if (event.skillId === 'tier3-tier4-summon-h00N') {
       paintTier34Summon(this.tierPainter(), origin?.clone() ?? position.clone(), position.clone());
       return;
@@ -1044,8 +1096,46 @@ export class VisualEffects {
   replayLongVuong(origin: Vector3, at: Vector3): boolean {
     return this.longVuong.replay(origin, at, this.reduced.matches);
   }
+  markTier4(heroId: string, kind: string, id: string, at: Vector3, remaining: number, _radius?: number): void {
+    if (heroId === 'h03V' && kind === 'haste') this.batBoThienLong.markHaste(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h03T' && kind === 'echo') this.tinhDan.markEcho(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h010' && kind === 'fire') this.xichTungTu.markFire(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h00Z' && kind === 'barrage' && _radius !== undefined) this.ungLong.markBarrage(id, at, _radius, remaining, this.reduced.matches);
+    if (heroId === 'h00Y' && kind === 'shackle') this.nguDao.markShackle(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h00Y' && kind === 'frenzy') this.nguDao.markFrenzy(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h00V' && kind === 'form') this.naTra.markForm(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h00U' && kind === 'form') this.duongTien.markForm(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h00T' && kind === 'barrage' && _radius !== undefined) this.loiChanTu.markBarrage(id, at, _radius, remaining, this.reduced.matches);
+    if (heroId === 'h00T' && kind === 'burn') this.loiChanTu.markBurn(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h00R' && kind === 'clone') this.tonNgoKhong.markClone(id, at, remaining, this.reduced.matches);
+    if (heroId === 'h00S' && kind === 'ground' && _radius !== undefined) this.duongTang.markGround(id, at, _radius, remaining, this.reduced.matches);
+  }
+  replayTier4(heroId: string, kind: string, origin: Vector3, at: Vector3): boolean {
+    if (heroId === 'h03V') return this.batBoThienLong.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h03U') return this.kimThanLaHan.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h03T') return this.tinhDan.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h010') return this.xichTungTu.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h00Z') return this.ungLong.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h00Y') return this.nguDao.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h00X') return this.datKy.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h00W') return this.lyTinh.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h00V') return this.naTra.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h00U') return this.duongTien.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h00T') return this.loiChanTu.replay(origin, at, this.reduced.matches, kind);
+    if (heroId === 'h00S') return this.duongTang.replay(origin, at, this.reduced.matches, kind);
+    return heroId === 'h00R' && this.tonNgoKhong.replay(origin, at, this.reduced.matches, kind);
+  }
+  showMonkeyCloneSweep(event: GameEvent, origin: Vector3 | undefined, at: Vector3, targets: readonly Vector3[]): void {
+    this.tonNgoKhong.cloneSweep(event, origin, targets, this.reduced.matches, at);
+  }
   markTier3Link(heroId: string, id: string, from: Vector3, to: Vector3, remaining: number): void {
     if (heroId === 'h00O') this.phanQuan.markPair(id, from, to, remaining, this.reduced.matches);
+  }
+  markTier4Link(heroId: string, id: string, from: Vector3, to: Vector3, remaining: number): void {
+    if (heroId === 'h00Y') this.nguDao.markPair(id, from, to, remaining, this.reduced.matches);
+  }
+  markTier4Immortal(id: string, at: Vector3, remaining: number, activeRemaining: number): void {
+    this.kimThanLaHan.markImmortal(id, at, remaining, activeRemaining, this.reduced.matches);
   }
   markTier3(heroId: string, kind: string, id: string, at: Vector3, remaining: number, radius?: number): void {
     if (heroId === 'h03R' && kind === 'venom-plume') this.khongTuoc.markPlume(id, at, remaining, this.reduced.matches);
