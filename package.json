@@ -18,12 +18,14 @@
   },
   "dependencies": {
     "@babylonjs/core": "9.30.0",
+    "@babylonjs/loaders": "9.30.0",
     "@colyseus/core": "^0.18.18",
-    "@colyseus/ws-transport": "0.18.4",
     "@colyseus/sdk": "0.18.5",
+    "@colyseus/ws-transport": "0.18.4",
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "@gltf-transform/cli": "^4.5.1",
     "@types/express": "^5.0.0",
     "@types/node": "^24.0.0",
     "concurrently": "^9.0.0",

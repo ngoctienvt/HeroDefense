@@ -1,0 +1,92 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "m001",
+  "displayName": "Thanh Lang Tiểu Yêu",
+  "category": "mob",
+  "identity": "Compact quadruped wolf with blue-gray fur, upright ears, pale muzzle, amber eyes, rugged brown shoulder harness and long bushy tail; never humanoid.",
+  "palette": [
+    "blue-gray",
+    "ivory",
+    "jade"
+  ],
+  "camera": "orthographic, top-down 45-degree battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master-v2/master_rgba.png",
+  "anchor": [
+    487.0,
+    820.0
+  ],
+  "motionEnvelopePx": [
+    888,
+    650
+  ],
+  "displayHeightWorld": 3.4,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "walk": {
+      "framesPerDirection": 6,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 6,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "directions-approved",
+    "motion": "pending",
+    "packaged": "pending",
+    "integrated": "pending",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        487.0,
+        820.0
+      ],
+      "source": "source/master-v2/master_rgba.png"
+    },
+    "west": {
+      "anchorPx": [
+        411.5,
+        803.0
+      ],
+      "source": "source/directions/west/master-final/master_rgba.png",
+      "warnings": [
+        "the subject is too wide for the custom framing: scaled to fit the width, 615 px tall instead of 615 px"
+      ]
+    },
+    "north": {
+      "anchorPx": [
+        565.5,
+        803.0
+      ],
+      "source": "source/directions/north/master-final/master_rgba.png"
+    },
+    "east": {
+      "anchorPx": [
+        604.5,
+        803.0
+      ],
+      "source": "source/directions/east/master-final/master_rgba.png"
+    }
+  }
+}

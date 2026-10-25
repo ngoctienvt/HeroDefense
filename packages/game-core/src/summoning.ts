@@ -1,6 +1,6 @@
 import { HEROES, HERO_BY_ID } from '../../../content/catalog.js';
 import type { Command, CommandResult, GameState, Player } from '../../contracts/src/types.js';
-import { event, PELLET_PRICES, random, SUMMON_PACKS, summonWave } from './rules.js';
+import { event, PELLET_PRICES, random, SUMMON_FAIL_PELLETS, SUMMON_PACKS, SUMMON_PITY, summonWave } from './rules.js';
 import { createUnit } from './unit-factory.js';
 
 type Pack = keyof typeof SUMMON_PACKS;
@@ -47,12 +47,12 @@ export function summonCommand(state: GameState, owner: string, command: Command)
     if (player.souls < rule.cost) return fail('Không đủ Đạo Duyên.');
     player.souls -= rule.cost;
     const failures = pack === 'phan' ? 0 : player.summonFailures[pack];
-    const guaranteed = pack === 'tien' ? failures >= 4 : pack === 'thien' && failures >= 5;
+    const guaranteed = pack !== 'phan' && failures >= SUMMON_PITY[pack];
     const success = guaranteed || random(state) < rule.success;
     if (!success) {
       if (pack === 'phan') throw new Error('Phàm Chiêu không thể thất bại.');
       player.summonFailures[pack]++;
-      const pellets = pack === 'tien' ? 1 : 3;
+      const pellets = SUMMON_FAIL_PELLETS[pack];
       player.pellets += pellets;
       const heroId = randomHero(state, 1);
       const result = grantHero(state, owner, heroId);

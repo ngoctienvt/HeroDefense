@@ -1,0 +1,51 @@
+{
+  "tails": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8705583756345178,
+    "bounds": {
+      "left": 0.1640625,
+      "top": 0.24739583333333334,
+      "right": 0.9661458333333334,
+      "bottom": 0.8776041666666666
+    }
+  },
+  "orb": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.1015625,
+      "top": 0.033854166666666664,
+      "right": 0.9375,
+      "bottom": 0.9479166666666666
+    }
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.036458333333333336,
+      "top": 0.0703125,
+      "right": 0.9609375,
+      "bottom": 0.8932291666666666
+    }
+  },
+  "trail": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 4.970873786407767,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

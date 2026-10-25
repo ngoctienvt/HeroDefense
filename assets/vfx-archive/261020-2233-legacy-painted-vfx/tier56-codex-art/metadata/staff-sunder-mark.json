@@ -1,0 +1,51 @@
+{
+  "heroId": "h012",
+  "heroName": "Đấu Chiến Thắng Phật",
+  "asset": "staff-sunder-mark",
+  "type": "D",
+  "status": "superseded-by-shared-status",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/staff-sunder-mark.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/staff-sunder-mark.png",
+  "actualSizePx": [
+    1536,
+    1024
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    254
+  ],
+  "alphaBoundsPx": [
+    87,
+    9,
+    1466,
+    968
+  ],
+  "camera": "top-down ground mark",
+  "anchorNormalized": [
+    0.5,
+    0.5
+  ],
+  "visualQA": "Reviewed on light/dark. Central staff-impact fracture and separated bronze plates clearly read as an armor-break marker; no body, blood or area ring. Clean alpha and substantial margin. Actual generated aspect ratio 3:2; preserve without stretching and document runtime plane sizing.",
+  "sha256": "8222f35fe8c6957bd79af36444a695d5f8668ccbe848dc46bd479bfb32356608",
+  "previewPaths": [
+    "assets/vfx-source/tier56-codex-art/previews/staff-sunder-mark-light.jpg",
+    "assets/vfx-source/tier56-codex-art/previews/staff-sunder-mark-dark.jpg"
+  ],
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Status visibility/expiry should follow actual sunder state; no independent duration."
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/shared-status-20261020/prompts/staff-sunder-mark.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "style-review-required",
+  "replacementAssets": [
+    "shared-armor-break-mark"
+  ]
+}

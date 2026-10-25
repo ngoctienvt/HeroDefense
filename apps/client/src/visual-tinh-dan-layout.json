@@ -1,0 +1,63 @@
+{
+  "aura": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.041666666666666664,
+      "top": 0.059895833333333336,
+      "right": 0.9609375,
+      "bottom": 0.9739583333333334
+    }
+  },
+  "pull": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8612903225806452,
+    "bounds": {
+      "left": 0.09635416666666667,
+      "top": 0.046875,
+      "right": 0.9453125,
+      "bottom": 0.8723958333333334
+    }
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8596491228070176,
+    "bounds": {
+      "left": 0.11979166666666667,
+      "top": 0.028645833333333332,
+      "right": 0.9192708333333334,
+      "bottom": 0.8671875
+    }
+  },
+  "echo": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.0390625,
+      "top": 0.23697916666666666,
+      "right": 0.9661458333333334,
+      "bottom": 0.7838541666666666
+    }
+  },
+  "ground": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "radialEdge": 0.443775,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

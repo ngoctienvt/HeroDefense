@@ -1,0 +1,81 @@
+{
+  "pearl": {
+    "anchorY": 0.705411,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.098958,
+      "right": 0.963542,
+      "top": 0.109375,
+      "bottom": 0.966146
+    }
+  },
+  "wave": {
+    "anchorY": 0.9425,
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "cell": 320,
+    "bounds": {
+      "left": 0.09375,
+      "right": 0.95625,
+      "top": 0.25625,
+      "bottom": 0.9625
+    }
+  },
+  "lane": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 1024,
+    "bounds": {
+      "left": 0.023438,
+      "right": 0.978516,
+      "top": 0.375,
+      "bottom": 0.642578
+    }
+  },
+  "pool": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 768,
+    "bounds": {
+      "left": 0.061198,
+      "right": 0.94401,
+      "top": 0.078125,
+      "bottom": 0.93099
+    },
+    "radialEdge": 0.46325
+  },
+  "churn": {
+    "anchorY": 0.5,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.065104,
+      "right": 0.932292,
+      "top": 0.083333,
+      "bottom": 0.955729
+    }
+  },
+  "hit": {
+    "anchorY": 0.935729,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.049479,
+      "right": 0.96875,
+      "top": 0.125,
+      "bottom": 0.955729
+    }
+  }
+}

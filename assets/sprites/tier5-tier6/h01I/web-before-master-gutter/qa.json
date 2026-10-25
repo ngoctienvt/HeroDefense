@@ -1,0 +1,71 @@
+{
+  "frames": 36,
+  "clips": 12,
+  "idleFramesPerDirection": 1,
+  "sourceReports": {
+    "idle": {
+      "size": [
+        2646,
+        2378
+      ],
+      "sha256": "64499394b6c1fda7c4ea7e8db474e0bafa1d4ec3e3d56edb4eaa171028cdc7f9",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": [
+        {
+          "id": "source_outer_edge",
+          "value": 0,
+          "threshold": 2,
+          "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01I\\source\\master.png",
+          "slot": 3
+        }
+      ]
+    },
+    "walk": {
+      "size": [
+        3232,
+        2540
+      ],
+      "sha256": "c3b645280c4c0414db97b8cf3f35209a26d5811926519c2663792cda8b9b9402",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    },
+    "attack": {
+      "size": [
+        2668,
+        2668
+      ],
+      "sha256": "289e6ba719b5fb43dd58b8f1d74161abeff69fccddec486e06bcb695e0ad7a88",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    }
+  },
+  "masterBodyHeight": 1071.5,
+  "familyScaleAdjustments": {},
+  "directionScaleAdjustments": {},
+  "familyScales": {
+    "idle": 0.15492300513299112,
+    "walk": 0.30941286113699906,
+    "attack": 0.3213939980638916
+  },
+  "uniformEnvelopeReduction": 0.9223099293726631,
+  "warnings": [
+    {
+      "id": "source_outer_edge",
+      "value": 0,
+      "threshold": 2,
+      "file": "D:\\HeroDefense\\assets\\sprites\\tier5-tier6\\h01I\\source\\master.png",
+      "slot": 3
+    }
+  ],
+  "limits": [
+    "Generated acting and identity need visual motion review.",
+    "Four keyframes per action are intentionally sparse.",
+    "No game/test/build execution."
+  ]
+}

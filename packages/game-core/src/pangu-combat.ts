@@ -1,6 +1,7 @@
 import { PANGU as P } from '../../../content/pangu-design.js';
 import type { Enemy, GameState, Unit, Vec } from '../../contracts/src/types.js';
-import { applyEnemyStatus, effectiveEnemyArmor, knockEnemyBack } from './combat-status.js';
+import { MELEE_CLEAVE_SECONDARY } from '../../contracts/src/combat-profiles.js';
+import { applyEnemyStatus, criticalDamageAgainst, effectiveEnemyArmor, knockEnemyBack } from './combat-status.js';
 import { distance, event, isDeployed, nextId, random } from './rules.js';
 import { effectiveUnitAttack } from './stats.js';
 
@@ -17,17 +18,20 @@ export function inPanguRift(origin: Vec, direction: Vec, point: Vec, length: num
 export function panguAttack(state: GameState, unit: Unit, target: Enemy, hurt: Damage): boolean {
   unit.attackCount = (unit.attackCount ?? 0) + 1;
   const third = unit.attackCount % 3 === 0;
-  const direction = panguDirection(unit, target), critical = random(state) < P.critChance;
+  const direction = panguDirection(unit, target), critical = random(state) < P.critChance + (unit.critBlessing?.chance ?? 0);
   const damage = effectiveUnitAttack(unit) * (third ? P.strikePower : 1) * (critical ? P.critMultiplier : 1);
   const hits = Object.values(state.enemies).filter(e => e.zone === unit.zone && e.hp > 0 && (third
     ? inPanguRift(unit, direction, e, P.strikeLength, P.strikeWidth)
     : distance(unit, e) <= P.cleaveRadius && (e.x - unit.x) * direction.x + (e.z - unit.z) * direction.z >= -1e-6));
   unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + (critical ? 24 : 14));
   for (const enemy of hits) {
-    hurt(enemy, damage, effectiveEnemyArmor(enemy) * P.armorPierce);
+    // Normal sweeps favour the chosen target; the third-strike rift keeps full damage along its line.
+    const dealt = damage * (third || enemy.id === target.id ? 1 : MELEE_CLEAVE_SECONDARY);
+    hurt(enemy, critical ? criticalDamageAgainst(enemy, dealt) : dealt,
+      effectiveEnemyArmor(enemy) * P.armorPierce);
     if (third && state.enemies[enemy.id]) {
       enemy.bleed = { remaining: 3, bonusDamage: .1 };
-      knockEnemyBack(state, enemy, .6);
+      knockEnemyBack(state, enemy, .6, unit);
     }
   }
   event(state, { kind: 'attack', source: unit.id, target: target.id, targets: hits.map(e => e.id),
@@ -41,15 +45,13 @@ export function panguAbility(state: GameState, unit: Unit, point: Vec, direction
   const attack = effectiveUnitAttack(unit), hits: string[] = [];
   for (const enemy of Object.values(state.enemies)) {
     if (enemy.zone !== unit.zone || distance(enemy, point) > P.blastRadius) continue;
-    // Evaluate before this cast applies its own stun and armor break.
-    const critical = (enemy.stun ?? 0) > 0 || enemy.hp < enemy.maxHp * .5 || random(state) < P.critChance;
-    hurt(enemy, attack * P.blastPower * (critical ? P.critMultiplier : 1),
+    // Evaluate before this cast applies its own armor break.
+    const critical = Boolean(enemy.sunder) || enemy.hp < enemy.maxHp * .5 || random(state) < P.critChance;
+    const damage = attack * P.blastPower * (critical ? P.critMultiplier : 1);
+    hurt(enemy, critical ? criticalDamageAgainst(enemy, damage) : damage,
       effectiveEnemyArmor(enemy) * P.armorPierce);
     hits.push(enemy.id);
-    if (state.enemies[enemy.id]) {
-      applyEnemyStatus(enemy, unit, 0, 'sunder', P.sunderSeconds, P.sunder);
-      applyEnemyStatus(enemy, unit, 0, 'stun', P.stun, 1);
-    }
+    if (state.enemies[enemy.id]) applyEnemyStatus(enemy, unit, 0, 'sunder', P.sunderSeconds, P.sunder);
   }
   (state.groundEffects ??= []).push({ id: nextId(state, 'rift'), kind: 'pangu-rift', x: unit.x, z: unit.z,
     zone: unit.zone, direction, length: P.riftLength, width: P.riftWidth, radius: P.blastRadius,

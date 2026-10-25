@@ -1,0 +1,46 @@
+{
+  "heroId": "h012",
+  "heroName": "Đấu Chiến Thắng Phật",
+  "asset": "clone-staff-hit-sheet",
+  "type": "S8",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/clone-staff-hit-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/clone-staff-hit-sheet.png",
+  "actualSizePx": [
+    1774,
+    887
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 2,
+    "rectRule": "equal 4x2 cells; preserve generated dimensions without stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "Reviewed all eight frames on light/dark. One gold staff shadow descends to a concentrated point, a small impact and scattered chips, then dissipates. No actor or area blast; clear alpha and margins.",
+  "sha256": "4d96a4553fc8ab7921a3e0fead3928a5cf82886e6a146b2b3e25a3f79caad0f6",
+  "previewPaths": [
+    "assets/vfx-source/tier56-codex-art/previews/clone-staff-hit-sheet-light.jpg",
+    "assets/vfx-source/tier56-codex-art/previews/clone-staff-hit-sheet-dark.jpg"
+  ],
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime target, direction, scale and event timing remain to be integrated and checked."
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/clone-staff-hit-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

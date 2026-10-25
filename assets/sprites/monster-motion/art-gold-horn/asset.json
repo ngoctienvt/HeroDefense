@@ -1,0 +1,98 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "art-gold-horn",
+  "displayName": "Kim Giác",
+  "category": "boss-group-member",
+  "identity": "Broad squat red-and-charcoal yokai with one oversized golden forehead horn, square shoulders, tusks, rugged armor and a pair of differently sized bronze-gold gourds tied at the left hip.",
+  "palette": [
+    "dark red",
+    "charcoal",
+    "bronze gold"
+  ],
+  "camera": "orthographic, top-down 45-degree battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master/master_rgba.png",
+  "anchor": [
+    500,
+    800
+  ],
+  "motionEnvelopePx": [
+    630,
+    599
+  ],
+  "displayHeightWorld": 7.128,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "walk": {
+      "framesPerDirection": 8,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 8,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "directions-approved",
+    "motion": "motion-approved",
+    "packaged": "library-packaged",
+    "integrated": "not-routed-current-encounter",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        500,
+        800
+      ],
+      "source": "source/export-frames-v1/idle/south/frame-00.png"
+    },
+    "west": {
+      "anchorPx": [
+        500,
+        800
+      ],
+      "source": "source/export-frames-v1/idle/west/frame-00.png"
+    },
+    "north": {
+      "anchorPx": [
+        500,
+        800
+      ],
+      "source": "source/export-frames-v1/idle/north/frame-00.png"
+    },
+    "east": {
+      "anchorPx": [
+        500,
+        800
+      ],
+      "source": "source/export-frames-v1/idle/east/frame-00.png"
+    }
+  },
+  "motionBoundsPx": [
+    185,
+    226,
+    815,
+    825
+  ],
+  "restBodyHeightPx": 500,
+  "restBodyHeightWorld": 4.95,
+  "displayScaleRationale": "Group member target rest silhouette 6.6*0.75 world units before encounter/rank scaling; compensate motion canvas once."
+}

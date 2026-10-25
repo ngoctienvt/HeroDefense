@@ -1,0 +1,55 @@
+{
+  "frames": 36,
+  "clips": 12,
+  "idleFramesPerDirection": 1,
+  "sourceReports": {
+    "idle": {
+      "size": [
+        2646,
+        2380
+      ],
+      "sha256": "7b3fef2df4f3b7ebafa53fc121ee83b5d7dfbb5cf9918e7fca1ad3101981ca7f",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    },
+    "walk": {
+      "size": [
+        2648,
+        2380
+      ],
+      "sha256": "18ea4fce1a27f7f74a8257b9b70589fcbbe24bc026212b287423bdeb21e2f7b1",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    },
+    "attack": {
+      "size": [
+        2648,
+        2380
+      ],
+      "sha256": "d61b7cf7b643c281f9403a833cb8252dbab4c74a9da76b1b6b5428fbeb622739",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    }
+  },
+  "masterBodyHeight": 1063.0,
+  "familyScaleAdjustments": {},
+  "directionScaleAdjustments": {},
+  "familyScales": {
+    "idle": 0.1561618062088429,
+    "walk": 0.3207729468599034,
+    "attack": 0.33535353535353535
+  },
+  "uniformEnvelopeReduction": 0.961912164788185,
+  "warnings": [],
+  "limits": [
+    "Generated acting and identity need visual motion review.",
+    "Four keyframes per action are intentionally sparse.",
+    "No game/test/build execution."
+  ]
+}

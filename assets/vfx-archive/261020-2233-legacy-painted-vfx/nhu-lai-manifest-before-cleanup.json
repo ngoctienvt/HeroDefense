@@ -1,0 +1,253 @@
+{
+  "palm": {
+    "raw": "assets/vfx-source/tier56-codex-art/raw/buddha-palm-descent-sheet.png",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "grid": [
+      4,
+      4
+    ],
+    "xBounds": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBounds": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "cell": [
+      320,
+      320
+    ],
+    "atlas": "apps/client/public/assets/vfx-nhulai-palm.webp",
+    "atlasSize": [
+      1280,
+      1280
+    ],
+    "baselineRatio": 0.949,
+    "warnings": [
+      "frame 4: alpha touches cell edge B",
+      "frame 6: alpha touches cell edge R",
+      "frame 7: alpha touches cell edge LR",
+      "frame 8: alpha touches cell edge TBL",
+      "frame 12: alpha touches cell edge T"
+    ]
+  },
+  "rear": {
+    "raw": "assets/vfx-source/tier56-codex-art/raw/five-finger-mountain-rear-sheet.png",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "grid": [
+      4,
+      4
+    ],
+    "xBounds": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBounds": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "cell": [
+      320,
+      320
+    ],
+    "atlas": "apps/client/public/assets/vfx-nhulai-rear.webp",
+    "atlasSize": [
+      1280,
+      1280
+    ],
+    "baselineRatio": 0.896,
+    "warnings": []
+  },
+  "front": {
+    "raw": "assets/vfx-source/tier56-codex-art/raw/five-finger-mountain-front-sheet.png",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "grid": [
+      4,
+      4
+    ],
+    "xBounds": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBounds": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "cell": [
+      320,
+      320
+    ],
+    "atlas": "apps/client/public/assets/vfx-nhulai-front.webp",
+    "atlasSize": [
+      1280,
+      1280
+    ],
+    "baselineRatio": 0.887,
+    "warnings": [
+      "frame 5: alpha touches cell edge R",
+      "frame 6: alpha touches cell edge LR",
+      "frame 7: alpha touches cell edge LR",
+      "frame 8: alpha touches cell edge L",
+      "frame 10: alpha touches cell edge LR",
+      "frame 11: alpha touches cell edge L",
+      "frame 12: alpha touches cell edge LR"
+    ]
+  },
+  "impact": {
+    "raw": "assets/vfx-source/tier56-codex-art/raw/palm-earth-impact-sheet.png",
+    "rawSize": [
+      1774,
+      887
+    ],
+    "grid": [
+      4,
+      2
+    ],
+    "xBounds": [
+      0,
+      444,
+      887,
+      1330,
+      1774
+    ],
+    "yBounds": [
+      0,
+      444,
+      887
+    ],
+    "cell": [
+      384,
+      384
+    ],
+    "atlas": "apps/client/public/assets/vfx-nhulai-impact.webp",
+    "atlasSize": [
+      1536,
+      768
+    ],
+    "baselineRatio": 0.934,
+    "warnings": [
+      "frame 4: alpha touches cell edge B",
+      "frame 8: alpha touches cell edge T"
+    ]
+  },
+  "shield-rear": {
+    "raw": "assets/vfx-source/tier56-codex-art/raw/shared-shield-rear-sheet.png",
+    "rawSize": [
+      1536,
+      1024
+    ],
+    "grid": [
+      4,
+      4
+    ],
+    "xBounds": [
+      0,
+      384,
+      768,
+      1152,
+      1536
+    ],
+    "yBounds": [
+      0,
+      256,
+      512,
+      768,
+      1024
+    ],
+    "cell": [
+      288,
+      192
+    ],
+    "atlas": "apps/client/public/assets/vfx-shield-rear.webp",
+    "atlasSize": [
+      1152,
+      768
+    ],
+    "baselineRatio": 0.93,
+    "warnings": [
+      "frame 13: alpha touches cell edge T",
+      "frame 15: alpha touches cell edge T"
+    ]
+  },
+  "shield-front": {
+    "raw": "assets/vfx-source/tier56-codex-art/raw/shared-shield-front-sheet.png",
+    "rawSize": [
+      1536,
+      1024
+    ],
+    "grid": [
+      4,
+      4
+    ],
+    "xBounds": [
+      0,
+      384,
+      768,
+      1152,
+      1536
+    ],
+    "yBounds": [
+      0,
+      256,
+      512,
+      768,
+      1024
+    ],
+    "cell": [
+      288,
+      192
+    ],
+    "atlas": "apps/client/public/assets/vfx-shield-front.webp",
+    "atlasSize": [
+      1152,
+      768
+    ],
+    "baselineRatio": 0.834,
+    "warnings": []
+  },
+  "ground": {
+    "raw": "assets/vfx-source/tier56-codex-art/raw/five-finger-ground.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "file": "vfx-nhulai-ground.webp",
+    "ringDiameterRatio": 0.9569
+  },
+  "slow": {
+    "raw": "assets/vfx-source/tier56-codex-art/raw/shared-slow-mark.png",
+    "size": [
+      256,
+      256
+    ],
+    "file": "vfx-status-slow.webp"
+  }
+}

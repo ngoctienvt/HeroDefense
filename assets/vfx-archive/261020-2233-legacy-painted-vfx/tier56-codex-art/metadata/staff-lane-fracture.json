@@ -1,0 +1,49 @@
+{
+  "heroId": "h012",
+  "heroName": "Đấu Chiến Thắng Phật",
+  "asset": "staff-lane-fracture",
+  "type": "T",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool; one framing correction",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/staff-lane-fracture.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/staff-lane-fracture.png",
+  "actualSizePx": [
+    2172,
+    724
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBoundsPx": [
+    35,
+    35,
+    2068,
+    644
+  ],
+  "ratio": 3.0,
+  "camera": "top-down",
+  "direction": "head/impact at right; fractures trail left",
+  "visualQA": "Reviewed on light/dark. Flat top-down fracture strip with deep longitudinal cracks and concentrated staff-impact head at right, not a circular crack field. One uniform framing edit added safe edge margin; alpha confirmed. Preserve aspect ratio; no stretching.",
+  "iterations": [
+    "assets/vfx-source/tier56-codex-art/iterations/staff-lane-fracture-attempt-01.png"
+  ],
+  "sha256": "962f258cbf37e9acea1998d3ad400c938fb9e979e17881ae83a544136c46e73d",
+  "previewPaths": [
+    "assets/vfx-source/tier56-codex-art/previews/staff-lane-fracture-light.jpg",
+    "assets/vfx-source/tier56-codex-art/previews/staff-lane-fracture-dark.jpg"
+  ],
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime lane dimensions/origin, orientation and timing remain to be integrated and checked."
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/staff-lane-fracture.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

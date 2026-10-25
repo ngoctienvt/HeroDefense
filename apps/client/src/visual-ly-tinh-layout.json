@@ -1,0 +1,64 @@
+{
+  "toss": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8610421836228288,
+    "bounds": {
+      "left": 0.11458333333333333,
+      "top": 0.036458333333333336,
+      "right": 0.90625,
+      "bottom": 0.8671875
+    }
+  },
+  "tower": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8686567164179104,
+    "bounds": {
+      "left": 0.10677083333333333,
+      "top": 0.044270833333333336,
+      "right": 0.8880208333333334,
+      "bottom": 0.875
+    }
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8591549295774648,
+    "bounds": {
+      "left": 0.1171875,
+      "top": 0.03125,
+      "right": 0.8411458333333334,
+      "bottom": 0.8645833333333334
+    }
+  },
+  "seal": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "radialEdge": 0.446113,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  },
+  "guard": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 4.2139917695473255,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

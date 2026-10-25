@@ -1,9 +1,32 @@
 import { HERO_BY_ID } from '../../../content/catalog.js';
 import type { AttackGeometryConfig, Enemy, GameState, OnHitTraitConfig, Unit, Vec } from '../../contracts/src/types.js';
-import { applyEnemyStatus, knockEnemyBack } from './combat-status.js';
+import { applyEnemyStatus, criticalDamageAgainst, knockEnemyBack } from './combat-status.js';
 import { panguAttack } from './pangu-combat.js';
+import { xingtianAttack } from './xingtian-combat.js';
+import { douzhanAttack } from './douzhan-combat.js';
+import { kimthienAttack } from './kimthien-combat.js';
+import { hangngaAttack } from './hangnga-combat.js';
+import { nuwaAttack } from './nuwa-combat.js';
+import { thaibachAttack } from './thaibach-combat.js';
+import { hienvienAttack } from './hienvien-combat.js';
+import { shennongAttack } from './shennong-combat.js';
+import { chuclongAttack } from './chuclong-combat.js';
+import { fuxiAttack } from './fuxi-combat.js';
+import { tuongThanAttack } from './tuong-than-combat.js';
+import { phuongHoangAttack } from './phuong-hoang-combat.js';
+import { tryHardControl } from './crowd-control.js';
+import { truongAttack } from './truong-dao-lang-combat.js';
+import { bodhiAttack, lanternAttack } from './divine-support-combat.js';
+import { deTuanAttack, nguyenThuyAttack, nhuLaiAttack } from './divine-god-combat.js';
+import { haungheAttack } from './hau-nghe-combat.js';
+import { kimsiAttack } from './kimsi-combat.js';
+import { khuongtuAttack } from './khuongtu-nha-combat.js';
+import { chucdungAttack } from './chucdung-combat.js';
+import { congcongAttack } from './congcong-combat.js';
+import { tayvuongmauAttack } from './tayvuongmau-combat.js';
+import { lucnhiAttack } from './lucnhi-combat.js';
 import { distance, event, isDeployed, random } from './rules.js';
-import { effectiveUnitAttack } from './stats.js';
+import { effectiveUnitAttack, solarCritMultiplier } from './stats.js';
 
 export type Hurt = (enemy: Enemy, damage: number, penetration?: number, source?: Unit) => void;
 export type UnitHurt = (unit: Unit, enemy: Enemy, damage: number, penetration?: number) => void;
@@ -37,8 +60,124 @@ export function executeAttackGeometry(
       triggerFollowUp(state, unit, target, 'crit', (u, e, d, p) => hurt(e, d, p, u));
     return;
   }
-  const geometry: AttackGeometryConfig = hero.attackGeometry ?? { type: 'single' };
-  const trait: OnHitTraitConfig = hero.onHitTrait ?? { type: 'crit_pierce' };
+  if (unit.heroId === 'h011') {
+    xingtianAttack(state, unit, target, (enemy, damage, penetration) => hurt(enemy, damage, penetration, unit));
+    return;
+  }
+  if (unit.heroId === 'h012') {
+    douzhanAttack(state, unit, target, (source, enemy, damage, penetration) =>
+      hurt(enemy, damage, penetration, source));
+    return;
+  }
+  if (unit.heroId === 'h013') {
+    kimthienAttack(state, unit, target, (source, enemy, damage) => hurt(enemy, damage, 0, source));
+    return;
+  }
+  if (unit.heroId === 'h018') {
+    hangngaAttack(state, unit, target, (enemy, damage) => hurt(enemy, damage, 0, unit));
+    return;
+  }
+  if (unit.heroId === 'h01C') {
+    nuwaAttack(state, unit, target, (enemy, damage) => hurt(enemy, damage, 0, unit));
+    return;
+  }
+  if (unit.heroId === 'h015') {
+    thaibachAttack(state, unit, target, (enemy, damage) => hurt(enemy, damage, 0, unit));
+    return;
+  }
+  if (unit.heroId === 'h01F') {
+    hienvienAttack(state, unit, target, (enemy, damage, penetration) =>
+      hurt(enemy, damage, penetration, unit));
+    return;
+  }
+  if (unit.heroId === 'h01E') {
+    shennongAttack(state, unit, target, (source, enemy, damage, direct) =>
+      hurt(enemy, damage, direct ? enemy.armor : 0, source));
+    return;
+  }
+  if (unit.heroId === 'h01K') {
+    chuclongAttack(state, unit, target, (enemy, damage, penetration, direct) =>
+      hurt(enemy, damage, direct ? enemy.armor : penetration, unit));
+    return;
+  }
+  if (unit.heroId === 'h01D') {
+    fuxiAttack(state, unit, target, (enemy, damage) => hurt(enemy, damage, 0, unit));
+    return;
+  }
+  if (unit.heroId === 'h03Z') {
+    tuongThanAttack(state, unit, target, (caster, enemy, damage) =>
+      hurt(enemy, damage, 0, caster));
+    return;
+  }
+  if (unit.heroId === 'h041') {
+    phuongHoangAttack(state, unit, target, (caster, enemy, damage) =>
+      hurt(enemy, damage, 0, caster));
+    return;
+  }
+  if (unit.heroId === 'h040') {
+    truongAttack(state, unit, target, (source, enemy, damage) =>
+      hurt(enemy, damage, 0, source));
+    return;
+  }
+  if (unit.heroId === 'h03W') {
+    lanternAttack(state, unit, target, (source, enemy, damage) => hurt(enemy, damage, 0, source));
+    return;
+  }
+  if (unit.heroId === 'h03X') {
+    bodhiAttack(state, unit, target, (source, enemy, damage) => hurt(enemy, damage, 0, source));
+    return;
+  }
+  if (unit.heroId === 'h01I') {
+    deTuanAttack(state, unit, target, (source, enemy, damage, penetration) =>
+      hurt(enemy, damage, penetration, source));
+    return;
+  }
+  if (unit.heroId === 'h01J') {
+    nhuLaiAttack(state, unit, target, (source, enemy, damage) => hurt(enemy, damage, 0, source));
+    return;
+  }
+  if (unit.heroId === 'h014') {
+    nguyenThuyAttack(state, unit, target, (source, enemy, damage) => hurt(enemy, damage, 0, source));
+    return;
+  }
+  if (unit.heroId === 'h017') {
+    haungheAttack(state, unit, target, (enemy, damage, penetration) =>
+      hurt(enemy, damage, penetration, unit));
+    return;
+  }
+  if (unit.heroId === 'h016') {
+    kimsiAttack(state, unit, target, (enemy, damage, penetration) =>
+      hurt(enemy, damage, penetration, unit));
+    return;
+  }
+  if (unit.heroId === 'h019') {
+    khuongtuAttack(state, unit, target, (source, enemy, damage) =>
+      hurt(enemy, damage, 0, source));
+    return;
+  }
+  if (unit.heroId === 'h01G') {
+    // One frontal sweep event with direction (+10 Nộ); the generic cleave emitted one directionless event per hit.
+    congcongAttack(state, unit, target, (enemy, damage) => hurt(enemy, damage, 0, unit));
+    return;
+  }
+  if (unit.heroId === 'h01A') {
+    tayvuongmauAttack(state, unit, target, (enemy, damage, penetration) =>
+      hurt(enemy, damage, penetration, unit));
+    return;
+  }
+  if (unit.heroId === 'h03Y') {
+    lucnhiAttack(state, unit, target, (enemy, damage, penetration) =>
+      hurt(enemy, damage, penetration, unit));
+    return;
+  }
+  const geometry: AttackGeometryConfig = unit.heroId === 'h00U' && unit.berserk
+    ? { type: 'multishot', shots: 3 }
+    : unit.heroId === 'h00V' && unit.tierBuff?.kind === 'nezha'
+      ? { type: 'frontal_cleave', radius: 5, angle: Math.PI * 2 }
+      : hero.attackGeometry ?? { type: 'single' };
+  const trait: OnHitTraitConfig = unit.heroId === 'h00U' && unit.berserk
+    ? { ...(hero.onHitTrait ?? {}), type: 'double_strike', percentArmorPierce: .4 }
+    : hero.onHitTrait ?? { type: 'crit_pierce' };
 
   unit.attackCount = (unit.attackCount ?? 0) + 1;
   unit.comboCount = unit.comboTarget === target.id ? (unit.comboCount ?? 0) + 1 : 1;
@@ -51,7 +190,7 @@ export function executeAttackGeometry(
     case 'single': {
       processSingleHit(state, unit, target, baseAttack, trait, geometry, hurt, context);
       if (trait.drainToGuardianRatio) {
-        const guardian = Object.values(state.units).find(u => isDeployed(u) && u.zone === unit.zone && u.owner === unit.owner && u.heroId !== unit.heroId && HERO_BY_ID[u.heroId].role === 'guardian')
+        const guardian = Object.values(state.units).find(u => isDeployed(u) && u.zone === unit.zone && u.owner === unit.owner && u.heroId !== unit.heroId && HERO_BY_ID[u.heroId]?.role === 'guardian')
           ?? Object.values(state.units).filter(u => isDeployed(u) && u.zone === unit.zone && u.owner === unit.owner && u.hp < u.maxHp).sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp)[0];
         if (guardian) {
           const healAmt = baseAttack * trait.drainToGuardianRatio;
@@ -84,6 +223,7 @@ export function executeAttackGeometry(
       for (const enemy of hits) {
         const isSec = enemy.id !== target.id;
         const dmg = isSec ? baseAttack * (geometry.cleaveSecondaryRatio ?? 1.0) : baseAttack;
+        if (geometry.knockback) knockEnemyBack(state, enemy, geometry.knockback, unit);
         processSingleHit(state, unit, enemy, dmg, trait, geometry, hurt, context, isSec);
       }
       break;
@@ -124,8 +264,21 @@ export function executeAttackGeometry(
         .slice(0, shots - 1);
 
       const allTargets = [target, ...otherTargets];
+      let primaryHit = false;
       for (const enemy of allTargets) {
-        if (geometry.knockback) knockEnemyBack(state, enemy, geometry.knockback);
+        if (geometry.knockback) knockEnemyBack(state, enemy, geometry.knockback, unit);
+        if (unit.heroId === 'h03V') {
+          const dx = enemy.x - unit.x, dz = enemy.z - unit.z, length = Math.hypot(dx, dz) || 1;
+          const direction = { x: dx / length, z: dz / length };
+          for (const pierced of enemiesInZone.filter(e => isPointOnRaySegment(unit, direction, unit.range, .55, e))
+            .sort((a, b) => distance(a, unit) - distance(b, unit)).slice(0, 4)) {
+            const isPrimary = pierced.id === target.id && !primaryHit;
+            if (isPrimary) primaryHit = true;
+            processSingleHit(state, unit, pierced, baseAttack, trait, geometry, hurt, context,
+              !isPrimary);
+          }
+          continue;
+        }
         processSingleHit(state, unit, enemy, baseAttack, trait, geometry, hurt, context, enemy.id !== target.id);
       }
       break;
@@ -163,9 +316,10 @@ export function executeAttackGeometry(
     }
 
     case 'bounce': {
-      processSingleHit(state, unit, target, baseAttack, trait, geometry, hurt, context);
+      const charged = unit.heroId === 'h00T' && (target.slow > 0 || (target.frozen ?? 0) > 0);
+      processSingleHit(state, unit, target, baseAttack * (charged ? 1.4 : 1), trait, geometry, hurt, context);
 
-      const maxBounces = Math.max(1, Math.min(3, geometry.bounces ?? 2));
+      const maxBounces = charged ? 6 : Math.max(1, Math.min(3, geometry.bounces ?? 2));
       const bounceRadius = geometry.bounceRadius ?? 4.0;
       const bounceDecay = geometry.bounceDecay ?? 0.25;
 
@@ -180,7 +334,7 @@ export function executeAttackGeometry(
         if (!next) break;
         visited.add(next.id);
         const ratio = Math.max(0.2, 1 - bounceDecay * bounceIndex);
-        const bounceDamage = baseAttack * ratio;
+        const bounceDamage = baseAttack * ratio * (charged ? 1.4 : 1);
 
         hurt(next, bounceDamage, 0);
         event(state, {
@@ -200,6 +354,10 @@ export function executeAttackGeometry(
         }
         if (unit.heroId === 'h00I' && state.enemies[next.id]) {
           next.attackWeak = { remaining: 2.0, strength: 0.15 };
+        }
+        if (unit.heroId === 'h010' && state.enemies[next.id]) {
+          next.burn = { remaining: 2, damagePerSecond: unit.attack * .2, casterId: unit.id };
+          next.fireMark = 3;
         }
 
         currentEnemy = next;
@@ -240,13 +398,13 @@ export function executeAttackGeometry(
   }
 
   // Berserk vine beams
-  if (unit.berserk && !context.isExtraStrike && !context.isFollowUp) {
+  if (unit.heroId === 'h00A' && unit.berserk && !context.isExtraStrike && !context.isFollowUp) {
     const vineTargets = enemiesInZone.filter(e => e.id !== target.id && distance(e, unit) <= 4.5).slice(0, 2);
     for (const vineTarget of vineTargets) {
       hurt(vineTarget, baseAttack * 0.5, 0);
-      applyEnemyStatus(vineTarget, unit, 0, 'root', 1.5, 1);
+      applyEnemyStatus(vineTarget, unit, 0, 'slow', 1.5, .4);
       vineTarget.poison = { remaining: 2.0, damagePerSecond: 20, casterId: unit.id };
-      event(state, { kind: 'attack', source: unit.id, target: vineTarget.id, x: vineTarget.x, z: vineTarget.z, value: baseAttack * 0.5, skillId: 'vine-beam' });
+      event(state, { kind: 'attack', source: unit.id, target: vineTarget.id, x: vineTarget.x, z: vineTarget.z, value: baseAttack * 0.5, skillId: 'vine-beam-h00A' });
     }
   }
 }
@@ -288,12 +446,16 @@ function processSingleHit(
   // 1. Tính toán hiệu ứng Nội tại Đánh tay (On-Hit Trait)
   switch (trait.type) {
     case 'crit_pierce': {
-      const critChance = trait.critChance ?? 0.25;
-      const critMultiplier = trait.critMultiplier ?? 1.75;
+      const critChance = (unit.heroId === 'h00O' && (target.slow > 0 || Boolean(target.burn))
+        ? .35 : trait.critChance ?? 0.25) + ((target.fireMark ?? 0) > 0 ? .15 : 0)
+        + (unit.critBlessing?.chance ?? 0);
+      const critMultiplier = solarCritMultiplier(state, unit, (trait.critMultiplier ?? 1.75)
+        + (unit.tierBuff?.kind === 'fire' ? .25 : 0));
 
       if (random(state) < critChance) {
         damage *= critMultiplier;
         isCrit = true;
+        damage = criticalDamageAgainst(target, damage);
         if (trait.sunderOnCrit) {
           applyEnemyStatus(target, unit, 0, 'sunder', trait.sunderOnCrit.duration, trait.sunderOnCrit.amount);
         }
@@ -318,14 +480,18 @@ function processSingleHit(
             unit.ward = { remaining: trait.nthWardDuration ?? 2.5, reduction: trait.nthWardReduction ?? 0.25 };
             break;
           }
+          case 'knockback':
+            damage *= (trait.nthBonusMultiplier ?? 1);
+            knockEnemyBack(state, target, trait.nthKnockback ?? 0.6, unit);
+            break;
           case 'true_damage':
             penetration = 999;
             damage *= (trait.nthBonusMultiplier ?? 1.4);
             break;
           case 'stun':
             damage *= (trait.nthBonusMultiplier ?? 1.6);
-            applyEnemyStatus(target, unit, 0, 'stun', trait.nthStunDuration ?? 0.6, 1);
-            knockEnemyBack(state, target, trait.nthKnockback ?? 0.6);
+            tryHardControl(state, unit, target, 'stun', trait.nthStunDuration ?? 0.6);
+            knockEnemyBack(state, target, trait.nthKnockback ?? 0.6, unit);
             break;
           case 'sunder':
             applyEnemyStatus(target, unit, 0, 'sunder', 3.5, 3);
@@ -377,8 +543,8 @@ function processSingleHit(
 
       if (newStacks >= maxStacks) {
         target.markStacks[unit.id] = 0;
-        const percentHp = trait.markDetonatePercentHp ?? 0.08;
-        const detonateDamage = Math.min(target.maxHp * percentHp, baseDamage * 5);
+        // Attack-scaled only: detonations never read the target's Máu.
+        const detonateDamage = baseDamage * (trait.markDetonatePower ?? 4);
         hurt(target, detonateDamage, 999);
         event(state, {
           kind: 'trait',
@@ -402,10 +568,51 @@ function processSingleHit(
       break;
   }
 
+  if (trait.type !== 'crit_pierce' && random(state) < (unit.critBlessing?.chance ?? 0)) {
+    damage = criticalDamageAgainst(target, damage * 2);
+    isCrit = true;
+  }
+
   // Heal on hit (Mộc Tra h00A)
   if (trait.healOnHit) {
     unit.hp = Math.min(unit.maxHp, unit.hp + trait.healOnHit);
   }
+  if (unit.heroId === 'h00J' && target.slow > 0) unit.hp = Math.min(unit.maxHp, unit.hp + unit.maxHp * .015);
+  if (unit.heroId === 'h03T') unit.shield += unit.maxHp * .02;
+  if (unit.heroId === 'h00R' && !isSecondaryTarget && !context.isExtraStrike) {
+    unit.haste = { remaining: 4, amount: Math.min(.4, (unit.haste?.amount ?? 0) + .05) };
+  }
+  if (unit.heroId === 'h03R') {
+    const ally = Object.values(state.units).filter(u => isDeployed(u) && u.owner === unit.owner && u.zone === unit.zone)
+      .sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp)[0];
+    if (ally) ally.hp = Math.min(ally.maxHp, ally.hp + damage * .3);
+  }
+  if (unit.heroId === 'h00S' && !isSecondaryTarget) {
+    const ally = Object.values(state.units).filter(u => isDeployed(u) && u.owner === unit.owner && u.zone === unit.zone
+      && u.id !== unit.id && ['warrior', 'ranger'].includes(HERO_BY_ID[u.heroId]?.role) && distance(u, unit) <= 6)
+      .sort((a, b) => distance(a, unit) - distance(b, unit))[0];
+    if (ally) ally.energy = Math.min(ally.maxEnergy ?? 100, (ally.energy ?? 0) + 4);
+  }
+  if (unit.heroId === 'h00Y') {
+    for (const ally of Object.values(state.units)) {
+      if (!isDeployed(ally) || ally.owner !== unit.owner || ally.zone !== unit.zone || distance(ally, unit) > 5) continue;
+      ally.hp = Math.min(ally.maxHp, ally.hp + ally.maxHp * .01);
+      ally.haste = { remaining: 4, amount: Math.min(.3, (ally.haste?.amount ?? 0) + .03) };
+    }
+  }
+  if (unit.tierBuff?.kind === 'poison') {
+    target.poison = { remaining: 3, damagePerSecond: damage * .15 / 3, casterId: unit.id };
+    // Presentation only: native poison below replaces this application, so it must not claim peacock provenance.
+    if (!trait.poisonDps) event(state, { kind: 'trait', source: unit.id, target: target.id,
+      targets: [target.id], x: target.x, z: target.z, zone: target.zone, skillId: 'peacock-poison-hit-h03R' });
+  }
+  if (unit.tierBuff?.kind === 'fire') target.burn = {
+    remaining: 3, damagePerSecond: damage * .3 / 3, casterId: unit.id,
+  };
+  if (unit.heroId === 'h010') target.fireMark = 3;
+  if (trait.poisonDps) target.poison = { remaining: trait.poisonDuration ?? 3, damagePerSecond: trait.poisonDps, casterId: unit.id };
+  if (trait.poisonSlow) applyEnemyStatus(target, unit, 0, 'slow', 2.5, trait.poisonSlow);
+  if (unit.heroId === 'h00Z' && (target.frozen ?? 0) > 0) damage *= 2;
 
   // Lifesteal from berserk mode
   if (unit.berserk) {
@@ -425,12 +632,17 @@ function processSingleHit(
   // Energy generation on attack
   if (!context.isFollowUp && !context.isExtraStrike && !isSecondaryTarget) {
     if (unit.energyType === 'rage_on_attack') {
-      const gain = unit.heroId === 'h00A' ? 14 : unit.heroId === 'h00C' ? 15 : unit.heroId === 'h00H' ? (isCrit ? 30 : 15) : (isCrit ? 24 : 12);
+      const tierGain: Readonly<Record<string, number>> = { h00L: 16, h00M: 15, h00O: 15, h00P: 14,
+        h00R: isCrit ? 25 : 15, h00U: 14, h00V: 14, h00Z: 16, h03V: 16 };
+      const gain = tierGain[unit.heroId] ?? (unit.heroId === 'h00A' ? 14 : unit.heroId === 'h00C' ? 15 : unit.heroId === 'h00H' ? (isCrit ? 30 : 15) : (isCrit ? 24 : 12));
       unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + gain);
     } else if (unit.energyType === 'rage_on_hit') {
       const gain = unit.heroId === 'h009' ? 10 : unit.heroId === 'h00E' ? 12 : 10;
       unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + gain);
     }
+  }
+  if (unit.heroId === 'h00U' && context.isExtraStrike && !isSecondaryTarget) {
+    unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + 14);
   }
 
   // Gây sát thương lên mục tiêu
@@ -473,7 +685,7 @@ export function triggerFollowUp(
   for (const unit of Object.values(state.units)) {
     if (!isDeployed(unit) || unit.id === ally.id || unit.owner !== ally.owner || unit.zone !== ally.zone) continue;
     const hero = HERO_BY_ID[unit.heroId];
-    if (hero.onHitTrait?.type !== 'follow_up') continue;
+    if (hero?.onHitTrait?.type !== 'follow_up') continue;
 
     const radius = hero.onHitTrait.followUpRadius ?? 6.0;
     if (distance(unit, ally) > radius) continue;
@@ -510,6 +722,7 @@ export function triggerFollowUp(
     });
 
     executeAttackGeometry(state, unit, target, (e, d, p) => activeHurt(unit, e, d, p), { isFollowUp: true });
+    if (unit.heroId === 'h03Q') unit.abilityCooldown = Math.max(0, unit.abilityCooldown - 1);
   }
 }
 
@@ -517,16 +730,18 @@ export function triggerFollowUp(
 export function stepOrbitAuras(state: GameState, dt: number, hurt: UnitHurt): void {
   for (const unit of Object.values(state.units)) {
     if (!isDeployed(unit)) continue;
+    if (unit.heroId === 'h01G' || unit.heroId === 'h01H') continue;
     const hero = HERO_BY_ID[unit.heroId];
-    if (hero.onHitTrait?.type !== 'orbit_aura') continue;
+    if (hero?.onHitTrait?.type !== 'orbit_aura') continue;
 
     unit.orbitTimer = (unit.orbitTimer ?? 0) + dt;
     const interval = hero.onHitTrait.orbitInterval ?? 0.5;
 
     if (unit.orbitTimer >= interval) {
       unit.orbitTimer -= interval;
-      const radius = hero.onHitTrait.orbitRadius ?? 2.8;
-      const auraDamage = hero.onHitTrait.orbitDamage ?? unit.attack * 0.25;
+      const radius = unit.heroId === 'h00V' && unit.tierBuff?.kind === 'nezha'
+        ? 5 : hero.onHitTrait.orbitRadius ?? 2.8;
+      const auraDamage = hero.onHitTrait.orbitDamage ?? unit.attack * (hero.onHitTrait.orbitDamageRatio ?? .25);
       const element = hero.onHitTrait.orbitElement ?? 'ice';
 
       const nearbyEnemies = Object.values(state.enemies).filter(
@@ -580,6 +795,9 @@ export function stepBoomerangs(state: GameState, dt: number, hurt: UnitHurt): vo
 
       for (const enemy of returnHits) {
         if (caster) hurt(caster, enemy, b.damage, b.penetration);
+        if (caster && state.enemies[enemy.id] && (caster.heroId === 'h00K' || caster.heroId === 'h03U')) {
+          applyEnemyStatus(enemy, caster, 0, 'sunder', 3, caster.heroId === 'h00K' ? 3 : .25);
+        }
         event(state, {
           kind: 'attack',
           source: b.casterId,
@@ -588,7 +806,8 @@ export function stepBoomerangs(state: GameState, dt: number, hurt: UnitHurt): vo
           z: enemy.z,
           value: b.damage,
           geometry: 'boomerang',
-          skillId: `boomerang-return-${b.id}`,
+          skillId: caster && ['h00K', 'h03U'].includes(caster.heroId)
+            ? `boomerang-return-${caster.heroId}` : `boomerang-return-${b.id}`,
         });
       }
     }

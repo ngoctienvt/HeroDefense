@@ -1,0 +1,8 @@
+LeLu's Free Textures Pack 1
+Source: https://leluvfx.gumroad.com/l/freeTextures
+Author: LeLu VFX
+License: CC0 for use in personal, educational and commercial projects; edit and modify allowed. The original pack may not be resold or redistributed as a pack.
+Local license note: LeLu's Noise Pack/readme.txt
+Used file: LeLu's Noise Pack/T_FirePanningCyl45.png
+Version: pack labeled 2025 in included readme; exact release number not provided.
+Verified: 2026-10-15

@@ -1,0 +1,22 @@
+/* Battlefield canvas and the lobby (create / join room). */
+.battlefield, .battlefield.playing { position: fixed; inset: 0; width: 100vw; height: 100vh; outline-offset: -4px; touch-action: none; z-index: 0; }
+.battlefield.hover-ally { cursor: pointer; }
+.battlefield.hover-enemy, .battlefield.attack-mode { cursor: crosshair; }
+
+.lobby { position: relative; min-height: 100dvh; pointer-events: none; display: grid; grid-template-columns: minmax(400px, 38%) 1fr; z-index: 10; }
+.lobby-card { pointer-events: auto; min-height: 100dvh; padding: var(--s12) clamp(32px, 4vw, 64px); background: var(--surface-strong); display: flex; flex-direction: column; justify-content: center; gap: var(--s6); border-right: 1px solid var(--edge); }
+.lobby-brand { display: flex; align-items: center; gap: var(--s3); color: var(--gold); font-size: var(--sm); letter-spacing: .14em; font-weight: 700; }
+.lobby h1 { white-space: pre-line; font-size: clamp(2.75rem, 3.8vw, 4.5rem); letter-spacing: -.025em; line-height: 1.13; }
+.lobby-intro { color: var(--muted); max-width: 45ch; }
+.lobby-form { display: grid; gap: var(--s2); }
+.lobby-form > input, .lobby-form > select { margin-bottom: var(--s2); min-height: 48px; font-size: var(--base); }
+.lobby-form > .primary { margin: var(--s2) 0 var(--s4); min-height: 48px; font-size: var(--base); }
+.join-row { display: grid; grid-template-columns: 1fr auto; gap: var(--s2); }
+.join-row input { min-height: 44px; }
+.lobby-footnote { white-space: pre-line; font-size: var(--xs); color: var(--muted); line-height: 1.8; }
+.preload-status { margin-top: var(--s3); font-size: var(--xs); color: var(--muted); font-variant-numeric: tabular-nums; }
+.preload-status.is-done { color: var(--gold); }
+.form-error { color: var(--danger); min-height: var(--s6); font-size: var(--sm); }
+.lobby-lore { align-self: end; margin: var(--s16); padding: var(--s6); background: var(--surface); max-width: 480px; border-top: 2px solid var(--gold); box-shadow: var(--shadow); }
+.lobby-lore h2 { font-size: var(--xl); margin-bottom: var(--s3); }
+.lobby-lore p { color: var(--muted); }

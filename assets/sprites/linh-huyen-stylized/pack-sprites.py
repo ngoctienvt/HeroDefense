@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -96,6 +97,18 @@ def pack(hero_id: str):
     # Master sets anatomy height. Sheet canvas density differs, so compensate by family.
     master_body = float(np.median([f['bodyHeight'] for f in families['idle']]))
     scales = {action: 166 / float(np.median([f['bodyHeight'] for f in (frames if action == 'idle' else frames[::4])])) for action, frames in families.items()}
+    config_path = folder / 'source' / 'pack-config.json'
+    config = json.loads(config_path.read_text(encoding='utf-8')) if config_path.exists() else {}
+    if not isinstance(config, dict):
+        raise ValueError(f'{config_path}: expected an object')
+    family_adjustments = config.get('familyScale', {})
+    direction_adjustments = config.get('directionScale', {})
+    if not isinstance(family_adjustments, dict) or any(action not in scales or not isinstance(value, (int, float)) or not math.isfinite(value) or value < .5 or value > 1.5 for action, value in family_adjustments.items()):
+        raise ValueError(f'{config_path}: invalid familyScale')
+    if not isinstance(direction_adjustments, dict) or any(direction not in DIRS or not isinstance(actions, dict) or any(action not in scales or not isinstance(value, (int, float)) or not math.isfinite(value) or value < .5 or value > 2 for action, value in actions.items()) for direction, actions in direction_adjustments.items()):
+        raise ValueError(f'{config_path}: invalid directionScale')
+    for action, adjustment in family_adjustments.items():
+        scales[action] *= adjustment
     registered = []
     for d, direction in enumerate(DIRS):
         for action in ('idle', 'walk', 'attack'):
@@ -109,7 +122,8 @@ def pack(hero_id: str):
             for i, frame in enumerate(items):
                 col = d%2 if action == 'idle' else i
                 registered.append({**frame, 'direction': direction, 'action': action, 'phase': i,
-                    'scale': scales[action], 'sourceAnchor': (col*source[0]/cols+root_x, support)})
+                    'scale': scales[action] * direction_adjustments.get(direction, {}).get(action, 1),
+                    'sourceAnchor': (col*source[0]/cols+root_x, support)})
     # Uniform reduction for the whole character if any weapon envelope needs more room.
     shrink = 1.0
     for f in registered:
@@ -136,7 +150,10 @@ def pack(hero_id: str):
     portrait.thumbnail((512,512),Image.Resampling.LANCZOS)
     portrait_canvas=Image.new('RGBA',(512,512));portrait_canvas.alpha_composite(portrait,((512-portrait.width)//2,(512-portrait.height)//2))
     portrait_canvas.save(staging/'portrait.webp',lossless=True,method=6)
-    manifest={'frames':rectangles,'animations':animations,'meta':{'image':'atlas.webp','size':{'w':CELL*6,'h':CELL*6},'cellSize':CELL,'anchor':list(ANCHOR),'planeHeight':6/shrink,'alpha':'straight','sampling':'linear','idle':'still','art_source':'host_image','route':'host-image_gen','model':None,'estimateUsd':None}}
+    plane_height = config.get('planeHeight', 6 / shrink)
+    if not isinstance(plane_height, (int, float)) or not math.isfinite(plane_height) or not 3 <= plane_height <= 12:
+        raise ValueError(f'{config_path}: invalid planeHeight')
+    manifest={'frames':rectangles,'animations':animations,'meta':{'image':'atlas.webp','size':{'w':CELL*6,'h':CELL*6},'cellSize':CELL,'anchor':list(ANCHOR),'planeHeight':plane_height,'alpha':'straight','sampling':'linear','idle':'still','art_source':'host_image','route':'host-image_gen','model':None,'estimateUsd':None}}
     save_json(staging/'atlas.json',manifest)
     board=Image.new('RGB',(CELL*9,CELL*4),'#384c45')
     for i,f in enumerate(registered):board.paste(previews[f"{f['direction']}.{f['action']}"][f['phase']],((i%9)*CELL,(i//9)*CELL),previews[f"{f['direction']}.{f['action']}"][f['phase']])
@@ -153,13 +170,19 @@ def pack(hero_id: str):
             for d,direction in enumerate(DIRS):panel.paste(previews[f'{direction}.{action}'][phase],(d*CELL,0),previews[f'{direction}.{action}'][phase])
             sequence.append(panel)
         sequence[0].save(staging/'previews'/f'{action}.webp',save_all=True,append_images=sequence[1:],duration=TIMES[action],loop=0,lossless=True)
-    save_json(staging/'qa.json',{'frames':36,'clips':12,'idleFramesPerDirection':1,'sourceReports':reports,'masterBodyHeight':master_body,'familyScales':scales,'uniformEnvelopeReduction':shrink,'warnings':warnings,'limits':['Generated acting and identity need visual motion review.','Four keyframes per action are intentionally sparse.','No game/test/build execution.']})
+    save_json(staging/'qa.json',{'frames':36,'clips':12,'idleFramesPerDirection':1,'sourceReports':reports,'masterBodyHeight':master_body,'familyScaleAdjustments':family_adjustments,'directionScaleAdjustments':direction_adjustments,'familyScales':scales,'uniformEnvelopeReduction':shrink,'warnings':warnings,'limits':['Generated acting and identity need visual motion review.','Four keyframes per action are intentionally sparse.','No game/test/build execution.']})
     staging.rename(destination)
     print(json.dumps({'hero':hero_id,'frames':36,'clips':12,'warnings':warnings,'atlas':str(destination/'atlas.webp')}))
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--hero',required=True);args=parser.parse_args()
-    roster=json.loads((ROOT/'roster.json').read_text(encoding='utf-8'))
-    if args.hero not in {h['id'] for h in roster['heroes']}:raise ValueError('Hero outside requested roster')
+    parser=argparse.ArgumentParser();parser.add_argument('--hero',required=True)
+    parser.add_argument('--root',type=Path,help='Asset collection using the same atlas layout')
+    args=parser.parse_args()
+    if args.root is not None:
+        ROOT=args.root.resolve()
+        if not (ROOT/args.hero/'source').is_dir():raise ValueError('Hero source directory missing')
+    else:
+        roster=json.loads((ROOT/'roster.json').read_text(encoding='utf-8'))
+        if args.hero not in {h['id'] for h in roster['heroes']}:raise ValueError('Hero outside requested roster')
     pack(args.hero)

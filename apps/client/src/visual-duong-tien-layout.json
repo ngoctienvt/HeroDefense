@@ -1,0 +1,52 @@
+{
+  "eye": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.12239583333333333,
+      "top": 0.036458333333333336,
+      "right": 0.8776041666666666,
+      "bottom": 0.9453125
+    }
+  },
+  "aura": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8509933774834437,
+    "bounds": {
+      "left": 0.044270833333333336,
+      "top": 0.13541666666666666,
+      "right": 0.9453125,
+      "bottom": 0.8645833333333334
+    }
+  },
+  "beam": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 5.953488372093023,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  },
+  "scorch": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 5.535135135135135,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

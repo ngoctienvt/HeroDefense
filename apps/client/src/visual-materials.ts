@@ -5,11 +5,49 @@ import { Texture } from '@babylonjs/core/Materials/Textures/texture.js';
 import { Scene } from '@babylonjs/core/scene.js';
 import { debug } from './debug.js';
 import { hasStylizedMotion } from './stylized-motion.js';
+import { isMonsterAssetId } from './monster-motion.js';
 
 /** One material per palette entry keeps draw calls and GPU allocations bounded. */
 export class VisualMaterials {
   private cache = new Map<string, StandardMaterial>();
+  private monsterMaterialReferences = new Map<string, number>();
   constructor(private scene: Scene) {}
+
+  private retainMonsterMaterials(materials: StandardMaterial[]): () => void {
+    const retained = [...new Set(materials)];
+    for (const material of retained) {
+      this.monsterMaterialReferences.set(material.name,
+        (this.monsterMaterialReferences.get(material.name) ?? 0) + 1);
+    }
+    let released = false;
+    return () => {
+      if (released) return;
+      released = true;
+      for (const material of retained) {
+        const references = this.monsterMaterialReferences.get(material.name) ?? 0;
+        if (references > 1) {
+          this.monsterMaterialReferences.set(material.name, references - 1);
+        } else {
+          this.monsterMaterialReferences.delete(material.name);
+          if (this.cache.get(material.name) === material) {
+            this.cache.delete(material.name);
+            material.dispose(false, true);
+            debug('sprite.monster-material-disposed', { material: material.name });
+          }
+        }
+      }
+    };
+  }
+
+  retainMonsterFallback(monsterId: string): () => void {
+    return this.retainMonsterMaterials([this.monsterSprite(monsterId), this.monsterMotion(monsterId)]);
+  }
+
+  retainMonsterMotionPages(monsterId: string, pageCount: number): () => void {
+    if (!Number.isInteger(pageCount) || pageCount <= 0) throw new Error('Monster page count must be positive');
+    return this.retainMonsterMaterials(Array.from({ length: pageCount }, (_, page) =>
+      this.monsterMotionPage(monsterId, page)));
+  }
 
   get(
     key: string,
@@ -126,6 +164,7 @@ export class VisualMaterials {
   }
 
   monsterSprite(monsterId: string): StandardMaterial {
+    if (!isMonsterAssetId(monsterId)) throw new Error('Invalid monster art ID');
     const key = `monster-${monsterId}`;
     const existing = this.cache.get(key);
     if (existing) return existing;
@@ -134,6 +173,55 @@ export class VisualMaterials {
       Texture.TRILINEAR_SAMPLINGMODE,
       () => debug('sprite.monster-ready', { monsterId }),
       (_message, error) => debug('sprite.monster-fallback', { monsterId, error: String(error ?? _message) }));
+    texture.hasAlpha = true;
+    material.diffuseTexture = texture;
+    material.diffuseColor = Color3.White();
+    material.emissiveTexture = texture;
+    material.emissiveColor = Color3.White();
+    material.useAlphaFromDiffuseTexture = true;
+    material.backFaceCulling = false;
+    material.specularColor = Color3.Black();
+    this.cache.set(key, material);
+    return material;
+  }
+
+  monsterMotion(monsterId: string): StandardMaterial {
+    if (!isMonsterAssetId(monsterId)) throw new Error('Invalid monster art ID');
+    const key = `monster-motion-${monsterId}`;
+    const existing = this.cache.get(key);
+    if (existing) return existing;
+    const material = new StandardMaterial(key, this.scene);
+    const texture = new Texture(`/assets/${key}.webp`, this.scene, true, true,
+      Texture.BILINEAR_SAMPLINGMODE,
+      () => debug('sprite.monster-motion-ready', { monsterId, frames: 7 }),
+      (_message, error) => debug('sprite.monster-motion-fallback', { monsterId, error: String(error ?? _message) }));
+    texture.hasAlpha = true;
+    material.diffuseTexture = texture;
+    material.diffuseColor = Color3.White();
+    material.emissiveTexture = texture;
+    material.emissiveColor = Color3.White();
+    material.useAlphaFromDiffuseTexture = true;
+    material.backFaceCulling = false;
+    material.specularColor = Color3.Black();
+    this.cache.set(key, material);
+    return material;
+  }
+
+  monsterMotionPage(monsterId: string, page: number): StandardMaterial {
+    if (!isMonsterAssetId(monsterId) || !Number.isInteger(page) || page < 0) {
+      throw new Error('Invalid monster art page');
+    }
+    const key = `monster-motion-${monsterId}-page-${page}`;
+    const existing = this.cache.get(key);
+    if (existing) return existing;
+    const material = new StandardMaterial(key, this.scene);
+    const pageName = `monster-motion-${monsterId}-${String(page).padStart(2, '0')}.webp`;
+    const texture = new Texture(`/assets/${pageName}`, this.scene, true, true,
+      Texture.BILINEAR_SAMPLINGMODE,
+      () => debug('sprite.monster-motion-page-ready', { monsterId, page }),
+      (_message, error) => debug('sprite.monster-motion-page-fallback', {
+        monsterId, page, error: String(error ?? _message),
+      }));
     texture.hasAlpha = true;
     material.diffuseTexture = texture;
     material.diffuseColor = Color3.White();

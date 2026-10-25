@@ -1,0 +1,56 @@
+{
+  "charge": {
+    "anchorY": 0.5,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.166667,
+      "right": 0.979167,
+      "top": 0.263021,
+      "bottom": 0.734375
+    }
+  },
+  "dragon": {
+    "anchorY": 0.500227,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 1024,
+    "bounds": {
+      "left": 0.066406,
+      "right": 0.939453,
+      "top": 0.388672,
+      "bottom": 0.597656
+    },
+    "head": "right"
+  },
+  "lane": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 1024,
+    "bounds": {
+      "left": 0.055664,
+      "right": 0.955078,
+      "top": 0.429688,
+      "bottom": 0.569336
+    },
+    "head": "right"
+  },
+  "hit": {
+    "anchorY": 0.829615,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.075521,
+      "right": 0.932292,
+      "top": 0.033854,
+      "bottom": 0.84375
+    }
+  }
+}

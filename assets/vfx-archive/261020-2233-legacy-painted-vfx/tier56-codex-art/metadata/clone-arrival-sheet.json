@@ -1,0 +1,46 @@
+{
+  "heroId": "h012",
+  "heroName": "Đấu Chiến Thắng Phật",
+  "asset": "clone-arrival-sheet",
+  "type": "S8",
+  "status": "style-review-required",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/clone-arrival-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/clone-arrival-sheet.png",
+  "actualSizePx": [
+    1774,
+    887
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 2,
+    "rectRule": "equal 4x2 cells; preserve original generated dimensions without stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "Reviewed all eight cells on light/dark. One cloud portal opens, monkey-footprint seal appears, then cloud/seal fade. No actor or multiple clones embedded. Transparency present; clear final cells.",
+  "sha256": "452807e4f8efe818ce7cd102ea0cc2fcb899cc1fa8d3d99a8ba7948ebfc9010e",
+  "previewPaths": [
+    "assets/vfx-source/tier56-codex-art/previews/clone-arrival-sheet-light.jpg",
+    "assets/vfx-source/tier56-codex-art/previews/clone-arrival-sheet-dark.jpg"
+  ],
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Place one instance at each server-created clone position; duration follows the summon unit lifecycle."
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/congcong-shared-shield-20261020/prompts/clone-arrival-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "raw-ready"
+}

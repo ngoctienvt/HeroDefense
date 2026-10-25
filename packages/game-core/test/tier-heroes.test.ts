@@ -42,10 +42,11 @@ describe('Linh basic attack traits', () => {
   it('stuns and pushes the third Xạ Nhân arrow backwards', () => {
     const state = game(), unit = deployed(state, 'h005');
     const target = enemy(state, unit, { attack: 0, cooldown: 999 });
-    const originalZ = target.z;
+    const originalX = target.x;
     for (let n = 0; n < 3; n++) { unit.cooldown = 0; combatStep(state, .05); }
     expect(target.stun).toBeGreaterThan(0);
-    expect(target.z).toBeLessThan(originalZ);
+    // The arrow pushes the target directly away from the archer.
+    expect(target.x).toBeGreaterThan(originalX);
   });
 });
 
@@ -61,7 +62,8 @@ describe('Huyền skill mechanics', () => {
     expect(caster.energy).toBe(0);
     caster.orderMode = 'hold'; ally.orderMode = 'hold';
     const attacker = enemy(state, caster, { hp: 1000, maxHp: 1000, attack: 50, cooldown: 0 });
-    combatStep(state, .05);
+    // The melee hit (and its reflection) lands after the enemy wind-up.
+    for (let tick = 0; tick < 12; tick++) combatStep(state, .05);
     expect(attacker.hp).toBeLessThan(1000);
     expect(attacker.bleed).toBeDefined();
   });

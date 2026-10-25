@@ -1,0 +1,895 @@
+{
+  "policy": "DEPRECATED PAINTERLY VFX - DO NOT USE FOR ART, REFERENCES, RUNTIME, OR AUTOMATIC SELECTION",
+  "created": "2026-10-20 Asia/Bangkok",
+  "runtimeLegacyExceptions": [],
+  "moves": [
+    {
+      "from": "assets/vfx-source/nhu-lai/front/contact-dark.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/contact-dark.png",
+      "sha256": "4811aaa9b93a6601987841d3b41699def16af18cdedf986c473b326d366be882",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/contact-light.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/contact-light.png",
+      "sha256": "3d7a95dc2d9b6555849cc79aab6ce01ce3039e98b0799c883171a771c2156884",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-01.png",
+      "sha256": "87986e15ce6855f5e03a070f0e4b12d48dd8c109f34a53f2ec67187d365cd6a9",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-02.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-02.png",
+      "sha256": "fb296bf2284eb08fff4af5fe8057e5e7cad5966fcd0a5eaa965be660f4114488",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-03.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-03.png",
+      "sha256": "0e57b80dd0fcc3984d028338c211905be57313dc076e689f0015664ce8b9307a",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-04.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-04.png",
+      "sha256": "123ba9a01366581882583315ee7cdb09ba08ce95dd39ac79a63dd395c7b9d880",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-05.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-05.png",
+      "sha256": "5e06849760768232ca191dc0cd26733032ae80b3183eba161bf522cf6aa56b4e",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-06.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-06.png",
+      "sha256": "6bf6ddff1f93a27d523a3f2eb61e0df0af8c0ac1df88a0c252952ad703d3594c",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-07.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-07.png",
+      "sha256": "6dbf156e4a0aae3f729a38f27a25244d7163f9775f6065915f50ca1fee62eafb",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-08.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-08.png",
+      "sha256": "410081061622a306610e546a0cd8a609def6ad74d336ae21111b6bd7d4ee7691",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-09.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-09.png",
+      "sha256": "d2cb3fc3145e9368b50f115650597248dadd01038c44a58c15254152e13ece9b",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-10.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-10.png",
+      "sha256": "106dd0c95a2b72a98c6251d8a64493cf7f275c98d82f74ebc16ab2ca1e323450",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-11.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-11.png",
+      "sha256": "f57b923906665eba55830818db22b7e292ca1dc78552cc520549993b50bafaca",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-12.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-12.png",
+      "sha256": "213a7e4e170c7089ca2fe13304fe0ca68d760effb3bfd626dd74370519cbbaa1",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-13.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-13.png",
+      "sha256": "706994ff372c9c5421ac8bbc98ce31c7d35ce6ade7be4a76ab0b8499d934a9e7",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-14.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-14.png",
+      "sha256": "4263365328f6cf1cf2a36104948517caa67f479e5520d50d9feb63666806b3fd",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-15.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-15.png",
+      "sha256": "06493336aa6851e650c90e83c8fe286e8be1506801bbf4c8d3ade2111ff8abc2",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/front/frames/frame-16.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/front/frames/frame-16.png",
+      "sha256": "abe6d3e3f3a851350c8b572379d26dd766e1c7cf2b030421605b35f502e11fc5",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/contact-dark.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/contact-dark.png",
+      "sha256": "202ddb1581b1af4bd71e948d17d270851b55b49fe5f44be411ca5e585d6f16ee",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/contact-light.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/contact-light.png",
+      "sha256": "7cfa418ac68985f598cb5f33808005a936e9bc834d6e52d187ded7db44023778",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-01.png",
+      "sha256": "d3cc211982fc7f1be47b04dc555f990f521255c326b1b96c320b69c6938137af",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-02.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-02.png",
+      "sha256": "8fd52b9be1d11314e8a3ab2d03dfba492c2256487d5a52bc63b875304afc96f9",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-03.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-03.png",
+      "sha256": "925f415da3804ed09ba7ca5946c846c41cd552207bbb5d7b61514e663f14d5ed",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-04.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-04.png",
+      "sha256": "0aac2cee4a78d464674e30c2315a644d7225281b9b33f76ad31a111f18bd5049",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-05.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-05.png",
+      "sha256": "28de0c3e93806b0fdf04177976c0693ae43d935adc82a16deed1a609ce0da21d",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-06.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-06.png",
+      "sha256": "78e9137b1e90d35f1d033dca9fb5d224dab3cbb087c4852344b0d6b7ee76a0a8",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-07.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-07.png",
+      "sha256": "10a6ff336e3a2b073f548f2149eee9455fa4993d1c042ad923b0cfa3ba125621",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-08.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-08.png",
+      "sha256": "0b6e2c6c7e92c5812f0b4903f04dd504e3f714923843556df89cf59de8a78438",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-09.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-09.png",
+      "sha256": "06759378cfa31852ece6c9aef3766f6a5c40cac1ee4e75defe828cb670e520e8",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-10.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-10.png",
+      "sha256": "aa1d2a87277310192f7e0268cae07ce82020c11ed8c4fe47b9f7743ac98c4461",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-11.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-11.png",
+      "sha256": "186ca8544cb1784041364770f96492e0e56610a68537eb680e9d030392a21af1",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-12.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-12.png",
+      "sha256": "9c6338bbaa4451c5b2d868079c3e18b959dc7381da43d71f85d9ab2eb843714e",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-13.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-13.png",
+      "sha256": "74b9d5a50f76bc7ea98a2fc8fd7d9546f2c1d71c2ca486af7c7cc602661d49c9",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-14.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-14.png",
+      "sha256": "7a0654bddd78a08efc96da234522909c75d23ccbdbf7396920a21f5b40b6408d",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-15.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-15.png",
+      "sha256": "829d49f0d30c5bde60209ca9c0b9d29b5c16ffe57df225f966619cc9152d7770",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/palm/frames/frame-16.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/palm/frames/frame-16.png",
+      "sha256": "7e16196235644e2433667f7608213977cb8d36e4beb1cab6dde7010ac797a9f8",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/contact-dark.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/contact-dark.png",
+      "sha256": "4acae374882ee57db36bb163fc949a0b448cde93109ae6657259fa9c86bf85c2",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/contact-light.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/contact-light.png",
+      "sha256": "3c4c026996b735187d9b2e01330de27c9da8b461d1599ec9a6fd378a4f8b930d",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-01.png",
+      "sha256": "c0ffc0d59cd5cf650ff8041fbd904467c9490d3eb5b1fa3eb4f6656ac8476523",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-02.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-02.png",
+      "sha256": "93a9d0d7d51b66ba5344fc5e733981a9e527b16779e9c08ea953d57594726d7b",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-03.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-03.png",
+      "sha256": "ba5d86dc41acdb447f0712223de7e9e0c4d780d2bc7953151d0c4fa981cd94d5",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-04.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-04.png",
+      "sha256": "a8386dc2ef8897894995b8d070f787ef2286449705a26158b63cdb82397bbafc",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-05.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-05.png",
+      "sha256": "fd64293a458c1d6dc64778001a635cdad1bf3179f10677b9f2d4513ce86b5068",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-06.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-06.png",
+      "sha256": "d3eef8c80c0496e6c85203fc42070cdbfd8dda4d4d1e13a6af8be40eea4b8e0f",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-07.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-07.png",
+      "sha256": "9323fea29cb152b78b877fb510456418475a22ca88660ad59960c1edc11761c8",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-08.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-08.png",
+      "sha256": "00d2d36f72f8aa6c4560b0544a61c9f76bc0a879f9f4a6f458d401c5905de7c1",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-09.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-09.png",
+      "sha256": "5a2fc831960300b5ddf30e74394058974956607fff254a51e8d3143983e3941c",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-10.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-10.png",
+      "sha256": "4bccb7cf686c014d2d6bbf144bffdf01ef05ea30fa03e305247cc53d6618acfc",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-11.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-11.png",
+      "sha256": "3482e2570980c94fb4ed6e80d9e1fd42ea71364d1e707f3c9e3b8a0c77259130",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-12.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-12.png",
+      "sha256": "f301589860234daa1da1ea9af02e0e78df567dfe10096e3947f2d438735dd5a7",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-13.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-13.png",
+      "sha256": "61f99e22b8965722d7d99b94f667c7f985f55b35955a4b8e5b67817724d12501",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-14.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-14.png",
+      "sha256": "d8123ad5cb9b69d2957167216ccca9df9ecb6c7190731b7a08fcfd3c54296b7b",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-15.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-15.png",
+      "sha256": "15fc4d55ef526645d45d17bc2f506093aa2191da559ea7651ae3d10e3e965249",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear/frames/frame-16.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear/frames/frame-16.png",
+      "sha256": "5801f519d69d8ec2e9bfc6bd7a9aa219b018601c394075cdb7edcb63c5a96e9e",
+      "reason": "legacy-nhulai-derived-source"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/rear-front-dark.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/nhu-lai/rear-front-dark.png",
+      "sha256": "d7a4d80db427ba7816a03ea3a5d7d178f6a7d04e2b67c65b5638aea7c237bb9c",
+      "reason": "legacy-nhulai-composite"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/buddha-palm-descent-sheet-attempt-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/buddha-palm-descent-sheet-attempt-01.png",
+      "sha256": "fc82dceb8f5e875c6ab7363a42f756f99130eaf4bd270e8b6ecaf4a23cedf461",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-01.png",
+      "sha256": "97a1b4e710db8d29a703775fd71fe4b41604c7e704084a7448f554fc34a01ba0",
+      "reason": "retired-painted-shield-rejected-iteration"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-02.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-02.png",
+      "sha256": "029969857cb40718b637546f560ecb1557ad85a074a969539b3dcbf63a85451d",
+      "reason": "retired-painted-shield-rejected-iteration"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-03.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/buddha-shield-rear-sheet-attempt-03.png",
+      "sha256": "6eb4cd486c03134915cb85df6d18a76263d4cfac205f8e5d9a6c4ecb8e875a9a",
+      "reason": "retired-painted-shield-rejected-iteration"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/five-finger-mountain-rear-sheet-attempt-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/five-finger-mountain-rear-sheet-attempt-01.png",
+      "sha256": "d0c55b4ee5a225169de762390b68d81890bd371d7c7576f9b1af6d8dd2726c9e",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/lava-basin-ground-attempt-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/lava-basin-ground-attempt-01.png",
+      "sha256": "0e03f174c9fcb9dad3ce838a6251ca0002899b47de5c47e61a944dc2a462ed9c",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/lava-basin-ground-attempt-02.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/lava-basin-ground-attempt-02.png",
+      "sha256": "5642844e7aa5c8f82b7176b198ef4d95f6cfaa734fa5e5a9a6011c95dfd96938",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/moon-frost-prison-sheet-attempt-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/moon-frost-prison-sheet-attempt-01.png",
+      "sha256": "e988fde7ba58dca95758c1f107afbeb74769716bbd5ebdb3990439f2439807c2",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/moon-frost-prison-sheet-attempt-02.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/moon-frost-prison-sheet-attempt-02.png",
+      "sha256": "20a7ab8e9f55a58352fcffbd284b9ca8b01bbaab27998a78f67e1faafd42f8cb",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/staff-lane-fracture-attempt-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/staff-lane-fracture-attempt-01.png",
+      "sha256": "2ce5947dfab4f41e252f0e164d6ab4b6b7b3f0ff9477788acd4431778189c0a9",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/volcanic-eruption-sheet-attempt-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/volcanic-eruption-sheet-attempt-01.png",
+      "sha256": "0d2ccad0cab8f38a94854a00c1535a638c9bc30b7e945ef2dc70ff4371d46569",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/volcanic-eruption-sheet-attempt-02.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/volcanic-eruption-sheet-attempt-02.png",
+      "sha256": "328aad8c79483dff2bcd7d02887d8ef166779599f6d99498476df6fdac4e6f31",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/iterations/warfire-ground-attempt-01.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/iterations/warfire-ground-attempt-01.png",
+      "sha256": "cf48afd8efc2104ffca0a375cc576f0f37fa3a9e405161c7303cdaad5f924ecf",
+      "reason": "legacy-linked-iterations"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/berserk-wave.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/berserk-wave.json",
+      "sha256": "cf45f55630a5b0c197bc2b25c83850936964dc3fb9aaf54dc6c11025b6c7b6e3",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/bowl-front-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/bowl-front-sheet.json",
+      "sha256": "8a78a5138f453a8e5117959c3164d867c6d09f2160a8a7b87e81154c144906a8",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/bowl-rear-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/bowl-rear-sheet.json",
+      "sha256": "cf9dbe21adcaa3329426fa43c17bd0aa1b9f73db707c99adf2e49668e7924b50",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/buddha-palm-descent-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/buddha-palm-descent-sheet.json",
+      "sha256": "461a462e73d6a88c39358d3e671853c50298a0df97afc4d12691db2cefafc078",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/buddha-shield-rear-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/buddha-shield-rear-sheet.json",
+      "sha256": "b12f221fbdbd354da56c90a5c5294daf0136f230760f452d3204edab0d02d51c",
+      "reason": "retired-painted-shield-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/clone-arrival-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/clone-arrival-sheet.json",
+      "sha256": "3adc89c085033a4c61797faea4c394127bae47f4781fb44c4ae677c4b10429db",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/clone-staff-hit-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/clone-staff-hit-sheet.json",
+      "sha256": "4accb0d653abb3d7be0e4bff1450606c120ea28c499acb0b082c76c2caaf79ce",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/five-finger-mountain-front-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/five-finger-mountain-front-sheet.json",
+      "sha256": "b1c4010aa7b96cd2e747a966e680d2d146f392794e3cbdf9e70507dcb4b36d21",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/five-finger-mountain-rear-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/five-finger-mountain-rear-sheet.json",
+      "sha256": "e5c3b332ea08b259985f09a3d8fdf7ab60c696607c0bd3a1968c303b4c074db9",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/lava-basin-ground.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/lava-basin-ground.json",
+      "sha256": "203a194a3c0c0b4b5ab71e79347597fcef10c48a80824f997285d8decafd9a9c",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/lava-ignite-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/lava-ignite-sheet.json",
+      "sha256": "22280482008cc97972e4d5f5bf597414194648f9a4ef873ea8db109caaa71a0f",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/moon-frost-prison-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/moon-frost-prison-sheet.json",
+      "sha256": "745c1b5a6e36b420f7bb0b1ea1eb67a890d87ad472e5d3994ceac16c7b51716f",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/moonshield-front-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/moonshield-front-sheet.json",
+      "sha256": "f919299a0becffe193ebf112cb4a5a323b9443edf77190245379fdf85fa0ee26",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/moonshield-rear-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/moonshield-rear-sheet.json",
+      "sha256": "690f9dc1cbb35058e77297ecc62aa8e6b02270f8c069bd70c05498a9118c7012",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/staff-lane-fracture.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/staff-lane-fracture.json",
+      "sha256": "0f58a30ef89e6b56b7a5bf94a942a0994b9d5caeca6a46fddac52436d55d0030",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/staff-slam-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/staff-slam-sheet.json",
+      "sha256": "cc4184b8c86575bb57187d39f009744f2a07167691d82f810acbd4023129540f",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/staff-sunder-mark.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/staff-sunder-mark.json",
+      "sha256": "a7284fc2ee730933ad67de9433593534830abcfd0d6e2b72899abe09e87bc357",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/volcanic-eruption-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/volcanic-eruption-sheet.json",
+      "sha256": "561d154b6eebc808de1fd2bd9e5b4caf515afeac2d6d5b5eee1fc7f69c2b60c8",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/warfire-ground.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/warfire-ground.json",
+      "sha256": "ffccb71a889cd20cd26d3a5b24fe46990db679a82d3f9f276e64fd29bcc7f89b",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/warfire-vortex-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/warfire-vortex-sheet.json",
+      "sha256": "601a7ab04de4036fcec2ad7cce5bd9ff635b1efad42d883c86a491c9f148a3ad",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/metadata/wave-impact-sheet.json",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/metadata/wave-impact-sheet.json",
+      "sha256": "40c2cb009a95197b9b98194dd39b0e5009a6248cc0ff565caf767529510b5e06",
+      "reason": "legacy-metadata"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/berserk-wave-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/berserk-wave-dark.jpg",
+      "sha256": "c44142cdbec8d0111ec6c01d7b8c2ed3d4fc2a0d94f0799eaa5d73b3a29236ed",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/berserk-wave-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/berserk-wave-light.jpg",
+      "sha256": "52f965277dd795bbb4f7c0f3090d1785def3f9ee8b4f4e656385e5a2d1022c1e",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/bowl-front-sheet-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/bowl-front-sheet-dark.jpg",
+      "sha256": "12d7dcc1e032e7f6a55f01c89abc530cd83bd59b3648ed778ec66d9b3943dd35",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/bowl-front-sheet-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/bowl-front-sheet-light.jpg",
+      "sha256": "a8a10d21a4e35bb11267b93d55ac6508aa6a630b2860288be52ed28e934376e8",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/bowl-rear-sheet-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/bowl-rear-sheet-dark.jpg",
+      "sha256": "8ad6e88d405b4232cf3dbbd6b7dca42103e7dd0e06641a1c45af74831419f3b6",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/bowl-rear-sheet-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/bowl-rear-sheet-light.jpg",
+      "sha256": "c9924398971103525d1922e2a19cd93b9a9a4b2830c6d52f4e1e484a432b622d",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/buddha-palm-descent-sheet-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/buddha-palm-descent-sheet-light-dark.jpg",
+      "sha256": "3cc9e3e39c04b533e1404c241bc165db0a23b4315e489974585b01a3b75cb557",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/clone-arrival-sheet-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/clone-arrival-sheet-dark.jpg",
+      "sha256": "940a1f593698affb44df28d5c97ec08a6a0482022ffcf7c9357cef6eca81cd64",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/clone-arrival-sheet-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/clone-arrival-sheet-light.jpg",
+      "sha256": "6f8340b8af7422fb3b2c46514e5fe970e1bf68eba8d948c9a93b4910558e94cd",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/clone-staff-hit-sheet-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/clone-staff-hit-sheet-dark.jpg",
+      "sha256": "79447bb829bec429af550d8b5ee45aff38c2ec13ab00cb468c0ffcf203454421",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/clone-staff-hit-sheet-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/clone-staff-hit-sheet-light.jpg",
+      "sha256": "902e0792a203379a9173313f84cd491995ba0391c8d3570ba8e2aa7afccf04d6",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/five-finger-mountain-front-sheet-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/five-finger-mountain-front-sheet-light-dark.jpg",
+      "sha256": "8facd719b4b768f87e50147e784550dffc44cc44dc4b91b1124a1d6fdea985b1",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/five-finger-mountain-rear-sheet-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/five-finger-mountain-rear-sheet-light-dark.jpg",
+      "sha256": "d4f91e27c980cefab42089ab627f116cf83f2935a8ad394fcb70fdb67ab71fb3",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/lava-basin-ground-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/lava-basin-ground-light-dark.jpg",
+      "sha256": "0e70c7fabe10c8873d51a3862f4a033ee8e3c1280307fea9e4022c51de8e92de",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/lava-ignite-sheet-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/lava-ignite-sheet-light-dark.jpg",
+      "sha256": "50cacf9fc479f9522fbe239ff41723f3daceaa2df463d948c0d16468bf0550cc",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/moon-frost-prison-sheet-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/moon-frost-prison-sheet-light-dark.jpg",
+      "sha256": "bc159db2645e1dbc21187bf276554684d335f1a8fe34c34f9bbbc0eeb74a73d1",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/moonshield-front-sheet-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/moonshield-front-sheet-light-dark.jpg",
+      "sha256": "d8e3e3cf93a0f5b57c3d37c9818e91fb16a7f87a504344267fd126fa75743a7c",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/moonshield-rear-sheet-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/moonshield-rear-sheet-light-dark.jpg",
+      "sha256": "36c50e1a32b651dc527f3630aa413fef0943df152f9b34119bf56cf1cd362a36",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/staff-lane-fracture-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/staff-lane-fracture-dark.jpg",
+      "sha256": "d7f380856171dcd5a9f1ba3edfd4912843bb525b750ce074aead8c8042db0ea7",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/staff-lane-fracture-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/staff-lane-fracture-light.jpg",
+      "sha256": "a11b705e8f3117b307cc938b51373b77bfba5ff9861dad60ad35e3e058b6d402",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/staff-slam-sheet-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/staff-slam-sheet-dark.jpg",
+      "sha256": "60b7a7a2b30ab5d79db292973a5b94dd70c99b2ea2dc81fdfe3bc118e6dfefca",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/staff-slam-sheet-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/staff-slam-sheet-light.jpg",
+      "sha256": "b01f167ad68443f52f0c2e0acc44c8e62c58dc3e2d8063636c37ee1aac7a70f6",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/staff-sunder-mark-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/staff-sunder-mark-dark.jpg",
+      "sha256": "5ba9590888a642285db2a326692294455c6360321b2de0b468834cd56d2e34bc",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/staff-sunder-mark-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/staff-sunder-mark-light.jpg",
+      "sha256": "5f6865fe84d59298f76e4a9e2fe57d4e459b6b566ace0210b0cd2cdd8cdefee0",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/volcanic-eruption-sheet-light-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/volcanic-eruption-sheet-light-dark.jpg",
+      "sha256": "a1969232c43fd18d2cb2f0e7d68cadbed7ac5b5cbc2686eb596357c7f0cc83bc",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/warfire-ground-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/warfire-ground-dark.jpg",
+      "sha256": "bacfd1d02407972b43d31fc87569ef47902305561b2e987601de049970ebf28d",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/warfire-ground-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/warfire-ground-light.jpg",
+      "sha256": "29b757cc672a13020f67a386e7f70a82efa525dd53f57517c66de04468b6e05f",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/warfire-vortex-sheet-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/warfire-vortex-sheet-dark.jpg",
+      "sha256": "57dae0c09af035a2aec26ac99beb668b5bb9e5953cee67c1d6a6e19b01d9927f",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/warfire-vortex-sheet-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/warfire-vortex-sheet-light.jpg",
+      "sha256": "9e0a9a9f91f022ba96fc3ec3972d7ca686c91b1ffd38bbde7bf07102c1859612",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/wave-impact-sheet-dark.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/wave-impact-sheet-dark.jpg",
+      "sha256": "f5bf69c5202e798c2d33e67e4d40e94bd9a2f54b2251535b64e49144c5dbd707",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/previews/wave-impact-sheet-light.jpg",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/previews/wave-impact-sheet-light.jpg",
+      "sha256": "9b069b1c5241f183ea8c51c2c14b39305827d7a1c8c50e74ccc14e71c7365c7c",
+      "reason": "legacy-preview-for-matched-raw"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/berserk-wave.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/berserk-wave.png",
+      "sha256": "af18b03d1b05fdfc68580d2764c5c5ff53e9bf080b1f399d2c32bdb8738728dc",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/bowl-front-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/bowl-front-sheet.png",
+      "sha256": "dd22cede5e3ae8bb1421b5ea25b82644fe094843785d629db944ac5667b7a397",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/bowl-rear-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/bowl-rear-sheet.png",
+      "sha256": "cd8f3c1137041cc72c432ca5040b6a21e48fcea6442250f777c78a78a6651fb0",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/buddha-palm-descent-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/buddha-palm-descent-sheet.png",
+      "sha256": "dbe2b932dcc51a1c70dd3591bcdc1e0406f6c2aee95d5ca3d3a652a61d383cb0",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/clone-arrival-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/clone-arrival-sheet.png",
+      "sha256": "452807e4f8efe818ce7cd102ea0cc2fcb899cc1fa8d3d99a8ba7948ebfc9010e",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/clone-staff-hit-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/clone-staff-hit-sheet.png",
+      "sha256": "4d96a4553fc8ab7921a3e0fead3928a5cf82886e6a146b2b3e25a3f79caad0f6",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/five-finger-mountain-front-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/five-finger-mountain-front-sheet.png",
+      "sha256": "0bd77fe1a6d8346e52960c1bf0c4ee047102e49b31cff5edfe11d30036cd2eec",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/five-finger-mountain-rear-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/five-finger-mountain-rear-sheet.png",
+      "sha256": "bda011a1058dbc8ebdb80b731938e8522f87239b132b871fbdd4eb34874add66",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/lava-basin-ground.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/lava-basin-ground.png",
+      "sha256": "4864a204a6c9af26495a2a2889d58250169278840f6e3b5b5f50b8294a6b4884",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/lava-ignite-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/lava-ignite-sheet.png",
+      "sha256": "b7cde4b5f7604e3a739f2c2b5ab1754f19e03705de1453ef99ae0222e074a186",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/moon-frost-prison-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/moon-frost-prison-sheet.png",
+      "sha256": "9e909c353ef2a140f16afa4851d35984ee1341285a1712a27c1848177efc376a",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/moonshield-front-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/moonshield-front-sheet.png",
+      "sha256": "fc155124262090178afe58ccf481d1452db01c58c1f0db20e58e4b52601e9888",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/moonshield-rear-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/moonshield-rear-sheet.png",
+      "sha256": "ffad8b1f5828c8102b0e78d2d9f55eee31583332191f100a93f75a3b28272cde",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/staff-lane-fracture.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/staff-lane-fracture.png",
+      "sha256": "962f258cbf37e9acea1998d3ad400c938fb9e979e17881ae83a544136c46e73d",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/staff-slam-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/staff-slam-sheet.png",
+      "sha256": "d4fd1f430574ff8175366ab77e872fce328c24fe2e6b4e49c72923b3618a11eb",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/staff-sunder-mark.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/staff-sunder-mark.png",
+      "sha256": "8222f35fe8c6957bd79af36444a695d5f8668ccbe848dc46bd479bfb32356608",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/volcanic-eruption-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/volcanic-eruption-sheet.png",
+      "sha256": "7eb1dd7ffbf36ace4f25f27e76774586314e4d7314b3acf5639b2505cea124ba",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/warfire-ground.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/warfire-ground.png",
+      "sha256": "4c476ecbb58d9b748cd088e1fb6c25b549b510595bf8a51216993203fd8c4f19",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/warfire-vortex-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/warfire-vortex-sheet.png",
+      "sha256": "8bb11af63ba55b2708fbf9b5e15bbac8a671787d313e63ca21037ce65a2fdd3d",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/wave-impact-sheet.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/wave-impact-sheet.png",
+      "sha256": "c8e97bf0d910e2985c8d019cce1b220a2af6ee3c0bcd12eff79cb72306965bdb",
+      "reason": "legacy-raw-matched-sha256"
+    },
+    {
+      "from": "assets/vfx-source/tier56-codex-art/raw/buddha-shield-rear-sheet-retry-04.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/tier56-codex-art/raw/buddha-shield-rear-sheet-retry-04.png",
+      "sha256": "e7840645536b6ea18721317a3c3ff6c1a1734c0bf86a12af397ad3599ce8fbac",
+      "reason": "retired-painted-shield-rejected-raw"
+    },
+    {
+      "from": "apps/client/public/assets/vfx-nhulai-palm.webp",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/apps/client/public/assets/vfx-nhulai-palm.webp",
+      "sha256": "1c6aa1c8866040ad2af264b15d5190feb7ea22106752ca607d3525095c0d7585",
+      "reason": "user-requested-remove-mistaken-nhulai-runtime"
+    },
+    {
+      "from": "apps/client/public/assets/vfx-nhulai-rear.webp",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/apps/client/public/assets/vfx-nhulai-rear.webp",
+      "sha256": "1664e5b03d4e5c7ad7100667b5ecd4d9bb7efe262553c7289c59b7be19865fd4",
+      "reason": "user-requested-remove-mistaken-nhulai-runtime"
+    },
+    {
+      "from": "apps/client/public/assets/vfx-nhulai-front.webp",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/apps/client/public/assets/vfx-nhulai-front.webp",
+      "sha256": "9a1dccd762089b4b0ec9f762e00a77afe80a7f358ab07b35762ccf7b79a6fb01",
+      "reason": "user-requested-remove-mistaken-nhulai-runtime"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/reference-palm-light.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/assets/vfx-source/nhu-lai/reference-palm-light.png",
+      "sha256": "6ed70cf1b680fc788bf6e943ed2859583cc2673f1c4d61f9870f21188097852a",
+      "reason": "user-requested-remove-mistaken-nhulai-runtime"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/reference-palm-dark.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/assets/vfx-source/nhu-lai/reference-palm-dark.png",
+      "sha256": "3c38e1f5658dc33c0f46f881aee2ca173f53e565fa2a17ccb0c5ef7ec459cde7",
+      "reason": "user-requested-remove-mistaken-nhulai-runtime"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/reference-zone-light.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/assets/vfx-source/nhu-lai/reference-zone-light.png",
+      "sha256": "5722680c3bf40f697221e19e070fa39562b64200e7ca32654596d499ba5afc19",
+      "reason": "user-requested-remove-mistaken-nhulai-runtime"
+    },
+    {
+      "from": "assets/vfx-source/nhu-lai/reference-zone-dark.png",
+      "to": "assets/vfx-archive/261020-2233-legacy-painted-vfx/assets/vfx-source/nhu-lai/reference-zone-dark.png",
+      "sha256": "793085e3a63f246fe3fdb4cf352a73a2bd3e3a32ded9c2fec4e57241896935db",
+      "reason": "user-requested-remove-mistaken-nhulai-runtime"
+    }
+  ]
+}

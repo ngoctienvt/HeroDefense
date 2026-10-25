@@ -1,5 +1,7 @@
 # Bàn Cổ: sprite top-down
 
+Từ bản thử nghiệm 2026-10-24, tướng Bàn Cổ trên sân dùng [model 3D có walk/attack](pangu-3d.md). Bộ sprite bên dưới vẫn giữ cho các nơi dùng art cũ, gồm quái mượn ngoại hình và pháp tướng; tài liệu này mô tả đường sprite.
+
 Bộ ảnh vẽ tay cel shading từ master Bàn Cổ, camera trực giao nhìn xuống khoảng 45°. Nguồn ảnh do công cụ `image_gen` trong Codex tạo (`art_source: host_image`, route `host-image_gen`); công cụ không công bố model hoặc chi phí. Đây là bộ keyframe vẽ riêng, không phải video hay rig code.
 
 ## File

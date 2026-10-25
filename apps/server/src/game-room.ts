@@ -17,9 +17,37 @@ export function issueTicket(roomId: string, name: string): string {
 interface Sequence { last: number; acks: Map<number, CommandAck>; limit: RateLimit }
 export class GameRoom extends Room {
   game!: GameState;
+  /** Per-wave summary of hard-control rolls (heroId:hits/rolls), then reset. */
+  private logControlStats(wave: number): void {
+    const stats = this.game.controlStats;
+    if (!stats || !Object.keys(stats).length) return;
+    const summary = Object.entries(stats).map(([heroId, entry]) => `${heroId}:${entry.hits}/${entry.rolls}`).join(',');
+    debugLog('crowd-control', { room: this.game.roomCode, count: wave, reason: summary.slice(0, 160) });
+    this.game.controlStats = {};
+  }
+  /** Per-wave carry passive summary (heroId:attacks/extraDamage/healed/guardedHits), then reset. */
+  private logCarryStats(wave: number): void {
+    const stats = this.game.carryStats;
+    if (!stats || !Object.keys(stats).length) return;
+    const summary = Object.entries(stats).map(([heroId, entry]) =>
+      `${heroId}:${entry.attacks}/${Math.round(entry.bonus)}/${Math.round(entry.healed)}/${entry.guarded}`).join(',');
+    debugLog('carry-passive', { room: this.game.roomCode, count: wave, reason: summary.slice(0, 160) });
+    this.game.carryStats = {};
+  }
+
+  private logEngagementStats(wave: number): void {
+    const stats = this.game.engagementStats;
+    if (!stats) return;
+    debugLog('enemy-engagement', { room: this.game.roomCode, count: wave,
+      reason: `swings:${stats.swings},cancelled:${stats.cancelled},switched:${stats.switched},overflow:${stats.overflow}` });
+    this.game.engagementStats = undefined;
+  }
+
   private sequences = new Map<string, Sequence>();
   private created = Date.now();
   private shuttingDown = false;
+  private loggedSpawnWaitWave = -1;
+  private loggedUnitOverlapWave = -1;
   onCreate(options: { code: string; difficulty: Difficulty; admission?: string }): void {
     if (options.admission !== admissionKey || !/^[A-Z]{6}$/.test(options.code) || rooms.size >= 32) throw new ServerError(403, 'Use invitation API');
     this.maxClients = 4;
@@ -39,7 +67,39 @@ export class GameRoom extends Room {
       const at = performance.now();
       accumulated = Math.min(0.25, accumulated + (at - lastStep) / 1000);
       lastStep = at;
-      while (accumulated >= 0.05) { stepGame(this.game, 0.05); accumulated -= 0.05; }
+      const waveBefore = this.game.wave;
+      while (accumulated >= 0.05) {
+        const readyToSpawn = this.game.phase === 'combat' && this.game.spawned < this.game.spawnBudget && this.game.spawnTimer <= 0;
+        const spawnedBefore = this.game.spawned;
+        const resetBefore = this.game.combatResetEventId;
+        stepGame(this.game, 0.05);
+        if (this.game.combatResetEventId !== resetBefore) {
+          debugLog('wave-combat-reset', { room: this.game.roomCode,
+            count: Object.keys(this.game.units).length, reason: `wave ${this.game.wave}: heroes restored, skills cleared` });
+        }
+        if (readyToSpawn && this.game.phase === 'combat' && this.game.spawned === spawnedBefore
+          && this.loggedSpawnWaitWave !== this.game.wave) {
+          this.loggedSpawnWaitWave = this.game.wave;
+          debugLog('monster-spawn-wait', { room: this.game.roomCode, count: spawnedBefore,
+            reason: `wave ${this.game.wave}: entrance occupied` });
+        }
+        accumulated -= 0.05;
+      }
+      if (this.game.phase === 'combat' && this.loggedUnitOverlapWave !== this.game.wave) {
+        const active = Object.values(this.game.units).filter(unit => unit.hp > 0 && unit.respawn <= 0
+          && (unit.slot >= 0 || unit.summonDuration !== undefined));
+        let overlaps = 0;
+        for (let i = 0; i < active.length; i++) for (let j = i + 1; j < active.length; j++) {
+          if (active[i].zone === active[j].zone
+            && Math.hypot(active[i].x - active[j].x, active[i].z - active[j].z) < .8) overlaps++;
+        }
+        if (overlaps) {
+          this.loggedUnitOverlapWave = this.game.wave;
+          debugLog('unit-overlap', { room: this.game.roomCode, count: overlaps,
+            reason: `wave ${this.game.wave}: units share a footprint` });
+        }
+      }
+      if (this.game.wave !== waveBefore) { this.logControlStats(waveBefore); this.logCarryStats(waveBefore); this.logEngagementStats(waveBefore); }
       if (performance.now() - at > 40) debugLog('slow-tick', { room: this.game.roomCode, durationMs: Math.round(performance.now() - at) });
     }, 50);
     this.clock.setInterval(() => {

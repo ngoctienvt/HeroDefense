@@ -1,0 +1,64 @@
+{
+  "chant": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.028645833333333332,
+      "top": 0.036458333333333336,
+      "right": 0.9609375,
+      "bottom": 0.9140625
+    }
+  },
+  "fillet": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.6497175141242938,
+    "bounds": {
+      "left": 0.1015625,
+      "top": 0.140625,
+      "right": 0.9609375,
+      "bottom": 0.8828125
+    },
+    "firstHalfWidth": 0.4296875
+  },
+  "bell": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.036458333333333336,
+      "top": 0.2265625,
+      "right": 0.9713541666666666,
+      "bottom": 0.7447916666666666
+    }
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.819371727748691,
+    "bounds": {
+      "left": 0.06510416666666667,
+      "top": 0.041666666666666664,
+      "right": 0.9322916666666666,
+      "bottom": 0.8515625
+    }
+  },
+  "dharma": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "radialEdge": 0.487511,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

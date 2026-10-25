@@ -1,0 +1,26 @@
+/* Design tokens. Semantic game colours (--c-*) are written at boot from ui-palette.ts. */
+:root {
+  color-scheme: dark;
+  --ink-0: oklch(15% .018 190); --ink-1: oklch(20% .022 190); --ink-2: oklch(25% .025 190); --ink-3: oklch(32% .025 190); --ink-4: oklch(43% .025 190);
+  --ink-black: #05080a;
+  --text: oklch(93% .023 86); --text-soft: oklch(86% .02 90); --text-bright: #fbf6e8; --muted: oklch(76% .025 170);
+  --gold: oklch(80% .095 85); --jade: oklch(79% .09 164); --danger: oklch(72% .14 32); --line: oklch(38% .025 190);
+  --amber: #e9b44a; --amber-soft: #f3d27a; --green-soft: #7fd99a; --green-pale: #c4ecd0;
+  --cyan: #3fb8d0; --cyan-soft: #7fd6e2; --cyan-pale: #c4ecf2;
+
+  /* Surfaces: one ink panel style for every HUD element. */
+  --surface: color-mix(in oklab, var(--ink-1) 93%, transparent);
+  --surface-strong: color-mix(in oklab, var(--ink-0) 96%, transparent);
+  --surface-raised: var(--ink-2);
+  --edge: color-mix(in oklab, var(--gold) 38%, transparent);
+  --edge-strong: var(--gold);
+  --shadow: 0 6px 22px rgb(0 0 0 / .55);
+  --glow-gold: 0 0 14px color-mix(in oklab, var(--gold) 55%, transparent);
+
+  --display: Georgia, 'Times New Roman', serif; --body: 'Segoe UI', Tahoma, sans-serif;
+  --xs: .75rem; --sm: .875rem; --base: 1rem; --md: 1.2rem; --lg: 1.44rem; --xl: 1.728rem;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s6: 24px; --s8: 32px; --s12: 48px; --s16: 64px;
+  --radius: 4px; --radius-lg: 8px; --ease: cubic-bezier(.25, 1, .5, 1); --time: 160ms;
+  --top-h: 76px; --dock-h: 220px; --rail-w: 64px;
+  font-family: var(--body); color: var(--text); font-weight: 400; font-synthesis: none; background: var(--ink-0);
+}

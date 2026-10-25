@@ -1,0 +1,75 @@
+{
+  "fan": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.7,
+    "bounds": {
+      "left": 0.00625,
+      "right": 0.996875,
+      "top": 0.090625,
+      "bottom": 0.965625
+    }
+  },
+  "ground": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.01171875,
+      "right": 0.99609375,
+      "top": 0.0,
+      "bottom": 0.990234375
+    },
+    "radialEdge": 0.5170618420262656
+  },
+  "feather": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.88,
+    "bounds": {
+      "left": 0.09895833333333333,
+      "right": 0.96875,
+      "top": 0.0,
+      "bottom": 0.9270833333333334
+    }
+  },
+  "blessing": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8,
+    "bounds": {
+      "left": 0.071875,
+      "right": 0.984375,
+      "top": 0.0125,
+      "bottom": 0.890625
+    }
+  },
+  "aura": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.78,
+    "bounds": {
+      "left": 0.171875,
+      "right": 1.0,
+      "top": 0.25,
+      "bottom": 0.875
+    }
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.8,
+    "bounds": {
+      "left": 0.1125,
+      "right": 1.0,
+      "top": 0.159375,
+      "bottom": 0.925
+    }
+  }
+}

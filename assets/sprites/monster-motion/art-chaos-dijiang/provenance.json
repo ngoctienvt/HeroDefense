@@ -1,0 +1,18 @@
+{
+  "schema": "sprite-art-provenance.v1",
+  "date": "2026-10-22",
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": null,
+  "estimatedCostUsd": null,
+  "routeRequest": "exec-536a1028-0331-4c6e-9201-8f8f65a3fc24",
+  "generatedSource": "source/master-generated-raw.png",
+  "acceptedMaster": "source/master/master_rgba.png",
+  "prompt": "source/master-prompt.txt",
+  "styleReference": "assets/sprites/pangu-topdown/source/south-master.png",
+  "routeVerified": true,
+  "revisionNotes": "Edited to remove eye-like emblem and clarify six legs/four wings.",
+  "warnings": [],
+  "sourceSha256": "a3a36573289f4eda06ab44aa529d098d4031e1e869800fd0921623eb0371db6e",
+  "masterSha256": "a9e85fb98ae77ed161ab00e72966bd4cad9b666b840f5ecaedfe568b1ae1d95a"
+}

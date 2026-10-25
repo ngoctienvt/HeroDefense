@@ -1,0 +1,70 @@
+{
+  "heroId": "h018",
+  "asset": "moon-frost-prison-sheet",
+  "type": "P16",
+  "status": "superseded-by-shared-status",
+  "artSource": "codex-image_gen",
+  "route": "Codex image_gen host tool",
+  "sourceImagePath": "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-3f654341-152e-4476-abe0-b4eb4b1db0cb.png",
+  "promptPath": "assets/vfx-source/tier56-codex-art/prompts/moon-frost-prison-sheet.txt",
+  "references": [
+    "assets/vfx-source/thietphien/storm/frames/frame-08.png (STYLE_ONLY)",
+    "assets/vfx-source/mandon/bloom/frames/frame-07.png (STYLE_ONLY)"
+  ],
+  "rawPath": "assets/vfx-source/tier56-codex-art/raw/moon-frost-prison-sheet.png",
+  "actualSizePx": [
+    1254,
+    1254
+  ],
+  "colorMode": "RGBA",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 4,
+    "xBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "yBoundsPx": [
+      0,
+      314,
+      627,
+      940,
+      1254
+    ],
+    "rectRule": "round(i*1254/4); alternate 313/314 px cells, no stretching"
+  },
+  "anchorNormalized": [
+    0.5,
+    0.72
+  ],
+  "visualQA": "P16 4x4 confirmed; open center and visibly changing ice shapes, hold seam 12→5 inspected on light/dark.",
+  "sha256": "9e909c353ef2a140f16afa4851d35984ee1341285a1712a27c1848177efc376a",
+  "previewPath": "assets/vfx-source/tier56-codex-art/previews/moon-frost-prison-sheet-light-dark.jpg",
+  "limitations": [
+    "Raw art only: not processed, built, run or approved in game.",
+    "Runtime scale, timing, depth and routing remain to be integrated and checked."
+  ],
+  "promptUsedForRecordedOutput": "One final correction to this 4x4 ice status sheet. The current hold rows repeat a rigid identical cage. Redraw frames 5-12 as a true continuous 8-pose loop where separate ice lances emerge one by one, rotate, chip, and are replaced by small new shards around the outer perimeter. Make poses 5,6,7,8,9,10,11,12 visibly distinct in silhouette while preserving the open center, same size/anchor and a smooth seam 12→5. Avoid rigid symmetrical rings and broad electric-blue/cyan glow; use painterly silver-blue ice with controlled white highlights and faint violet shadow. Keep growth frames 1-4 and breakup frames 13-16; exact square 4x4 layout, transparent background, no text or scene.",
+  "generationOutputs": [
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-ddb5a5b2-c461-4202-87ff-47c9a503274c.png",
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-543517cd-01d8-4cb6-8863-7ed97b437bad.png",
+    "C:/Users/PC/.codex/generated_images/01a15784-6fce-7860-a865-e1e31c605e53/exec-3f654341-152e-4476-abe0-b4eb4b1db0cb.png"
+  ],
+  "iterations": [
+    "assets/vfx-source/tier56-codex-art/iterations/moon-frost-prison-sheet-attempt-01.png",
+    "assets/vfx-source/tier56-codex-art/iterations/moon-frost-prison-sheet-attempt-02.png"
+  ],
+  "previousPromptPath": "assets/vfx-source/tier56-codex-art/iterations/shared-status-20261020/prompts/moon-frost-prison-sheet.txt",
+  "requiredArtStyle": "congcong-stylized-v1",
+  "previousStatus": "style-review-required",
+  "replacementAssets": [
+    "shared-freeze-sheet"
+  ]
+}

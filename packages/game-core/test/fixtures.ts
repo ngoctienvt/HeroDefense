@@ -6,7 +6,13 @@ import { createUnit } from '../src/unit-factory.js';
 export function game(players = 2, difficulty: Difficulty = 'normal'): GameState {
   const state = createGame('TEST01', 123456, difficulty);
   for (let n = 1; n <= players; n++) addPlayer(state, `p${n}`, `Player ${n}`);
+  // Skill tests assert what a landed control does; crowd-control.test.ts covers the chances.
+  forceControl(state, 1);
   return state;
+}
+/** Force every hard-control roll to `chance`; pass undefined to use the real tier table. */
+export function forceControl(state: GameState, chance: number | undefined): void {
+  state.controlChanceOverride = chance;
 }
 export function command(state: GameState, value: Command, owner = 'p1') {
   const result = handleCommand(state, owner, value);

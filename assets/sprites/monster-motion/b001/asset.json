@@ -1,0 +1,100 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "b001",
+  "displayName": "Hắc Phong Hùng Vương",
+  "category": "boss",
+  "identity": "Upright charcoal bear with cracked volcanic stone shoulders, gold wrist cuffs, skull necklace, bear-face gold belt and red-brown hide skirt; empty paws.",
+  "palette": [
+    "charcoal",
+    "volcanic orange",
+    "gold",
+    "red-brown"
+  ],
+  "camera": "orthographic, top-down 45-degree battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master/master_rgba.png",
+  "anchor": [
+    350,
+    600
+  ],
+  "motionEnvelopePx": [
+    498,
+    578
+  ],
+  "displayHeightWorld": 8.501913696060038,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "walk": {
+      "framesPerDirection": 8,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 8,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "directions-approved",
+    "motion": "motion-approved",
+    "packaged": "packaged",
+    "integrated": "runtime-files-copied-validation-pending",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        350,
+        618
+      ],
+      "source": "source/export-frames-v2/idle/south/frame-00.png"
+    },
+    "west": {
+      "anchorPx": [
+        350,
+        636
+      ],
+      "source": "source/export-frames-v2/idle/west/frame-00.png"
+    },
+    "north": {
+      "anchorPx": [
+        350,
+        618
+      ],
+      "source": "source/export-frames-v2/idle/north/frame-00.png"
+    },
+    "east": {
+      "anchorPx": [
+        350,
+        618
+      ],
+      "source": "source/export-frames-v2/idle/east/frame-00.png"
+    }
+  },
+  "motionBoundsPx": [
+    101,
+    45,
+    599,
+    623
+  ],
+  "restBodyHeightPx": 400,
+  "restBodyHeightWorld": 5.1482176360225145,
+  "displayScaleRationale": "Compensate the larger motion canvas so the resting body retains legacy 8*(343/533) world units before rank scaling; never shrink each action independently.",
+  "groundingRule": "frontmost rest toe plane per direction; one fixed walk group translation, foot-ROI contact registration for grounded attacks; never per-frame scaling"
+}

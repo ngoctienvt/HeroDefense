@@ -1,0 +1,126 @@
+{
+  "assetId": "art-gold-horn",
+  "previews": [
+    {
+      "file": "animations/walk-south.webp",
+      "durationsMs": [
+        133,
+        100,
+        100,
+        133,
+        133,
+        100,
+        100,
+        134
+      ],
+      "loop": true,
+      "frameCount": 8
+    },
+    {
+      "file": "animations/walk-west.webp",
+      "durationsMs": [
+        133,
+        100,
+        100,
+        133,
+        133,
+        100,
+        100,
+        134
+      ],
+      "loop": true,
+      "frameCount": 8
+    },
+    {
+      "file": "animations/walk-north.webp",
+      "durationsMs": [
+        133,
+        100,
+        100,
+        133,
+        133,
+        100,
+        100,
+        134
+      ],
+      "loop": true,
+      "frameCount": 8
+    },
+    {
+      "file": "animations/walk-east.webp",
+      "durationsMs": [
+        133,
+        100,
+        100,
+        133,
+        133,
+        100,
+        100,
+        134
+      ],
+      "loop": true,
+      "frameCount": 8
+    },
+    {
+      "file": "animations/attack-south.webp",
+      "durationsMs": [
+        80,
+        100,
+        320,
+        20,
+        100,
+        80,
+        130,
+        170
+      ],
+      "loop": false,
+      "frameCount": 8
+    },
+    {
+      "file": "animations/attack-west.webp",
+      "durationsMs": [
+        80,
+        100,
+        320,
+        20,
+        100,
+        80,
+        130,
+        170
+      ],
+      "loop": false,
+      "frameCount": 8
+    },
+    {
+      "file": "animations/attack-north.webp",
+      "durationsMs": [
+        80,
+        100,
+        320,
+        20,
+        100,
+        80,
+        130,
+        170
+      ],
+      "loop": false,
+      "frameCount": 8
+    },
+    {
+      "file": "animations/attack-east.webp",
+      "durationsMs": [
+        80,
+        100,
+        320,
+        20,
+        100,
+        80,
+        130,
+        170
+      ],
+      "loop": false,
+      "frameCount": 8
+    }
+  ],
+  "note": "Decoded runtime cell previews; does not prove game playback."
+}

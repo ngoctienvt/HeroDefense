@@ -1,9 +1,8 @@
 import { DIFFICULTIES, FORMATIONS, HERO_BY_ID } from '../../../content/catalog.js';
 import type { Command, CommandResult, GameState } from '../../contracts/src/types.js';
 import { castAbility } from './combat.js';
-import { ARENA, withinArena } from './battlefield-layout.js';
-import { enterDungeon, returnUnit } from './dungeons.js';
-import { event, slotPosition } from './rules.js';
+import { clampToZone, withinZone } from './battlefield-layout.js';
+import { event, RUN_WAVES, slotPosition } from './rules.js';
 import { rosterCommand } from './roster.js';
 import { beginWave } from './simulation.js';
 import { refreshStats } from './stats.js';
@@ -19,7 +18,7 @@ export function handleCommand(state: GameState, id: string, command: Command): C
     if (state.host !== id || state.phase !== 'lobby') return fail('Chỉ chủ phòng đổi độ khó trong sảnh.');
     const difficulty = DIFFICULTIES.find(d => d.id === command.difficulty);
     if (!difficulty) return fail('Độ khó không hợp lệ.');
-    state.difficulty = difficulty.id; state.maxWaves = difficulty.waves; return { ok: true };
+    state.difficulty = difficulty.id; state.maxWaves = RUN_WAVES; return { ok: true };
   }
   if (command.type === 'start') {
     if (state.host !== id || state.phase !== 'lobby') return fail('Chỉ chủ phòng bắt đầu trận.');
@@ -83,15 +82,11 @@ export function handleCommand(state: GameState, id: string, command: Command): C
     if (!formation) return fail('Trận pháp không hợp lệ.');
     if (command.type === 'formation') player.formation = formation.id;
     else {
-      if (player.formationLevels[formation.id - 1] >= (state.wave >= 40 ? 4 : 3)) return fail('Đã đạt cấp tối đa (cấp 4 mở từ đợt 40).');
-      if (player.formationPoints < 1) return fail('Thiếu điểm trận pháp: nhận mỗi 4 đợt hoặc thắng phụ bản.');
+      if (player.formationLevels[formation.id - 1] >= (state.wave >= 16 ? 4 : 3)) return fail('Đã đạt cấp tối đa (cấp 4 mở từ Hồi IV - đợt 16).');
+      if (player.formationPoints < 1) return fail('Thiếu điểm trận pháp: nhận mỗi 4 đợt.');
       player.formationPoints--; player.formationLevels[formation.id - 1]++;
     }
     refreshStats(state, id); return { ok: true };
-  }
-  if (command.type === 'dungeon') {
-    if (state.phase === 'lobby') return fail('Trận đấu chưa bắt đầu.');
-    return enterDungeon(state, id, command.dungeonId, command.unitIds);
   }
   if (command.type === 'order') {
     const ids = command.unitIds;
@@ -101,7 +96,7 @@ export function handleCommand(state: GameState, id: string, command: Command): C
     if (units.some(unit => unit.slot < 0 || unit.hp <= 0 || unit.respawn > 0)) return fail('Nhân vật chưa ra trận hoặc đang hồi sinh.');
     if (units.some(unit => unit.zone !== units[0].zone)) return fail('Nhóm quân phải ở cùng chiến trường.');
     const moving = command.order === 'move' || command.order === 'attack-move';
-    if (moving && (typeof command.x !== 'number' || typeof command.z !== 'number' || !withinArena(command.x, command.z))) return fail('Vị trí ngoài đấu trường.');
+    if (moving && (typeof command.x !== 'number' || typeof command.z !== 'number' || !withinZone(units[0].zone, command.x, command.z))) return fail('Vị trí ngoài đấu trường.');
     const target = command.order === 'attack' ? state.enemies[command.target ?? ''] : undefined;
     if (command.order === 'attack' && (!target || target.zone !== units[0].zone)) return fail('Mục tiêu không hợp lệ.');
     if (!['move', 'attack-move', 'attack', 'stop', 'hold'].includes(command.order)) return fail('Lệnh không hợp lệ.');
@@ -110,8 +105,8 @@ export function handleCommand(state: GameState, id: string, command: Command): C
       unit.orderMode = command.order === 'stop' ? 'auto' : command.order;
       unit.stopped = command.order === 'hold';
       if (moving) {
-        const offset = (index - (units.length - 1) / 2) * 2;
-        unit.destination = { x: Math.max(ARENA.minX, Math.min(ARENA.maxX, command.x! + offset)), z: command.z! };
+        const offset = (index - (units.length - 1) / 2) * 3.2;
+        unit.destination = clampToZone(unit.zone, { x: command.x! + offset, z: command.z! });
       } else unit.destination = null;
     });
     return { ok: true };
@@ -123,13 +118,9 @@ export function handleCommand(state: GameState, id: string, command: Command): C
       if (unit.zone) return fail('Chỉ lưu vị trí tại đấu trường.');
       unit.savedPosition = command.clear ? null : { x: unit.x, z: unit.z }; return { ok: true };
     }
-    if (command.type === 'return') {
-      if (!unit.zone) return fail('Nhân vật không ở trong phụ bản.');
-      returnUnit(state, unit); return { ok: true };
-    }
     if (unit.slot < 0 || unit.hp <= 0) return fail('Nhân vật chưa ra trận hoặc đang hồi sinh.');
     if (command.type === 'move') {
-      if (!withinArena(command.x, command.z)) return fail('Vị trí ngoài đấu trường.');
+      if (!withinZone(unit.zone, command.x, command.z)) return fail('Vị trí ngoài đấu trường.');
       unit.destination = { x: command.x, z: command.z }; unit.stopped = false; unit.target = null; unit.orderMode = 'move'; return { ok: true };
     }
     if (command.type === 'stop') { unit.stopped = true; unit.target = null; unit.destination = null; unit.orderMode = 'hold'; return { ok: true }; }

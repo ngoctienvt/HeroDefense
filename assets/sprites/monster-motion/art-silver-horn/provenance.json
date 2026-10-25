@@ -1,0 +1,18 @@
+{
+  "schema": "sprite-art-provenance.v1",
+  "date": "2026-10-22",
+  "art_source": "host_image",
+  "route": "host-image_gen",
+  "model": null,
+  "estimatedCostUsd": null,
+  "routeRequest": "exec-f2be9437-368a-4130-815a-196f26c21e84",
+  "generatedSource": "source/master-generated-raw.png",
+  "acceptedMaster": "source/master/master_rgba.png",
+  "prompt": "source/master-prompt.txt",
+  "styleReference": "assets/sprites/pangu-topdown/source/south-master.png",
+  "routeVerified": true,
+  "revisionNotes": "Generated master.",
+  "warnings": [],
+  "sourceSha256": "ed1128dc0ffd17f5686d9b72d2ed43f57136dcb0a017315812a6006ca91651aa",
+  "masterSha256": "e3b58651cdd8edb5a590f985d7a15e40472a29492f3cc7080cf02af0c2139fcf"
+}

@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { HEROES, HERO_BY_ID } from '../../../content/catalog.js';
-import { ATTACK_GEOMETRY_NAMES, ON_HIT_TRAIT_NAMES } from '../../contracts/src/combat-profiles.js';
+import { ATTACK_GEOMETRY_NAMES, MELEE_CLEAVE_SECONDARY, ON_HIT_TRAIT_NAMES } from '../../contracts/src/combat-profiles.js';
 import type { AttackGeometryType, OnHitTraitType } from '../../contracts/src/types.js';
 import { combatStep, hurtEnemy } from '../src/combat.js';
-import { executeAttackGeometry, stepBoomerangs, stepOrbitAuras, triggerFollowUp } from '../src/attack-geometry.js';
+import { executeAttackGeometry, stepOrbitAuras, triggerFollowUp } from '../src/attack-geometry.js';
 import { command, deployed, enemy, game } from './fixtures.js';
 
 describe('Attack Geometries and On-Hit Traits coverage', () => {
-  it('assigns 1 of 7 Attack Geometries and 1 of 6 On-Hit Traits to all 70 heroes', () => {
+  it('assigns a named Attack Geometry and On-Hit Trait to all 70 heroes', () => {
     expect(HEROES).toHaveLength(70);
 
     const validGeometries: AttackGeometryType[] = [
@@ -27,6 +27,11 @@ describe('Attack Geometries and On-Hit Traits coverage', () => {
       'stacking_mark',
       'orbit_aura',
       'follow_up',
+      'berserk',
+      'pure_land',
+      'moon_bounce',
+      'poison',
+      'soul_link',
     ];
 
     for (const hero of HEROES) {
@@ -51,6 +56,29 @@ describe('Attack Geometries mechanics', () => {
 
     expect(target.hp).toBeLessThan(target.maxHp);
     expect(bystander.hp).toBe(bystander.maxHp);
+  });
+
+  it('frontal_cleave: side targets take the melee-carry share, the primary takes full damage', () => {
+    const state = game(), unit = deployed(state, 'h00O'); // Phán Quan: 180° sweep, no base crit
+    const primary = enemy(state, unit, { x: unit.x + 2, z: unit.z });
+    const side = enemy(state, unit, { x: unit.x + 1.5, z: unit.z + 1 });
+    const outside = enemy(state, unit, { x: unit.x + 1, z: unit.z + 3 });
+
+    executeAttackGeometry(state, unit, primary, (e, d, p) => hurtEnemy(state, unit, e, d, p));
+
+    expect(primary.maxHp - primary.hp).toBeCloseTo(unit.attack, 5);
+    expect(side.maxHp - side.hp).toBeCloseTo(unit.attack * MELEE_CLEAVE_SECONDARY, 5);
+    expect(outside.hp).toBe(outside.maxHp);
+  });
+
+  it('frontal_cleave: early-tier sweeps (Quỷ Sai) give side targets 50%', () => {
+    const state = game(), unit = deployed(state, 'h003');
+    const primary = enemy(state, unit, { x: unit.x + 2, z: unit.z });
+    const side = enemy(state, unit, { x: unit.x + 1.6, z: unit.z + .8 });
+
+    executeAttackGeometry(state, unit, primary, (e, d, p) => hurtEnemy(state, unit, e, d, p));
+
+    expect(side.maxHp - side.hp).toBeCloseTo((primary.maxHp - primary.hp) * .5, 5);
   });
 
   it('frontal_cleave: sweeps 180 degrees in front and ignores enemies behind', () => {
@@ -81,7 +109,7 @@ describe('Attack Geometries mechanics', () => {
   });
 
   it('multishot: fires at multiple targets in range simultaneously', () => {
-    const state = game(), unit = deployed(state, 'h00M'); // multishot
+    const state = game(), unit = deployed(state, 'h00L'); // multishot
     const first = enemy(state, unit, { x: unit.x + 2, z: unit.z });
     const second = enemy(state, unit, { x: unit.x + 3, z: unit.z + 2 });
     const third = enemy(state, unit, { x: unit.x + 2.5, z: unit.z - 2 });
@@ -93,17 +121,38 @@ describe('Attack Geometries mechanics', () => {
     expect(third.hp).toBeLessThan(third.maxHp);
   });
 
-  it('impact_splash: explodes around primary target, damaging nearby enemies', () => {
-    const state = game(), unit = deployed(state, 'h005'); // impact_splash
-    const primary = enemy(state, unit, { x: unit.x + 3, z: unit.z });
-    const nearby = enemy(state, unit, { x: primary.x + 1, z: primary.z + 0.5 });
-    const distant = enemy(state, unit, { x: primary.x + 8, z: primary.z });
+  it.each(['h005', 'h00M', 'h00N', 'h00G', 'h006', 'h00F', 'h00Y', 'h00K', 'h009', 'h00E', 'h03S'])(
+    'single: %s no longer splashes, bounces or sweeps onto neighbours', (heroId) => {
+      const state = game(), unit = deployed(state, heroId);
+      const primary = enemy(state, unit, { x: unit.x + 1.5, z: unit.z });
+      const neighbour = enemy(state, unit, { x: primary.x + .8, z: primary.z + .4 });
 
+      executeAttackGeometry(state, unit, primary, (e, d, p) => hurtEnemy(state, unit, e, d, p));
+
+      expect(HERO_BY_ID[heroId].attackGeometry?.type).toBe('single');
+      expect(primary.hp).toBeLessThan(primary.maxHp);
+      expect(neighbour.hp).toBe(neighbour.maxHp);
+    });
+
+  it('only melee carries keep a sweep; no basic attack splashes or uses a boomerang', () => {
+    for (const hero of HEROES) {
+      const type = hero.attackGeometry?.type;
+      expect(type).not.toBe('impact_splash');
+      expect(type).not.toBe('boomerang');
+      if (type === 'frontal_cleave') expect(hero.carryPassive, hero.id).toBeDefined();
+      if (hero.role === 'support' || hero.role === 'guardian') expect(type, hero.id).toBe('single');
+    }
+  });
+
+  it('Ứng Long lances no longer burst around each struck target', () => {
+    const state = game(), unit = deployed(state, 'h00Z');
+    const primary = enemy(state, unit, { x: unit.x + 2, z: unit.z });
+    const neighbour = enemy(state, unit, { x: primary.x + 1, z: primary.z });
     executeAttackGeometry(state, unit, primary, (e, d, p) => hurtEnemy(state, unit, e, d, p));
-
-    expect(primary.hp).toBeLessThan(primary.maxHp);
-    expect(nearby.hp).toBeLessThan(nearby.maxHp);
-    expect(distant.hp).toBe(distant.maxHp);
+    // Each enemy takes exactly its own lance; the old 50% burst would add damage to both.
+    expect(state.events.some(ev => ev.skillId === 'splash-h00Z')).toBe(false);
+    expect(primary.maxHp - primary.hp).toBeCloseTo(unit.attack, 5);
+    expect(neighbour.maxHp - neighbour.hp).toBeCloseTo(unit.attack, 5);
   });
 
   it('bounce: chains to nearby targets with damage reduction per bounce', () => {
@@ -115,24 +164,6 @@ describe('Attack Geometries mechanics', () => {
 
     expect(first.hp).toBeLessThan(first.maxHp);
     expect(second.hp).toBeLessThan(second.maxHp);
-  });
-
-  it('boomerang: cuts outward on throw and returns to cut enemies a second time', () => {
-    const state = game(), unit = deployed(state, 'h00B'); // boomerang
-    const target = enemy(state, unit, { x: unit.x + 3, z: unit.z });
-
-    executeAttackGeometry(state, unit, target, (e, d, p) => hurtEnemy(state, unit, e, d, p));
-
-    expect(state.boomerangs).toBeDefined();
-    expect(state.boomerangs!.length).toBeGreaterThan(0);
-    const hpAfterOutward = target.hp;
-    expect(hpAfterOutward).toBeLessThan(target.maxHp);
-
-    // Step boomerang return
-    stepBoomerangs(state, 0.3, (u, e, d, p) => hurtEnemy(state, u, e, d, p));
-
-    expect(target.hp).toBeLessThan(hpAfterOutward);
-    expect(state.boomerangs!.length).toBe(0);
   });
 });
 

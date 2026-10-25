@@ -1,0 +1,65 @@
+{
+  "wheel": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8690476190476191,
+    "bounds": {
+      "left": 0.06510416666666667,
+      "top": 0.044270833333333336,
+      "right": 0.9348958333333334,
+      "bottom": 0.875
+    }
+  },
+  "frenzy": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.13802083333333334,
+      "top": 0.0546875,
+      "right": 0.8098958333333334,
+      "bottom": 0.8255208333333334
+    }
+  },
+  "ground": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "radialEdge": 0.449319,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  },
+  "chain": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 4.511013215859031,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  },
+  "pulse": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 3.075075075075075,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

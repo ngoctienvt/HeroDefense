@@ -1,0 +1,69 @@
+{
+  "chant": {
+    "anchorY": 0.899281,
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "cell": 384,
+    "bounds": {
+      "left": 0.122396,
+      "right": 0.867188,
+      "top": 0.039062,
+      "bottom": 0.919271
+    }
+  },
+  "ground": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 768,
+    "bounds": {
+      "left": 0.053385,
+      "right": 0.951823,
+      "top": 0.067708,
+      "bottom": 0.938802
+    },
+    "radialEdge": 0.464583
+  },
+  "guidance": {
+    "anchorY": 0.5,
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "cell": 1024,
+    "bounds": {
+      "left": 0.076172,
+      "right": 0.920898,
+      "top": 0.392578,
+      "bottom": 0.598633
+    },
+    "head": "left"
+  },
+  "pillar": {
+    "anchorY": 0.90081,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.104167,
+      "right": 0.901042,
+      "top": 0.036458,
+      "bottom": 0.903646
+    }
+  },
+  "quicken": {
+    "anchorY": 0.89916,
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "cell": 384,
+    "bounds": {
+      "left": 0.138021,
+      "right": 0.864583,
+      "top": 0.208333,
+      "bottom": 0.911458
+    }
+  }
+}

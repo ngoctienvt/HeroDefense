@@ -1,0 +1,113 @@
+/* Bottom-left dock (hud-dock.ts, hud-summon-bar.ts) and the selected-hero action bar (hud-action-bar.ts). */
+.hud-dock { position: fixed; left: var(--s3); bottom: var(--s3); z-index: 20; pointer-events: auto; display: flex; flex-direction: column; gap: 6px; max-width: calc(100vw - var(--rail-w) - 24px); }
+.dock-row { display: flex; align-items: stretch; gap: 6px; }
+.dock-squad { display: flex; gap: 6px; }
+
+/* Resource badge */
+.player-badge { width: 148px; padding: 6px var(--s2); display: flex; flex-direction: column; gap: 4px; background: var(--surface); border: 1px solid var(--edge); border-top: 2px solid var(--gold); border-radius: var(--radius); box-shadow: var(--shadow); }
+.player-name { font-family: var(--display); color: var(--gold); font-size: var(--sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+.res-row { display: flex; align-items: center; gap: 5px; font-size: .72rem; }
+.res-label { color: var(--muted); }
+.res-value { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--text-bright); }
+.res-souls .res-value { color: var(--c-tier-4); filter: brightness(1.35); }
+.res-gold .res-value { color: var(--cyan-soft); }
+.res-pellets .res-value { color: var(--amber-soft); }
+.res-formation .res-value { color: var(--gold); }
+
+/* Hero cards: element on the left edge, tier on the portrait frame, Q dot for a ready skill. */
+.hero-card {
+  --el: var(--line); position: relative; width: 100px; padding: 4px; display: flex; flex-direction: column; gap: 3px;
+  background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--el); border-radius: var(--radius); box-shadow: var(--shadow);
+  cursor: pointer; user-select: none; transition: transform var(--time) var(--ease), border-color var(--time) var(--ease), box-shadow var(--time) var(--ease);
+}
+.hero-card[data-element="1"] { --el: var(--c-element-1); } .hero-card[data-element="2"] { --el: var(--c-element-2); } .hero-card[data-element="3"] { --el: var(--c-element-3); }
+.hero-card[data-element="4"] { --el: var(--c-element-4); } .hero-card[data-element="5"] { --el: var(--c-element-5); }
+.hero-card:hover { transform: translateY(-3px); border-color: var(--edge); }
+.hero-card.is-selected { border-color: var(--gold); box-shadow: var(--glow-gold), var(--shadow); transform: translateY(-5px); }
+.hero-card.is-dead .card-portrait { filter: grayscale(1) brightness(.5); }
+.card-art { position: relative; height: 62px; display: grid; place-items: center; background: radial-gradient(circle at 50% 35%, color-mix(in oklab, var(--el) 30%, transparent), transparent 70%); border-radius: 3px; overflow: hidden; }
+.card-portrait { width: 56px; height: 62px; border: 0; border-bottom: 2px solid var(--tier-color); background-color: transparent; }
+.card-slot { position: absolute; top: 2px; left: 2px; min-width: 18px; height: 18px; display: grid; place-items: center; font-size: .66rem; font-weight: 700; color: var(--ink-0); background: var(--gold); border-radius: 3px; }
+.card-stars { position: absolute; bottom: 2px; right: 3px; font-size: .62rem; color: var(--amber-soft); text-shadow: 0 1px 2px #000; letter-spacing: -1px; }
+.card-q { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; display: grid; place-items: center; font-size: .62rem; font-weight: 800; color: var(--muted); background: var(--ink-0); border: 1px solid var(--line); border-radius: 50%; }
+.card-q.is-ready { color: var(--ink-0); background: var(--c-hp-high); border-color: var(--text-bright); box-shadow: 0 0 8px var(--c-hp-high); }
+.hero-card.is-ready { border-top-color: var(--c-hp-high); }
+.card-dead { position: absolute; inset: auto 0 30px; text-align: center; font-size: .66rem; font-weight: 700; color: var(--text-bright); background: rgb(0 0 0 / .65); padding: 2px 0; }
+.card-name { display: flex; align-items: center; gap: 3px; font-size: .7rem; font-weight: 700; color: var(--text-bright); min-width: 0; }
+.card-name > span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card-bars { display: flex; flex-direction: column; gap: 2px; }
+.card-bars .meter.hp { height: 6px; }
+.card-bars .meter.energy { height: 4px; }
+.card-gear { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.card-gear-slot { display: flex; align-items: center; justify-content: center; gap: 1px; font-size: .62rem; color: var(--muted); background: var(--ink-0); border-radius: 2px; padding: 1px 0; font-variant-numeric: tabular-nums; }
+.card-gear-slot.has-level { color: var(--text-bright); }
+
+.hero-card.is-empty { align-items: center; justify-content: center; gap: 4px; text-align: center; background: color-mix(in oklab, var(--ink-0) 55%, transparent); border: 1px dashed var(--edge); color: var(--muted); }
+.hero-card.is-empty strong { font-size: var(--xs); color: var(--gold); }
+.hero-card.is-empty small { font-size: .64rem; }
+.hero-card.is-empty .card-slot { background: var(--ink-3); color: var(--muted); }
+.hero-card.is-empty.has-waiting { border-color: var(--c-hp-high); }
+.hero-card.is-empty.has-waiting small { color: var(--c-hp-high); font-weight: 700; }
+
+/* Summon quick bar */
+.summon-bar { display: flex; align-items: stretch; gap: 6px; }
+.pack-button {
+  position: relative; min-height: 36px; padding: 2px var(--s2) 5px 4px; justify-content: flex-start; gap: 5px; text-align: left;
+  background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.pack-art { position: relative; display: grid; place-items: center; }
+.pack-lock { position: absolute; right: -4px; bottom: -3px; }
+.pack-text { display: flex; flex-direction: column; line-height: 1.1; }
+.pack-name { font-size: .7rem; color: var(--text-bright); }
+.pack-price { display: inline-flex; align-items: center; gap: 2px; font-size: .72rem; font-weight: 700; color: var(--text); }
+.pack-status { font-size: .6rem; color: var(--muted); }
+.pack-pity { position: absolute; left: 6px; right: 6px; bottom: 2px; display: flex; gap: 2px; }
+.pack-pity i { flex: 1; height: 2px; background: var(--ink-3); border-radius: 1px; }
+.pack-pity i.filled { background: var(--amber); }
+.pack-button.is-available { border-color: var(--gold); }
+.pack-button.is-available .pack-status { color: var(--c-hp-high); font-weight: 700; }
+.pack-button.is-available:hover { background: var(--ink-3); box-shadow: var(--glow-gold), var(--shadow); }
+.pack-button.pack-tien.is-available { border-color: var(--cyan-soft); }
+.pack-button.pack-thien.is-available { border-color: var(--amber); box-shadow: 0 0 10px color-mix(in oklab, var(--amber) 45%, transparent), var(--shadow); }
+.pack-button.is-short .pack-status { color: var(--c-hp-low); }
+.pack-button.is-locked .icon:not(.pack-lock), .pack-button.is-choosing .icon { filter: saturate(.2) brightness(.75); }
+.pack-button.is-large { min-height: 64px; min-width: 170px; }
+.pack-button.is-large .pack-name { font-size: var(--sm); }
+.pack-button.is-large .pack-status { font-size: .66rem; }
+.summon-more { align-self: center; }
+.summon-choice-reopen { border-color: var(--amber); color: var(--amber-soft); font-weight: 700; animation: reopen-pulse 1.6s ease-in-out infinite; }
+@keyframes reopen-pulse { 50% { box-shadow: 0 0 12px var(--amber); } }
+
+/* Action bar for the selected hero, above the dock. */
+.action-holder { position: fixed; left: var(--s3); bottom: calc(var(--dock-h) + var(--s3) + 4px); z-index: 21; pointer-events: auto; }
+.action-bar { display: flex; align-items: center; gap: var(--s2); padding: 6px; background: var(--surface); border: 1px solid var(--edge); border-radius: var(--radius); box-shadow: var(--shadow); }
+.skill-button {
+  --cd: 100%; position: relative; min-height: 52px; min-width: 220px; padding: 4px var(--s3) 4px 4px; justify-content: flex-start; gap: var(--s2);
+  background: var(--ink-0); border: 1px solid var(--line); border-radius: var(--radius); text-align: left;
+}
+.skill-face { position: relative; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 4px; background: conic-gradient(color-mix(in oklab, var(--c-mana) 70%, transparent) var(--cd), var(--ink-3) 0); }
+.skill-button.rage .skill-face { background: conic-gradient(color-mix(in oklab, var(--c-rage) 75%, transparent) var(--cd), var(--ink-3) 0); }
+.skill-key { position: absolute; right: -4px; bottom: -4px; font-size: .62rem; }
+.skill-text { display: flex; flex-direction: column; line-height: 1.2; }
+.skill-text strong { font-size: var(--sm); color: var(--text-bright); }
+.skill-text small { font-size: .7rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.skill-button.is-ready { border-color: var(--c-hp-high); box-shadow: 0 0 10px color-mix(in oklab, var(--c-hp-high) 50%, transparent); }
+.skill-button.is-ready .skill-face { background: color-mix(in oklab, var(--c-hp-high) 35%, var(--ink-2)); }
+.skill-button.is-ready .skill-text small { color: var(--c-hp-high); font-weight: 700; }
+.skill-button.is-passive { display: flex; align-items: center; cursor: default; }
+.action-secondary { display: flex; gap: 4px; }
+.action-secondary button { min-height: 40px; font-size: var(--xs); }
+.action-secondary button.is-active { border-color: var(--gold); color: var(--gold); }
+
+/* Short viewports (e.g. 1080p at 150% scaling = 720 CSS px tall): shrink cards, hide gear (shown in tooltip / Đội Hình). */
+@media (max-height: 820px), (max-width: 1100px) {
+  .hero-card { width: 88px; }
+  .card-art { height: 50px; } .card-portrait { width: 46px; height: 50px; }
+  .card-gear { display: none; }
+  .player-badge { width: 132px; }
+  .player-name { display: none; }
+  .summon-bar .pack-name { display: none; }
+  .pack-price { font-size: .66rem; }
+  .skill-button { min-height: 44px; min-width: 180px; }
+  .skill-face { width: 36px; height: 36px; }
+}

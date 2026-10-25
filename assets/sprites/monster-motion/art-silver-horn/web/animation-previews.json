@@ -1,0 +1,77 @@
+{
+  "assetId": "art-silver-horn",
+  "clips": [
+    {
+      "file": "animations/walk-south.webp",
+      "action": "walk",
+      "direction": "south",
+      "frames": 8,
+      "durationMs": 933,
+      "loop": true,
+      "sha256": "a49d61ae66b2e2e90205997d3427eece28174b52e2ca4edf7135f1a288023d0b"
+    },
+    {
+      "file": "animations/walk-west.webp",
+      "action": "walk",
+      "direction": "west",
+      "frames": 8,
+      "durationMs": 933,
+      "loop": true,
+      "sha256": "01f0fc17ddc18fa0545733ec7a0f44b8bd575578ac38bb4ee7e31551860fb3e6"
+    },
+    {
+      "file": "animations/walk-north.webp",
+      "action": "walk",
+      "direction": "north",
+      "frames": 8,
+      "durationMs": 933,
+      "loop": true,
+      "sha256": "7dcde5fa26e8e42f43aafd9cec322e57b0fd59e77b53325db8d99bb0fc4917f1"
+    },
+    {
+      "file": "animations/walk-east.webp",
+      "action": "walk",
+      "direction": "east",
+      "frames": 8,
+      "durationMs": 933,
+      "loop": true,
+      "sha256": "f67589f60e7180d007f6ce656049ef74986ec96fabed8f8fbd45ce0474b15ba8"
+    },
+    {
+      "file": "animations/attack-south.webp",
+      "action": "attack",
+      "direction": "south",
+      "frames": 8,
+      "durationMs": 1000,
+      "loop": false,
+      "sha256": "0103c5dbd561d429937a086353c47895fa6c70d28b133c25138893ac17c63271"
+    },
+    {
+      "file": "animations/attack-west.webp",
+      "action": "attack",
+      "direction": "west",
+      "frames": 8,
+      "durationMs": 1000,
+      "loop": false,
+      "sha256": "39b3283421d87016301fcdcda2f14fbaf2cadd68282d526f9bca516c858886e6"
+    },
+    {
+      "file": "animations/attack-north.webp",
+      "action": "attack",
+      "direction": "north",
+      "frames": 8,
+      "durationMs": 1000,
+      "loop": false,
+      "sha256": "4be31e5faf7ef3d7309c1d849c5a1cd9e6fb09841b0f283a7b731faf0e6d8d13"
+    },
+    {
+      "file": "animations/attack-east.webp",
+      "action": "attack",
+      "direction": "east",
+      "frames": 8,
+      "durationMs": 1000,
+      "loop": false,
+      "sha256": "3efbac292a847137ca3bed6ffc79104e0046f06f8b011b3876efac128ff8a441"
+    }
+  ]
+}

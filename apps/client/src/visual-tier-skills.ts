@@ -2,6 +2,7 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { HERO_BY_ID } from '../../../content/catalog.js';
 import type { TierMotif } from './visual-tier-motif-textures.js';
+import { extractHeroIdFromSkill } from './visual-kit-hero.js';
 
 type TextureName = 'magic_01' | 'magic_03' | 'slash_01' | 'twirl_01' | 'spark_01'
   | 'trace_01' | 'circle_03';
@@ -40,17 +41,7 @@ function tierSkillRadius(id: string): number {
   return HERO_BY_ID[id]?.ability?.effect?.radius ?? 0;
 }
 
-export function extractHeroIdFromSkill(skillId?: string): string {
-  if (!skillId) return '';
-  if (skillId.startsWith('skill-')) return skillId.slice(6);
-  if (skillId.startsWith('web-')) return skillId.slice(4);
-  if (skillId.startsWith('trait-')) return skillId.slice(6);
-  if (skillId.startsWith('burst-')) return skillId.slice(6);
-  if (skillId.startsWith('splash-')) return skillId.slice(7);
-  if (skillId.startsWith('bounce-')) return skillId.slice(7);
-  if (skillId.startsWith('mark-detonate-')) return skillId.slice(14);
-  return '';
-}
+export { extractHeroIdFromSkill };
 
 export function isTierSkill(skillId?: string): boolean {
   const id = extractHeroIdFromSkill(skillId);

@@ -1,0 +1,51 @@
+{
+  "ring": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.08072916666666667,
+      "top": 0.09635416666666667,
+      "right": 0.9713541666666666,
+      "bottom": 0.875
+    }
+  },
+  "hit": {
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "anchorY": 0.5,
+    "bounds": {
+      "left": 0.041666666666666664,
+      "top": 0.08333333333333333,
+      "right": 0.9296875,
+      "bottom": 0.8697916666666666
+    }
+  },
+  "form": {
+    "columns": 4,
+    "rows": 4,
+    "frames": 16,
+    "anchorY": 0.8396739130434783,
+    "bounds": {
+      "left": 0.06770833333333333,
+      "top": 0.0390625,
+      "right": 0.9244791666666666,
+      "bottom": 0.9114583333333334
+    }
+  },
+  "trail": {
+    "columns": 1,
+    "rows": 1,
+    "frames": 1,
+    "anchorY": 0.5,
+    "aspect": 4.571428571428571,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 1
+    }
+  }
+}

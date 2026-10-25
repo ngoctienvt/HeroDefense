@@ -1,0 +1,69 @@
+{
+  "schema": "monster-art-profile.v1",
+  "id": "m003",
+  "displayName": "Trư Yêu Thiết Giáp",
+  "category": "mob",
+  "identity": "Stocky bipedal pig demon with pink snout, short tusks, bristled mane, layered iron armor and one oversized iron mace; no shield.",
+  "palette": [
+    "brown",
+    "iron",
+    "dark red",
+    "ivory"
+  ],
+  "camera": "orthographic, 45-degree top-down battlefield view",
+  "directionOrder": [
+    "south",
+    "west",
+    "north",
+    "east"
+  ],
+  "sourceMaster": "source/master/master_rgba.png",
+  "anchor": [
+    784.0,
+    810.0
+  ],
+  "motionEnvelopePx": [
+    634,
+    650
+  ],
+  "displayHeightWorld": 7.3,
+  "actions": {
+    "idle": {
+      "framesPerDirection": 1,
+      "loop": false
+    },
+    "walk": {
+      "framesPerDirection": 6,
+      "loop": true
+    },
+    "attack": {
+      "framesPerDirection": 6,
+      "loop": false
+    }
+  },
+  "excludedActions": [
+    "hit",
+    "death",
+    "cast",
+    "entrance",
+    "phase-transition"
+  ],
+  "status": {
+    "master": "master-approved",
+    "directions": "pending",
+    "motion": "pending",
+    "packaged": "pending",
+    "integrated": "pending",
+    "built": "pending",
+    "inGameApproved": "pending"
+  },
+  "directionAnchors": {
+    "south": {
+      "anchorPx": [
+        784.0,
+        810.0
+      ],
+      "source": "source/master/master_rgba.png"
+    }
+  }
+}

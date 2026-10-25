@@ -1,0 +1,55 @@
+{
+  "frames": 36,
+  "clips": 12,
+  "idleFramesPerDirection": 1,
+  "sourceReports": {
+    "idle": {
+      "size": [
+        2646,
+        2378
+      ],
+      "sha256": "041197d12644ebb41aafb32120ac7e3c2be40bb28b55ea949d0ecac03ced927d",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    },
+    "walk": {
+      "size": [
+        2824,
+        2668
+      ],
+      "sha256": "48c022895648002d4a54ffbdb0402860fe7fd2d509384c437f7ad017c416bc20",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    },
+    "attack": {
+      "size": [
+        2808,
+        2668
+      ],
+      "sha256": "c786f2b9c651f454f8a05a1f3696d184c97382b51bb2a7af404150a650c83986",
+      "matte": {
+        "mode": "native-alpha"
+      },
+      "warnings": []
+    }
+  },
+  "masterBodyHeight": 1050.0,
+  "familyScaleAdjustments": {},
+  "directionScaleAdjustments": {},
+  "familyScales": {
+    "idle": 0.1580952380952381,
+    "walk": 0.31086142322097376,
+    "attack": 0.3283877349159248
+  },
+  "uniformEnvelopeReduction": 1.0,
+  "warnings": [],
+  "limits": [
+    "Generated acting and identity need visual motion review.",
+    "Four keyframes per action are intentionally sparse.",
+    "No game/test/build execution."
+  ]
+}

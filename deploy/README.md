@@ -25,6 +25,50 @@ the host's reachable IP. Invitation codes are six uppercase letters. Players
 cannot join once a game starts, except by reconnecting their existing session.
 Lobby lifetime is ten minutes and an unused seat expires after thirty seconds.
 
+## Radmin VPN (friends, no public hosting)
+
+Host and friends install Radmin VPN and join the same network (host creates it,
+shares name and password). The host runs `start-game.cmd`; after the build it
+prints `http://26.x.x.x:2567` (the host's Radmin address) and copies it to the
+clipboard. Friends open that URL and join with the room code. Traffic goes
+peer-to-peer over the VPN; nothing is exposed to the public Internet and no
+server change is needed (Node already listens on `0.0.0.0`).
+
+If friends cannot connect, Windows Firewall is usually blocking the Radmin
+adapter. Create the rule once in an Administrator PowerShell:
+
+```powershell
+New-NetFirewallRule -DisplayName 'Thien Dao game 2567' -Direction Inbound -Protocol TCP -LocalPort 2567 -Action Allow -Profile Any
+```
+
+Every player in the Radmin network can reach port 2567, and the admin panel is
+enabled for all players. Only invite people you trust. The host PC must stay
+awake while playing.
+
+## Asset caching and lobby preload
+
+The Vite plugin `tools/assets/vite-asset-manifest.ts` hashes every file in
+`apps/client/public/assets` at build time and bakes the hashes into the JS
+bundle. The client requests `/assets/<file>?v=<hash>`, which the server marks
+`public, max-age=31536000, immutable`. Unversioned HTML and JSON stay
+`no-store`. A rebuilt asset gets a new hash, so returning players download only
+what changed.
+
+On page open the client downloads every referenced asset (about 135 MB) into
+the browser cache, at most 4 low-priority requests at a time, and shows
+progress on the start screen. **Sẵn sàng** stays disabled until that finishes.
+Files that fail twice are logged as `visual.preload.failed` and do not block
+Ready. The host's player list still shows only "Chưa sẵn sàng" while a friend
+is downloading. The lobby closes 10 minutes after creation, so on a slow first
+download, open the page before creating the room. Then the client turns heroes
+already in any collection, the next wave's monsters and bosses, and the glb
+models into GPU textures (`visual.warmup.*`). Frames longer than 50 ms are
+logged as `visual.long-frame`.
+
+Inventory: `npx tsx tools/assets/asset-inventory.ts`. Re-encode hero sheets:
+`node tools/assets/recompress-webp.mjs`. Shrink glb: `bash
+tools/assets/optimize-glb.sh pangu round-one-pig`.
+
 ## Drain during release
 
 On Linux, send `SIGUSR2` to the Node process (`docker compose -f
