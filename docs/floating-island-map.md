@@ -4,7 +4,7 @@ Chiến trường là một đảo đá lơ lửng giữa trời nắng trưa; m
 
 ## Hợp đồng với gameplay
 
-- Mặt đi được phẳng ở y = 0. `ARENA` (x −44..44, z −36..28), làn, route, vị trí triển khai và tốc độ quái **không đổi**. Vách, đá, mây chỉ nằm ngoài `ARENA`.
+- Mặt đi được phẳng ở y = 0. `ARENA` (x −44..44, z −36..28), làn, route, vị trí triển khai và tốc độ quái **không đổi**. Vách, đá, mây chỉ nằm ngoài `ARENA`. Sprite mây/sương là quad quay về camera, nên cả quad (tâm + nửa kích thước + biên nhún) phải nằm dưới y = 0 (`belowTop` trong `visual-terrain-clouds.ts`); nếu không, nửa trên nhô lên và phủ màn trắng lên làn khi nhìn từ camera.
 - `packages/game-core/src/battlefield-layout.ts`: `withinZone`, `clampToZone`, `DUNGEON_ISLET = { x: 0, z: -2, radius: 20 }`. Server dùng chúng cho lệnh di chuyển, đội hình, va chạm, tránh vật cản và đẩy lùi. Zone 0 giữ hình chữ nhật `ARENA`, zone phụ bản là hình tròn.
 - Client kẹp điểm click về zone trước khi gửi (`battlefield.click-clamped`), nên click ra vực, mây hoặc trời đưa tướng tới mép. Chỉ mesh `island-top` hứng click; server vẫn kiểm tra.
 

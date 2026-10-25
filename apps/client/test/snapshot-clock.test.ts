@@ -21,12 +21,16 @@ describe('snapshot clock for jittery networks', () => {
   it('keeps a walker in the walk pose through a burst instead of flipping to idle', () => {
     const clock = new SnapshotClock();
     const track = createMotionTrack(0, 0, 1);
-    const arrivals = [1.0, 1.1, 1.3, 1.3, 1.5, 1.5, 1.6, 1.7];
-    arrivals.forEach((at, i) => pushMotionSample(track, clock.stamp(at, i * .1, 1), i * .3, 0));
-    let idleFrames = 0;
-    for (let now = 1.3; now <= 1.8; now += 1 / 60) {
+    // Walking 3 units/s; packets 3 and 5 are held back and arrive with the next one.
+    const arrivals = [1.0, 1.1, 1.3, 1.3, 1.5, 1.5, 1.6, 1.7, 1.8, 1.9];
+    let pushed = 0, idleFrames = 0;
+    for (let now = 1.0; now <= 1.9; now += 1 / 60) {
+      while (pushed < arrivals.length && arrivals[pushed] <= now + 1e-9) {
+        pushMotionSample(track, clock.stamp(arrivals[pushed], pushed * .1, 1), pushed * .3, 0); pushed++;
+      }
       const pose = sampleMotionTrack(track, now - clock.extraDelay);
-      if (!updateMovingState(track, Math.hypot(pose.vx, pose.vz), 1 / 60) && now > 1.3 + INTERPOLATION_DELAY) idleFrames++;
+      const moving = updateMovingState(track, Math.hypot(pose.vx, pose.vz), 1 / 60);
+      if (!moving && now > 1.1 + INTERPOLATION_DELAY) idleFrames++;
     }
     expect(idleFrames).toBe(0);
   });
