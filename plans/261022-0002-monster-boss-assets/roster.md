@@ -1,5 +1,7 @@
 # Roster sản xuất: 20 quái và 19 boss
 
+> Roster lịch sử của pipeline sprite, dừng ngày 27-10-2026. Xem [roster master reference 3D đề xuất](../261027-1118-monster-3d-master-references/roster.md). Giữ nguyên source/master, không tiếp tục yêu cầu action/bốn hướng bên dưới.
+
 Người dùng đã duyệt roster ban đầu ngày 22-10-2026. Ngày 23-10-2026 yêu cầu bỏ Hiện thân Ngũ Hành vì hình không đạt; không tạo mẫu thay thế. Scope sản xuất hiện tại là **39 cá thể: 5 nâng cấp + 34 thiết kế mới**. ID `art-*` là ID kế hoạch, chưa phải network ID. Tên/phân loại/vũ khí mới là thiết kế riêng cho bản web, không phải chứng cứ phục dựng từ map. Mỗi cá thể cần master, bốn hướng và đủ bộ hành động trong [art-contract](./art-contract.md).
 
 ## 20 quái: đa dạng cả cấu trúc cơ thể

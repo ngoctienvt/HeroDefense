@@ -6,6 +6,10 @@ import { segmentFrame } from './visual-kit-timeline.js';
  * Hold sheets are P16 (form 4 · hold 8 looping · break 4); `once` sheets play start to end on a real event.
  */
 export type SharedFxKind = 'stun' | 'freeze' | 'invulnerable' | 'heal' | 'revive';
+/** Hold sheets that follow an actor; `heal` and `revive` are one-shots. Burn/poison/armour break are body tints instead. */
+export const SHARED_HOLD_KINDS = ['stun', 'freeze', 'invulnerable'] as const satisfies readonly SharedFxKind[];
+export const isSharedHoldKind = (kind: string): kind is (typeof SHARED_HOLD_KINDS)[number] =>
+  (SHARED_HOLD_KINDS as readonly string[]).includes(kind);
 export type SharedFxSpec = {
   url: string; columns: number; rows: number; frames: number;
   /** Plane edge in world units (cells are square). */

@@ -1,0 +1,1 @@
+Existing authored master/rest still retained byte-for-byte. Original source: assets/sprites/monster-motion/b001/source/export-frames-v1/idle/south/frame-00.png

@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { sharedStatuses } from '../src/battlefield-shared-status.js';
 import { STATUS_MARKS } from '../src/visual-status-marks.js';
-import { FX_BREAK_SECONDS, FX_FORM_FRAMES, holdDone, holdFrame, onceFrame, onceSeconds, SHARED_FX } from '../src/visual-shared-status-timeline.js';
+import { FX_BREAK_SECONDS, FX_FORM_FRAMES, holdDone, holdFrame, isSharedHoldKind, onceFrame, onceSeconds, SHARED_FX } from '../src/visual-shared-status-timeline.js';
 
 vi.stubGlobal('location', { search: '' });
 const ASSETS = resolve(__dirname, '../public/assets');
@@ -46,11 +46,11 @@ describe('shared status rules', () => {
   it('draws each status from its own snapshot field, stun hidden under freeze', () => {
     expect(sharedStatuses({ stun: 1 }, false, none)).toEqual(['stun']);
     expect(sharedStatuses({ stun: 1, frozen: 2 }, false, none)).toEqual([]);
-    expect(sharedStatuses({ sealed: 1, attackWeak: { remaining: 2 }, pureLand: { remaining: 2 }, slow: 1 }, false, none))
-      .toEqual(['seal', 'attack-down', 'vulnerable', 'slow']);
+    expect(sharedStatuses({ sealed: 1, attackWeak: { remaining: 2 }, pureLand: { remaining: 2 } }, false, none))
+      .toEqual(['seal', 'attack-down', 'vulnerable']);
     expect(sharedStatuses({ divineImmortal: 1, shield: 5, ward: { remaining: 3, reduction: .25 }, haste: { remaining: 3, amount: .3 } }, true, none))
       .toEqual(['shield', 'invulnerable', 'damage-reduction', 'haste']);
-    expect(sharedStatuses({ stun: 0, shield: 0, slow: 0 }, false, none)).toEqual([]);
+    expect(sharedStatuses({ stun: 0, shield: 0 }, false, none)).toEqual([]);
   });
 
   it('leaves hero looks that replace a game-wide one, and boss stone', () => {
@@ -59,15 +59,11 @@ describe('shared status rules', () => {
     expect(sharedStatuses({ shield: 5, monsterId: 'b001' }, false, none)).toEqual([]);
     expect(sharedStatuses({ ward: { remaining: 3, reduction: .25, kind: 'black-water' } }, true, none)).toEqual([]);
     expect(sharedStatuses({ haste: { remaining: 3, amount: .3 } }, true, { mandonHaste: true })).toEqual([]);
-    expect(sharedStatuses({ slow: 2 }, false, { culinhSlowed: true })).toEqual([]);
   });
 
   it('draws the over-time and control statuses from their own fields', () => {
-    expect(sharedStatuses({ root: 1, armorBuff: { remaining: 2 }, soulLink: { remaining: 2 } }, false, none))
-      .toEqual(['root', 'soul-link', 'armor-up']);
-    expect(sharedStatuses({ poison: { remaining: 2 }, burn: { remaining: 2 } }, false, none)).toEqual(['poison', 'burn']);
-    expect(sharedStatuses({ burn: { remaining: 2 } }, false, none, 'h00A')).toEqual(['poison']);
-    expect(sharedStatuses({ burn: { remaining: 0 }, poison: { remaining: 0 }, root: 0 }, false, none)).toEqual([]);
+    expect(sharedStatuses({ armorBuff: { remaining: 2 }, soulLink: { remaining: 2 } }, false, none))
+      .toEqual(['soul-link', 'armor-up']);
     expect(sharedStatuses({ heroId: 'h01', berserk: { remaining: 3 } }, true, none)).toEqual(['berserk']);
     expect(sharedStatuses({ berserk: { remaining: 3 } }, false, none)).toEqual([]);
   });
@@ -76,15 +72,18 @@ describe('shared status rules', () => {
     expect(sharedStatuses({ heroId: 'h011', berserk: { remaining: 3 } }, true, none)).toEqual([]);
     expect(sharedStatuses({ heroId: 'h016', berserk: { remaining: 3 } }, true, none)).toEqual([]);
     expect(sharedStatuses({ heroId: 'h00A', berserk: { remaining: 3 } }, true, { moctraFrenzy: true })).toEqual([]);
-    expect(sharedStatuses({ poison: { remaining: 2 } }, false, { moctraPoison: true })).toEqual([]);
-    expect(sharedStatuses({ burn: { remaining: 2 } }, false, { fireBurning: true })).toEqual([]);
-    expect(sharedStatuses({ burn: { remaining: 2 } }, false, { honghainhiBurn: true })).toEqual([]);
-    expect(sharedStatuses({ burn: { remaining: 2 } }, false, { thietphienEmber: 'hold' })).toEqual([]);
     expect(sharedStatuses({ soulLink: { remaining: 2 } }, false, { manhbaBond: true })).toEqual([]);
   });
 
   it('has a status mark row for each Codex mark', () => {
-    for (const kind of ['seal', 'attack-down', 'vulnerable', 'damage-reduction', 'root', 'poison', 'burn', 'soul-link', 'armor-up', 'berserk'] as const)
+    for (const kind of ['seal', 'attack-down', 'vulnerable', 'damage-reduction', 'soul-link', 'armor-up', 'berserk'] as const)
       expect(STATUS_MARKS[kind], kind).toBeDefined();
+  });
+
+  it('keeps hold sheets for stun, freeze and invulnerable only', () => {
+    for (const kind of ['stun', 'freeze', 'invulnerable'] as const) expect(isSharedHoldKind(kind), kind).toBe(true);
+    for (const kind of ['heal', 'burn', 'poison', 'armor-break']) expect(isSharedHoldKind(kind), kind).toBe(false);
+    for (const kind of ['burn', 'poison', 'armor-break', 'slow', 'root'])
+      expect((STATUS_MARKS as Record<string, unknown>)[kind], kind).toBeUndefined();
   });
 });

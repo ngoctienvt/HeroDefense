@@ -149,7 +149,7 @@ Quái có `skinHeroId` (đầu lĩnh, boss và lâu la mượn hình tướng) d
   - Chiều cao = chiều cao của tướng × `RANK_SCALES` (lâu la 0,8, tinh anh và đầu lĩnh 1, boss 2).
   - Lâu la và tinh anh (đám đông) lấy **bản lite** `<key>-lite.glb` nếu có. Đầu lĩnh và boss giữ bản đầy đủ.
   - Vệt vũ khí của quái đổi sang bảng màu `ENEMY_TRAIL_PALETTE` (`netherfire`, tím đỏ).
-- **Vẻ "ma hoá":** `createHeroModel(..., { corrupt: true, actorKind: 'enemy' })` nhân bản vật liệu một lần cho mỗi vật liệu gốc. Albedo × (0,6; 0,46; 0,62), emissive đỏ tím mờ (0,16; 0,03; 0,11). Metadata chọn đối tượng ghi `actorKind: 'enemy'`.
+- **Quái dùng skin tướng:** `createHeroModel(..., { actorKind: 'enemy' })` giữ nguyên vật liệu gốc, không đổi màu. Metadata chọn đối tượng ghi `actorKind: 'enemy'`.
 - **Nhịp đòn:** sự kiện `windup`/`strike` của quái chia clip `attack` tại `raisedProgress` của model (`modelSwingProgress`), không theo mốc 0,5 cố định của sprite. Model của quái chạy theo tốc độ trận (`modelMotionSpeed`).
 - **Preload:** `visual-warmup.ts` tải trước bản lite cho các skin của sóng sắp tới.
 - **Bản lite** do `hero_phase2.py` xuất cùng lúc với bản đầy đủ: thân 5k mặt, vũ khí ≤800 mặt, texture 512. Vẫn đủ 3 clip, rig, socket vệt vũ khí. Manifest ghi `lite_bytes`, `lite_faces`; TS sinh ra có `liteUrl`.

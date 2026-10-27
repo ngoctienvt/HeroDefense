@@ -1,0 +1,29 @@
+{
+  "family": "human",
+  "role": "boss",
+  "id": "art-solar-hermit",
+  "name": "Lục Áp Đạo Quân",
+  "origin": "giữ thiết kế",
+  "brief": "Đạo nhân gầy cao, áo choàng nhọn, hồ lô/pháp khí.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "pending",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-2b61cde3-d0fc-4a8e-9eb6-c133b1cbeb6a.png",
+  "sha256": "d846c8e09beeb3087da70e7fbd7fbc45c26d2a85618b9ad91a61f11b90cdfc99",
+  "dimensions": [
+    1024,
+    1536
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "masters": 38,
+  "families": {
+    "quadruped": 9,
+    "winged": 7,
+    "serpent": 5,
+    "human": 17
+  },
+  "roles": {
+    "boss": 18,
+    "mob": 20
+  },
+  "statuses": {
+    "accepted-reference": 38
+  },
+  "checks": [
+    {
+      "id": "art-abyss-tortoise",
+      "sha256": "dfec3d3a0fdb96b1f58c457d4af8227c07da8b1506426835d0c987f423db5490",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-ash-vulture",
+      "sha256": "1027d3f31e67ff01a2f9246e2e5f2c25a256286037abc9fd7b9667bed1ec24a5",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-blackwater-serpent-king",
+      "sha256": "973ef6843b56f58a6f0c30facf38a8c82f7c54ed13f76ca4854e9a4a99cd2d73",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-bronze-halberdier",
+      "sha256": "37d7f41b5656e30c3d8c9101041bb63696e28eac618b0f935524b456feeb1f04",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-bronze-owl",
+      "sha256": "45919575ae2a390344698e26774c39da6c584138bff612385d23d38c10d3496e",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-cinder-qilin",
+      "sha256": "1d5d4f1f708409a3eb757a7e8fd494e46728b849d1cb1af3d281968f51b4dbac",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-coral-cobra",
+      "sha256": "5c6b18666ef6670bbaff2940badc4fd7374a5381d27462bb190b0e93e4b9682c",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-crystal-cobra-queen",
+      "sha256": "58c3729a317ad8d9bf771016a2ff7a1d25ff350a684533ce00bbb1ab02aef6db",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-eclipse-hound",
+      "sha256": "a75a5de8277f76ef35cf23ec010c9bf66f078d7499332430c972f7741bcd81b8",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-ember-falcon",
+      "sha256": "31dd973b27383673bc05ab029c48596160df3708f9f07e1f6646f743361ebb52",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-frost-crane",
+      "sha256": "f978a144bde0867b20f75aab7b9ea61f3c5f1181e5ae467ccc1887e7747f830e",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-gold-horn",
+      "sha256": "407bd701beb73c91295577ad77d91608430b6b999d73a9e115a4494859a293b7",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-ironback-boar",
+      "sha256": "de15e6db87c3a4b87ff3188d28b08cd0604513e3236e19b01a55ad6cc6eb004d",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-jade-judge",
+      "sha256": "e2f85341a0c079018b519ed26c78be94529f9f8b4c53a29f75f915b6adceec9c",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-kiln-guardian",
+      "sha256": "329650e3d235e3c99db8a46018013ea8b7067b60cce9d088b9553a66bff1a67a",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-ma-beast",
+      "sha256": "13db0f9478cb56d8673061baa46580289f0947950f1a8b4a7b8a8d754bcdf2d9",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-ma-lute",
+      "sha256": "8d15efed37d26da8c3d5b30cfbf99bb61198bcf36ca0e539cc94374de53fe482",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-ma-parasol",
+      "sha256": "22c63950caca54d8aef1691b4a7b37e2cae5cb78e52abe334f181c8aa97beb3a",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-ma-sword",
+      "sha256": "8a9b03f816073334ee40a1251b991bd6571561f03c15a3e4bead9f4a27ca9f39",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-moon-crane-queen",
+      "sha256": "c3811269eabd6dcdea1dffe26b28119c969d90ebfa4ef692fc9d782c32a8459a",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-moss-badger",
+      "sha256": "b0a7410b8ed8823c86e8ba697d6df7b260b782c1637eaab482370a03c0a1b3c7",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-reef-spearman",
+      "sha256": "49083df91fc496b96ee0d02c0e9602cf6246e2673ac00c5e923c4f9d59b36e27",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-river-serpent",
+      "sha256": "f9ab495a586a823c88ca143180349e1dcca04ec23474ec72d678eda8a6b5d417",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-root-puppet",
+      "sha256": "9159c1660b4a85f49e596e6ea47d49773596a40e5e54d526ba98c282ae564365",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-sand-viper",
+      "sha256": "69e1ea33b0de5ec265412bd1e8cc0d4cb1c499d7952be1489dd6001a3724ee03",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-silver-horn",
+      "sha256": "8ba02452c9647b8693c8b6427355f67bc4db44b36bb99a00af1dc7931149a3bd",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-solar-hermit",
+      "sha256": "d846c8e09beeb3087da70e7fbd7fbc45c26d2a85618b9ad91a61f11b90cdfc99",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-spore-toad",
+      "sha256": "72141f90a8e5aecae8217196a99f51b7fc88fdf65a72d346e271efa01bead48a",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-stone-matriarch",
+      "sha256": "d814e0d07690461434c368eb52313133187ad9dca148bba5727eb6a96c6ab822",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-tempest-roc",
+      "sha256": "d4a360244563a4bc22823b34f16736e044af67bdb671c230d569d39791988c70",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-thunder-ape",
+      "sha256": "c1adb78b7e9fbe7c1fac6b8f36487453b52c9de29e2b0dc5564c2c81c261541d",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-thunder-rhino-king",
+      "sha256": "8d49902154f46f5dc7b41150b464014976344ae216625d7d00ee71988523d51d",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "art-vine-stag",
+      "sha256": "a94e1ce73a2e29dd7e8b83c7a83fb02782b069ef222b0b6da26dc6eeb3ef1b4b",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "b001",
+      "sha256": "598729cdecc5ca8fc39a08cae6cf1bad4e4c5bc0b06ff6fa904ea729b7bc74dd",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "m001",
+      "sha256": "8162e57f7ea462f1b042a861c9463c582824b9421f6e5a97f616ea991bef46e3",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "m002",
+      "sha256": "d750a008dd20a48207382db1503b3737e1a64ef5e8bae9cbd8ee693a325fe243",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "m003",
+      "sha256": "4b82f509e687386ed41ab661f5cd78424b06d8388730a34777747dc5c5d101d3",
+      "solidEdgePixels": 0
+    },
+    {
+      "id": "m004",
+      "sha256": "cb0b58469614b8eed9e65bafc7da90a3f13ac25654366332a8e7dfc27b6ac86e",
+      "solidEdgePixels": 0
+    }
+  ]
+}

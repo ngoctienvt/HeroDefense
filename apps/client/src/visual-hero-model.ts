@@ -5,10 +5,9 @@ import type { AnimationGroup } from '@babylonjs/core/Animations/animationGroup.j
 import type { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh.js';
 import { TransformNode } from '@babylonjs/core/Meshes/transformNode.js';
 import type { Scene } from '@babylonjs/core/scene.js';
-import type { Material } from '@babylonjs/core/Materials/material.js';
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { assignActorDrawGroups } from './visual-kit-draw-order.js';
 import { debug } from './debug.js';
+import { applyActorOverlay } from './visual-status-tint.js';
 import { advancePanguModelPose, panguModelSample, type PanguModelPose, type PanguModelTransition } from './pangu-model-motion.js';
 import type { HeroModelSpec } from './hero-models.js';
 import { HeroTrail } from './visual-hero-trail.js';
@@ -49,29 +48,10 @@ function loadHeroModel(scene: Scene, spec: HeroModelSpec): Promise<AssetContaine
 /** Starts the shared download/parse once the hero is in anyone's roster (failures are logged by the loader). */
 export function preloadHeroModel(scene: Scene, spec: HeroModelSpec): void { void loadHeroModel(scene, spec).catch(() => undefined); }
 
-/** Enemies that borrow a hero's skin (`skinHeroId`) use the hero's GLB with "ma hóa" materials. */
+/** Enemies that borrow a hero's skin (`skinHeroId`) use the hero's GLB unchanged. */
 export interface HeroModelOptions {
-  /** Darkened, violet-tinted copy of the hero's materials with a faint ember glow (shared per source material). */
-  corrupt?: boolean;
   /** Picking metadata (`hero` by default). */
   actorKind?: 'hero' | 'enemy';
-}
-
-/** Corrupted look: albedo pulled dark and violet, a dim red-violet emissive so the silhouette still reads at night. */
-const CORRUPT_ALBEDO = new Color3(.6, .46, .62);
-const CORRUPT_EMISSIVE = new Color3(.16, .03, .11);
-const corrupted = new WeakMap<Material, Material>();
-function corruptMaterial(source: Material): Material {
-  let copy = corrupted.get(source);
-  if (!copy) {
-    copy = source.clone(`${source.name}-corrupt`) ?? source;
-    const pbr = copy as Material & { albedoColor?: Color3; emissiveColor?: Color3 };
-    if (pbr.albedoColor) pbr.albedoColor = pbr.albedoColor.multiply(CORRUPT_ALBEDO);
-    if (pbr.emissiveColor) pbr.emissiveColor = CORRUPT_EMISSIVE.clone();
-    corrupted.set(source, copy);
-    source.onDisposeObservable.addOnce(() => copy?.dispose());
-  }
-  return copy;
 }
 
 /** One skinned instance per actor; the procedural fallback parts stay visible until `ready()`. */
@@ -109,7 +89,6 @@ export function createHeroModel(scene: Scene, parent: TransformNode, initiallyAc
       meshes.push(...root.getChildMeshes());
       for (const mesh of meshes) {
         mesh.metadata = { actorId: parent.name, actorKind: options.actorKind ?? 'hero', model: spec.key };
-        if (options.corrupt && mesh.material) mesh.material = corruptMaterial(mesh.material);
         mesh.renderingGroupId = 0;
         mesh.isPickable = mesh.getTotalVertices() > 0;
       }
@@ -186,11 +165,7 @@ export function createHeroModel(scene: Scene, parent: TransformNode, initiallyAc
         for (const trail of trails) trail.update(sample.clip, sample.progress, spec.raisedProgress, spec.impactProgress,
           pose.dt, clock, pose.reduced);
       }
-      for (const mesh of meshes) {
-        mesh.renderOverlay = !pose.reduced && pose.flash > 0;
-        mesh.overlayColor.set(1, 1, 1);
-        mesh.overlayAlpha = Math.min(.85, pose.flash / .08 * .85);
-      }
+      applyActorOverlay(meshes, pose.flash, pose.tint, pose.reduced);
     },
   };
 }

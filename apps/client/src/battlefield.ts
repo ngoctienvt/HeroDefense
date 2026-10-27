@@ -48,6 +48,7 @@ import { truongChainTargets } from './visual-truong-dao-lang-timeline.js';
 import { TruongStatusTracker } from './battlefield-truong-dao-lang.js';
 import { replayTier12 } from './battlefield-tier12.js';
 import { sharedStatuses } from './battlefield-shared-status.js';
+import { statusTints } from './visual-status-tint.js';
 import { TIER12_RECIPES } from './visual-kit-recipes-tier12.js';
 import { Tier6Snapshot } from './battlefield-tier6-snapshot.js';
 import { Tier3Snapshot } from './battlefield-tier3-snapshot.js';
@@ -90,7 +91,7 @@ export class Battlefield {
   private tier4 = new Tier4Snapshot();
   private summonedPlants: { id: string; position: Vector3; zone: number }[] = [];
   private soulLinks: { key: string; from: Vector3; to: Vector3; zone: number }[] = [];
-  private panguStatuses: { id: string; kind: 'armor-break' | 'attack-up' | 'armor-pierce-up' | 'critical-up' | 'haste' }[] = [];
+  private panguStatuses: { id: string; kind: 'attack-up' | 'armor-pierce-up' | 'critical-up' | 'haste' }[] = [];
   private truongStatus = new TruongStatusTracker();
   private congcong = new CongcongTracker();
   private kimtra = new KimtraTracker();
@@ -670,7 +671,7 @@ export class Battlefield {
       return this.effects.replayTier4(heroId, kind ?? 'ultimate', origin, at);
     }));
     const unregisterLongVuongReplay = registerReplay('h00Q', (kind, x, z) => {
-      if (kind !== undefined && kind !== 'ultimate' && kind !== 'skill') return false;
+      if (kind !== undefined && kind !== 'ultimate' && kind !== 'skill' && kind !== 'attack') return false;
       if ((x !== undefined && !Number.isFinite(x)) || (z !== undefined && !Number.isFinite(z))) return false;
       const actor = [...this.actors.values()].find(a => a.heroId === 'h00Q' && a.zone === this.zone && a.hp > 0 && !a.dying);
       if (!actor) return false;
@@ -682,7 +683,7 @@ export class Battlefield {
       const at = x !== undefined && z !== undefined ? new Vector3(x, 0, z) : direction ? origin.add(direction.scale(8)) : undefined;
       if (!at) return false;
       this.focusOn((origin.x + at.x) / 2, (origin.z + at.z) / 2);
-      return this.effects.replayLongVuong(origin, at);
+      return kind === 'attack' ? this.effects.replayBasicAttack('h00Q', origin, at) : this.effects.replayLongVuong(origin, at);
     });
     const unregisterPhoenixReplay = registerReplay('h041', (kind, x, z) => {
       if (kind !== undefined && !['ultimate', 'lobby', 'ground', 'rebirth'].includes(kind)) return false;
@@ -722,10 +723,7 @@ export class Battlefield {
     this.groundEffects = state.groundEffects ?? [];
     this.panguStatuses = [];
     this.vothuong.refresh(Object.values(state.enemies), Object.values(state.units), this.zone);
-    for (const enemy of Object.values(state.enemies)) {
-      if (enemy.sunder && enemy.sunder.remaining > 0 && !this.truongStatus.active('sunder',enemy.id,enemy.sunder.remaining))
-        this.panguStatuses.push({ id: enemy.id, kind: 'armor-break' });
-    }
+    // Armour break (sunder / armorCuts) is a red body tint now (statusTints below), not a head mark.
     for (const unit of Object.values(state.units)) if (unit.empower && unit.empower.remaining > 0) {
       if (unit.empower.attackBonus > 0) this.panguStatuses.push({ id: unit.id, kind: 'attack-up' });
       if (unit.empower.armorPierce > 0) this.panguStatuses.push({ id: unit.id, kind: 'armor-pierce-up' });
@@ -858,8 +856,9 @@ export class Battlefield {
           : (entity.shield ?? 0) > 0 ? 'shield'
           : entity.armorBuff ? 'ward' : entity.slow > 0 ? 'slow'
           : entity.burn && !actor.fireBurning ? ['h00A', 'h03P'].includes(state.units[entity.burn.casterId]?.heroId ?? '') ? 'poison' : 'charged' : undefined;
-      actor.shared = sharedStatuses(entity, 'heroId' in entity, actor,
-        !('heroId' in entity) && entity.burn ? state.units[entity.burn.casterId]?.heroId : undefined);
+      const burnCasterHero = !('heroId' in entity) && entity.burn ? state.units[entity.burn.casterId]?.heroId : undefined;
+      actor.shared = sharedStatuses(entity, 'heroId' in entity, actor);
+      actor.statusTint = 'heroId' in entity ? undefined : statusTints(entity, burnCasterHero);
       if (entity.hp > 0 && !actor.dying) actor.root.scaling.setAll('summonKind' in entity
         ? entity.summonKind === 'buddha-clone' ? .72
           : entity.summonKind === 'blood-warrior' ? .52
@@ -1247,7 +1246,8 @@ export class Battlefield {
           .filter((ally): ally is VisualActor => Boolean(ally && ally.heroId && ally.zone === this.zone && !ally.dying))
           .map(ally => ally.root.position.clone()) : []);
       if (source?.zone !== this.zone && target?.zone !== this.zone && hits.length === 0
-        && support.length === 0 && !((isModernTier3Pulse(event.skillId) || isModernTier4Pulse(event.skillId) || event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S')
+        && support.length === 0 && !((isModernTier3Pulse(event.skillId) || isModernTier4Pulse(event.skillId) || event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S'
+          || (event.kind === 'trait' && event.skillId === 'water-shield-burst-h00J' && Number.isFinite(event.x) && Number.isFinite(event.z)))
           && event.zone === this.zone)) return;
       const center = event.x !== undefined && event.z !== undefined
         ? new Vector3(event.x, 0, event.z) : isModernTier3Event(event.skillId) || isModernTier4Event(event.skillId)
@@ -1347,7 +1347,10 @@ export class Battlefield {
       const enemyHits = isEnemySkillEvent(event.skillId)
         ? affected.map(id => this.actors.get(id)).filter((hit): hit is VisualActor => Boolean(hit && hit.zone === this.zone)).map(hit => hit.root.position.clone())
         : undefined;
-      this.effects.show(event, position, source?.root.position, enemyHits ?? chain);
+      // A hero-skinned enemy's plain hit carries no skill id: name the skin so the effects pick that hero's look.
+      const shown: GameEvent = event.kind === 'attack' && !event.skillId && source?.skinHeroId && !source.heroId
+        ? { ...event, skillId: `monster-attack-${source.skinHeroId}` } : event;
+      this.effects.show(shown, position, source?.root.position, enemyHits ?? chain);
     }
     if (event.kind === 'ability' && event.ability === 'chain') {
       let previous = source?.root.position;

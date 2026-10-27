@@ -1,0 +1,46 @@
+{
+  "family": "serpent",
+  "role": "mob",
+  "id": "art-river-serpent",
+  "name": "Xà Yêu Thủy Vực",
+  "origin": "giữ thiết kế",
+  "brief": "Rắn không chân, mào đầu, sống lưng ngọc; thân S thoáng.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-river-serpent/generated/master-01.png",
+  "sha256": "f9ab495a586a823c88ca143180349e1dcca04ec23474ec72d678eda8a6b5d417",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    0,
+    3,
+    1240,
+    1254
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-485a67be-9d34-4542-aeb5-6d57c898d41b.png",
+  "visualReview": "Reviewed full image: single continuous legless serpentine body, one head and one tail, jade blue fins.",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  }
+}

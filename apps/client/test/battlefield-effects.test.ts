@@ -6,6 +6,20 @@ import { TruongStatusTracker } from '../src/battlefield-truong-dao-lang.js';
 import { Tier6Snapshot } from '../src/battlefield-tier6-snapshot.js';
 
 describe('battlefield ability feedback', () => {
+  it('keeps a confirmed local water-shield rupture after all its actors disappear', () => {
+    const battlefield = Object.create(Battlefield.prototype) as Battlefield, show = vi.fn();
+    Object.assign(battlefield, { tier6: new Tier6Snapshot(), truongStatus: new TruongStatusTracker(),
+      actors: new Map(), effects: { show }, audio: { play: vi.fn() }, reducedMotion: { matches: true }, zone: 0 });
+    const handle = battlefield as unknown as { handleEvent(event: GameEvent): void };
+    const burst: GameEvent = { id: 47, kind: 'trait', source: 'missing-caster', targets: [],
+      skillId: 'water-shield-burst-h00J', x: 7, z: 3, zone: 0 };
+    handle.handleEvent(burst);
+    expect(show).toHaveBeenCalledWith(burst, new Vector3(7, 0, 3), undefined, []);
+    for (const invalid of [{ ...burst, zone: 1 }, { ...burst, x: Number.NaN },
+      { ...burst, z: undefined }, { ...burst, kind: 'ability' as const }]) {
+      show.mockClear(); handle.handleEvent(invalid); expect(show).not.toHaveBeenCalled();
+    }
+  });
   it('resolves Trầm Hương receipts from exact current units without hurting allies or guessing recipients', () => {
     const battlefield = Object.create(Battlefield.prototype) as Battlefield, show = vi.fn();
     const actor = (heroId: string | undefined, x: number, zone = 0) => ({ heroId, zone, dying: false,

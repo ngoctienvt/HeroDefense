@@ -1,14 +1,17 @@
 ---
 title: "39 asset quái và boss Thiên Đạo"
 description: "20 quái + 19 boss; chuẩn sprite tướng, boss có silhouette và diễn xuất riêng."
-status: in_progress
+status: cancelled
 priority: P1
 effort: "Ước lượng sau pilot; chưa cam kết số lượt tạo ảnh hoặc chi phí"
 tags: [assets, monsters, bosses, sprites]
 created: 2026-10-22
+supersededBy: 261027-1118-monster-3d-master-references
 ---
 
 # 39 asset quái và boss Thiên Đạo
+
+> **Dừng sản xuất sprite ngày 27-10-2026 theo quyết định người dùng.** Chuyển sang model 3D; chỉ giữ/chọn master stylized làm reference. [Kế hoạch master 3D mới](../261027-1118-monster-3d-master-references/plan.md) thay phạm vi sản xuất bên dưới. Không tạo tiếp direction/action/canonical/export sprite. Tất cả tiến độ/bundle/QA dưới đây là lịch sử, không được đánh dấu hoàn thành thay cho phần đã hủy. Giữ nguyên ảnh và runtime asset hiện có; bảo toàn master trước mọi dọn dẹp.
 
 ## Overview
 

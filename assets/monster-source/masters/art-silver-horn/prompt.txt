@@ -1,0 +1,1 @@
+Existing authored master/rest still retained byte-for-byte. Original source: assets/sprites/monster-motion/art-silver-horn/source/canonical-v1/idle-south-master/frames/frame-00.png

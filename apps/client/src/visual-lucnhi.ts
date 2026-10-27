@@ -26,7 +26,7 @@ const PAINTED_CAPACITY = 320;
  * no image teleport) and the boundary fades. `shadow-hit-h03Y` (strikeIndex 1..6): cudgel + hit sheet + ground mark +
  * shards only on that pulse's server target list. Marker `assault` (every frame): its loss plays the 0.25 s return.
  * Marker `exposed`: crit-vulnerability seal per monster, splitting into six strokes when it ends. Basic `trait-h03Y`:
- * one cudgel along the pierce line. Armour break comes from the shared `armor-break` mark. Presentation only.
+ * one cudgel along the pierce line. Armour break comes from the shared red body tint. Presentation only.
  */
 export class VisualLucnhi implements HeroVfx {
   readonly heroId = L.id;

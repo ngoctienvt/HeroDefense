@@ -1,0 +1,50 @@
+{
+  "family": "quadruped",
+  "role": "boss",
+  "id": "art-eclipse-hound",
+  "name": "Thực Nguyệt Thiên Khuyển",
+  "origin": "giữ thiết kế",
+  "brief": "Chó săn gầy cao, hàm lớn/bờm vầng khuyết; silhouette dài.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    },
+    {
+      "path": "assets/sprites/monster-motion/art-eclipse-hound/source/directions/south/master-candidate-v1.png",
+      "sha256": "726f62377e309279c930e0bedfbd88781f2dc07e68fb406df4736b50ece5dc33"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-eclipse-hound/generated/master-01.png",
+  "sha256": "a75a5de8277f76ef35cf23ec010c9bf66f078d7499332430c972f7741bcd81b8",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "alphaExtrema": [
+    0,
+    254
+  ],
+  "alphaBounds": [
+    0,
+    0,
+    1520,
+    1000
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-2c6c10a6-e54b-466f-8d1e-6c4ed839626e.png",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  },
+  "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation."
+}

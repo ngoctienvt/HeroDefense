@@ -1,0 +1,311 @@
+{
+  "status": "authorized-for-master-production",
+  "date": "2026-10-27",
+  "authorization": "User requested all necessary new masters after reviewing the plan scope. Image task only.",
+  "assets": [
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "m002",
+      "name": "Hắc Sơn Cốt Cung Thủ",
+      "origin": "giữ thiết kế",
+      "brief": "Xương gầy, nón lệch, cung xương; tách cung khỏi thân khi cần body reference."
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "m003",
+      "name": "Trư Yêu Thiết Giáp",
+      "origin": "giữ thiết kế",
+      "brief": "Lợn yêu hai chân, bụng/giáp tròn, chùy sắt; không đổi thành lợn bốn chân."
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-root-puppet",
+      "name": "Khôi Lỗi Rễ",
+      "origin": "giữ thiết kế",
+      "brief": "Thân gỗ rỗng, tay rễ dài; khóa hai chân chính nếu còn đúng thiết kế, chưa tự xóa rễ phụ."
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-reef-spearman",
+      "name": "Ngư Yêu San Hô",
+      "origin": "giữ thiết kế",
+      "brief": "Hai chân có màng, vây lưng, thương san hô ba chạc."
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-kiln-guardian",
+      "name": "Vệ Binh Lò Cổ",
+      "origin": "giữ thiết kế",
+      "brief": "Giáp đất nung, khiên vuông, búa nung; khớp đọc rõ."
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-thunder-ape",
+      "name": "Lôi Viên",
+      "origin": "giữ thiết kế",
+      "brief": "Vượn tay dài, bờm cạnh, vòng đồng; subtype primate, không ép rig người tự động."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "b001",
+      "name": "Hắc Phong Hùng Vương",
+      "origin": "giữ thiết kế",
+      "brief": "Gấu đứng hai chân, vai đá/vòng giáp cổ, hai tay nện; giữ hình gấu."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-stone-matriarch",
+      "name": "Thạch Cơ Nương Nương",
+      "origin": "giữ thiết kế",
+      "brief": "Nữ giáp nham thạch, vương miện cạnh đá, vai lệch."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-solar-hermit",
+      "name": "Lục Áp Đạo Quân",
+      "origin": "giữ thiết kế",
+      "brief": "Đạo nhân gầy cao, áo choàng nhọn, hồ lô/pháp khí."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-gold-horn",
+      "name": "Kim Giác",
+      "origin": "giữ thiết kế",
+      "brief": "Vai vuông, một sừng vàng lớn, hồ lô; giữ bất đối xứng từ master."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-silver-horn",
+      "name": "Ngân Giác",
+      "origin": "giữ thiết kế",
+      "brief": "Dáng dài, sừng bạc cong, bình ngọc tay trái, tay áo rộng."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-ma-sword",
+      "name": "Ma Gia — Kiếm",
+      "origin": "giữ thiết kế",
+      "brief": "Giáp lam thép/ngà, đại kiếm tay phải, cờ đỏ sau vai trái."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-ma-lute",
+      "name": "Ma Gia — Tỳ Bà",
+      "origin": "giữ thiết kế",
+      "brief": "Thân rộng, tỳ bà lớn chéo ngực; bản body phụ nếu nhạc cụ che khớp."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-ma-parasol",
+      "name": "Ma Gia — Bảo Tán",
+      "origin": "giữ thiết kế",
+      "brief": "Giáp dài tím/đen/vàng, tán sau vai có mặt dưới, cán/tay rõ."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-ma-beast",
+      "name": "Ma Gia — Linh Thú",
+      "origin": "giữ thiết kế",
+      "brief": "Giáp thú văn, linh thú cuộn trên vai là phụ kiện riêng cùng một cá thể art."
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "m004",
+      "name": "Huyết Dơi Yêu",
+      "origin": "giữ thiết kế",
+      "brief": "Dơi cánh màng, tai nhọn/răng dài; subtype bat, không đổi thành lông chim."
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "art-ash-vulture",
+      "name": "Kền Kền Tro",
+      "origin": "giữ thiết kế",
+      "brief": "Cổ trụi, mỏ móc, cánh rách thành mảng lớn."
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "art-bronze-owl",
+      "name": "Kiêu Đồng Cổ",
+      "origin": "giữ thiết kế",
+      "brief": "Chim máy đồng, mắt tròn, cánh khớp cứng/đuôi quạt; subtype mechanical."
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "m001",
+      "name": "Thanh Lang Tiểu Yêu",
+      "origin": "giữ thiết kế",
+      "brief": "Sói bốn chân, bờm dựng/nanh/móng; không thành người sói."
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "art-vine-stag",
+      "name": "Lộc Yêu Dây Leo",
+      "origin": "giữ thiết kế",
+      "brief": "Hươu bốn chân, gạc lệch, dây leo mảng lớn."
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "art-spore-toad",
+      "name": "Thiềm Thừ Nấm",
+      "origin": "giữ thiết kế",
+      "brief": "Cóc bốn chân, thân thấp rộng/nấm lệch; subtype amphibian, không ép dáng thú có vú."
+    },
+    {
+      "family": "quadruped",
+      "role": "boss",
+      "id": "art-abyss-tortoise",
+      "name": "Quy Vương",
+      "origin": "giữ thiết kế",
+      "brief": "Rùa thấp rộng, mai tầng đá/ngà lớn; subtype shell/reptile."
+    },
+    {
+      "family": "quadruped",
+      "role": "boss",
+      "id": "art-cinder-qilin",
+      "name": "Xích Diệm Lân Vương",
+      "origin": "giữ thiết kế",
+      "brief": "Lân bốn chân, giáp vảy/sừng chẻ/đuôi bó; lửa không che giải phẫu."
+    },
+    {
+      "family": "quadruped",
+      "role": "boss",
+      "id": "art-eclipse-hound",
+      "name": "Thực Nguyệt Thiên Khuyển",
+      "origin": "giữ thiết kế",
+      "brief": "Chó săn gầy cao, hàm lớn/bờm vầng khuyết; silhouette dài."
+    },
+    {
+      "family": "serpent",
+      "role": "mob",
+      "id": "art-river-serpent",
+      "name": "Xà Yêu Thủy Vực",
+      "origin": "giữ thiết kế",
+      "brief": "Rắn không chân, mào đầu, sống lưng ngọc; thân S thoáng."
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-bronze-halberdier",
+      "name": "Thiết Vệ Kích Binh",
+      "origin": "mới — đề xuất",
+      "brief": "Binh giáp đồng gầy cao, kích lưỡi bán nguyệt, mũ trụ kín; đồng xanh/than/đỏ son."
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-jade-judge",
+      "name": "U Minh Phán Quan",
+      "origin": "mới — đề xuất",
+      "brief": "Áo quan dài chia tà rõ chân, mũ cao/phán bút và thẻ ngọc; ngọc tối/ngà/tím, không trùng đạo nhân Lục Áp."
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "art-ember-falcon",
+      "name": "Hỏa Ưng",
+      "origin": "mới — đề xuất",
+      "brief": "Chim săn mồi gọn, mỏ ngắn móc, cánh nhọn/đuôi chẻ, lông đỏ gạch/than; không bake lửa."
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "art-frost-crane",
+      "name": "Hàn Hạc",
+      "origin": "mới — đề xuất",
+      "brief": "Cổ dài, chân dài, lông trắng/chàm và mào băng nhỏ; phân biệt rõ chim săn mồi."
+    },
+    {
+      "family": "winged",
+      "role": "boss",
+      "id": "art-tempest-roc",
+      "name": "Phong Lôi Bằng Vương",
+      "origin": "mới — đề xuất",
+      "brief": "Đại bằng ngực dày, cánh rộng bản, mào cạnh đồng, vuốt lớn; lam thép/đồng/ngà, sét tách lớp."
+    },
+    {
+      "family": "winged",
+      "role": "boss",
+      "id": "art-moon-crane-queen",
+      "name": "Nguyệt Hạc Tiên Hậu",
+      "origin": "mới — đề xuất",
+      "brief": "Hạc vương cổ cong dài, cánh lông nhiều lớp/đuôi dải bản lớn, vương miện trăng gắn đầu; bạc/chàm/ngọc."
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "art-ironback-boar",
+      "name": "Thiết Bối Dã Trư",
+      "origin": "mới — đề xuất",
+      "brief": "Lợn rừng bốn chân, lưng giáp tấm, mõm dài/nanh thấp; than/nâu/sắt đỏ, khác m003 hai chân."
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "art-moss-badger",
+      "name": "Nham Giáp Lửng",
+      "origin": "mới — đề xuất",
+      "brief": "Thân lửng thấp chắc, tay trước đào khỏe, sống giáp đá/rêu; khối thấp rộng khác sói/hươu."
+    },
+    {
+      "family": "quadruped",
+      "role": "boss",
+      "id": "art-thunder-rhino-king",
+      "name": "Lôi Giáp Tê Vương",
+      "origin": "mới — đề xuất",
+      "brief": "Tê giác ngực/vai khổng lồ, hai sừng trước-sau, giáp đồng cạnh lớn; xám lam/đồng/trắng, không bake tia sét."
+    },
+    {
+      "family": "serpent",
+      "role": "mob",
+      "id": "art-sand-viper",
+      "name": "Sa Ảnh Lục Xà",
+      "origin": "mới — đề xuất",
+      "brief": "Đầu nêm thấp, thân cát gọn/dày, gờ vảy to, đuôi ngắn nhọn; cát/than/ngà, không hood."
+    },
+    {
+      "family": "serpent",
+      "role": "mob",
+      "id": "art-coral-cobra",
+      "name": "Xích San Hô Nhãn Kính Xà",
+      "origin": "mới — đề xuất",
+      "brief": "Cobra cổ dựng/hood bầu, khoang vảy đỏ/ngà/than, mắt lớn; không chân/cánh."
+    },
+    {
+      "family": "serpent",
+      "role": "boss",
+      "id": "art-blackwater-serpent-king",
+      "name": "Hắc Thủy Đại Mãng",
+      "origin": "mới — đề xuất",
+      "brief": "Mãng thân rất dày liền khối, đầu bẹt rộng, vảy mảng lớn/lưng gai thấp; chàm/ngọc/đen, không chân rồng."
+    },
+    {
+      "family": "serpent",
+      "role": "boss",
+      "id": "art-crystal-cobra-queen",
+      "name": "Huyền Tinh Xà Hậu",
+      "origin": "mới — đề xuất",
+      "brief": "Hood quạt lớn có gờ tinh thể theo xương cổ, đầu vương miện cạnh đá, thân dài; tím lạnh/ngà/lam, không dùng hào quang thay hood."
+    }
+  ]
+}

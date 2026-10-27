@@ -1,0 +1,46 @@
+{
+  "family": "winged",
+  "role": "mob",
+  "id": "art-ember-falcon",
+  "name": "Hỏa Ưng",
+  "origin": "mới — đề xuất",
+  "brief": "Chim săn mồi gọn, mỏ ngắn móc, cánh nhọn/đuôi chẻ, lông đỏ gạch/than; không bake lửa.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-ember-falcon/generated/master-01.png",
+  "sha256": "31dd973b27383673bc05ab029c48596160df3708f9f07e1f6646f743361ebb52",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    25,
+    5,
+    1248,
+    1254
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-42c9e9d3-f73c-4a9a-b1eb-c6ddf9ad8198.png",
+  "visualReview": "Reviewed full image: two feathered wings, two legs and hooked falcon beak; red charcoal plumage without fire VFX.",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "family": "human",
+  "role": "boss",
+  "id": "art-ma-lute",
+  "name": "Ma Gia — Tỳ Bà",
+  "origin": "giữ thiết kế",
+  "brief": "Thân rộng, tỳ bà lớn chéo ngực; bản body phụ nếu nhạc cụ che khớp.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-ma-lute/generated/master-01.png",
+  "sha256": "8d15efed37d26da8c3d5b30cfbf99bb61198bcf36ca0e539cc94374de53fe482",
+  "dimensions": [
+    1159,
+    1358
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    0,
+    11,
+    1146,
+    1358
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-b911c575-4c60-43e2-9158-469de707bbde.png",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  },
+  "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation."
+}

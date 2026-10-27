@@ -1,0 +1,29 @@
+{
+  "family": "quadruped",
+  "role": "boss",
+  "id": "art-thunder-rhino-king",
+  "name": "Lôi Giáp Tê Vương",
+  "origin": "mới — đề xuất",
+  "brief": "Tê giác ngực/vai khổng lồ, hai sừng trước-sau, giáp đồng cạnh lớn; xám lam/đồng/trắng, không bake tia sét.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "pending",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-64ad9547-7abc-4c7d-a381-07ad3b359dbb.png",
+  "sha256": "8d49902154f46f5dc7b41150b464014976344ae216625d7d00ee71988523d51d",
+  "dimensions": [
+    1536,
+    1024
+  ]
+}

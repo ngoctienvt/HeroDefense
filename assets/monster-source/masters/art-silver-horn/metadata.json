@@ -1,0 +1,30 @@
+{
+  "family": "human",
+  "role": "boss",
+  "id": "art-silver-horn",
+  "name": "Ngân Giác",
+  "origin": "giữ thiết kế",
+  "brief": "Dáng dài, sừng bạc cong, bình ngọc tay trái, tay áo rộng.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "existing",
+  "route": "existing-reviewed-still",
+  "source": "assets/sprites/monster-motion/art-silver-horn/source/canonical-v1/idle-south-master/frames/frame-00.png",
+  "sha256": "8ba02452c9647b8693c8b6427355f67bc4db44b36bb99a00af1dc7931149a3bd",
+  "dimensions": [
+    1000,
+    1000
+  ],
+  "sourceKind": "derived-idle",
+  "visualReview": "Retained after full-image review; identity and full-body silhouette readable. No claim about resulting 3D model.",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  }
+}

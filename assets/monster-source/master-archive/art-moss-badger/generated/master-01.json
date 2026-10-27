@@ -1,0 +1,29 @@
+{
+  "family": "quadruped",
+  "role": "mob",
+  "id": "art-moss-badger",
+  "name": "Nham Giáp Lửng",
+  "origin": "mới — đề xuất",
+  "brief": "Thân lửng thấp chắc, tay trước đào khỏe, sống giáp đá/rêu; khối thấp rộng khác sói/hươu.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "pending",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-dea8fb1b-cca8-41dc-8904-092ecf035c39.png",
+  "sha256": "b0a7410b8ed8823c86e8ba697d6df7b260b782c1637eaab482370a03c0a1b3c7",
+  "dimensions": [
+    1536,
+    1024
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "family": "human",
+  "role": "mob",
+  "id": "art-reef-spearman",
+  "name": "Ngư Yêu San Hô",
+  "origin": "giữ thiết kế",
+  "brief": "Hai chân có màng, vây lưng, thương san hô ba chạc.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "pending",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-f9797c13-d3dc-428a-9fd7-8b56a90be255.png",
+  "sha256": "49083df91fc496b96ee0d02c0e9602cf6246e2673ac00c5e923c4f9d59b36e27",
+  "dimensions": [
+    1254,
+    1254
+  ]
+}

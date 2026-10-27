@@ -1,0 +1,50 @@
+{
+  "family": "human",
+  "role": "mob",
+  "id": "m003",
+  "name": "Trư Yêu Thiết Giáp",
+  "origin": "giữ thiết kế",
+  "brief": "Lợn yêu hai chân, bụng/giáp tròn, chùy sắt; không đổi thành lợn bốn chân.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    },
+    {
+      "path": "assets/monster-source/m003.png",
+      "sha256": "333d05d19fd62a94241936d263d20715b2700142aa36b640455ec7e4d58e515d"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/m003/generated/master-01.png",
+  "sha256": "4b82f509e687386ed41ab661f5cd78424b06d8388730a34777747dc5c5d101d3",
+  "dimensions": [
+    1218,
+    1291
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    0,
+    21,
+    1204,
+    1267
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-38257c83-e5f1-4dc9-bf22-94ec4b56da5a.png",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  },
+  "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity."
+}

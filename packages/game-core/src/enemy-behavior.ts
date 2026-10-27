@@ -1,12 +1,12 @@
 import type { Enemy, GameState, Unit, Vec } from '../../contracts/src/types.js';
 import { clampToZone, enemyRouteFor, withinZone } from './battlefield-layout.js';
-import { contactDistance, enemyRadius, retreatFromTarget } from './crowd-movement.js';
+import { contactDistance, enemySpacingRadius, retreatFromTarget } from './crowd-movement.js';
 import {
   atSlot, claimSlot, refreshSlot, releaseSlot, RETARGET_MARGIN, ringRadius, slotApproachGoal, slotPoint, usesRing,
-  wrapAngle, type Rings,
+  type Rings,
 } from './enemy-engagement.js';
 import { hasActiveEnemySkillWindup } from './enemy-skill-runner.js';
-import { distance, event, isDeployed, RANGED_REACH_SCALE, walk } from './rules.js';
+import { distance, event, isDeployed, MOVEMENT_SPEED_MULTIPLIER, RANGED_REACH_SCALE, walk } from './rules.js';
 import type { SpatialGrid } from './spatial-grid.js';
 import { walkEnemyWithPathing } from './unit-pathing.js';
 
@@ -22,8 +22,6 @@ const RANGED_BAND = { near: .8, far: .95 } as const;
 const GUARDIAN_PULL = .35;
 /** Blocked this long short of its slot but already in reach: swing from where it stands. */
 const STALL_SWING = .4;
-/** Pace share when pushing through a crowd that leaves no free path. */
-const SQUEEZE_PACE = .6;
 /** Blocked this long out of reach: give the slot up and claim one on the reachable side. */
 const STALL_RESLOT = 1;
 
@@ -57,7 +55,7 @@ export type EnemyTickContext = {
   unitGrid: SpatialGrid<Unit>;
   enemyGrid: SpatialGrid<Enemy>;
   rings: Rings;
-  /** Enemies standing their ground (swinging or holding a slot); soft collisions push them less. */
+  /** Settled enemies (swinging or holding a slot) yield less to other settled enemies. */
   anchored: Set<string>;
   isGuardian: (unit: Unit) => boolean;
   /** Apply one landed enemy hit (damage, lifesteal, boss splash) and emit its `attack` event. */
@@ -91,46 +89,23 @@ function isDisabled(enemy: Enemy): boolean {
 }
 
 function pace(enemy: Enemy, dt: number): number {
-  return enemy.speed * dt * (1 - (enemy.slow ? enemy.slowStrength ?? .5 : 0));
+  return enemy.speed * MOVEMENT_SPEED_MULTIPLIER * dt * (1 - (enemy.slow ? enemy.slowStrength ?? .5 : 0));
 }
-
-/** Server-only: when each enemy last stood its ground to fight (state.elapsed). */
-const lastStood = new WeakMap<Enemy, number>();
 
 function markStanding(ctx: EnemyTickContext, enemy: Enemy): void {
   ctx.anchored.add(enemy.id);
-  lastStood.set(enemy, ctx.state.elapsed);
 }
 
-/** Fighters hold their ground as solid bodies; walkers flow through each other (soft separation only). */
-function isSolid(ctx: EnemyTickContext, other: Enemy): boolean {
-  if (ctx.anchored.has(other.id) || other.windup) return true;
-  const stood = lastStood.get(other);
-  return stood !== undefined && ctx.state.elapsed - stood <= .15;
-}
-
-/**
- * Enemies never stand waiting for a gap: they path around heroes and fighting enemies,
- * and when even that is blocked they squeeze forward through the crowd at reduced pace
- * (soft collisions then spread the bodies back out).
- */
+/** Terrain constrains travel; bodies only reserve space at the destination. */
 function walkTo(ctx: EnemyTickContext, enemy: Enemy, goal: Vec, amount: number): boolean {
   if (!withinZone(enemy.zone, enemy.x, enemy.z)) {
-    // Placed outside the walkable area (a spawn or push past the edge): pathing rejects every
-    // step that ends outside, so walk straight back in instead of freezing there.
     const inside = clampToZone(enemy.zone, goal);
     walk(enemy, inside, amount);
     if (!withinZone(enemy.zone, enemy.x, enemy.z) && ctx.state.tick % 40 === 0)
       console.debug(JSON.stringify({ event: 'enemy.outside-zone', enemyId: enemy.id, zone: enemy.zone }));
     return false;
   }
-  const reach = amount + 6;
-  const heroes = ctx.unitGrid.near(enemy, enemy.zone, reach);
-  const solid = ctx.enemyGrid.near(enemy, enemy.zone, reach).filter(other => other === enemy || isSolid(ctx, other));
-  const x = enemy.x, z = enemy.z;
-  const arrived = walkEnemyWithPathing(enemy, goal, amount, heroes, solid);
-  if (arrived || Math.hypot(enemy.x - x, enemy.z - z) > amount * .2 || distance(enemy, goal) < .1) return arrived;
-  return walkEnemyWithPathing(enemy, goal, amount * SQUEEZE_PACE, heroes, [enemy]);
+  return walkEnemyWithPathing(enemy, goal, amount, ctx.units, Object.values(ctx.state.enemies));
 }
 
 /** Units this enemy may consider, nearest-first with a small guardian preference. */
@@ -175,38 +150,6 @@ function tryStartSwing(ctx: EnemyTickContext, enemy: Enemy, target: Unit): void 
     skillId: 'monster-windup', windup });
 }
 
-/**
- * A marching enemy whose straight path crosses the crowd fighting the heroes walks
- * around the whole cluster (all nearby fought heroes and their rings) instead of
- * shoving into it; local avoidance alone gridlocks a pack against bunched heroes.
- */
-function crowdBypass(ctx: EnemyTickContext, enemy: Enemy, goal: Vec): Vec | undefined {
-  const fought = ctx.unitGrid.near(enemy, enemy.zone, 16)
-    .filter(hero => hero.zone === enemy.zone && (ctx.rings.get(hero.id)?.length ?? 0) > 0);
-  if (!fought.length) return undefined;
-  // Cluster = the fought hero nearest the enemy plus every fought hero close to it.
-  const anchor = fought.reduce((a, b) => distance(a, enemy) <= distance(b, enemy) ? a : b);
-  const cluster = fought.filter(hero => distance(hero, anchor) <= 10);
-  const center = {
-    x: cluster.reduce((sum, hero) => sum + hero.x, 0) / cluster.length,
-    z: cluster.reduce((sum, hero) => sum + hero.z, 0) / cluster.length,
-  };
-  const radius = Math.max(...cluster.map(hero => distance(hero, center) + ringRadius(hero, enemy)))
-    + enemyRadius(enemy) * 2 + .3;
-  const gap = distance(enemy, center);
-  if (gap > radius + 6 || distance(goal, center) < radius) return undefined;
-  const sx = goal.x - enemy.x, sz = goal.z - enemy.z, length = Math.hypot(sx, sz) || 1;
-  const along = Math.max(0, Math.min(length, ((center.x - enemy.x) * sx + (center.z - enemy.z) * sz) / length));
-  const closest = Math.hypot(enemy.x + sx / length * along - center.x, enemy.z + sz / length * along - center.z);
-  if (closest >= radius) return undefined;
-  const current = Math.atan2(enemy.z - center.z, enemy.x - center.x);
-  const turn = wrapAngle(Math.atan2(goal.z - center.z, goal.x - center.x) - current);
-  // Inside the crowd: step straight out first; outside: orbit toward the goal side.
-  const orbit = gap < radius - .2 ? radius + .3 : Math.min(gap, radius + 1);
-  const heading = gap < radius - .2 ? current : current + (turn >= 0 ? 1 : -1) * .6;
-  return clampToZone(enemy.zone, { x: center.x + Math.cos(heading) * orbit, z: center.z + Math.sin(heading) * orbit });
-}
-
 /** Index of the waypoint that ends the route segment closest to `point`. */
 export function nearestRouteSegmentEnd(route: readonly Vec[], point: Vec): number {
   let best = 1, bestGap = Infinity;
@@ -231,8 +174,6 @@ function walkRoute(ctx: EnemyTickContext, enemy: Enemy): void {
   // beside, never walking back to a waypoint it already passed while chasing.
   let remaining = pace(enemy, ctx.dt), waypoint = Math.max(enemy.pathIndex ?? 1, nearestRouteSegmentEnd(route, enemy));
   enemy.pathIndex = waypoint;
-  const detour = waypoint < route.length ? crowdBypass(ctx, enemy, route[waypoint]) : undefined;
-  if (detour) { walkTo(ctx, enemy, detour, remaining); return; }
   while (remaining > .0001 && waypoint < route.length) {
     const gap = distance(enemy, route[waypoint]);
     if (gap < .15) { waypoint++; continue; }
@@ -287,7 +228,7 @@ function stepRingFighter(ctx: EnemyTickContext, enemy: Enemy, rooted: boolean): 
     if (enemy.zone === 0) { walkRoute(ctx, enemy); return; }
     const nearest = pool[0];
     if (!nearest) return;
-    const gap = distance(enemy, nearest) || 1, hold = ringRadius(nearest, enemy) + enemyRadius(enemy) * 2;
+    const gap = distance(enemy, nearest) || 1, hold = ringRadius(nearest, enemy) + enemySpacingRadius(enemy) * 2;
     if (gap > hold + .1) walkTo(ctx, enemy, {
       x: nearest.x + (enemy.x - nearest.x) / gap * hold, z: nearest.z + (enemy.z - nearest.z) / gap * hold,
     }, Math.min(pace(enemy, ctx.dt), gap - hold));

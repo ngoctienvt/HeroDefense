@@ -105,7 +105,7 @@ export function handleCommand(state: GameState, id: string, command: Command): C
       unit.orderMode = command.order === 'stop' ? 'auto' : command.order;
       unit.stopped = command.order === 'hold';
       if (moving) {
-        const offset = (index - (units.length - 1) / 2) * 3.2;
+        const offset = (index - (units.length - 1) / 2) * 1.9;
         unit.destination = clampToZone(unit.zone, { x: command.x! + offset, z: command.z! });
       } else unit.destination = null;
     });

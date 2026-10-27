@@ -1,6 +1,9 @@
 import type { GameState, Unit, Vec, GameEvent } from '../../contracts/src/types.js';
 import { deploymentPosition, laneCenters } from './battlefield-layout.js';
 
+/** Shared running pace, independent of attack timing and room simulation speed. */
+export const MOVEMENT_SPEED_MULTIPLIER = 1.5;
+
 export const RUN_WAVES = 20;
 export const RANDOM_SUMMON_COST = 2;
 export const SUMMON_PACKS = {

@@ -1,6 +1,6 @@
 import type { Enemy, GameState, Unit, Vec } from '../../contracts/src/types.js';
-import { clampToZone, withinZone } from './battlefield-layout.js';
-import { contactDistance, enemyRadius } from './crowd-movement.js';
+import { withinZone } from './battlefield-layout.js';
+import { contactDistance, enemySpacingRadius } from './crowd-movement.js';
 import { distance } from './rules.js';
 
 /**
@@ -15,8 +15,6 @@ type Occupant = { id: string; angle: number; half: number };
 export type Rings = Map<string, Occupant[]>;
 
 const SLOT_GAP = .02;
-/** Lateral step (radians) when orbiting the ring toward a slot on another side. */
-const ORBIT_STEP = .5;
 /** A chasing enemy only drops its hero for another one this much closer. */
 export const RETARGET_MARGIN = 1.5;
 
@@ -30,7 +28,7 @@ export function ringRadius(prey: Unit, enemy: Enemy): number {
 
 /** Half of the angular width one enemy body occupies on its ring. */
 export function slotHalfWidth(prey: Unit, enemy: Enemy): number {
-  return Math.asin(Math.min(1, (enemyRadius(enemy) + SLOT_GAP) / ringRadius(prey, enemy)));
+  return Math.asin(Math.min(1, (enemySpacingRadius(enemy) + SLOT_GAP) / ringRadius(prey, enemy)));
 }
 
 /** How many bodies of this size fit around the hero (for logs and tests). */
@@ -139,19 +137,9 @@ export function refreshSlot(rings: Rings, prey: Unit, enemy: Enemy, others: read
   return true;
 }
 
-/**
- * Next point to walk toward. Far from the slot side, the enemy orbits the ring
- * in short arcs instead of walking through the hero's body.
- */
+/** Walk directly to the reserved slot, crossing other bodies along the way. */
 export function slotApproachGoal(prey: Unit, enemy: Enemy, angle: number): Vec {
-  const target = slotPoint(prey, enemy, angle);
-  const gap = distance(enemy, prey), radius = ringRadius(prey, enemy);
-  const current = Math.atan2(enemy.z - prey.z, enemy.x - prey.x);
-  const turn = wrapAngle(angle - current);
-  if (Math.abs(turn) <= ORBIT_STEP * .7 || gap < .01) return target;
-  const orbit = Math.max(radius + .2, Math.min(gap, radius + 1.2));
-  const heading = current + Math.sign(turn) * ORBIT_STEP;
-  return clampToZone(enemy.zone, { x: prey.x + Math.cos(heading) * orbit, z: prey.z + Math.sin(heading) * orbit });
+  return slotPoint(prey, enemy, angle);
 }
 
 /** In position to strike: on (or angularly within) its slot and inside attack reach. */

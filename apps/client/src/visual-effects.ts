@@ -16,6 +16,7 @@ import { debug } from './debug.js';
 import { VisualMaterials } from './visual-materials.js';
 import { isFireSkill, VisualFire } from './visual-fire.js';
 import { TIER_VISUALS } from './visual-tier-profiles.js';
+import { basicAttackHeroId, paintBasicAttack, paintEnemyBasicAttack } from './visual-basic-attack.js';
 import { extractHeroIdFromSkill, isTierSkill, paintTierAbility, paintTierAttack, paintTierCast,
   type TierSkillPainter } from './visual-tier-skills.js';
 import { VisualTierParticles } from './visual-tier-particles.js';
@@ -101,6 +102,7 @@ import { VisualNhienDang } from './visual-nhien-dang.js';
 import { SharedShield } from './visual-shared-shield.js';
 import { SharedStatusFx } from './visual-shared-status.js';
 import type { SharedMark } from './visual-shared-status.js';
+import { isSharedHoldKind } from './visual-shared-status-timeline.js';
 import type { GameState } from '../../../packages/contracts/src/types.js';
 
 type EffectKind = 'ring' | 'orb' | 'beam' | 'halo' | 'spark' | 'flare' | 'glyph' | 'decal';
@@ -429,6 +431,11 @@ export class VisualEffects {
       debug('visual.tier34.ability', { eventId: event.id, skillId: event.skillId, targets: targets.length });
       return;
     }
+    if ((event.kind === 'attack' || event.kind === 'trait')
+      && paintBasicAttack(this.tierPainter(), event, origin?.clone() ?? position.clone(), position.clone())) {
+      debug('visual.basic.attack', { eventId: event.id, skillId: event.skillId, geometry: event.geometry, crit: event.isCrit === true });
+      return;
+    }
     if ((event.kind === 'attack' || event.kind === 'trait') && tier34HeroId(event.skillId)) {
       paintTier34Attack(this.tierPainter(), event, origin?.clone() ?? position.clone(), position.clone());
       debug('visual.tier34.attack', { eventId: event.id, skillId: event.skillId });
@@ -639,6 +646,12 @@ export class VisualEffects {
       return;
     }
 
+    // Hero-skinned enemies (battlefield names the skin in the skill id) hit with that hero's look, smaller.
+    const skin = /^monster-attack-(h[0-9A-Z]{3})$/.exec(id ?? '')?.[1];
+    if (skin && paintEnemyBasicAttack(this.tierPainter(), event, casterPos.clone(), position.clone(), skin)) {
+      debug('visual.basic.enemy', { eventId: event.id, skin });
+      return;
+    }
     if (id === 'monster-attack-m002' || (id?.startsWith('monster-attack-h') && origin && Vector3.DistanceSquared(origin, position) > 9)) {
       const impact = position.clone();
       const arrive = () => {
@@ -1110,7 +1123,21 @@ export class VisualEffects {
     if (heroId === 'h00R' && kind === 'clone') this.tonNgoKhong.markClone(id, at, remaining, this.reduced.matches);
     if (heroId === 'h00S' && kind === 'ground' && _radius !== undefined) this.duongTang.markGround(id, at, _radius, remaining, this.reduced.matches);
   }
+  /** `?debug=1` `__vfxReplay(id,'attack')`: a plain hit, a critical hit, then one swing that lands on three monsters in the same tick. */
+  replayBasicAttack(heroId: string, origin: Vector3, at: Vector3): boolean {
+    const skillId = `trait-${heroId}`;
+    const side = new Vector3(-(at.z - origin.z), 0, at.x - origin.x).normalize().scale(1.2);
+    const swing = (id: number, tick: number, isCrit: boolean, hits: Vector3[]): void => {
+      hits.forEach((hit, index) => this.show({ id: id + index, kind: 'attack', source: `replay-${heroId}`, at: tick, skillId, isCrit }, hit.clone(), origin.clone()));
+    };
+    swing(-40, 1, false, [at]);
+    setTimeout(() => swing(-41, 2, true, [at]), 450);
+    setTimeout(() => swing(-42, 3, false, [at, at.add(side), at.subtract(side)]), 900);
+    debug('visual.basic.replay', { heroId });
+    return true;
+  }
   replayTier4(heroId: string, kind: string, origin: Vector3, at: Vector3): boolean {
+    if (kind === 'attack' && basicAttackHeroId(`trait-${heroId}`)) return this.replayBasicAttack(heroId, origin, at);
     if (heroId === 'h03V') return this.batBoThienLong.replay(origin, at, this.reduced.matches, kind);
     if (heroId === 'h03U') return this.kimThanLaHan.replay(origin, at, this.reduced.matches, kind);
     if (heroId === 'h03T') return this.tinhDan.replay(origin, at, this.reduced.matches, kind);
@@ -1147,6 +1174,7 @@ export class VisualEffects {
       this.tinhVe.markBarrage(id, at, radius, remaining, this.reduced.matches);
   }
   replayTier3(heroId: string, kind: string, origin: Vector3, at: Vector3): boolean {
+    if (kind === 'attack' && basicAttackHeroId(`trait-${heroId}`)) return this.replayBasicAttack(heroId, origin, at);
     if (heroId === 'h03S') return this.trieuCongMinh.replay(origin, at, this.reduced.matches, kind);
     if (heroId === 'h03R') return this.khongTuoc.replay(origin, this.reduced.matches, kind);
     if (heroId === 'h00P') return this.nguuMaVuong.replay(origin, this.reduced.matches, kind);
@@ -1295,7 +1323,7 @@ export class VisualEffects {
    */
   markSharedStatus(id: string, at: Vector3, kind: SharedMark): void {
     if (kind === 'shield') this.sharedShield.mark(id, at, this.reduced.matches);
-    else if (kind === 'stun' || kind === 'freeze' || kind === 'invulnerable') this.sharedStatus.mark(kind, id, at, this.reduced.matches);
+    else if (isSharedHoldKind(kind)) this.sharedStatus.mark(kind, id, at, this.reduced.matches);
     else if (isStatusMarkKind(kind)) this.statusMarks.mark(kind, id, at);
   }
   /** One-shot shared sheets on a real event: `heal` on the receiving ally, `revive` where the ally stands up. */

@@ -10,31 +10,30 @@ export function unitRadius(unit: Unit): number {
 }
 
 export function unitSpacingRadius(unit: Unit): number {
-  if (unit.summonKind === 'ancient-tree') return 1.8;
-  return (unit.block && unit.block > 0) ? 1.55 : 1.4;
+  return unitRadius(unit);
 }
 
 /** Distance between body centers when an enemy and a unit can meet without overlapping. */
 export function contactDistance(unit: Unit, enemy: Enemy): number {
-  return unitSpacingRadius(unit) + enemyRadius(enemy);
+  return unitSpacingRadius(unit) + enemySpacingRadius(enemy);
 }
 
-/** Repair deep overlaps from teleports and knockback; ordinary movement avoids footprints first. */
-export function resolveUnitCollisions(units: Iterable<Unit>): void {
+/** Separate settled bodies, allowing walkers to cross without being pushed sideways. */
+export function resolveUnitCollisions(units: Iterable<Unit>, moving: ReadonlySet<string> = new Set()): void {
   const active = Array.from(units).filter(unit => unit.hp > 0 && unit.respawn <= 0
     && (unit.slot >= 0 || unit.summonDuration !== undefined));
   for (let pass = 0; pass < 2; pass++) for (let i = 0; i < active.length; i++) {
     const first = active[i];
     for (let j = i + 1; j < active.length; j++) {
       const second = active[j];
-      if (first.zone !== second.zone) continue;
+      if (first.zone !== second.zone || moving.has(first.id) || moving.has(second.id)) continue;
       const dx = second.x - first.x, dz = second.z - first.z;
       const minDistance = unitRadius(first) + unitRadius(second);
       const distance = Math.hypot(dx, dz);
       if (distance >= minDistance) continue;
       const nx = distance > .0001 ? dx / distance : first.id < second.id ? -1 : 1;
       const nz = distance > .0001 ? dz / distance : 0;
-      const push = Math.min(.4, (minDistance - distance) * .35);
+      const push = Math.min(.4, minDistance - distance + .001);
       const priority = (unit: Unit) => unit.summonKind === 'ancient-tree' ? 3
         : unit.stopped || unit.orderMode === 'hold' ? 2 : !unit.destination && !unit.target ? 1 : 0;
       const firstPriority = priority(first), secondPriority = priority(second);
@@ -50,8 +49,8 @@ export function resolveUnitCollisions(units: Iterable<Unit>): void {
 }
 
 /**
- * Boss footprint matches the painted body (about ±3.3 world units at leg height for the
- * 2× boss sprites), so heroes fight shoulder to shoulder with it instead of standing inside it.
+ * Visual boss radius (about ±3.3 world units for 2× sprites), also used by boss skill reach.
+ * Standing clearance is deliberately smaller and belongs to enemySpacingRadius.
  */
 export const BOSS_BODY_RADIUS = 3.3;
 /** Growth over the previous 2.3 footprint; boss skill radii (measured from the boss centre) add it. */
@@ -73,6 +72,11 @@ export function enemyRadius(enemy: Enemy): number {
   return monsterRadius(enemy.monsterId, enemy.kind, enemy.rank);
 }
 
+/** Compact standing footprint; keep visual/boss skill radii unchanged. */
+export function enemySpacingRadius(enemy: Enemy): number {
+  return enemyRadius(enemy) * .65;
+}
+
 /** Step away from a nearby target while staying in the current combat area. */
 export function retreatFromTarget(mover: Vec, target: Vec, amount: number, zone: number): Vec {
   const dx = mover.x - target.x, dz = mover.z - target.z;
@@ -81,13 +85,9 @@ export function retreatFromTarget(mover: Vec, target: Vec, amount: number, zone:
   return clampToZone(zone, { x: mover.x + dx / distance * amount, z: mover.z + dz / distance * amount });
 }
 
-/**
- * Soft separation relaxation resolves enemy overlaps every tick without erratic physics.
- * Anchored enemies (swinging or holding a ring slot) yield less than walkers, so a crowd
- * flows around the ring instead of shoving the attackers off it. Heroes are never pushed.
- */
+/** Resolve settled enemy overlaps; moving bodies pass through either faction freely. */
 export function resolveSoftCollisions(enemies: Iterable<Enemy>, heroes: Iterable<Unit> = [],
-  anchored: ReadonlySet<string> = new Set()): void {
+  anchored: ReadonlySet<string> = new Set(), moving: ReadonlySet<string> = new Set()): void {
   const activeEnemies: Enemy[] = [];
   for (const e of enemies) {
     if (e.hp > 0) activeEnemies.push(e);
@@ -100,13 +100,13 @@ export function resolveSoftCollisions(enemies: Iterable<Enemy>, heroes: Iterable
     const grid = new SpatialGrid(activeEnemies);
     for (const e1 of activeEnemies) {
       for (const e2 of grid.near(e1, e1.zone, reach)) {
-        if (e2.id <= e1.id || e1.zone !== e2.zone) continue;
-        const minDist = enemyRadius(e1) + enemyRadius(e2);
+        if (e2.id <= e1.id || e1.zone !== e2.zone || moving.has(e1.id) || moving.has(e2.id)) continue;
+        const minDist = enemySpacingRadius(e1) + enemySpacingRadius(e2);
         const dx = e2.x - e1.x, dz = e2.z - e1.z;
         const distSq = dx * dx + dz * dz;
         if (distSq >= minDist * minDist) continue;
         const dist = Math.sqrt(distSq);
-        const push = Math.min(.3, (minDist - dist) * .35);
+        const push = Math.min(.3, minDist - dist + .001);
         const nx = dist > .0001 ? dx / dist : -1;
         const nz = dist > .0001 ? dz / dist : 0;
         const first = anchored.has(e1.id), second = anchored.has(e2.id);
@@ -116,7 +116,7 @@ export function resolveSoftCollisions(enemies: Iterable<Enemy>, heroes: Iterable
       }
     }
     for (const enemy of activeEnemies) for (const hero of heroList) {
-      if (enemy.zone !== hero.zone) continue;
+      if (enemy.zone !== hero.zone || moving.has(enemy.id) || moving.has(hero.id)) continue;
       const dx = enemy.x - hero.x, dz = enemy.z - hero.z;
       const minDist = contactDistance(hero, enemy);
       const dist = Math.hypot(dx, dz);

@@ -1,0 +1,46 @@
+{
+  "family": "human",
+  "role": "boss",
+  "id": "art-stone-matriarch",
+  "name": "Thạch Cơ Nương Nương",
+  "origin": "giữ thiết kế",
+  "brief": "Nữ giáp nham thạch, vương miện cạnh đá, vai lệch.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-stone-matriarch/generated/master-01.png",
+  "sha256": "d814e0d07690461434c368eb52313133187ad9dca148bba5727eb6a96c6ab822",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    27,
+    0,
+    1218,
+    1254
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-de5d6c10-a22e-4f38-b192-1192d0b8c62c.png",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  },
+  "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation."
+}

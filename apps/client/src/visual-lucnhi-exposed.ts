@@ -15,7 +15,7 @@ const SPIKE_ANGLES = [90, 150, 210, 270, 330, 30].map(degrees => degrees * Math.
  * monster, drawn from the snapshot marker `exposed` (every frame). Its age counts from the first marked frame and is never
  * reset by re-marks. When the marker disappears the six-point seal splits into its six strokes that fly out along their
  * spikes (wedge frames cut by process-art.py); at most MAX_SPLITTING split at once (a whole assault expires together),
- * the rest and reduced motion fade out plainly. Armour break uses the shared `armor-break` mark, never this art.
+ * the rest and reduced motion fade out plainly. Armour break uses the shared red body tint (visual-status-tint.ts), never this art.
  */
 export class LucnhiExposed {
   private seals = new Map<string, Seal>();

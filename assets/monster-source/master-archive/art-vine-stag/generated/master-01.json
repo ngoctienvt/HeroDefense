@@ -1,0 +1,29 @@
+{
+  "family": "quadruped",
+  "role": "mob",
+  "id": "art-vine-stag",
+  "name": "Lộc Yêu Dây Leo",
+  "origin": "giữ thiết kế",
+  "brief": "Hươu bốn chân, gạc lệch, dây leo mảng lớn.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "pending",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-7b4a7367-7a4a-4ddb-a9a8-94ea5cfd5a54.png",
+  "sha256": "a94e1ce73a2e29dd7e8b83c7a83fb02782b069ef222b0b6da26dc6eeb3ef1b4b",
+  "dimensions": [
+    1254,
+    1254
+  ]
+}

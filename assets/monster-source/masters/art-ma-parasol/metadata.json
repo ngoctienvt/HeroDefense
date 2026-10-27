@@ -1,0 +1,46 @@
+{
+  "family": "human",
+  "role": "boss",
+  "id": "art-ma-parasol",
+  "name": "Ma Gia — Bảo Tán",
+  "origin": "giữ thiết kế",
+  "brief": "Giáp dài tím/đen/vàng, tán sau vai có mặt dưới, cán/tay rõ.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-ma-parasol/generated/master-01.png",
+  "sha256": "22c63950caca54d8aef1691b4a7b37e2cae5cb78e52abe334f181c8aa97beb3a",
+  "dimensions": [
+    1024,
+    1536
+  ],
+  "alphaExtrema": [
+    0,
+    254
+  ],
+  "alphaBounds": [
+    0,
+    15,
+    1008,
+    1520
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-2b9478ab-98b8-4a0d-b59d-2d5730f356e2.png",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  },
+  "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation."
+}
