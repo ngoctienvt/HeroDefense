@@ -215,7 +215,7 @@ describe('synergies, formations and movement', () => {
     const state = game(1), first = deployed(state, 'h001', 0), second = deployed(state, 'h002', 1);
     start(state);
     command(state, { type: 'order', order: 'move', unitIds: [first.id, second.id], x: 0, z: 0 });
-    expect(Math.abs(first.destination!.x - second.destination!.x)).toBe(3.2);
+    expect(Math.abs(first.destination!.x - second.destination!.x)).toBe(1.9);
   });
 });
 

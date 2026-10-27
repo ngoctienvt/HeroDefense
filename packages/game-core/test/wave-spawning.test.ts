@@ -84,16 +84,18 @@ describe('20-wave spawning and shared bosses', () => {
     }
   });
 
-  it('routes heroes and monsters around blocking bodies and separates overlaps', () => {
+  it('lets heroes and monsters cross blocking bodies and separates settled overlaps', () => {
     const state = game(1), mover = deployed(state, 'h003', 0), blocker = deployed(state, 'h001', 1);
     mover.x = -5; mover.z = 10; blocker.x = 0; blocker.z = 10; blocker.stopped = true;
     walkUnitWithPathing(mover, { x: 5, z: 10 }, 2, [mover, blocker], []);
-    expect(Math.abs(mover.z - 10)).toBeGreaterThan(0.1);
+    expect(mover.z).toBe(10);
+    expect(mover.x).toBe(-3);
 
     const walker = enemy(state, mover, { x: 0, z: -20, monsterId: 'm001' });
     const front = enemy(state, mover, { x: 0, z: -18, monsterId: 'm003', rank: 'elite' });
     walkEnemyWithPathing(walker, { x: 0, z: 0 }, 1.5, [], [walker, front]);
-    expect(Math.abs(walker.x)).toBeGreaterThan(0.05);
+    expect(walker.x).toBe(0);
+    expect(walker.z).toBe(-18.5);
 
     blocker.x = mover.x + 0.1; blocker.z = mover.z;
     resolveUnitCollisions([mover, blocker]);

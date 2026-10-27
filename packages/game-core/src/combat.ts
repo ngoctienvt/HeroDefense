@@ -1,6 +1,6 @@
 import { HERO_BY_ID } from '../../../content/catalog.js';
 import type { AbilityEffect, Enemy, GameState, Unit } from '../../contracts/src/types.js';
-import { distance, event, isDeployed, slotPosition } from './rules.js';
+import { distance, event, isDeployed, MOVEMENT_SPEED_MULTIPLIER, slotPosition } from './rules.js';
 import { attackInterval, bonuses, effectiveUnitAttack, skillDamageMultiplier } from './stats.js';
 import { applyAbilityStatus, applyEnemyStatus, effectiveEnemyArmor, knockEnemyBack } from './combat-status.js';
 import { basicAttack, passiveTraits } from './combat-traits.js';
@@ -791,7 +791,21 @@ function guardianPull(state: GameState, unit: Unit): boolean {
   return state.phase === 'combat' && (role === 'guardian' || role === 'warrior');
 }
 
+const loggedMovement = new WeakSet<GameState>();
+
 export function combatStep(state: GameState, dt: number): void {
+  if (!loggedMovement.has(state)) {
+    loggedMovement.add(state);
+    console.debug(JSON.stringify({ event: 'movement.config', speedMultiplier: MOVEMENT_SPEED_MULTIPLIER,
+      passThroughBodies: true, separation: 'settled-only' }));
+  }
+  const origins = new Map([...Object.values(state.units), ...Object.values(state.enemies)]
+    .map(body => [body.id, { x: body.x, z: body.z, zone: body.zone }]));
+  const moving = new Set<string>();
+  const markMoving = (body: Unit | Enemy) => {
+    const before = origins.get(body.id);
+    if (before && (before.zone !== body.zone || Math.hypot(body.x - before.x, body.z - before.z) > .0001)) moving.add(body.id);
+  };
   stepLucnhiAssault(state, dt, (caster, enemy, damage) =>
     hurtAbilityEnemy(state, caster, enemy, damage, 999));
   stepTierBarrages(state, dt, (caster, enemy, damage, trueDamage) =>
@@ -979,7 +993,7 @@ export function combatStep(state: GameState, dt: number): void {
     const mode = unit.orderMode ?? (unit.stopped ? 'hold' : unit.destination ? 'move' : 'auto');
     if (unit.stopped && !unit.orderMode) continue;
     if (mode === 'move' && unit.destination) {
-      if (walkUnitWithPathing(unit, unit.destination, hero.speed * dt, Object.values(state.units), Object.values(state.enemies))) {
+      if (walkUnitWithPathing(unit, unit.destination, hero.speed * MOVEMENT_SPEED_MULTIPLIER * dt, Object.values(state.units), Object.values(state.enemies))) {
         unit.guardPosition = { x: unit.x, z: unit.z }; unit.destination = null; unit.orderMode = 'auto';
       }
       continue;
@@ -1030,7 +1044,7 @@ export function combatStep(state: GameState, dt: number): void {
       if (inReach) { target = inReach; unit.target = inReach.id; }
     }
     if (!target && mode === 'attack-move' && unit.destination) {
-      if (walkUnitWithPathing(unit, unit.destination, hero.speed * dt, Object.values(state.units), Object.values(state.enemies))) {
+      if (walkUnitWithPathing(unit, unit.destination, hero.speed * MOVEMENT_SPEED_MULTIPLIER * dt, Object.values(state.units), Object.values(state.enemies))) {
         unit.guardPosition = { x: unit.x, z: unit.z }; unit.destination = null; unit.orderMode = 'auto';
       }
       continue;
@@ -1049,7 +1063,7 @@ export function combatStep(state: GameState, dt: number): void {
         }
         if (unit.comboCount === 1) dash = 3.0;
       }
-      const step = hero.speed * dt * dash, fromX = unit.x, fromZ = unit.z;
+      const step = hero.speed * MOVEMENT_SPEED_MULTIPLIER * dt * dash, fromX = unit.x, fromZ = unit.z;
       walkUnitWithPathing(unit, target, step, Object.values(state.units), Object.values(state.enemies));
       if ((mode === 'auto' || mode === 'attack-move')
         && heroChaseStalled(unit, Math.hypot(unit.x - fromX, unit.z - fromZ) < step * .2, dt)) {
@@ -1091,7 +1105,8 @@ export function combatStep(state: GameState, dt: number): void {
     }
   }
   const deployedUnits = Object.values(state.units).filter(unit => isDeployed(unit) && !unit.shadowAssault);
-  resolveUnitCollisions(deployedUnits);
+  deployedUnits.forEach(markMoving);
+  resolveUnitCollisions(deployedUnits, moving);
   const enemyList = Object.values(state.enemies);
   const enemyCtx: EnemyTickContext = {
     state, dt, units: deployedUnits,
@@ -1197,7 +1212,8 @@ export function combatStep(state: GameState, dt: number): void {
     stepEnemyBehavior(enemyCtx, enemy);
   }
   if (state.phase === 'combat') {
-    resolveSoftCollisions(Object.values(state.enemies), deployedUnits, enemyCtx.anchored);
+    Object.values(state.enemies).forEach(markMoving);
+    resolveSoftCollisions(Object.values(state.enemies), deployedUnits, enemyCtx.anchored, moving);
   }
   if (state.groundEffects?.length) {
     stepTruongBolts(state, dt, (source, enemy, damage) =>

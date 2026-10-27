@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Enemy, GameState, Unit } from '../../contracts/src/types.js';
 import { combatStep, hurtEnemy } from '../src/combat.js';
 import { BOSS_KNOCKBACK_SHARE, knockEnemyBack } from '../src/combat-status.js';
-import { BOSS_BODY_RADIUS, contactDistance, enemyRadius } from '../src/crowd-movement.js';
+import { BOSS_BODY_RADIUS, contactDistance, enemySpacingRadius, unitSpacingRadius } from '../src/crowd-movement.js';
 import { enemyAttackInterval, enemyWindupSeconds } from '../src/enemy-behavior.js';
 import { ringCapacity, ringRadius } from '../src/enemy-engagement.js';
 import { nearestRouteSegmentEnd } from '../src/enemy-behavior.js';
@@ -55,7 +55,7 @@ describe('melee surround', () => {
     expect(ring.some(foe => foe.z > hero.z + 1)).toBe(true);
     for (let i = 0; i < ring.length; i++) for (let j = i + 1; j < ring.length; j++) {
       const gap = Math.hypot(ring[i].x - ring[j].x, ring[i].z - ring[j].z);
-      expect(gap).toBeGreaterThan(enemyRadius(ring[i]) + enemyRadius(ring[j]) - .35);
+      expect(gap).toBeGreaterThan(enemySpacingRadius(ring[i]) + enemySpacingRadius(ring[j]) - .35);
     }
   });
 
@@ -157,7 +157,7 @@ describe('hero auto-acquire', () => {
     const { state, hero } = arena();
     hero.orderMode = 'auto'; hero.cooldown = 0;
     const far = monster(state, hero, { x: hero.x, z: hero.z - 9, speed: 0 });
-    const near = monster(state, hero, { x: hero.x + 2.9, z: hero.z, speed: 0 });
+    const near = monster(state, hero, { x: hero.x + 1.9, z: hero.z, speed: 0 });
     hero.target = far.id;
     const events = run(state, .05);
     expect(events.some(entry => entry.kind === 'attack' && entry.source === hero.id && entry.target === near.id)).toBe(true);
@@ -232,7 +232,7 @@ describe('hero leash', () => {
     const { state, hero } = arena();
     hero.orderMode = 'auto'; hero.cooldown = 0;
     hero.guardPosition = { x: hero.x, z: hero.z + 20 };
-    const next = monster(state, hero, { x: hero.x + 2.9, z: hero.z, speed: 0 });
+    const next = monster(state, hero, { x: hero.x + 1.9, z: hero.z, speed: 0 });
     const z = hero.z;
     const events = run(state, .05);
     expect(events.some(entry => entry.kind === 'attack' && entry.source === hero.id && entry.target === next.id)).toBe(true);
@@ -251,20 +251,20 @@ describe('hero leash', () => {
 });
 
 describe('boss footprint', () => {
-  it('stops a melee hero at the painted edge of the boss body, not inside it', () => {
+  it('keeps compact standing clearance from a boss without changing its visual radius', () => {
     const { state, hero } = arena();
     hero.orderMode = 'auto';
     const boss = enemy(state, hero, { monsterId: 'b001', kind: 'boss', x: hero.x + 9, z: hero.z, speed: 0, attack: 0 });
     run(state, 4);
     expect(Math.hypot(hero.x - boss.x, hero.z - boss.z)).toBeGreaterThanOrEqual(contactDistance(hero, boss) - .05);
-    expect(contactDistance(hero, boss)).toBeGreaterThanOrEqual(BOSS_BODY_RADIUS + 1.4);
+    expect(contactDistance(hero, boss)).toBeCloseTo(unitSpacingRadius(hero) + BOSS_BODY_RADIUS * .65);
   });
 });
 
 describe('enemy swing timing', () => {
   it('winds up first and lands the hit at the damage point', () => {
     const { state, hero } = arena();
-    const foe = monster(state, hero, { x: hero.x + 2.9, z: hero.z, attack: 7, speed: 0, cooldown: 0 });
+    const foe = monster(state, hero, { x: hero.x + 1.9, z: hero.z, attack: 7, speed: 0, cooldown: 0 });
     const hp = hero.hp;
     const first = run(state, .05);
     expect(first.some(entry => entry.kind === 'cast' && entry.skillId === 'monster-windup'
@@ -277,7 +277,7 @@ describe('enemy swing timing', () => {
 
   it('cancels a swing when the enemy is stunned during the wind-up', () => {
     const { state, hero } = arena();
-    const foe = monster(state, hero, { x: hero.x + 2.9, z: hero.z, attack: 7, speed: 0, cooldown: 0 });
+    const foe = monster(state, hero, { x: hero.x + 1.9, z: hero.z, attack: 7, speed: 0, cooldown: 0 });
     run(state, .05);
     expect(foe.windup).toBeDefined();
     foe.stun = 1;
@@ -289,7 +289,7 @@ describe('enemy swing timing', () => {
   it('keeps its attack rhythm while it is being hit every tick', () => {
     const { state, hero } = arena();
     hero.attack = 0;
-    const foe = monster(state, hero, { x: hero.x + 2.9, z: hero.z, attack: 1, speed: 0, cooldown: 0 });
+    const foe = monster(state, hero, { x: hero.x + 1.9, z: hero.z, attack: 1, speed: 0, cooldown: 0 });
     const events = run(state, 7, () => hurtEnemy(state, hero, foe, 1));
     const hits = events.filter(entry => entry.kind === 'attack' && entry.source === foe.id).length;
     expect(hits).toBeGreaterThanOrEqual(Math.floor(7 / enemyAttackInterval(foe)) - 1);
@@ -299,11 +299,11 @@ describe('enemy swing timing', () => {
 describe('knockback', () => {
   it('pushes away from the attacker and leaves the swing running', () => {
     const { state, hero } = arena();
-    const foe = monster(state, hero, { x: hero.x + 2.9, z: hero.z, speed: 0, cooldown: 0 });
+    const foe = monster(state, hero, { x: hero.x + 1.9, z: hero.z, speed: 0, cooldown: 0 });
     run(state, .05);
     const windup = foe.windup?.remaining;
     knockEnemyBack(state, foe, .6, hero);
-    expect(foe.x).toBeCloseTo(hero.x + 3.5);
+    expect(foe.x).toBeCloseTo(hero.x + 2.5);
     expect(foe.z).toBeCloseTo(hero.z);
     expect(foe.windup?.remaining).toBe(windup);
     const events = run(state, enemyWindupSeconds(foe));
