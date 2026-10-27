@@ -5,7 +5,11 @@ import { segmentFrame } from './visual-kit-timeline.js';
  * silver-blue design per effect, whatever the hero's element. Data + pure phase math; meshes live in visual-shared-status.ts.
  * Hold sheets are P16 (form 4 · hold 8 looping · break 4); `once` sheets play start to end on a real event.
  */
-export type SharedFxKind = 'stun' | 'freeze' | 'invulnerable' | 'heal' | 'revive';
+export type SharedFxKind = 'stun' | 'freeze' | 'invulnerable' | 'heal' | 'revive' | 'burn' | 'poison' | 'armor-break';
+/** Hold sheets that sit on a body (behind it); `heal` and `revive` are one-shots. */
+export const SHARED_HOLD_KINDS = ['stun', 'freeze', 'invulnerable', 'burn', 'poison', 'armor-break'] as const satisfies readonly SharedFxKind[];
+export const isSharedHoldKind = (kind: string): kind is (typeof SHARED_HOLD_KINDS)[number] =>
+  (SHARED_HOLD_KINDS as readonly string[]).includes(kind);
 export type SharedFxSpec = {
   url: string; columns: number; rows: number; frames: number;
   /** Plane edge in world units (cells are square). */
@@ -22,6 +26,10 @@ export const SHARED_FX: Readonly<Record<SharedFxKind, SharedFxSpec>> = {
   stun: { url: '/assets/vfx-shared-stun.webp', columns: 4, rows: 4, frames: 16, size: 3.4, anchor: 'head', layer: 'front', mode: 'hold', secondsPerFrame: .09 },
   freeze: { url: '/assets/vfx-shared-freeze.webp', columns: 4, rows: 4, frames: 16, size: 5.6, anchor: 'ground', layer: 'rear', mode: 'hold', secondsPerFrame: .08 },
   invulnerable: { url: '/assets/vfx-shared-invulnerable.webp', columns: 4, rows: 4, frames: 16, size: 5.6, anchor: 'body', layer: 'rear', mode: 'hold', secondsPerFrame: .09 },
+  // Body sheets (assets/vfx-source/shared-status-body/author.py): ground line at .957 of the cell, flames/bubbles/shards rise from it.
+  burn: { url: '/assets/vfx-shared-burn.webp', columns: 4, rows: 4, frames: 16, size: 5, anchor: 'ground', layer: 'rear', mode: 'hold', secondsPerFrame: .08 },
+  poison: { url: '/assets/vfx-shared-poison.webp', columns: 4, rows: 4, frames: 16, size: 5, anchor: 'ground', layer: 'rear', mode: 'hold', secondsPerFrame: .1 },
+  'armor-break': { url: '/assets/vfx-shared-armor-break.webp', columns: 4, rows: 4, frames: 16, size: 5, anchor: 'ground', layer: 'rear', mode: 'hold', secondsPerFrame: .11 },
   heal: { url: '/assets/vfx-shared-heal.webp', columns: 4, rows: 2, frames: 8, size: 4.4, anchor: 'ground', layer: 'rear', mode: 'once', secondsPerFrame: .085 },
   revive: { url: '/assets/vfx-shared-revive.webp', columns: 4, rows: 4, frames: 16, size: 5.6, anchor: 'ground', layer: 'rear', mode: 'once', secondsPerFrame: .07 },
 };

@@ -670,7 +670,7 @@ export class Battlefield {
       return this.effects.replayTier4(heroId, kind ?? 'ultimate', origin, at);
     }));
     const unregisterLongVuongReplay = registerReplay('h00Q', (kind, x, z) => {
-      if (kind !== undefined && kind !== 'ultimate' && kind !== 'skill') return false;
+      if (kind !== undefined && kind !== 'ultimate' && kind !== 'skill' && kind !== 'attack') return false;
       if ((x !== undefined && !Number.isFinite(x)) || (z !== undefined && !Number.isFinite(z))) return false;
       const actor = [...this.actors.values()].find(a => a.heroId === 'h00Q' && a.zone === this.zone && a.hp > 0 && !a.dying);
       if (!actor) return false;
@@ -682,7 +682,7 @@ export class Battlefield {
       const at = x !== undefined && z !== undefined ? new Vector3(x, 0, z) : direction ? origin.add(direction.scale(8)) : undefined;
       if (!at) return false;
       this.focusOn((origin.x + at.x) / 2, (origin.z + at.z) / 2);
-      return this.effects.replayLongVuong(origin, at);
+      return kind === 'attack' ? this.effects.replayBasicAttack('h00Q', origin, at) : this.effects.replayLongVuong(origin, at);
     });
     const unregisterPhoenixReplay = registerReplay('h041', (kind, x, z) => {
       if (kind !== undefined && !['ultimate', 'lobby', 'ground', 'rebirth'].includes(kind)) return false;
@@ -1247,7 +1247,8 @@ export class Battlefield {
           .filter((ally): ally is VisualActor => Boolean(ally && ally.heroId && ally.zone === this.zone && !ally.dying))
           .map(ally => ally.root.position.clone()) : []);
       if (source?.zone !== this.zone && target?.zone !== this.zone && hits.length === 0
-        && support.length === 0 && !((isModernTier3Pulse(event.skillId) || isModernTier4Pulse(event.skillId) || event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S')
+        && support.length === 0 && !((isModernTier3Pulse(event.skillId) || isModernTier4Pulse(event.skillId) || event.skillId === 'tier3-tier4-h03Q' || event.skillId === 'tier3-tier4-h03S'
+          || (event.kind === 'trait' && event.skillId === 'water-shield-burst-h00J' && Number.isFinite(event.x) && Number.isFinite(event.z)))
           && event.zone === this.zone)) return;
       const center = event.x !== undefined && event.z !== undefined
         ? new Vector3(event.x, 0, event.z) : isModernTier3Event(event.skillId) || isModernTier4Event(event.skillId)
@@ -1347,7 +1348,10 @@ export class Battlefield {
       const enemyHits = isEnemySkillEvent(event.skillId)
         ? affected.map(id => this.actors.get(id)).filter((hit): hit is VisualActor => Boolean(hit && hit.zone === this.zone)).map(hit => hit.root.position.clone())
         : undefined;
-      this.effects.show(event, position, source?.root.position, enemyHits ?? chain);
+      // A hero-skinned enemy's plain hit carries no skill id: name the skin so the effects pick that hero's look.
+      const shown: GameEvent = event.kind === 'attack' && !event.skillId && source?.skinHeroId && !source.heroId
+        ? { ...event, skillId: `monster-attack-${source.skinHeroId}` } : event;
+      this.effects.show(shown, position, source?.root.position, enemyHits ?? chain);
     }
     if (event.kind === 'ability' && event.ability === 'chain') {
       let previous = source?.root.position;

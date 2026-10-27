@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { sharedStatuses } from '../src/battlefield-shared-status.js';
 import { STATUS_MARKS } from '../src/visual-status-marks.js';
-import { FX_BREAK_SECONDS, FX_FORM_FRAMES, holdDone, holdFrame, onceFrame, onceSeconds, SHARED_FX } from '../src/visual-shared-status-timeline.js';
+import { FX_BREAK_SECONDS, FX_FORM_FRAMES, holdDone, holdFrame, isSharedHoldKind, onceFrame, onceSeconds, SHARED_FX } from '../src/visual-shared-status-timeline.js';
 
 vi.stubGlobal('location', { search: '' });
 const ASSETS = resolve(__dirname, '../public/assets');
@@ -84,7 +84,19 @@ describe('shared status rules', () => {
   });
 
   it('has a status mark row for each Codex mark', () => {
-    for (const kind of ['seal', 'attack-down', 'vulnerable', 'damage-reduction', 'root', 'poison', 'burn', 'soul-link', 'armor-up', 'berserk'] as const)
+    for (const kind of ['seal', 'attack-down', 'vulnerable', 'damage-reduction', 'root', 'soul-link', 'armor-up', 'berserk'] as const)
       expect(STATUS_MARKS[kind], kind).toBeDefined();
+  });
+
+  it('draws burn, poison and armor-break as body sheets that loop 4 + 8 + 4', () => {
+    for (const kind of ['burn', 'poison', 'armor-break'] as const) {
+      const spec = SHARED_FX[kind];
+      expect(isSharedHoldKind(kind), kind).toBe(true);
+      expect([spec.frames, spec.columns * spec.rows, spec.mode, spec.layer, spec.anchor], kind).toEqual([16, 16, 'hold', 'rear', 'ground']);
+      expect(holdFrame(spec, 0, undefined, false)).toBe(0);
+      expect(holdFrame(spec, 9, 0, false)).toBe(12);
+      expect((STATUS_MARKS as Record<string, unknown>)[kind], kind).toBeUndefined();
+    }
+    expect(isSharedHoldKind('heal')).toBe(false);
   });
 });

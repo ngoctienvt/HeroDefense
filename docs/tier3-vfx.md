@@ -21,6 +21,16 @@ Replay `__vfxReplay('h03Q')` tại `?debug=1`, có tướng sống trong khu;2 q
 
 ## Trư Bát Giới h00J
 
+### Sửa chi tiết ngày 26/10/2026 — chưa chạy bản mới
+
+Nguồn đã sửa sau khi soi atlas runtime và ảnh replay lịch sử: thêm sóng cuộn thể tích bằng `visual-bat-gioi-wave.ts` trên kitWall, bán kính ngoài tối đa R5, bọt art giữ vai trò phụ. Hai nhịp bung nước/vỡ khiên có lực và chiều cao riêng. Dấu nước tạt từng target trễ theo mép ngoài thực của sóng (tối đa0,56s), không đổi thời điểm sát thương server. Vòng shader phẳng giảm độ đậm để nhường hình nước.
+
+`visual-bat-gioi-guard.ts` giữ tỷ lệ vuông của atlas, thay cách ép5×3,4; chia UV cùng geometry thành phần sau ở pass skill và mép trước ở pass health dưới HP. Mép trước chỉ nằm dưới anchor chân, không phủ mặt/thân. Loop chỉ dùng pose nguyên vẹn4–7, không lặp pose đang tan8–11; cuối buff dùng frame tan. Guard theo `blockBonus` thật; mất snapshot thu hồi0,22s, không tự nổ. Rupture chỉ từ trait `water-shield-burst-h00J`, dùng tọa độ server khi actor biến mất; routing cho phép event đúng khu dù không còn actor/targets. Reduced giữ pose tĩnh, bỏ mesh sóng và hạt. Cap8 sóng/8guard (16plane riêng), clear dọn cả hai pool; log thêm `visual.bat-gioi.guard.exit`, layout có `waterVolume/splitGuard`.
+
+Tái dùng nguyên5 WebP runtime (1.656.270byte), không sinh art hoặc sửa atlas. Các đường dẫn nguồn/hash bên dưới là ghi nhận lịch sử: trong checkout ngày26/10 không tìm thấy thư mục nguồn Bát Giới/active-inventory được dẫn; chưa khôi phục provenance. Rà mã độc lập đã thực hiện, thêm regression footprint/crop/loop/contact/routing. **Chưa chạy test/typecheck/build/game, chưa nghiệm thu hình ảnh/FPS của thay đổi này.** [Theo dõi](../plans/261026-1845-tier3-vfx/plan.md).
+
+Bảng dưới mô tả nền tảng triển khai trước đợt sửa26/10; thời điểm hit và cách dựng guard/sóng được cập nhật theo đoạn trên.
+
 | Pha | Event/thời gian | Lớp/chuyển động |
 |---|---|---|
 | Tụ lực | cast `tier3-tier4-h00J`, event.windup (hiện0,25s) | Shader R5 cố định nhận uTime, nước tụ/co rồi lớn, alpha tăng; khung cuối chờ ability tối đa0,3s |

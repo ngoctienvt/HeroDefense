@@ -12,7 +12,7 @@ describe('shared status marks', () => {
   });
 
   it('recognises only table kinds (stun stays on the legacy icon)', () => {
-    expect(isStatusMarkKind('armor-break')).toBe(true);
+    expect(isStatusMarkKind('armor-break')).toBe(false); // a body sheet, not an icon
     expect(isStatusMarkKind('attack-up')).toBe(true);
     expect(isStatusMarkKind('armor-pierce-up')).toBe(true);
     expect(isStatusMarkKind('stun')).toBe(false);
@@ -24,7 +24,7 @@ describe('shared status marks', () => {
     expect(attack.y).toBe(STATUS_MARK_HEIGHT.hero);
     expect(attack.side).toBeLessThan(0);
     expect(pierce.side).toBeGreaterThan(0);
-    expect(statusMarkSlot('armor-break').y).toBe(STATUS_MARK_HEIGHT.enemy);
+    expect(statusMarkSlot('seal').y).toBe(STATUS_MARK_HEIGHT.enemy);
     expect(STATUS_MARK_HEIGHT.enemy).toBeLessThan(STATUS_MARK_HEIGHT.hero);
   });
 
