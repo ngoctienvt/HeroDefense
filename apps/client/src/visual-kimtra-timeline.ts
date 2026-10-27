@@ -6,7 +6,7 @@
  */
 import { HERO_COMBAT_PROFILES } from '../../../packages/contracts/src/combat-profiles.js';
 import { HERO_BY_ID } from '../../../content/catalog.js';
-import { motion, piecewise, segmentFrame, sweep } from './visual-kit-timeline.js';
+import { type Key, motion, piecewise, segmentFrame, sweep } from './visual-kit-timeline.js';
 
 export const KIMTRA_ID = 'h009';
 export const KIMTRA_ATLAS = { bell: 'kimtra-bell', shatter: 'kimtra-shatter' } as const;
@@ -92,3 +92,84 @@ export function slashSweep(age: number): { head: number; tail: number } {
 }
 /** Events of one frontal swing arrive one per enemy hit; merge those of the same source within this window. */
 export const SLASH_MERGE = .12;
+
+/**
+ * Real-time 3D bell (`vfx-kimtra-bell3d.glb`, made by tools/vfx/kimtra-bell3d.py): the model is 1.0 tall to the crown
+ * (the hanging loop reaches 1.25), lip radius .41. Replaces the `kimtra-bell` / `kimtra-shatter` flipbooks once
+ * loaded (the flipbooks stay as the fallback while it loads or if it fails).
+ */
+export const BELL3D_URL = '/assets/vfx-kimtra-bell3d.glb';
+/** World height of the bell body: ~1.1x Kim Tra's 3D model (3.83), so the seated bell closes over his crown without swallowing the
+ * neighbouring slots (4.6 covered the next hero in the real battlefield preview). */
+export const BELL3D_HEIGHT = 4.25;
+/** Bottom of the bell while it forms over the caster's head. */
+export const BELL3D_HOVER = 4.2;
+/** Local height of the model top (loop) used by the reveal/burn seam. */
+export const BELL3D_TOP = 1.25;
+/** World size of the translucent seated shell that takes over from the solid bell (same silhouette, a hair larger). */
+export const SHELL3D_HEIGHT = BELL3D_HEIGHT * 1.03;
+export const SHELL3D_DIAMETER = SHELL3D_HEIGHT * 3.1 / 3.75;
+
+export interface Bell3DPose {
+  /** Height of the lip above the ground. */
+  y: number;
+  /** Uniform scale factor on BELL3D_HEIGHT. */
+  scale: number;
+  /** Vertical squash (1 = none); the width takes the inverse square root so the volume reads constant. */
+  squash: number;
+  /** Turn about the vertical axis, radians. */
+  spin: number;
+  /** 0..1: grows top-down out of a glowing seam. */
+  reveal: number;
+  /** 0..1: dissolves into embers (hands over to the seated shell). */
+  burn: number;
+  /** 0..1: slam glint. */
+  flash: number;
+}
+
+/** Forming above the caster during the server windup (held at full until the ability arrives). */
+export function bell3dForming(age: number, windup: number): Bell3DPose {
+  const t = sweep(age, 0, Math.max(.05, windup));
+  return { y: BELL3D_HOVER + .12 * Math.sin(age * 5), scale: .7 + .3 * motion.impactOvershoot(t), squash: 1,
+    spin: age * 1.6, reveal: motion.settle(t), burn: 0, flash: 0 };
+}
+
+/** Drop slam squash: lands short and wide, rebounds tall, settles. */
+const SLAM_SQUASH: readonly Key[] = [[0, 1], [.03, .8], [.1, 1.07], [.18, .97], [.28, 1]];
+/** The solid bell dissolves while the seated shell fades in (SHELL_HANDOFF). */
+export const BELL3D_BURN_START = SHELL_HANDOFF + .04;
+export const BELL3D_BURN_SECONDS = .4;
+export const BELL3D_DONE = BELL3D_BURN_START + BELL3D_BURN_SECONDS;
+
+/** After the ability (`age` from the ability; the slam lands at SLAM_DELAY). `from` = forming pose it drops from. */
+export function bell3dImpact(age: number, fromY = BELL3D_HOVER, fromSpin = 0): Bell3DPose {
+  if (age < SLAM_DELAY) {
+    const t = sweep(age, 0, SLAM_DELAY);
+    return { y: fromY * (1 - motion.launch(t)), scale: 1, squash: 1 + .08 * t, spin: fromSpin + t * .6, reveal: 1, burn: 0, flash: 0 };
+  }
+  const after = age - SLAM_DELAY;
+  return { y: 0, scale: 1, squash: piecewise(SLAM_SQUASH, after), spin: fromSpin + .6, reveal: 1,
+    burn: sweep(age, BELL3D_BURN_START, BELL3D_BURN_SECONDS),
+    flash: piecewise([[0, .7], [.05, .45], [.2, 0]], after) };
+}
+
+/** 3D break: shards fly out, bounce once, burn away. */
+export const SHATTER3D_SECONDS = .9;
+const GRAVITY = 18;
+/**
+ * Pure flight of one shard (`dir` = unit outward XZ of its rest position, `rest` = rest height in world units,
+ * `seed` 0..1 per shard): offset from the rest position, turn angle, burn.
+ */
+export function shardFlight(age: number, dir: { x: number; z: number }, rest: number, seed: number) {
+  const speed = 1.8 + 2 * seed, up = 2 + 2.5 * (1 - seed);
+  const land = (up + Math.sqrt(up * up + 2 * GRAVITY * Math.max(0, rest))) / GRAVITY; // reaches the ground
+  const fly = Math.min(age, land);
+  let y = up * fly - .5 * GRAVITY * fly * fly, travel = fly;
+  if (age > land) { // one low, damped hop, then it lies still
+    const tb = age - land, vb = up * .3, hop = 2 * vb / GRAVITY;
+    y = -rest + Math.max(0, vb * tb - .5 * GRAVITY * tb * tb);
+    travel = land + Math.min(tb, hop) * .35;
+  }
+  return { x: dir.x * speed * travel, y: Math.max(-rest, y), z: dir.z * speed * travel,
+    turn: (4 + 6 * seed) * Math.min(age, land + .1), burn: sweep(age, .4 + .1 * seed, .35) };
+}

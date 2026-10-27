@@ -8,8 +8,9 @@ import { createGroundLayer, createLatheShellLayer, LayerPool, TouchedLayers, typ
   type Layer } from './visual-kit-layers.js';
 import type { KitSpray } from './visual-kit-spray.js';
 import { BELL_SCALE } from './visual-kimtra-ultimate.js';
+import type { KimtraBell3D } from './visual-kimtra-bell3d.js';
 import { KIMTRA_ATLAS, REFLECT_RADIUS, RING_GATE, ringAlpha, ringPulse, RING_SECONDS, ringRadius, shatterFrame,
-  SHATTER_SECONDS, SHELL_HANDOFF, shellAlpha, shellSettle } from './visual-kimtra-timeline.js';
+  SHATTER_SECONDS, SHELL3D_DIAMETER, SHELL3D_HEIGHT, SHELL_HANDOFF, shellAlpha, shellSettle } from './visual-kimtra-timeline.js';
 
 /** Fanzhong silhouette (local y -.5..+.5): flared lip, straight waist, round shoulder, crown; the small
  * radius bumps are the cast hoops, which catch the fresnel rim as engraved bands. */
@@ -18,14 +19,15 @@ const BELL_PROFILE: LatheProfile = [
   [-.05, .42], [.13, .41], [.15, .425], [.17, .405], [.3, .395], [.33, .41], [.35, .385], [.4, .36],
   [.44, .3], [.475, .2], [.495, .08], [.5, 0],
 ];
-/** World size of the seated shell, matching the flipbook bell at BELL_SCALE (3.6 tall, lip radius 1.52). */
+/** World size of the seated shell, matching the flipbook bell at BELL_SCALE (3.6 tall, lip radius 1.52). With the
+ * real-time bell the shell takes SHELL3D_* instead (fixed when the shell first appears). */
 const SHELL_HEIGHT = 3.75 * BELL_SCALE;
 const SHELL_DIAMETER = 3.1 * BELL_SCALE;
 const MAX_BELLS = 12;
 const MAX_RINGS = 6;
 const MAX_SHATTERS = 8;
 
-type BellState = { id: string; age: number; wake: number; reduced: boolean; pulse?: number };
+type BellState = { id: string; age: number; wake: number; reduced: boolean; pulse?: number; height: number; diameter: number };
 type Ring = { layer: Layer; age: number };
 type Shatter = { sprite: Sprite; age: number };
 
@@ -44,10 +46,11 @@ export class KimtraStatus {
   private serial = 0;
   private time = 0;
 
-  constructor(private scene: Scene, private flipbooks: KitFlipbooks, private spray: KitSpray) {
+  constructor(private scene: Scene, private flipbooks: KitFlipbooks, private spray: KitSpray, private bell3d: KimtraBell3D) {
     this.bellPool = new LayerPool(() => createLatheShellLayer(scene, 'kimtra', `kimtra-bell-${this.serial++}`,
       BELL_PROFILE, 40), MAX_BELLS, 'kimtra-bell');
-    this.bells = new TouchedLayers(this.bellPool, () => ({ id: '', age: 0, wake: 0, reduced: false }));
+    this.bells = new TouchedLayers(this.bellPool, () => ({ id: '', age: 0, wake: 0, reduced: false,
+      height: this.bell3d.ready ? SHELL3D_HEIGHT : SHELL_HEIGHT, diameter: this.bell3d.ready ? SHELL3D_DIAMETER : SHELL_DIAMETER }));
     this.ringPool = new LayerPool(() => createGroundLayer(scene, 'kitGround', 'kimtra', `kimtra-ring-${this.serial++}`),
       MAX_RINGS, 'kimtra-ring');
   }
@@ -98,7 +101,7 @@ export class KimtraStatus {
       if (state.pulse !== undefined && state.pulse > .35) state.pulse = undefined;
       // Settled: lip pulled in to the body footprint and a faint rim, so crowding units are not veiled.
       const settle = shellSettle(state.wake);
-      const width = SHELL_DIAMETER * (1 - .4 * settle) * pulse, height = SHELL_HEIGHT * (1 - .12 * settle) * (2 - pulse);
+      const width = state.diameter * (1 - .4 * settle) * pulse, height = state.height * (1 - .12 * settle) * (2 - pulse);
       mesh.scaling.set(width, height, width);
       mesh.position.y = height * .5;
       m.setFloat('uAlpha', (.9 - .45 * settle) * shellAlpha(state.age - SHELL_HANDOFF));
@@ -141,7 +144,9 @@ export class KimtraStatus {
     debug('visual.kimtra.bell.break', { reduced });
     if (reduced) return;
     const ground = new Vector3(at.x, 0, at.z);
-    if (this.shatters.length < MAX_SHATTERS) {
+    if (this.bell3d.shatter(ground)) {
+      // real-time shards; the dust/gold spray below still plays
+    } else if (this.shatters.length < MAX_SHATTERS) {
       const sprite = this.flipbooks.spawn(KIMTRA_ATLAS.shatter, ground, BELL_SCALE);
       if (sprite) this.shatters.push({ sprite, age: 0 });
     }

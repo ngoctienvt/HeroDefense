@@ -23,14 +23,26 @@ export interface PanguModelPose {
 }
 
 /** Clip phase follows server attack events, while walking has a continuous clock. */
+export interface ModelAttackPhases { raisedProgress: number; impactProgress: number }
+const PANGU_PHASES: ModelAttackPhases = { raisedProgress: PANGU_RAISED_PROGRESS, impactProgress: PANGU_IMPACT_PROGRESS };
+
+/**
+ * `idleSeconds` / `idleDuration`: standing still loops the idle clip on its own clock (models whose idle is a held pose,
+ * one frame long, pass 0 and stay on frame 0). Reduced motion and hit / death keep the first idle frame.
+ */
 export function panguModelSample(pose: Pick<PanguModelPose, 'action' | 'moving' | 'progress' | 'reduced'>,
-  walkSeconds: number, walkDuration: number, strikeFromCast = false): { clip: 'idle' | 'walk' | 'attack'; progress: number } {
+  walkSeconds: number, walkDuration: number, strikeFromCast = false,
+  phases: ModelAttackPhases = PANGU_PHASES, idleSeconds = 0, idleDuration = 0): { clip: 'idle' | 'walk' | 'attack'; progress: number } {
   const progress = Number.isFinite(pose.progress) ? Math.max(0, Math.min(1, pose.progress)) : 0;
-  // Ultimate windup raises and holds the axe; strike events drive the full attack.
-  if (pose.action === 'cast') return { clip: 'attack', progress: pose.reduced ? PANGU_RAISED_PROGRESS
-    : PANGU_RAISED_PROGRESS * Math.min(1, progress / .65) };
-  if (pose.action === 'attack') return { clip: 'attack', progress: pose.reduced ? PANGU_IMPACT_PROGRESS
-    : strikeFromCast ? PANGU_RAISED_PROGRESS + (1 - PANGU_RAISED_PROGRESS) * progress : progress };
+  const { raisedProgress: raised, impactProgress: impact } = phases;
+  // Ultimate windup raises and holds the weapon; strike events drive the full attack.
+  if (pose.action === 'cast') return { clip: 'attack', progress: pose.reduced ? raised
+    : raised * Math.min(1, progress / .65) };
+  if (pose.action === 'attack') return { clip: 'attack', progress: pose.reduced ? impact
+    : strikeFromCast ? raised + (1 - raised) * progress : progress };
+  if (pose.action === 'idle' && !pose.moving && !pose.reduced && idleDuration > .1) {
+    return { clip: 'idle', progress: (Math.max(0, idleSeconds) % idleDuration) / idleDuration };
+  }
   if (pose.action !== 'idle' || !pose.moving || pose.reduced) return { clip: 'idle', progress: 0 };
   const duration = Number.isFinite(walkDuration) ? Math.max(.001, walkDuration) : 1;
   return { clip: 'walk', progress: (Math.max(0, walkSeconds) % duration) / duration };

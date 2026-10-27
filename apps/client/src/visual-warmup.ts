@@ -15,7 +15,8 @@ import { wavePlanFor } from '../../../packages/game-core/src/wave-plan.js';
 import { debug } from './debug.js';
 import { isMonsterAssetId, loadMonsterMotionManifest } from './monster-motion.js';
 import type { VisualMaterials } from './visual-materials.js';
-import { preloadPanguModel } from './visual-pangu-model.js';
+import { preloadHeroModel } from './visual-hero-model.js';
+import { enemySkinModelSpec, heroModelSpec, monsterModelSpec } from './hero-models.js';
 import { preloadPigModel } from './visual-pig-model.js';
 
 /** 1536² RGBA without mipmaps; only used for the running estimate in the log. */
@@ -75,7 +76,8 @@ export class VisualWarmup {
     this.heroes.add(heroId);
     this.palette.heroMotion(heroId);
     this.targets.prepareHero(heroId);
-    if (heroId === 'h01B') preloadPanguModel(this.scene);
+    const model = heroModelSpec(heroId);
+    if (model) preloadHeroModel(this.scene, model);
     debug('visual.warmup.hero', { heroId, sheets: this.heroes.size, estimatedVramMb: Math.round(this.heroes.size * SHEET_VRAM_MB) });
   }
 
@@ -83,7 +85,12 @@ export class VisualWarmup {
     if (wave < 1 || this.waves.has(wave)) return;
     this.waves.add(wave);
     const art = waveArt(wave);
-    for (const skin of art.skins) this.hero(skin);
+    for (const skin of art.skins) {
+      this.hero(skin);
+      // hero-skinned minions/elites draw the lite model (enemySkinModelSpec): warm that one too
+      const lite = enemySkinModelSpec(skin, 1, true);
+      if (lite && lite.url !== heroModelSpec(skin)?.url) preloadHeroModel(this.scene, lite);
+    }
     for (const monsterId of art.monsters) this.monster(monsterId);
     if (wave === 1) preloadPigModel(this.scene);
     debug('visual.warmup.wave', { wave, skins: art.skins.length, monsters: art.monsters.length });
@@ -92,6 +99,11 @@ export class VisualWarmup {
   private monster(monsterId: string): void {
     if (this.monsters.has(monsterId)) return;
     this.monsters.set(monsterId, () => undefined);
+    // 3D monsters: minions/elites draw the lite copy, bosses the full model; both are small, warm both
+    for (const lite of [true, false]) {
+      const model = monsterModelSpec(monsterId, 1, lite);
+      if (model && (lite || model.url !== monsterModelSpec(monsterId, 1, true)?.url)) preloadHeroModel(this.scene, model);
+    }
     void loadMonsterMotionManifest(monsterId).then(manifest => {
       if (!manifest || this.scene.isDisposed) return;
       // Retained for the session: five monster atlases are small next to hero sheets.

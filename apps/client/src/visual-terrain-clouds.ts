@@ -56,6 +56,15 @@ interface Bird { sprite: Sprite; radius: number; angle: number; speed: number; y
 
 export interface SkyCreatures { update(dt: number, time: number): void; dispose(): void }
 
+/** Orbit placement shared by build and update: sprites start at the origin (centre of the arena) until placed. */
+function placeMist(m: Mist, time: number): void {
+  m.sprite.position.set(Math.cos(m.angle) * m.radius * 1.12, m.y + Math.sin(time * .3 + m.phase), -5 + Math.sin(m.angle) * m.radius * .95);
+}
+function placeBird(bird: Bird, time: number): void {
+  bird.sprite.position.set(Math.cos(bird.angle) * bird.radius, bird.y + Math.sin(bird.angle * 3) * 2, -5 + Math.sin(bird.angle) * bird.radius * .8);
+  bird.sprite.height = bird.size / 2 * (.35 + .65 * Math.abs(Math.sin(time * 5 + bird.flap))); // wing beat
+}
+
 export function buildCloudsAndBirds(scene: Scene): SkyCreatures {
   const rnd = rngFrom(97);
   const puffs = new SpriteManager('island-cloud-puffs', puffImage(), 160, 256, scene);
@@ -87,6 +96,8 @@ export function buildCloudsAndBirds(scene: Scene): SkyCreatures {
     sprite.size = 30 + rnd() * 22; sprite.color = new Color4(.93, .96, 1, .42); sprite.angle = rnd() * 3;
     return { sprite, angle: rnd() * 6.28, radius: 58 + rnd() * 16, speed: (.012 + rnd() * .012) * (i % 2 ? 1 : -1), y: belowTop(sprite.size, rnd() * 12), phase: rnd() * 6.28 };
   });
+  // Place now: with reduced motion `update` never runs, and unplaced mist would sit at the arena centre as a white haze.
+  for (const m of mist) placeMist(m, 0);
 
   const birdManager = new SpriteManager('island-birds', birdImage(), 16, { width: 128, height: 64 }, scene);
   birdManager.isPickable = false;
@@ -96,6 +107,7 @@ export function buildCloudsAndBirds(scene: Scene): SkyCreatures {
     sprite.width = size; sprite.height = size / 2;
     return { sprite, radius: 95 + rnd() * 40, angle: rnd() * 6.28, speed: (.05 + rnd() * .03) * (i % 2 ? 1 : -1), y: 14 + rnd() * 20, flap: rnd() * 6.28, size };
   });
+  for (const bird of birds) placeBird(bird, 0);
 
   return {
     update(dt, time) {
@@ -104,15 +116,8 @@ export function buildCloudsAndBirds(scene: Scene): SkyCreatures {
         if (cloud.x > 260) cloud.x = -260; else if (cloud.x < -260) cloud.x = 260;
         cloud.sprite.position.x = cloud.x; cloud.sprite.position.y = cloud.y + Math.sin(time * .25 + cloud.phase) * .8;
       }
-      for (const m of mist) {
-        m.angle += m.speed * dt;
-        m.sprite.position.set(Math.cos(m.angle) * m.radius * 1.12, m.y + Math.sin(time * .3 + m.phase), -5 + Math.sin(m.angle) * m.radius * .95);
-      }
-      for (const bird of birds) {
-        bird.angle += bird.speed * dt;
-        bird.sprite.position.set(Math.cos(bird.angle) * bird.radius, bird.y + Math.sin(bird.angle * 3) * 2, -5 + Math.sin(bird.angle) * bird.radius * .8);
-        bird.sprite.height = bird.size / 2 * (.35 + .65 * Math.abs(Math.sin(time * 5 + bird.flap))); // wing beat
-      }
+      for (const m of mist) { m.angle += m.speed * dt; placeMist(m, time); }
+      for (const bird of birds) { bird.angle += bird.speed * dt; placeBird(bird, time); }
     },
     dispose() { puffs.dispose(); birdManager.dispose(); },
   };
