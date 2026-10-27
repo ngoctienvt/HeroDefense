@@ -62,7 +62,7 @@ export class VisualMoctra implements HeroVfx {
   /** Snapshot markers: `frenzy` on Mộc Tra in Cuồng Vũ, `poison` on an enemy his vines poisoned. */
   mark(kind: string, id: string, at: Vector3, reduced: boolean): void {
     if (kind === 'frenzy') { this.frenzy.mark(id, at, reduced); return; }
-    if (kind !== 'poison' || reduced) return; // reduced motion: the shared slow marker still shows the status
+    if (kind !== 'poison' || reduced) return; // reduced motion: the shared poison body tint still shows the status
     if (this.time - (this.spores.get(id) ?? -Infinity) < SPORE_GATE) return;
     this.spores.set(id, this.time);
     this.toxin.trail(new Vector3(at.x, 1.1, at.z), new Vector3(0, 1.3, 0), 2);
