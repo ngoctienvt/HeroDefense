@@ -289,6 +289,27 @@ Atlas: `vfx-kimtra-bell.webp` 16 khung 4×4 @384 (477 KB, cap 8), `vfx-kimtra-sh
 
 Duyệt nhanh (`?debug=1`, đưa Kim Tra ra sân): `__vfxReplay('h009')` (chuông lên Kim Tra + đồng minh gần nhất trong 4,5, vỡ sau ~3 s), `__vfxReplay('h009', 'trait'|'crit', x, z)`, `__vfxReplay('h009', 'reflect')`. Log: `visual.kimtra.cast|impact|slam|reflect|bell.break|slash`. Chưa chạy game/build/test; chưa nghiệm thu hình ảnh, FPS, chế độ giảm chuyển động.
 
+### Chuông 3D real-time (26-10-2026, thử nghiệm đưa VFX vật thể sang 3D)
+
+Chuông vẽ sẵn theo một góc nhìn không xoay được theo camera và lệch phối cảnh cạnh tướng 3D, nên chuông giờ là **mesh 3D thật**. Flipbook `kimtra-bell`/`kimtra-shatter` chỉ còn làm dự phòng khi GLB chưa tải xong hoặc lỗi.
+
+- **Nguồn:** `tools/vfx/kimtra-bell3d.py` (Blender 5.1, chạy được bằng module `bpy`) → `apps/client/public/assets/vfx-kimtra-bell3d.glb` (~0,5 MB).
+  - Node `bell`: chuông phạn chung cao 1,0 tính tới đỉnh (quai treo tới 1,25), vành 0,41, cùng dáng với vỏ fresnel. Gồm 3 đai đúc, 4 ô × 9 núm, quai treo; 10k tam giác.
+  - 22 node `shard_XX`: cắt sẵn theo 7 cung × 3 tầng, đường cắt so le giữa các tầng.
+  - `COLOR_0.g` đánh dấu phần nổi (núm, đai, quai) để shader làm bóng.
+- **Shader kit mới:**
+  - `kitSolid`: đặc, ghi depth, toon 3 bậc với đèn chính trên-trước-trái (wrap nên không mặt nào đen). Hoa văn lôi văn, khung ô và mây vẽ bằng shader. Có `uReveal` (hiện từ trên xuống, có đường viền sáng), `uBurn` (tan thành tàn lửa) và `uFlash` (lóe khi úp).
+  - `kitInk`: viền mực bằng inverted hull.
+- **Module:** `visual-kimtra-bell3d.ts` (`KimtraBell3D`: tải một lần mỗi scene, pool 8 chuông + 4 bộ mảnh). Các mốc thời gian là hàm thuần trong `visual-kimtra-timeline.ts`: `bell3dForming`, `bell3dImpact`, `shardFlight`.
+- **Nhịp:**
+  - Chuông hiện dần trên đầu tướng (đáy ở độ cao 4,2) và xoay chậm trong windup.
+  - Khi ability đến, chuông rơi trong 0,12 s, úp xuống: lùn và bè ra rồi nảy lại, lóe sáng.
+  - Từ khoảng 0,38 s chuông tan dần thành vỏ fresnel ngồi (`SHELL3D_*`). Khiên mất thì 22 mảnh văng ra, nảy một lần rồi cháy hết trong 0,9 s.
+  - Chế độ giảm chuyển động không dùng chuông đặc, như trước.
+- **Kích thước:** cao 4,25, khoảng 1,1 lần model 3D của Kim Tra (3,83). Bản 4,6 trùm sang ô bên cạnh khi xem trên sân thật. Chuông đặc che người bên trong cho tới khi tan, vì nó nằm ở pass world có ghi depth.
+- **Bài học:** `VertexData.transform` với root glTF bị lật gương thì đảo winding, làm mặt trước của Babylon quay vào trong (thấy thành trong và hull mực phủ kín). Phải `flipFaces(false)` sau khi bake; normal vẫn đúng.
+- **Ảnh duyệt** dựng bằng `tools/vfx-preview` (trang Babylon tối giản dùng đúng module, không phải game). Mới duyệt bằng ảnh, chưa chạy trong game.
+
 ## Mộc Tra (h00A): Ngô Câu Mộc Ảnh Vũ (19-10-2026)
 
 VFX riêng cho tuyệt kỹ, thay công thức bậc 2 (`visual-moctra*.ts`, `battlefield-moctra.ts`); đòn đánh thường `trait-h00A` vẫn do painter cũ vẽ. Hình vẽ tay tạo bằng Codex CLI (`codex exec -m gpt-5.6-sol`, công cụ tạo ảnh có sẵn của Codex), không asset ngoài. Prompt ở `assets/vfx-source/moctra/prompts/`, ảnh gốc chưa sửa ở `raw/`, xử lý bằng `assets/vfx-source/moctra/process-codex-art.py` (khóa nền magenta có khử viền, cắt ô flipbook cùng canvas/anchor, thu nhỏ premultiplied, ảnh kiểm tra nền sáng/tối, ảnh ghép tham khảo).

@@ -27,13 +27,13 @@ Rìu skin cứng vào `mixamorig:RightHand`, điểm nắm `[0, 3.5, 0]` trong h
 
 ## Runtime và thời gian
 
-`visual-pangu-model.ts` cache container theo scene, tạo instance/rig riêng từng actor. `visual-actors.ts` chỉ chọn model cho tướng `h01B`. Body rest cao 4,8 đơn vị, HP ở 5,1; mesh thân/rìu chọn được qua actorId. Hit-stop, hit flash, reduced motion, cleanup và fallback hình học giữ đường hiện có.
+`visual-pangu-model.ts` là lớp bọc của loader chung `visual-hero-model.ts` (cache container theo scene, tạo instance/rig riêng từng actor); cấu hình Bàn Cổ nằm ở `HERO_MODELS.h01B` trong `hero-models.ts`, xem [model 3D tướng](hero-3d-models.md). Body rest cao 4,8 đơn vị, HP ở 5,1; mesh thân/rìu chọn được qua actorId. Hit-stop, hit flash, reduced motion, cleanup và fallback hình học giữ đường hiện có.
 
 `pangu-model-motion.ts` lấy đỉnh lấy đà ở `18/68` và pose bổ ở `24/68` của clip mới. Cast giơ rồi giữ; strike tiếp từ đó. Giữ pose qua khoảng chờ snapshot tối đa .5 giây, hủy khi di chuyển/hành động khác/timeout.
 
 Đánh thường hiển thị tối đa .85 giây ở 1×. `battlefield.ts` dùng hàm `attackInterval` trên snapshot chỉ để tính tốc độ trình bày: giới hạn clip trong 95% chu kỳ đánh thực và chia cho tốc độ trận. 2×/4×, trang bị và haste không làm actor liên tục reset trước khi bổ. Walk dùng thời lượng nguồn `40/30` giây, clock theo tốc độ trận. Sát thương, luật và nhịp đánh thật vẫn thuộc server.
 
-Log `visual.pangu-model.load`, `.loaded` (nguồn standing-walk-forward-2026-10-24-grip-up-blade-forward, rig Mixamo, weapon bone) và `.fallback`. Không ghi token/tên người chơi.
+Log `visual.hero-model.load`, `.loaded` (`model: pangu`, nguồn standing-walk-forward-2026-10-24-grip-up-blade-forward) và `.fallback`; trước 2026-10-25 là `visual.pangu-model.*`. Không ghi token/tên người chơi.
 
 ## Kiểm tra và cập nhật phiên chơi
 

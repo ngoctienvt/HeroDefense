@@ -20,6 +20,18 @@ describe('Pangu 3D trial', () => {
     expect(panguModelSample({ ...pose, action: 'death' }, 12, 1)).toEqual({ clip: 'idle', progress: 0 });
   });
 
+  it('loops a real idle clip on its own clock when standing still, held-pose idles stay on frame 0', () => {
+    const still = { ...pose, moving: false };
+    const s = (idleSeconds: number, idleDuration: number,
+      p: Pick<PanguModelPose, 'action' | 'moving' | 'progress' | 'reduced'> = still) => panguModelSample(p, 0, 1, false, undefined, idleSeconds, idleDuration);
+    expect(s(1, 4)).toEqual({ clip: 'idle', progress: .25 });
+    expect(s(5, 4)).toEqual({ clip: 'idle', progress: .25 });
+    expect(s(5, 1 / 30)).toEqual({ clip: 'idle', progress: 0 });           // one-frame held pose
+    expect(s(5, 4, { ...still, reduced: true })).toEqual({ clip: 'idle', progress: 0 });
+    expect(s(5, 4, { ...still, action: 'hit' })).toEqual({ clip: 'idle', progress: 0 });
+    expect(s(5, 4, { ...pose })).toEqual({ clip: 'walk', progress: 0 }); // walking ignores the idle clock
+  });
+
   it('allows the new source clip to recover before the base .9-second attack interval', () => {
     expect(PANGU_ATTACK_SECONDS).toBeGreaterThan(.38);
     expect(PANGU_ATTACK_SECONDS).toBeLessThanOrEqual(.9);

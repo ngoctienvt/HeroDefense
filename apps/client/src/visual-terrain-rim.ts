@@ -232,6 +232,11 @@ export function buildIslandRim(scene: Scene, data: RimData, zone: number): { dis
     const sprite = new Sprite('firefly', glow); sprite.size = .45 + rnd() * .3;
     return { sprite, x: l.x, z: l.z, y: 2 + rnd() * 3, radius: 1 + rnd() * 2, phase: rnd() * 6.28, speed: .6 + rnd() * .8 };
   }));
+  const placeFly = (f: (typeof flies)[number], time: number) => {
+    const a = time * f.speed + f.phase;
+    f.sprite.position.set(f.x + Math.cos(a) * f.radius, f.y + Math.sin(a * 1.7) * .6, f.z + Math.sin(a) * f.radius);
+  };
+  for (const f of flies) placeFly(f, 0); // reduced motion skips the tick; keep them by their lanterns, not at the origin
   const petalManager = new SpriteManager('island-petals', spriteImage((c, n) => {
     c.fillStyle = '#f6b8cc'; c.beginPath(); c.ellipse(n / 2, n / 2, n * .42, n * .24, .5, 0, Math.PI * 2); c.fill();
     c.fillStyle = 'rgba(255,240,245,.9)'; c.beginPath(); c.ellipse(n * .44, n * .44, n * .2, n * .09, .5, 0, Math.PI * 2); c.fill();
@@ -259,8 +264,7 @@ export function buildIslandRim(scene: Scene, data: RimData, zone: number): { dis
     for (const t of waterSheets) t.vOffset = (t.vOffset - dt * (t.vScale > 1 ? 1.4 : .5)) % 1;
     for (const m of mistSprites) { m.sprite.position.y = m.base.y + Math.sin(time * .8 + m.phase) * .5; m.sprite.angle = time * .1 + m.phase; }
     for (const f of flies) {
-      const a = time * f.speed + f.phase;
-      f.sprite.position.set(f.x + Math.cos(a) * f.radius, f.y + Math.sin(a * 1.7) * .6, f.z + Math.sin(a) * f.radius);
+      placeFly(f, time);
       f.sprite.color.a = .45 + .55 * Math.max(0, Math.sin(time * 2.3 + f.phase * 3));
     }
     for (const p of petals) {

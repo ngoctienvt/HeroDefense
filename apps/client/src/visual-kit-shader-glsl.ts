@@ -271,6 +271,124 @@ void main() {
   gl_FragColor = vec4(color, band * uAlpha * kitMask(vUv));
 }`;
 
+// Solid cast object (Kim Tra's real-time bell, more to come): opaque, depth-writing, lit with the same three hard
+// toon steps as the sprites from a key light above and in front (uLightDir, wrapped so no side goes black). COLOR_0.g marks raised cast parts (polished highlight).
+// uReveal grows the object top-down out of a glowing seam (forming); uBurn dissolves it into embers; uFlash = slam glint.
+// Engraving is drawn here from the local shape (bell: lower meander band, panel frames, shoulder clouds) so the mesh
+// stays light; uEngrave 0 turns it off for other solids.
+const SOLID_VERTEX = `precision highp float;
+attribute vec3 position; attribute vec3 normal; attribute vec4 color;
+uniform mat4 world, worldViewProjection;
+varying vec3 vNormal, vWorld, vLocal; varying vec4 vColor;
+void main() {
+  vLocal = position; vColor = color;
+  vWorld = (world * vec4(position, 1.0)).xyz;
+  vNormal = normalize((world * vec4(normal, 0.0)).xyz);
+  gl_Position = worldViewProjection * vec4(position, 1.0);
+}`;
+
+const SOLID_CUT = `
+uniform float uReveal, uBurn, uTop;
+// < 0 = cut away. Seam distance in local units, used for the glowing edge.
+float solidCut(vec3 p, out float seam) {
+  float n = fbm(p.xz * 7.0 + p.y * 5.0);
+  float level = uTop - uReveal * (uTop + .12) + (n - .5) * .08;
+  float reveal = p.y - level;
+  float burn = n + p.y * .15 - uBurn * 1.25;
+  seam = min(reveal * 6.0, burn * 5.0);
+  return min(reveal, burn);
+}`;
+
+const SOLID_FRAGMENT = `precision highp float;
+varying vec3 vNormal, vWorld, vLocal; varying vec4 vColor;
+uniform vec3 cameraPosition, uLightDir;
+uniform float uTime, uFlash, uEngrave;
+${PALETTE}${NOISE}${SOLID_CUT}
+float engraving(vec3 p) {
+  float a = atan(p.z, p.x) / 6.2831853 + .5;
+  float h = p.y, line = 0.0;
+  // thunder meander band above the lip hoop
+  if (h > .075 && h < .245) {
+    vec2 c = vec2(a * 40.0, (h - .075) / .17 * 2.0);
+    vec2 f = abs(fract(c) - .5);
+    float sq = max(f.x, f.y);
+    line = max(line, step(.44, sq) * .6 + (1.0 - smoothstep(.03, .06, abs(fract(sq * 3.0) - .5))) * step(sq, .4));
+  }
+  // frames around the four boss panels between the hoops (panels centred on 45 deg + k * 90 deg)
+  if (h > .30 && h < .64) {
+    float pa = fract(a * 4.0) - .5, w = .17;
+    float vert = (1.0 - smoothstep(.006, .016, abs(abs(pa) - w))) * step(.31, h) * step(h, .63);
+    float hor = (1.0 - smoothstep(.003, .008, min(abs(h - .315), abs(h - .625)))) * step(abs(pa), w);
+    line = max(line, max(vert, hor));
+    // cloud scrolls in the strips between panels
+    float between = smoothstep(.2, .22, abs(pa));
+    line = max(line, between * (1.0 - smoothstep(.04, .09, abs(sin(h * 40.0 + sin(a * 75.0) * 1.4)))) * .7);
+  }
+  // shoulder clouds
+  if (h > .70 && h < .9) line = max(line, (1.0 - smoothstep(.05, .1, abs(sin(a * 56.5 + sin(h * 25.0) * 1.6)))) * .6);
+  return line * uEngrave;
+}
+void main() {
+  float seam;
+  if (solidCut(vLocal, seam) < 0.0) discard;
+  vec3 n = normalize(vNormal);
+  vec3 v = normalize(cameraPosition - vWorld);
+  // wrapped (hemispheric-like) light so no side goes black; three hard steps: warm shadow, body, lit
+  float wrap = .5 + .5 * dot(n, normalize(uLightDir));
+  float grain = fbm(vLocal.xz * 9.0 + vLocal.y * 13.0);
+  float shade = toon(wrap * .86 + (grain - .5) * .1);
+  vec3 color = shade < .25 ? mix(uDeep, uBody, .45) : shade < .75 ? uBody : mix(uBody, uEdge, .6);
+  float raised = vColor.g;
+  vec3 h = normalize(normalize(uLightDir) + v);
+  float spec = step(.9 - raised * .12, max(0.0, dot(n, h)));
+  color = mix(color, uFoam, spec * (.45 + raised * .4));
+  float fres = 1.0 - abs(dot(n, v));
+  color = mix(color, uEdge, smoothstep(.55, .8, fres) * .5);
+  color = mix(color, uInk, engraving(vLocal) * (1.0 - raised) * .55);
+  float glow = 1.0 - smoothstep(.0, 1.0, seam);
+  color = mix(color, uFoam, max(glow, uFlash * (.35 + .65 * fres)));
+  gl_FragColor = vec4(color, 1.0);
+}`;
+
+// Inverted hull for the solid's ink contour: the same mesh pushed out along its normals, back faces only.
+const INK_VERTEX = `precision highp float;
+attribute vec3 position; attribute vec3 normal;
+uniform mat4 worldViewProjection;
+uniform float uInkWidth;
+varying vec3 vLocal;
+void main() { vLocal = position; gl_Position = worldViewProjection * vec4(position + normal * uInkWidth, 1.0); }`;
+
+const INK_FRAGMENT = `precision highp float;
+varying vec3 vLocal;
+uniform float uTime;
+${PALETTE}${NOISE}${SOLID_CUT}
+void main() {
+  float seam;
+  if (solidCut(vLocal, seam) < 0.0) discard;
+  gl_FragColor = vec4(uInk, 1.0);
+}`;
+
+// Weapon trail of a 3D hero model: a ribbon swept by two sockets on the weapon (base → tip). uv.x = age along the
+// trail (0 newest .. 1 oldest), uv.y = 0 at the base socket .. 1 at the tip. Bright leading edge at the tip, ink lip,
+// fbm streaks; fades with age. Positions are written in world space every frame by visual-hero-trail.ts.
+const TRAIL_FRAGMENT = `precision highp float;
+varying vec2 vUv;
+uniform float uTime, uAlpha;
+${PALETTE}${NOISE}
+void main() {
+  float age = vUv.x, w = vUv.y;
+  float n = fbm(vec2(age * 7.0 - uTime * 4.0, w * 3.5));
+  // body fades with age and toward the base; streaks of the noise break it into two hard alpha steps
+  float body = smoothstep(.0, .35, w) * (1.0 - smoothstep(.35, 1.0, age + (n - .5) * .25));
+  float alpha = body * (n > .45 ? .9 : .55);
+  if (alpha < .04) discard;
+  vec3 color = mix(uBody, uEdge, smoothstep(.25, .7, w));
+  float lead = smoothstep(.62, .92, w) * (1.0 - smoothstep(.0, .55, age));
+  color = mix(color, uFoam, lead);
+  color = mix(color, uInk, smoothstep(.95, 1.0, w) * .6 + (1.0 - smoothstep(.0, .08, w)) * .4);
+  gl_FragColor = vec4(color, clamp(alpha + lead * .1, 0.0, 1.0) * uAlpha);
+}`;
+
 export interface KitShaderSource { vertex: string; fragment: string; attributes: string[]; uniforms: string[] }
 
 const PALETTE_UNIFORMS = ['uDeep', 'uBody', 'uEdge', 'uFoam', 'uInk'];
@@ -290,4 +408,11 @@ export const KIT_SHADER_SOURCES = {
     uniforms: ['worldViewProjection', 'uTime', 'uAlpha', 'uHead', 'uTail', 'uArc', ...PALETTE_UNIFORMS] },
   kitLink: { vertex: FLAT_VERTEX, fragment: LINK_FRAGMENT, attributes: ['position', 'uv'],
     uniforms: ['worldViewProjection', 'uTime', 'uAlpha', 'uHead', 'uTail', 'uWave', 'uTaper', ...PALETTE_UNIFORMS] },
+  kitTrail: { vertex: FLAT_VERTEX, fragment: TRAIL_FRAGMENT, attributes: ['position', 'uv'],
+    uniforms: ['worldViewProjection', 'uTime', 'uAlpha', ...PALETTE_UNIFORMS] },
+  kitSolid: { vertex: SOLID_VERTEX, fragment: SOLID_FRAGMENT, attributes: ['position', 'normal', 'color'],
+    uniforms: ['world', 'worldViewProjection', 'cameraPosition', 'uLightDir', 'uTime', 'uFlash', 'uEngrave', 'uReveal', 'uBurn',
+      'uTop', ...PALETTE_UNIFORMS] },
+  kitInk: { vertex: INK_VERTEX, fragment: INK_FRAGMENT, attributes: ['position', 'normal'],
+    uniforms: ['worldViewProjection', 'uInkWidth', 'uTime', 'uReveal', 'uBurn', 'uTop', ...PALETTE_UNIFORMS] },
 } satisfies Record<string, KitShaderSource>;

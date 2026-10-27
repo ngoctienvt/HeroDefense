@@ -7,10 +7,11 @@ import { GROUND_ALPHA_INDEX } from './visual-kit-depth.js';
 import type { KitFlipbooks } from './visual-kit-flipbooks.js';
 import { createGroundLayer, LayerPool, type Layer } from './visual-kit-layers.js';
 import type { KitSpray } from './visual-kit-spray.js';
-import { ARRAY_MASK_URL, ARRAY_RADIUS, arrayAlpha, arrayScale, BELL_AFTER_SECONDS, bellFormingFrame,
-  bellImpactFrame, KIMTRA_ATLAS, SLAM_DELAY } from './visual-kimtra-timeline.js';
+import type { BellSolid, KimtraBell3D } from './visual-kimtra-bell3d.js';
+import { ARRAY_MASK_URL, ARRAY_RADIUS, arrayAlpha, arrayScale, BELL3D_DONE, BELL3D_HOVER, BELL_AFTER_SECONDS, bell3dForming,
+  bell3dImpact, bellFormingFrame, bellImpactFrame, KIMTRA_ATLAS, SLAM_DELAY } from './visual-kimtra-timeline.js';
 
-/** Authored bell is 3.6 tall at scale 1. World heights are foreshortened by sin(beta) while the hero billboard is
+/** Flipbook fallback only (the real-time bell uses BELL3D_HEIGHT). Authored bell is 3.6 tall at scale 1. World heights are foreshortened by sin(beta) while the hero billboard is
  * not, so 1.55 (5.6 tall) is what makes the seated bell rise to the crown of the ~4-unit stylized hero sprite. */
 export const BELL_SCALE = 1.55;
 const MAX_SLOTS = 8;
@@ -19,10 +20,14 @@ const LINK_SECONDS = .14;
 /** Cast without an ability (cancelled/out of zone) gives up after this long. */
 const ORPHAN_SECONDS = 1.2;
 
-/** One bell over one recipient. `impactAge` undefined = still forming (caster's windup). */
+/**
+ * One bell over one recipient. `impactAge` undefined = still forming (caster's windup). `solid` = the real-time 3D
+ * bell (preferred); `sprite` = the flipbook fallback while the GLB loads or if it failed. `fromY`/`fromSpin` = the
+ * last forming pose, so the drop starts where the bell hovered.
+ */
 type Bell = {
-  key: string; at: Vector3; sprite?: Sprite; array?: Layer; age: number; windup: number;
-  impactAge?: number; delay: number; slammed: boolean; reduced: boolean;
+  key: string; at: Vector3; sprite?: Sprite; solid?: BellSolid; array?: Layer; age: number; windup: number;
+  impactAge?: number; delay: number; slammed: boolean; reduced: boolean; fromY: number; fromSpin: number;
 };
 type Link = { layer: Layer; age: number };
 
@@ -39,7 +44,7 @@ export class KimtraUltimate {
   private linkPool: LayerPool;
   private serial = 0;
 
-  constructor(scene: Scene, private flipbooks: KitFlipbooks, private spray: KitSpray) {
+  constructor(scene: Scene, private flipbooks: KitFlipbooks, private spray: KitSpray, private bell3d: KimtraBell3D) {
     const mask = new Texture(ARRAY_MASK_URL, scene, false, true, Texture.TRILINEAR_SAMPLINGMODE,
       undefined, () => debug('visual.kit.asset.error', { asset: 'kimtra-array-mask' }));
     mask.hasAlpha = true;
@@ -53,7 +58,8 @@ export class KimtraUltimate {
   cast(source: string, at: Vector3, windup: number, reduced: boolean): void {
     this.drop(source);
     if (this.bells.length >= MAX_SLOTS) return;
-    const bell: Bell = { key: source, at: at.clone(), age: 0, windup, delay: 0, slammed: false, reduced };
+    const bell: Bell = { key: source, at: at.clone(), age: 0, windup, delay: 0, slammed: false, reduced,
+      fromY: BELL3D_HOVER, fromSpin: 0 };
     bell.array = this.arrayPool.acquire();
     if (bell.array) {
       const { mesh, material: m } = bell.array;
@@ -62,7 +68,7 @@ export class KimtraUltimate {
       m.setFloat('uFill', .55); m.setFloat('uRim', 1); m.setFloat('uBand', 0); m.setFloat('uSpiral', 0);
       m.setFloat('uRings', 0); m.setFloat('uSwirl', reduced ? 0 : .35);
     }
-    if (!reduced) bell.sprite = this.flipbooks.spawn(KIMTRA_ATLAS.bell, at, BELL_SCALE);
+    if (!reduced) this.spawnBell(bell);
     this.bells.push(bell);
   }
 
@@ -76,13 +82,13 @@ export class KimtraUltimate {
     if (!bell) {
       if (this.bells.length >= MAX_SLOTS) return;
       bell = { key: `${source}>${this.serial++}`, at: at.clone(), age: 0, windup: 0, delay: self ? 0 : LINK_SECONDS,
-        slammed: false, reduced };
-      if (!reduced) bell.sprite = this.flipbooks.spawn(KIMTRA_ATLAS.bell, at, BELL_SCALE);
+        slammed: false, reduced, fromY: BELL3D_HOVER, fromSpin: 0 };
+      if (!reduced) this.spawnBell(bell);
       if (!self) this.link(origin, at, reduced);
       this.bells.push(bell);
     }
     bell.impactAge = -bell.delay;
-    debug('visual.kimtra.impact', { self, reduced, sprite: Boolean(bell.sprite) });
+    debug('visual.kimtra.impact', { self, reduced, solid: Boolean(bell.solid), sprite: Boolean(bell.sprite) });
   }
 
   tick(dt: number, time: number): void {
@@ -97,13 +103,19 @@ export class KimtraUltimate {
         m.setFloat('uAlpha', arrayAlpha(bell.age, bell.windup, impact));
         m.setFloat('uTime', time);
       }
+      if (bell.solid) {
+        const pose = impact === undefined ? bell3dForming(bell.age, bell.windup || LINK_SECONDS)
+          : bell3dImpact(impact, bell.fromY, bell.fromSpin);
+        if (impact === undefined) { bell.fromY = pose.y; bell.fromSpin = pose.spin; }
+        this.bell3d.pose(bell.solid, bell.at, pose);
+      }
       if (bell.sprite) {
         bell.sprite.cellIndex = impact === undefined
           ? bellFormingFrame(bell.age, bell.windup || LINK_SECONDS)
           : bellImpactFrame(impact);
       }
       if (impact !== undefined && !bell.slammed && impact >= SLAM_DELAY) this.slam(bell);
-      const done = impact !== undefined ? impact >= Math.max(BELL_AFTER_SECONDS, .8) : bell.age >= ORPHAN_SECONDS;
+      const done = impact !== undefined ? impact >= Math.max(BELL_AFTER_SECONDS, BELL3D_DONE, .8) : bell.age >= ORPHAN_SECONDS;
       if (done) { this.release(bell); this.bells.splice(i, 1); }
     }
     for (let i = this.links.length - 1; i >= 0; i--) {
@@ -153,9 +165,16 @@ export class KimtraUltimate {
     this.links.push({ layer, age: reduced ? LINK_SECONDS : 0 });
   }
 
+  /** Real-time bell when its GLB is ready, else the flipbook. */
+  private spawnBell(bell: Bell): void {
+    bell.solid = this.bell3d.acquire();
+    if (!bell.solid) bell.sprite = this.flipbooks.spawn(KIMTRA_ATLAS.bell, bell.at, BELL_SCALE);
+  }
+
   private release(bell: Bell): void {
     if (bell.sprite) this.flipbooks.release(KIMTRA_ATLAS.bell, bell.sprite);
+    if (bell.solid) this.bell3d.release(bell.solid);
     if (bell.array) this.arrayPool.release(bell.array);
-    bell.sprite = undefined; bell.array = undefined;
+    bell.sprite = undefined; bell.solid = undefined; bell.array = undefined;
   }
 }

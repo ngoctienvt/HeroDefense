@@ -13,6 +13,7 @@ import { DEFAULT_WINDUP, KIMTRA_ATLAS, KIMTRA_ID, SLASH_HALF_ANGLE, SLASH_LIFE, 
   slashSweep } from './visual-kimtra-timeline.js';
 import { KimtraStatus } from './visual-kimtra-status.js';
 import { KimtraUltimate } from './visual-kimtra-ultimate.js';
+import { KimtraBell3D } from './visual-kimtra-bell3d.js';
 
 /** `sum` adds every hit direction of the swing: the first event is often a side target, not the aimed one. */
 type Slash = { layer: Layer; age: number; crit: boolean; sum: { x: number; z: number } };
@@ -31,6 +32,7 @@ export class VisualKimtra implements HeroVfx {
   private spray: KitSpray;
   private ultimate: KimtraUltimate;
   private status: KimtraStatus;
+  private bell3d: KimtraBell3D;
   private slashPool: LayerPool;
   private slashes: Slash[] = [];
   private lastSwing = new Map<string, { time: number; slash?: Slash }>();
@@ -39,8 +41,9 @@ export class VisualKimtra implements HeroVfx {
 
   constructor(scene: Scene, private flipbooks: KitFlipbooks) {
     this.spray = new KitSpray(scene, 'gold');
-    this.ultimate = new KimtraUltimate(scene, flipbooks, this.spray);
-    this.status = new KimtraStatus(scene, flipbooks, this.spray);
+    this.bell3d = new KimtraBell3D(scene);
+    this.ultimate = new KimtraUltimate(scene, flipbooks, this.spray, this.bell3d);
+    this.status = new KimtraStatus(scene, flipbooks, this.spray, this.bell3d);
     this.slashPool = new LayerPool(() => {
       const layer = createGroundLayer(scene, 'kitSlash', 'kimtra', `kimtra-slash-${this.serial++}`);
       layer.material.depthFunction = Constants.ALWAYS; // short swing must read in front of the hero billboard
@@ -50,7 +53,8 @@ export class VisualKimtra implements HeroVfx {
   }
 
   prepare(): void {
-    for (const id of Object.values(KIMTRA_ATLAS)) this.flipbooks.ensure(id);
+    for (const id of Object.values(KIMTRA_ATLAS)) this.flipbooks.ensure(id); // fallback while the 3D bell loads
+    this.bell3d.prepare();
   }
 
   /** `cast skill-h009` (server windup) at Kim Tra himself. */
@@ -79,6 +83,7 @@ export class VisualKimtra implements HeroVfx {
 
   tick(dt: number, time: number): void {
     this.time = time;
+    this.bell3d.tick(dt, time);
     this.ultimate.tick(dt, time);
     this.status.tick(dt, time);
     for (let i = this.slashes.length - 1; i >= 0; i--) {
@@ -95,6 +100,7 @@ export class VisualKimtra implements HeroVfx {
   clear(): void {
     this.ultimate.clear();
     this.status.clear();
+    this.bell3d.clear();
     this.spray.clear();
     this.slashes.length = 0;
     this.slashPool.releaseAll();

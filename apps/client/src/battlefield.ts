@@ -1,4 +1,4 @@
-import { PANGU_ATTACK_SECONDS, panguAttackDuration } from './pangu-model-motion.js';
+import { heroModelAttackDuration, heroModelSpec } from './hero-models.js';
 import { VisualWarmup } from './visual-warmup.js';
 import { attackInterval } from '../../../packages/game-core/src/stats.js';
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera.js';
@@ -781,10 +781,12 @@ export class Battlefield {
         this.actors.set(entity.id, actor);
       }
       actor.target.set(entity.x, 0, entity.z); actor.hp = entity.hp; actor.zone = entity.zone;
-      if ('heroId' in entity && entity.heroId === 'h01B' && actor.model) {
-        actor.modelAttackDuration = panguAttackDuration(attackInterval(state, entity), state.speed);
+      const heroUnit = 'heroId' in entity ? entity : undefined;
+      const modelSpec = heroUnit ? heroModelSpec(heroUnit.heroId) : undefined;
+      if (heroUnit && modelSpec && actor.model) {
+        actor.modelAttackDuration = heroModelAttackDuration(modelSpec, attackInterval(state, heroUnit), state.speed);
         actor.modelMotionSpeed = state.speed;
-      }
+      } else if (actor.model && 'raised' in actor.model) actor.modelMotionSpeed = state.speed; // hero-skinned enemy models
       if (actor.zone === this.zone) actor.model?.activate();
       if (freshSnapshot && actor.track && pushMotionSample(actor.track, sampleAt, entity.x, entity.z)) this.interpolationSnaps++;
       if (actor.zone === this.zone && actor.sprite && 'activate' in actor.sprite
@@ -1061,7 +1063,8 @@ export class Battlefield {
       const stylized = hasStylizedMotion(source.heroId ?? source.skinHeroId ?? '');
       source.action = event.skillId === 'boss-earthquake' ? 'attack'
         : event.kind === 'ability' && event.skillId !== 'skill-h01B' && !stylized ? 'cast' : 'attack';
-      source.actionTime = source.heroId === 'h01B' && source.model ? source.modelAttackDuration ?? PANGU_ATTACK_SECONDS
+      const sourceModel = source.model ? heroModelSpec(source.heroId) : undefined;
+      source.actionTime = sourceModel ? source.modelAttackDuration ?? sourceModel.attackSeconds
         : stylized && event.kind === 'ability' ? .2 : .38;
       source.actionDuration = source.actionTime;
       // A monster hit is the impact of the wind-up it already showed: play only the strike half.

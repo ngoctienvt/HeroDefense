@@ -16,8 +16,8 @@ import { createMotionTrack, sampleMotionTrack, updateMovingState, type MotionTra
 import { enemyRankScale } from './visual-enemy-skill-routing.js';
 import { PALETTE } from './ui-palette.js';
 import { createPigModel, PIG_HEIGHT, usesRoundOnePig } from './visual-pig-model.js';
-import { createPanguModel, PANGU_MODEL_HEIGHT } from './visual-pangu-model.js';
-import { PANGU_HERO_ID } from './pangu-motion.js';
+import { createHeroModel, type HeroModel } from './visual-hero-model.js';
+import { enemySkinModelSpec, heroModelSpec, monsterModelSpec } from './hero-models.js';
 
 export type VisualActor = {
   root: TransformNode; barRoot: TransformNode; body: Mesh; head: Mesh; weapon: Mesh;
@@ -99,7 +99,7 @@ export type VisualActor = {
   thunderBlessed?: boolean;
   truongFrozen?: boolean;
   truongSunder?: boolean;
-  model?: ReturnType<typeof createPigModel> | ReturnType<typeof createPanguModel>;
+  model?: ReturnType<typeof createPigModel> | HeroModel;
   modelAttackDuration?: number;
   modelMotionSpeed?: number;
   sprite?: ReturnType<typeof createHeroSprite> | ReturnType<typeof createMonsterSprite>; spriteShown: boolean; fallbackParts: Mesh[];
@@ -129,8 +129,16 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
     melee: '#a87677', ranged: '#9d9a77', boss: '#6e9a78',
   };
   const root = new TransformNode(entity.id, scene);
-  const model = hero?.id === PANGU_HERO_ID ? createPanguModel(scene, root, spriteActive)
-    : usesRoundOnePig(entity, spawnWave) ? createPigModel(scene, root, spriteActive) : undefined;
+  const heroModel = heroModelSpec(hero?.id);
+  const crowd = enemyRank === 'minion' || enemyRank === 'elite';
+  const enemyModel = enemy && skinHeroId ? enemySkinModelSpec(skinHeroId, rankScale, crowd) : undefined;
+  const roundOnePig = usesRoundOnePig(entity, spawnWave);
+  const monsterModel = enemy && !skinHeroId && !roundOnePig && 'monsterId' in entity
+    ? monsterModelSpec(entity.monsterId, rankScale, crowd) : undefined;
+  const model = heroModel ? createHeroModel(scene, root, spriteActive, heroModel)
+    : enemyModel ? createHeroModel(scene, root, spriteActive, enemyModel, { corrupt: true, actorKind: 'enemy' })
+    : roundOnePig ? createPigModel(scene, root, spriteActive)
+    : monsterModel ? createHeroModel(scene, root, spriteActive, monsterModel, { actorKind: 'enemy' }) : undefined;
   const material = palette.get(`actor-${role}`, colors[role] ?? '#af9fbb');
   const elementColors = ['#e8d3a0', '#82d1ad', '#8ad7e7', '#e9a47c', '#d9c28d'];
   const accent = hero ? palette.get(`hero-accent-${hero.element}`, elementColors[(hero.element - 1 + 5) % 5], .3) : material;
@@ -206,7 +214,8 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
 
   const isHero = Boolean(hero);
   const isBoss = boss || ('monsterId' in entity && entity.monsterId === 'b001');
-  const shadowRadius = model ? (hero ? PANGU_MODEL_HEIGHT : PIG_HEIGHT) * .31
+  const modelHeight = (heroModel ?? enemyModel ?? monsterModel)?.height ?? PIG_HEIGHT;
+  const shadowRadius = model ? modelHeight * .31
     : isBoss ? 3.0 : chieftain || eliteRank ? .8 : isHero ? 0.75 : 0.65;
   const shadow = MeshBuilder.CreateDisc(`shadow-${entity.id}`, { radius: shadowRadius, tessellation: 20 }, scene);
   shadow.parent = root;
@@ -292,6 +301,12 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
  * Clip progress for a monster swing: the wind-up plays the first half of the attack clip
  * (legacy atlas: the anticipation cell) and holds it; the strike starts on the impact half.
  */
+/** Enemy wind-up/strike halves split a 3D model's attack clip at its own wind-up peak instead of at .5. */
+export function modelSwingProgress(actor: Pick<VisualActor, 'attackPhase' | 'action'>, local: number, raised: number): number {
+  if (actor.action !== 'attack' || !actor.attackPhase) return local;
+  return actor.attackPhase === 'windup' ? raised * local : raised + (1 - raised) * local;
+}
+
 export function swingProgress(actor: Pick<VisualActor, 'attackPhase' | 'action'>, local: number): number {
   if (actor.action !== 'attack' || !actor.attackPhase) return local;
   return actor.attackPhase === 'windup' ? Math.min(.5, local * .5) : .52 + .48 * local;
@@ -330,9 +345,10 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
     for (const part of actor.fallbackParts) part.dispose();
     actor.fallbackParts.length = 0;
     actor.root.rotation.y = 0;
-    actor.barRoot.position.y = (actor.heroId === PANGU_HERO_ID ? PANGU_MODEL_HEIGHT : PIG_HEIGHT) + .3;
+    actor.barRoot.position.y = ('height' in actor.model ? actor.model.height : PIG_HEIGHT) + .3;
+    const local = Math.max(0, Math.min(1, 1 - actor.actionTime / Math.max(.001, actor.actionDuration)));
     actor.model.update({ moving, action: actor.action,
-      progress: swingProgress(actor, Math.max(0, Math.min(1, 1 - actor.actionTime / Math.max(.001, actor.actionDuration)))),
+      progress: 'raised' in actor.model ? modelSwingProgress(actor, local, actor.model.raised) : swingProgress(actor, local),
       facingX: actor.facingX, facingZ: actor.facingZ, dt: dt * (actor.modelMotionSpeed ?? 1), reduced, frozen, flash: actor.hitFlashTime });
   }
   const pulse = reduced ? 0 : Math.sin(time * (moving ? 13 : 2.3) + actor.phase);

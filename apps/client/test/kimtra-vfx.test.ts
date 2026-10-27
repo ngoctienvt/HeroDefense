@@ -5,7 +5,8 @@ import { ATLASES } from '../src/visual-kit-atlas-manifest.js';
 import { TIER12_RECIPES } from '../src/visual-kit-recipes-tier12.js';
 import { arrayAlpha, arrayScale, ARRAY_RADIUS, BELL_AFTER_SECONDS, bellFormingFrame, bellImpactFrame, KIMTRA_ATLAS,
   REFLECT_RADIUS, RING_SECONDS, ringAlpha, ringRadius, shatterFrame, shellSettle, SHELL_SETTLE_START, SHATTER_SECONDS, SLAM_DELAY, SLASH_HALF_ANGLE,
-  SLASH_LIFE, SLASH_REACH, slashSweep } from '../src/visual-kimtra-timeline.js';
+  SLASH_LIFE, SLASH_REACH, slashSweep, bell3dForming, bell3dImpact, BELL3D_BURN_START, BELL3D_DONE, BELL3D_HEIGHT, BELL3D_HOVER,
+  SHELL3D_DIAMETER, SHELL3D_HEIGHT, shardFlight, SHATTER3D_SECONDS } from '../src/visual-kimtra-timeline.js';
 
 describe('Kim Tra VFX timeline', () => {
   it('reads every radius from the catalog and combat profile', () => {
@@ -98,5 +99,47 @@ describe('Kim Tra bell tracker', () => {
     tracker.record(ability(['kim']));
     tracker.clear();
     expect(tracker.bell('kim', 10)).toBe(false);
+  });
+});
+
+describe('Kim Tra real-time 3D bell', () => {
+  it('grows top-down over the windup above the caster and holds there until the ability', () => {
+    expect(bell3dForming(0, .25).reveal).toBe(0);
+    expect(bell3dForming(.25, .25).reveal).toBeCloseTo(1, 5);
+    expect(bell3dForming(2, .25).reveal).toBe(1);
+    for (const age of [0, .1, .25, 1]) expect(bell3dForming(age, .25).y).toBeGreaterThan(BELL3D_HOVER - .2);
+  });
+
+  it('falls from where it hovered, lands at SLAM_DELAY and then dissolves by BELL3D_DONE', () => {
+    expect(bell3dImpact(0, 4.3).y).toBeCloseTo(4.3, 5);
+    let previous = Infinity;
+    for (let age = 0; age < SLAM_DELAY; age += .01) {
+      const y = bell3dImpact(age, 4.3).y;
+      expect(y).toBeLessThanOrEqual(previous);
+      previous = y;
+    }
+    expect(bell3dImpact(SLAM_DELAY).y).toBe(0);
+    expect(bell3dImpact(SLAM_DELAY).flash).toBeGreaterThan(0);
+    expect(bell3dImpact(SLAM_DELAY + .03).squash).toBeLessThan(1);  // lands short and wide
+    expect(bell3dImpact(BELL3D_BURN_START).burn).toBe(0);
+    expect(bell3dImpact(BELL3D_DONE).burn).toBe(1);
+    expect(BELL3D_DONE).toBeLessThan(.85);                           // released together with the rest of the cast
+  });
+
+  it('hands over to a seated shell of the same silhouette, ~1.2x the 3D hero', () => {
+    expect(SHELL3D_HEIGHT).toBeGreaterThanOrEqual(BELL3D_HEIGHT);
+    expect(SHELL3D_DIAMETER / SHELL3D_HEIGHT).toBeCloseTo(3.1 / 3.75, 5);
+    expect(BELL3D_HEIGHT).toBeGreaterThan(3.83 * 1.1);
+  });
+
+  it('throws shards outward, lands them on the ground and burns them out within the break', () => {
+    const rest = 2;
+    const mid = shardFlight(.1, { x: 1, z: 0 }, rest, .5);
+    expect(mid.x).toBeGreaterThan(0);
+    expect(mid.z).toBe(0);
+    const late = shardFlight(SHATTER3D_SECONDS, { x: 0, z: -1 }, rest, .5);
+    expect(late.y).toBeCloseTo(-rest, 5);                            // lying on the ground
+    expect(late.z).toBeLessThan(0);
+    for (const seed of [0, .5, .99]) expect(shardFlight(SHATTER3D_SECONDS, { x: 1, z: 0 }, rest, seed).burn).toBe(1);
   });
 });

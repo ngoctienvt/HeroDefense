@@ -4,7 +4,7 @@ Bản web desktop lấy cơ chế từ `ThienDao v2.1.w3x`: phòng 1–4 ngườ
 
 ## Chạy trên máy
 
-Bản thử nghiệm Bàn Cổ (`h01B`) đang dùng model 3D người dùng cung cấp, có rig và animation đi/đánh bằng rìu. Xem [asset, tích hợp và cách kiểm tra](docs/pangu-3d.md). Chưa nghiệm thu trong game.
+Bản thử nghiệm Bàn Cổ (`h01B`) đang dùng model 3D người dùng cung cấp, có rig và animation đi/đánh bằng rìu. Xem [asset, tích hợp và cách kiểm tra](docs/pangu-3d.md). Chưa nghiệm thu trong game. Thiên Binh (`h004`) cũng có model 3D thử nghiệm dựng từ xưởng hoạt ảnh; xem [model 3D tướng](docs/hero-3d-models.md).
 
 Cần Node.js 22.12 trở lên và npm.
 
