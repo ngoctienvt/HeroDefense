@@ -136,7 +136,7 @@ export function createActor(scene: Scene, palette: VisualMaterials, entity: Unit
   const monsterModel = enemy && !skinHeroId && !roundOnePig && 'monsterId' in entity
     ? monsterModelSpec(entity.monsterId, rankScale, crowd) : undefined;
   const model = heroModel ? createHeroModel(scene, root, spriteActive, heroModel)
-    : enemyModel ? createHeroModel(scene, root, spriteActive, enemyModel, { corrupt: true, actorKind: 'enemy' })
+    : enemyModel ? createHeroModel(scene, root, spriteActive, enemyModel, { actorKind: 'enemy' })
     : roundOnePig ? createPigModel(scene, root, spriteActive)
     : monsterModel ? createHeroModel(scene, root, spriteActive, monsterModel, { actorKind: 'enemy' }) : undefined;
   const material = palette.get(`actor-${role}`, colors[role] ?? '#af9fbb');
