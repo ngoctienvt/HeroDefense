@@ -7,6 +7,7 @@ import { TransformNode } from '@babylonjs/core/Meshes/transformNode.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import type { Enemy, Unit } from '../../../packages/contracts/src/types.js';
 import { debug } from './debug.js';
+import { applyActorOverlay } from './visual-status-tint.js';
 
 export const PIG_MODEL_URL = '/assets/models/round-one-pig.glb';
 // Match the replaced m001 silhouette: 7.6 atlas height * 362/533 visible * .8 minion scale.
@@ -60,6 +61,8 @@ export interface PigPose {
   reduced: boolean;
   frozen: boolean;
   flash: number;
+  /** Status body tint (visual-status-tint.ts); the hit flash wins while it lasts. */
+  tint?: { r: number; g: number; b: number; a: number };
 }
 
 /** Clip phase follows server attack events, while walking has a continuous clock. */
@@ -143,11 +146,7 @@ export function createPigModel(scene: Scene, parent: TransformNode, initiallyAct
         }
         group.goToFrame(group.from + (group.to - group.from) * sample.progress);
       }
-      for (const mesh of meshes) {
-        mesh.renderOverlay = !pose.reduced && pose.flash > 0;
-        mesh.overlayColor.set(1, 1, 1);
-        mesh.overlayAlpha = Math.min(.85, pose.flash / .08 * .85);
-      }
+      applyActorOverlay(meshes, pose.flash, pose.tint, pose.reduced);
     },
   };
 }

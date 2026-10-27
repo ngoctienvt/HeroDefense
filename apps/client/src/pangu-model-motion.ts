@@ -20,6 +20,8 @@ export interface PanguModelPose {
   reduced: boolean;
   frozen: boolean;
   flash: number;
+  /** Status body tint (visual-status-tint.ts); the hit flash wins while it lasts. */
+  tint?: { r: number; g: number; b: number; a: number };
 }
 
 /** Clip phase follows server attack events, while walking has a continuous clock. */

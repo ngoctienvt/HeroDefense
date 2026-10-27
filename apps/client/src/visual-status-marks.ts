@@ -6,13 +6,11 @@ import { KitPainted } from './visual-kit-painted.js';
 
 /**
  * Game-wide status marks from the shared Codex inventory (asset-shared-status.md): one neutral silver
- * silhouette per effect, tinted per use (buff gold, debuff red). Burn, poison and armor-break are body sheets instead
- * (visual-shared-status-timeline.ts). Data only; add a row + its
+ * silhouette per effect, tinted per use (buff gold, debuff red). Burn, poison, armor-break, slow and root are body
+ * colour tints instead (visual-status-tint.ts). Data only; add a row + its
  * `/assets/vfx-status-<kind>.webp` for a new effect instead of a hero-specific marker.
  */
 export const STATUS_MARKS = {
-  /** Movement `slow` on an enemy (Như Lai's five-finger zone: only enemies inside an active zone in the same area). Art: vfx-status-slow.webp. */
-  'slow': { tint: [.82, .66, 1], hero: false, x: .6 },
   /** empower.attackBonus / haste.attackBonus > 0 on an ally. */
   'attack-up': { tint: [1, .86, .52], hero: true, x: -.48 },
   /** empower.armorPierce > 0 on an ally. */
@@ -31,8 +29,6 @@ export const STATUS_MARKS = {
   'damage-reduction': { tint: [1, .86, .52], hero: true, x: 0 },
   /** `berserk.remaining > 0` on an ally without its own frenzy art. Art: shared-berserk-mark. */
   'berserk': { tint: [1, .72, .4], hero: true, x: -.96 },
-  /** `root > 0` on an enemy: it cannot move. Art: shared-root-mark. Second row above the first enemy row. */
-  'root': { tint: [.62, .9, .6], hero: false, x: -.6, row: 1 },
   /** `soulLink` on an enemy (damage is shared with its group). Art: shared-soul-link-mark. */
   'soul-link': { tint: [.6, .84, 1], hero: false, x: 1.2, row: 1 },
   /** `armorBuff` on an enemy (extra armour). Art: shared-armor-up-mark. */

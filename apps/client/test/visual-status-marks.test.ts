@@ -12,7 +12,7 @@ describe('shared status marks', () => {
   });
 
   it('recognises only table kinds (stun stays on the legacy icon)', () => {
-    expect(isStatusMarkKind('armor-break')).toBe(false); // a body sheet, not an icon
+    expect(isStatusMarkKind('armor-break')).toBe(false); // a body colour tint, not an icon
     expect(isStatusMarkKind('attack-up')).toBe(true);
     expect(isStatusMarkKind('armor-pierce-up')).toBe(true);
     expect(isStatusMarkKind('stun')).toBe(false);

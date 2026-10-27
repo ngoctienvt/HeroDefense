@@ -3,30 +3,25 @@ import type { VisualActor } from './visual-actors.js';
 
 /** Snapshot fields read from a Unit or an Enemy (structural, so tests need no full GameState). */
 export type SharedStatusSnapshot = {
-  monsterId?: string; heroId?: string; shield?: number; stun?: number; frozen?: number; sealed?: number; slow?: number; divineImmortal?: number;
+  monsterId?: string; heroId?: string; shield?: number; stun?: number; frozen?: number; sealed?: number; divineImmortal?: number;
   ward?: { remaining: number; reduction: number; kind?: string }; haste?: { remaining: number; amount: number };
-  attackWeak?: { remaining: number }; pureLand?: { remaining: number };
-  root?: number; burn?: { remaining: number }; poison?: { remaining: number }; soulLink?: { remaining: number };
+  attackWeak?: { remaining: number }; pureLand?: { remaining: number }; soulLink?: { remaining: number };
   armorBuff?: { remaining: number }; berserk?: { remaining: number };
 };
 /** Hero-specific looks that already replace a game-wide one on the same actor (their own module draws them). */
 export type SharedStatusActor = Partial<Pick<VisualActor, 'kimtraBell' | 'culinhBulwark' | 'nuwaShielded' | 'blackWaterShield'
-  | 'nhiepShield' | 'mandonHaste' | 'culinhSlowed' | 'moctraFrenzy' | 'moctraPoison' | 'manhbaBond' | 'honghainhiBurn'
-  | 'thietphienEmber' | 'fireBurning'>>;
+  | 'nhiepShield' | 'mandonHaste' | 'moctraFrenzy' | 'manhbaBond'>>;
 
 /** Heroes whose own berserk art replaces the game-wide mark (Hình Thiên's immortal flame, Kim Sí Điểu's golden feathers). */
 const OWN_BERSERK_HEROES = ['h011', 'h016', 'h01I'];
-/** Burn applied by these heroes is a poison in play (Mộc Tra, Nhiếp Tiểu Thiến's line): it keeps the poison mark. */
-const POISON_BURN_HEROES = ['h00A', 'h03P'];
 
 /**
  * Game-wide statuses to draw on one actor this snapshot, each from its real server field (never inferred from a skill
  * or a position). One neutral design per effect, whatever the hero's element; several different effects stack as
  * small marks/sheets, the same effect from several sources is one entry. Freeze is added by the battlefield, which
  * knows which frozen enemies a hero module (Cộng Công's black ice, Trường Đạo Lăng) already draws.
- * `burnCasterHero` is the hero id that applied `burn` (the battlefield reads it from the state).
  */
-export function sharedStatuses(entity: SharedStatusSnapshot, hero: boolean, actor: SharedStatusActor, burnCasterHero?: string): SharedMark[] {
+export function sharedStatuses(entity: SharedStatusSnapshot, hero: boolean, actor: SharedStatusActor): SharedMark[] {
   const marks: SharedMark[] = [];
   const frozen = (entity.frozen ?? 0) > 0;
   if ((entity.stun ?? 0) > 0 && !frozen) marks.push('stun');
@@ -42,11 +37,7 @@ export function sharedStatuses(entity: SharedStatusSnapshot, hero: boolean, acto
     if ((entity.sealed ?? 0) > 0) marks.push('seal');
     if ((entity.attackWeak?.remaining ?? 0) > 0) marks.push('attack-down');
     if ((entity.pureLand?.remaining ?? 0) > 0) marks.push('vulnerable');
-    if ((entity.slow ?? 0) > 0 && !actor.culinhSlowed) marks.push('slow');
-    if ((entity.root ?? 0) > 0) marks.push('root');
-    const burnPoison = (entity.burn?.remaining ?? 0) > 0 && POISON_BURN_HEROES.includes(burnCasterHero ?? '') && !actor.fireBurning;
-    if (((entity.poison?.remaining ?? 0) > 0 || burnPoison) && !actor.moctraPoison) marks.push('poison');
-    if ((entity.burn?.remaining ?? 0) > 0 && !burnPoison && !actor.fireBurning && !actor.honghainhiBurn && !actor.thietphienEmber) marks.push('burn');
+    // Slow, root, poison, burn and armour break are body tints (visual-status-tint.ts), not marks.
     if ((entity.soulLink?.remaining ?? 0) > 0 && !actor.manhbaBond) marks.push('soul-link');
     if ((entity.armorBuff?.remaining ?? 0) > 0) marks.push('armor-up');
   }

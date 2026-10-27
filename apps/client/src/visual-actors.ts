@@ -1,4 +1,3 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color.js';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
 import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder.js';
@@ -11,6 +10,7 @@ import { createHeroSprite, createMonsterSprite } from './visual-sprites.js';
 import { createMedicinalTree } from './visual-shennong-tree.js';
 import { heroDirection, type HeroPose } from './hero-motion.js';
 import type { SharedMark } from './visual-shared-status.js';
+import { applyActorOverlay, statusOverlay, type StatusTintKind } from './visual-status-tint.js';
 import { assignActorDrawGroups, configureCombatDrawOrder } from './visual-kit-draw-order.js';
 import { createMotionTrack, sampleMotionTrack, updateMovingState, type MotionTrack } from './actor-interpolation.js';
 import { enemyRankScale } from './visual-enemy-skill-routing.js';
@@ -78,6 +78,8 @@ export type VisualActor = {
   buddhaShielded?: boolean;
   /** Game-wide statuses drawn from the snapshot with one neutral design for every element (shield bubble, stun/freeze/invulnerable sheets, marks). */
   shared?: readonly SharedMark[];
+  /** Physical debuffs shown as a body colour overlay (burn, poison, armour break, slow, root). */
+  statusTint?: readonly StatusTintKind[];
   bodhiBlessed?: boolean;
   /** Server `bodhiBlessing.remaining` (seconds): the leaf pair splits and pulls in over its last .3 s. */
   bodhiRemaining?: number;
@@ -341,6 +343,7 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
   }
   if (!frozen) actor.actionTime = Math.max(0, actor.actionTime - dt);
   if (!actor.actionTime && actor.action !== 'death') { actor.action = 'idle'; actor.attackPhase = undefined; }
+  const tint = actor.hp > 0 && !actor.dying ? statusOverlay(actor.statusTint, time + actor.phase, reduced) : undefined;
   if (actor.model?.ready()) {
     for (const part of actor.fallbackParts) part.dispose();
     actor.fallbackParts.length = 0;
@@ -349,25 +352,14 @@ export function animateActor(actor: VisualActor, dt: number, time: number, reduc
     const local = Math.max(0, Math.min(1, 1 - actor.actionTime / Math.max(.001, actor.actionDuration)));
     actor.model.update({ moving, action: actor.action,
       progress: 'raised' in actor.model ? modelSwingProgress(actor, local, actor.model.raised) : swingProgress(actor, local),
-      facingX: actor.facingX, facingZ: actor.facingZ, dt: dt * (actor.modelMotionSpeed ?? 1), reduced, frozen, flash: actor.hitFlashTime });
+      facingX: actor.facingX, facingZ: actor.facingZ, dt: dt * (actor.modelMotionSpeed ?? 1), reduced, frozen, flash: actor.hitFlashTime, tint });
   }
   const pulse = reduced ? 0 : Math.sin(time * (moving ? 13 : 2.3) + actor.phase);
 
-  // Hit flash (White Flash) using Babylon's native renderOverlay
-  if (actor.hitFlashTime > 0) {
-    actor.hitFlashTime = Math.max(0, actor.hitFlashTime - dt);
-    if (actor.sprite?.mesh && !reduced) {
-      const spriteMeshes = 'meshes' in actor.sprite ? actor.sprite.meshes : [actor.sprite.mesh];
-      for (const mesh of spriteMeshes) {
-        mesh.renderOverlay = true;
-        mesh.overlayColor = Color3.White();
-        mesh.overlayAlpha = Math.min(0.85, (actor.hitFlashTime / 0.08) * 0.85);
-      }
-    }
-  } else if (actor.sprite?.mesh?.renderOverlay) {
-    const spriteMeshes = 'meshes' in actor.sprite ? actor.sprite.meshes : [actor.sprite.mesh];
-    spriteMeshes.forEach(mesh => { mesh.renderOverlay = false; });
-  }
+  // Hit flash (white) then status tint, both through Babylon's native renderOverlay; sprite fallbacks get the same.
+  if (actor.hitFlashTime > 0) actor.hitFlashTime = Math.max(0, actor.hitFlashTime - dt);
+  if (actor.sprite?.mesh) applyActorOverlay('meshes' in actor.sprite ? actor.sprite.meshes : [actor.sprite.mesh],
+    actor.hitFlashTime, tint, reduced);
 
   // Attack Lunge (Lao người ra đòn)
   const len = Math.hypot(actor.facingX, actor.facingZ) || 1;

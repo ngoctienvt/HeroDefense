@@ -7,6 +7,7 @@ import { TransformNode } from '@babylonjs/core/Meshes/transformNode.js';
 import type { Scene } from '@babylonjs/core/scene.js';
 import { assignActorDrawGroups } from './visual-kit-draw-order.js';
 import { debug } from './debug.js';
+import { applyActorOverlay } from './visual-status-tint.js';
 import { advancePanguModelPose, panguModelSample, type PanguModelPose, type PanguModelTransition } from './pangu-model-motion.js';
 import type { HeroModelSpec } from './hero-models.js';
 import { HeroTrail } from './visual-hero-trail.js';
@@ -164,11 +165,7 @@ export function createHeroModel(scene: Scene, parent: TransformNode, initiallyAc
         for (const trail of trails) trail.update(sample.clip, sample.progress, spec.raisedProgress, spec.impactProgress,
           pose.dt, clock, pose.reduced);
       }
-      for (const mesh of meshes) {
-        mesh.renderOverlay = !pose.reduced && pose.flash > 0;
-        mesh.overlayColor.set(1, 1, 1);
-        mesh.overlayAlpha = Math.min(.85, pose.flash / .08 * .85);
-      }
+      applyActorOverlay(meshes, pose.flash, pose.tint, pose.reduced);
     },
   };
 }
