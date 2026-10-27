@@ -1,5 +1,7 @@
 # Sprite quái và boss
 
+> Từ 27-10-2026, người dùng chuyển sản xuất quái/boss sang mô hình 3D và giữ ảnh master stylized làm reference. [Kế hoạch bảo toàn nguồn và roster mới](../plans/261027-1118-monster-3d-master-references/plan.md) đã bàn giao 38 master (33 mới, 5 tái dùng); xem [gallery master](../assets/monster-source/masters/index.html) hoặc [gói reference](../assets/monster-source/master-references-20261027.zip). Chỉ tạo ảnh reference, không tạo tiếp sprite action. Các mục dưới mô tả asset/runtime sprite và model đã có, không phải lệnh tiếp tục sản xuất sprite. Đợt master này không thay runtime hoặc xóa asset cũ. Mặt sau và chi tiết khuất chưa có ảnh riêng; accepted-reference là QA của agent, chưa phải người dùng duyệt mỹ thuật cuối.
+
 Client Babylon.js đọc sprite quái từ manifest theo art ID. Rendering không quyết định hướng đánh, sát thương, HP, thắng/thua hoặc quyền chọn mục tiêu; các trạng thái đó vẫn lấy từ snapshot/event server.
 
 ## Ngoại lệ 3D round 1

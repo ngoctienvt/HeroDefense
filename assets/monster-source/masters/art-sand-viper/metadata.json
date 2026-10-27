@@ -1,0 +1,46 @@
+{
+  "family": "serpent",
+  "role": "mob",
+  "id": "art-sand-viper",
+  "name": "Sa Ảnh Lục Xà",
+  "origin": "mới — đề xuất",
+  "brief": "Đầu nêm thấp, thân cát gọn/dày, gờ vảy to, đuôi ngắn nhọn; cát/than/ngà, không hood.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-sand-viper/generated/master-01.png",
+  "sha256": "69e1ea33b0de5ec265412bd1e8cc0d4cb1c499d7952be1489dd6001a3724ee03",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    0,
+    0,
+    1239,
+    1254
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-9d9730e6-c055-482d-bfa9-a48a3318d405.png",
+  "visualReview": "Reviewed full image: continuous legless body, one head and one tail, sand/charcoal scale plates.",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  }
+}

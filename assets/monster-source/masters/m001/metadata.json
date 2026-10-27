@@ -1,0 +1,46 @@
+{
+  "family": "quadruped",
+  "role": "mob",
+  "id": "m001",
+  "name": "Thanh Lang Tiểu Yêu",
+  "origin": "giữ thiết kế",
+  "brief": "Sói bốn chân, bờm dựng/nanh/móng; không thành người sói.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/m001/generated/master-01.png",
+  "sha256": "8162e57f7ea462f1b042a861c9463c582824b9421f6e5a97f616ea991bef46e3",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    0,
+    12,
+    1254,
+    1254
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-f35eed1f-34af-43ef-96cc-6760e9290481.png",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  },
+  "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity."
+}

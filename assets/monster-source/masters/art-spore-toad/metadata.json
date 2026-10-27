@@ -1,0 +1,48 @@
+{
+  "family": "quadruped",
+  "role": "mob",
+  "id": "art-spore-toad",
+  "name": "Thiềm Thừ Nấm",
+  "origin": "giữ thiết kế",
+  "brief": "Cóc bốn chân, thân thấp rộng/nấm lệch; subtype amphibian, không ép dáng thú có vú.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-spore-toad/generated/master-02.png",
+  "sha256": "72141f90a8e5aecae8217196a99f51b7fc88fdf65a72d346e271efa01bead48a",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    0,
+    67,
+    1237,
+    1222
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-6950b8fb-679a-497e-8c45-5ceae0870ab2.png",
+  "editPrompt": "Make one strictly local anatomical correction to this exact stylized mushroom toad image: remove the short pointed tail protruding behind its right hindquarter at the far right edge. Replace that tail with transparent background and a natural rounded adult toad rump. Adult toad has NO TAIL. Preserve all FOUR existing legs and feet, all purple mushrooms, ochre and olive skin, face, eyes, body proportions, pose, lighting, hand-painted rendering and framing. Do not change anything else. Real transparent background, one full-body character.",
+  "parentMasterSha256": "832984099988f7758a6c249066393209327b4519ae16ac440c861634c8c1bfc9",
+  "visualReview": "Adult toad tail removed; four feet and mushroom-covered body retained.",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  }
+}

@@ -1,0 +1,1733 @@
+{
+  "schema": "monster-master-reference-index.v1",
+  "date": "2026-10-27",
+  "scope": "master images only",
+  "assets": [
+    {
+      "family": "quadruped",
+      "role": "boss",
+      "id": "art-abyss-tortoise",
+      "name": "Quy Vương",
+      "origin": "giữ thiết kế",
+      "brief": "Rùa thấp rộng, mai tầng đá/ngà lớn; subtype shell/reptile.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-abyss-tortoise/generated/master-01.png",
+      "sha256": "dfec3d3a0fdb96b1f58c457d4af8227c07da8b1506426835d0c987f423db5490",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "alphaBounds": [
+        24,
+        9,
+        1520,
+        992
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-7e49efc7-1dfb-4bb0-a8e0-6f4c91e51fca.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation.",
+      "path": "assets/monster-source/masters/art-abyss-tortoise/master.png"
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "art-ash-vulture",
+      "name": "Kền Kền Tro",
+      "origin": "giữ thiết kế",
+      "brief": "Cổ trụi, mỏ móc, cánh rách thành mảng lớn.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-ash-vulture/generated/master-01.png",
+      "sha256": "1027d3f31e67ff01a2f9246e2e5f2c25a256286037abc9fd7b9667bed1ec24a5",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        9,
+        1254,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-0be9554e-e0d5-45df-949f-bb6e84b19605.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/art-ash-vulture/master.png"
+    },
+    {
+      "family": "serpent",
+      "role": "boss",
+      "id": "art-blackwater-serpent-king",
+      "name": "Hắc Thủy Đại Mãng",
+      "origin": "mới — đề xuất",
+      "brief": "Mãng thân rất dày liền khối, đầu bẹt rộng, vảy mảng lớn/lưng gai thấp; chàm/ngọc/đen, không chân rồng.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-blackwater-serpent-king/generated/master-01.png",
+      "sha256": "973ef6843b56f58a6f0c30facf38a8c82f7c54ed13f76ca4854e9a4a99cd2d73",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        15,
+        1238,
+        1238
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-e8a72e5e-5b7e-4ee8-ad0f-a93bf7a502e8.png",
+      "visualReview": "Reviewed native generated full image: complete character silhouette, correct family limb/body structure, no text or scenery. Native alpha/zero solid-edge pixel check recorded. Image reference acceptance only; 3D is handled elsewhere.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-blackwater-serpent-king/master.png"
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-bronze-halberdier",
+      "name": "Thiết Vệ Kích Binh",
+      "origin": "mới — đề xuất",
+      "brief": "Binh giáp đồng gầy cao, kích lưỡi bán nguyệt, mũ trụ kín; đồng xanh/than/đỏ son.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-bronze-halberdier/generated/master-01.png",
+      "sha256": "37d7f41b5656e30c3d8c9101041bb63696e28eac618b0f935524b456feeb1f04",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        3,
+        1244,
+        1238
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-35fd7e54-0199-4cc1-b446-73b86fdc84e9.png",
+      "visualReview": "Reviewed full image: two arms/two legs, red plume and bronze halberd readable.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-bronze-halberdier/master.png"
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "art-bronze-owl",
+      "name": "Kiêu Đồng Cổ",
+      "origin": "giữ thiết kế",
+      "brief": "Chim máy đồng, mắt tròn, cánh khớp cứng/đuôi quạt; subtype mechanical.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-bronze-owl/generated/master-02.png",
+      "sha256": "45919575ae2a390344698e26774c39da6c584138bff612385d23d38c10d3496e",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        19,
+        1240,
+        1230
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-d71c00a5-7e6e-47c8-b10b-7b5b3a195457.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Edited round owl facial disc and two forward eyes now clearly identify an owl; mechanical bronze body, wings, two legs and fan tail retained.",
+      "editPrompt": "Edit only the head of this exact mechanical bronze bird into an unmistakable OWL head: broad rounded owl facial disc, two very large round forward-facing turquoise eyes both clearly visible, small short central hooked beak, short rounded head silhouette with no swept-back phoenix/eagle crest. Keep the existing hand-painted stylized rendering, bronze and turquoise materials, entire mechanical body, wing joints, two wings, two legs, fan tail, pose and full-body framing unchanged as much as possible. One isolated character, real transparent background. No text, scene, halo or ground.",
+      "parentMasterSha256": "a76dca2aef766869fd51830a4dcf54a8c7dd67a8de3fb27a8fd7147d1c024360",
+      "path": "assets/monster-source/masters/art-bronze-owl/master.png"
+    },
+    {
+      "family": "quadruped",
+      "role": "boss",
+      "id": "art-cinder-qilin",
+      "name": "Xích Diệm Lân Vương",
+      "origin": "giữ thiết kế",
+      "brief": "Lân bốn chân, giáp vảy/sừng chẻ/đuôi bó; lửa không che giải phẫu.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "existing",
+      "route": "existing-reviewed-still",
+      "source": "assets/sprites/monster-motion/art-cinder-qilin/source/directions/east/master-candidate-v1.png",
+      "sha256": "1d5d4f1f708409a3eb757a7e8fd494e46728b849d1cb1af3d281968f51b4dbac",
+      "dimensions": [
+        1323,
+        1189
+      ],
+      "sourceKind": "original-generated-master",
+      "visualReview": "Retained after full-image review; identity and full-body silhouette readable. No claim about resulting 3D model.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-cinder-qilin/master.png"
+    },
+    {
+      "family": "serpent",
+      "role": "mob",
+      "id": "art-coral-cobra",
+      "name": "Xích San Hô Nhãn Kính Xà",
+      "origin": "mới — đề xuất",
+      "brief": "Cobra cổ dựng/hood bầu, khoang vảy đỏ/ngà/than, mắt lớn; không chân/cánh.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-coral-cobra/generated/master-01.png",
+      "sha256": "5c6b18666ef6670bbaff2940badc4fd7374a5381d27462bb190b0e93e4b9682c",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        25,
+        21,
+        1234,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-4da38129-eb01-487d-8e08-dd37ca713057.png",
+      "visualReview": "Reviewed full image: continuous legless body, one head, one tail and expanded cobra hood with coral markings.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-coral-cobra/master.png"
+    },
+    {
+      "family": "serpent",
+      "role": "boss",
+      "id": "art-crystal-cobra-queen",
+      "name": "Huyền Tinh Xà Hậu",
+      "origin": "mới — đề xuất",
+      "brief": "Hood quạt lớn có gờ tinh thể theo xương cổ, đầu vương miện cạnh đá, thân dài; tím lạnh/ngà/lam, không dùng hào quang thay hood.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-crystal-cobra-queen/generated/master-01.png",
+      "sha256": "58c3729a317ad8d9bf771016a2ff7a1d25ff350a684533ce00bbb1ab02aef6db",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        5,
+        1226,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-4a1b27aa-fded-4bad-b19f-526e75271d8b.png",
+      "visualReview": "Reviewed native generated full image: complete character silhouette, correct family limb/body structure, no text or scenery. Native alpha/zero solid-edge pixel check recorded. Image reference acceptance only; 3D is handled elsewhere.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-crystal-cobra-queen/master.png"
+    },
+    {
+      "family": "quadruped",
+      "role": "boss",
+      "id": "art-eclipse-hound",
+      "name": "Thực Nguyệt Thiên Khuyển",
+      "origin": "giữ thiết kế",
+      "brief": "Chó săn gầy cao, hàm lớn/bờm vầng khuyết; silhouette dài.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-eclipse-hound/source/directions/south/master-candidate-v1.png",
+          "sha256": "726f62377e309279c930e0bedfbd88781f2dc07e68fb406df4736b50ece5dc33"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-eclipse-hound/generated/master-01.png",
+      "sha256": "a75a5de8277f76ef35cf23ec010c9bf66f078d7499332430c972f7741bcd81b8",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "alphaBounds": [
+        0,
+        0,
+        1520,
+        1000
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-2c6c10a6-e54b-466f-8d1e-6c4ed839626e.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation.",
+      "path": "assets/monster-source/masters/art-eclipse-hound/master.png"
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "art-ember-falcon",
+      "name": "Hỏa Ưng",
+      "origin": "mới — đề xuất",
+      "brief": "Chim săn mồi gọn, mỏ ngắn móc, cánh nhọn/đuôi chẻ, lông đỏ gạch/than; không bake lửa.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-ember-falcon/generated/master-01.png",
+      "sha256": "31dd973b27383673bc05ab029c48596160df3708f9f07e1f6646f743361ebb52",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        25,
+        5,
+        1248,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-42c9e9d3-f73c-4a9a-b1eb-c6ddf9ad8198.png",
+      "visualReview": "Reviewed full image: two feathered wings, two legs and hooked falcon beak; red charcoal plumage without fire VFX.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-ember-falcon/master.png"
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "art-frost-crane",
+      "name": "Hàn Hạc",
+      "origin": "mới — đề xuất",
+      "brief": "Cổ dài, chân dài, lông trắng/chàm và mào băng nhỏ; phân biệt rõ chim săn mồi.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-frost-crane/generated/master-01.png",
+      "sha256": "f978a144bde0867b20f75aab7b9ea61f3c5f1181e5ae467ccc1887e7747f830e",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        0,
+        1240,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-08aeae71-efe1-4b8e-b05d-31af9858975c.png",
+      "visualReview": "Reviewed full image: crane long neck, two wings and two long legs; white icy-blue palette.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-frost-crane/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-gold-horn",
+      "name": "Kim Giác",
+      "origin": "giữ thiết kế",
+      "brief": "Vai vuông, một sừng vàng lớn, hồ lô; giữ bất đối xứng từ master.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "existing",
+      "route": "existing-reviewed-still",
+      "source": "assets/sprites/monster-motion/art-gold-horn/source/canonical-v1/idle-south-master/frames/frame-00.png",
+      "sha256": "407bd701beb73c91295577ad77d91608430b6b999d73a9e115a4494859a293b7",
+      "dimensions": [
+        1000,
+        1000
+      ],
+      "sourceKind": "derived-idle",
+      "visualReview": "Retained after full-image review; identity and full-body silhouette readable. No claim about resulting 3D model.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-gold-horn/master.png"
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "art-ironback-boar",
+      "name": "Thiết Bối Dã Trư",
+      "origin": "mới — đề xuất",
+      "brief": "Lợn rừng bốn chân, lưng giáp tấm, mõm dài/nanh thấp; than/nâu/sắt đỏ, khác m003 hai chân.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-ironback-boar/generated/master-01.png",
+      "sha256": "de15e6db87c3a4b87ff3188d28b08cd0604513e3236e19b01a55ad6cc6eb004d",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        28,
+        71,
+        1239,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-d4e6ebcf-e1db-4656-8bda-c034b9a13b17.png",
+      "visualReview": "Reviewed full image: four legs, boar tusks and natural iron back plates.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-ironback-boar/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-jade-judge",
+      "name": "U Minh Phán Quan",
+      "origin": "mới — đề xuất",
+      "brief": "Áo quan dài chia tà rõ chân, mũ cao/phán bút và thẻ ngọc; ngọc tối/ngà/tím, không trùng đạo nhân Lục Áp.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-jade-judge/generated/master-01.png",
+      "sha256": "e2f85341a0c079018b519ed26c78be94529f9f8b4c53a29f75f915b6adceec9c",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        0,
+        1228,
+        1239
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-4cd29932-99db-4cdd-83ea-d526e24ff4a4.png",
+      "visualReview": "Reviewed native generated full image: complete character silhouette, correct family limb/body structure, no text or scenery. Native alpha/zero solid-edge pixel check recorded. Image reference acceptance only; 3D is handled elsewhere.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-jade-judge/master.png"
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-kiln-guardian",
+      "name": "Vệ Binh Lò Cổ",
+      "origin": "giữ thiết kế",
+      "brief": "Giáp đất nung, khiên vuông, búa nung; khớp đọc rõ.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-kiln-guardian/generated/master-01.png",
+      "sha256": "329650e3d235e3c99db8a46018013ea8b7067b60cce9d088b9553a66bff1a67a",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        11,
+        1244,
+        1240
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-fdbbd67d-bf25-46f3-aae4-ea66fd2e0c5e.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/art-kiln-guardian/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-ma-beast",
+      "name": "Ma Gia — Linh Thú",
+      "origin": "giữ thiết kế",
+      "brief": "Giáp thú văn, linh thú cuộn trên vai là phụ kiện riêng cùng một cá thể art.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-ma-beast/generated/master-01.png",
+      "sha256": "13db0f9478cb56d8673061baa46580289f0947950f1a8b4a7b8a8d754bcdf2d9",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        10,
+        1236,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-96d8c401-ca0c-4dd0-b8d5-ed184c20d752.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation.",
+      "path": "assets/monster-source/masters/art-ma-beast/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-ma-lute",
+      "name": "Ma Gia — Tỳ Bà",
+      "origin": "giữ thiết kế",
+      "brief": "Thân rộng, tỳ bà lớn chéo ngực; bản body phụ nếu nhạc cụ che khớp.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-ma-lute/generated/master-01.png",
+      "sha256": "8d15efed37d26da8c3d5b30cfbf99bb61198bcf36ca0e539cc94374de53fe482",
+      "dimensions": [
+        1159,
+        1358
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        11,
+        1146,
+        1358
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-b911c575-4c60-43e2-9158-469de707bbde.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation.",
+      "path": "assets/monster-source/masters/art-ma-lute/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-ma-parasol",
+      "name": "Ma Gia — Bảo Tán",
+      "origin": "giữ thiết kế",
+      "brief": "Giáp dài tím/đen/vàng, tán sau vai có mặt dưới, cán/tay rõ.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-ma-parasol/generated/master-01.png",
+      "sha256": "22c63950caca54d8aef1691b4a7b37e2cae5cb78e52abe334f181c8aa97beb3a",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "alphaBounds": [
+        0,
+        15,
+        1008,
+        1520
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-2b9478ab-98b8-4a0d-b59d-2d5730f356e2.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation.",
+      "path": "assets/monster-source/masters/art-ma-parasol/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-ma-sword",
+      "name": "Ma Gia — Kiếm",
+      "origin": "giữ thiết kế",
+      "brief": "Giáp lam thép/ngà, đại kiếm tay phải, cờ đỏ sau vai trái.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "existing",
+      "route": "existing-reviewed-still",
+      "source": "assets/sprites/monster-motion/art-ma-sword/source/master-candidate-v2.png",
+      "sha256": "8a9b03f816073334ee40a1251b991bd6571561f03c15a3e4bead9f4a27ca9f39",
+      "dimensions": [
+        1323,
+        1189
+      ],
+      "sourceKind": "original-generated-master",
+      "visualReview": "Retained after full-image review; identity and full-body silhouette readable. No claim about resulting 3D model.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-ma-sword/master.png"
+    },
+    {
+      "family": "winged",
+      "role": "boss",
+      "id": "art-moon-crane-queen",
+      "name": "Nguyệt Hạc Tiên Hậu",
+      "origin": "mới — đề xuất",
+      "brief": "Hạc vương cổ cong dài, cánh lông nhiều lớp/đuôi dải bản lớn, vương miện trăng gắn đầu; bạc/chàm/ngọc.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-moon-crane-queen/generated/master-01.png",
+      "sha256": "c3811269eabd6dcdea1dffe26b28119c969d90ebfa4ef692fc9d782c32a8459a",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        11,
+        21,
+        1244,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-9fa2584e-0483-483b-aa7b-ec3884561a2d.png",
+      "visualReview": "Reviewed native generated full image: complete character silhouette, correct family limb/body structure, no text or scenery. Native alpha/zero solid-edge pixel check recorded. Image reference acceptance only; 3D is handled elsewhere.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-moon-crane-queen/master.png"
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "art-moss-badger",
+      "name": "Nham Giáp Lửng",
+      "origin": "mới — đề xuất",
+      "brief": "Thân lửng thấp chắc, tay trước đào khỏe, sống giáp đá/rêu; khối thấp rộng khác sói/hươu.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-moss-badger/generated/master-01.png",
+      "sha256": "b0a7410b8ed8823c86e8ba697d6df7b260b782c1637eaab482370a03c0a1b3c7",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "alphaBounds": [
+        25,
+        23,
+        1500,
+        1024
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-dea8fb1b-cca8-41dc-8904-092ecf035c39.png",
+      "visualReview": "Reviewed full image: four paws, badger face stripes, stone back and moss readable.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-moss-badger/master.png"
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-reef-spearman",
+      "name": "Ngư Yêu San Hô",
+      "origin": "giữ thiết kế",
+      "brief": "Hai chân có màng, vây lưng, thương san hô ba chạc.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-reef-spearman/generated/master-01.png",
+      "sha256": "49083df91fc496b96ee0d02c0e9602cf6246e2673ac00c5e923c4f9d59b36e27",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        0,
+        1240,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-f9797c13-d3dc-428a-9fd7-8b56a90be255.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/art-reef-spearman/master.png"
+    },
+    {
+      "family": "serpent",
+      "role": "mob",
+      "id": "art-river-serpent",
+      "name": "Xà Yêu Thủy Vực",
+      "origin": "giữ thiết kế",
+      "brief": "Rắn không chân, mào đầu, sống lưng ngọc; thân S thoáng.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-river-serpent/generated/master-01.png",
+      "sha256": "f9ab495a586a823c88ca143180349e1dcca04ec23474ec72d678eda8a6b5d417",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        3,
+        1240,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-485a67be-9d34-4542-aeb5-6d57c898d41b.png",
+      "visualReview": "Reviewed full image: single continuous legless serpentine body, one head and one tail, jade blue fins.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-river-serpent/master.png"
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-root-puppet",
+      "name": "Khôi Lỗi Rễ",
+      "origin": "giữ thiết kế",
+      "brief": "Thân gỗ rỗng, tay rễ dài; khóa hai chân chính nếu còn đúng thiết kế, chưa tự xóa rễ phụ.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-root-puppet/generated/master-01.png",
+      "sha256": "9159c1660b4a85f49e596e6ea47d49773596a40e5e54d526ba98c282ae564365",
+      "dimensions": [
+        1199,
+        1312
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        25,
+        1185,
+        1312
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-9987ce23-8f59-4dd6-9a34-ccdc030485be.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/art-root-puppet/master.png"
+    },
+    {
+      "family": "serpent",
+      "role": "mob",
+      "id": "art-sand-viper",
+      "name": "Sa Ảnh Lục Xà",
+      "origin": "mới — đề xuất",
+      "brief": "Đầu nêm thấp, thân cát gọn/dày, gờ vảy to, đuôi ngắn nhọn; cát/than/ngà, không hood.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-sand-viper/generated/master-01.png",
+      "sha256": "69e1ea33b0de5ec265412bd1e8cc0d4cb1c499d7952be1489dd6001a3724ee03",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        0,
+        1239,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-9d9730e6-c055-482d-bfa9-a48a3318d405.png",
+      "visualReview": "Reviewed full image: continuous legless body, one head and one tail, sand/charcoal scale plates.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-sand-viper/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-silver-horn",
+      "name": "Ngân Giác",
+      "origin": "giữ thiết kế",
+      "brief": "Dáng dài, sừng bạc cong, bình ngọc tay trái, tay áo rộng.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "existing",
+      "route": "existing-reviewed-still",
+      "source": "assets/sprites/monster-motion/art-silver-horn/source/canonical-v1/idle-south-master/frames/frame-00.png",
+      "sha256": "8ba02452c9647b8693c8b6427355f67bc4db44b36bb99a00af1dc7931149a3bd",
+      "dimensions": [
+        1000,
+        1000
+      ],
+      "sourceKind": "derived-idle",
+      "visualReview": "Retained after full-image review; identity and full-body silhouette readable. No claim about resulting 3D model.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-silver-horn/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-solar-hermit",
+      "name": "Lục Áp Đạo Quân",
+      "origin": "giữ thiết kế",
+      "brief": "Đạo nhân gầy cao, áo choàng nhọn, hồ lô/pháp khí.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-solar-hermit/generated/master-01.png",
+      "sha256": "d846c8e09beeb3087da70e7fbd7fbc45c26d2a85618b9ad91a61f11b90cdfc99",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "alphaBounds": [
+        23,
+        14,
+        996,
+        1536
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-2b61cde3-d0fc-4a8e-9eb6-c133b1cbeb6a.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation.",
+      "path": "assets/monster-source/masters/art-solar-hermit/master.png"
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "art-spore-toad",
+      "name": "Thiềm Thừ Nấm",
+      "origin": "giữ thiết kế",
+      "brief": "Cóc bốn chân, thân thấp rộng/nấm lệch; subtype amphibian, không ép dáng thú có vú.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-spore-toad/generated/master-02.png",
+      "sha256": "72141f90a8e5aecae8217196a99f51b7fc88fdf65a72d346e271efa01bead48a",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        67,
+        1237,
+        1222
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-6950b8fb-679a-497e-8c45-5ceae0870ab2.png",
+      "editPrompt": "Make one strictly local anatomical correction to this exact stylized mushroom toad image: remove the short pointed tail protruding behind its right hindquarter at the far right edge. Replace that tail with transparent background and a natural rounded adult toad rump. Adult toad has NO TAIL. Preserve all FOUR existing legs and feet, all purple mushrooms, ochre and olive skin, face, eyes, body proportions, pose, lighting, hand-painted rendering and framing. Do not change anything else. Real transparent background, one full-body character.",
+      "parentMasterSha256": "832984099988f7758a6c249066393209327b4519ae16ac440c861634c8c1bfc9",
+      "visualReview": "Adult toad tail removed; four feet and mushroom-covered body retained.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-spore-toad/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "art-stone-matriarch",
+      "name": "Thạch Cơ Nương Nương",
+      "origin": "giữ thiết kế",
+      "brief": "Nữ giáp nham thạch, vương miện cạnh đá, vai lệch.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-stone-matriarch/generated/master-01.png",
+      "sha256": "d814e0d07690461434c368eb52313133187ad9dca148bba5727eb6a96c6ab822",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        27,
+        0,
+        1218,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-de5d6c10-a22e-4f38-b192-1192d0b8c62c.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation.",
+      "path": "assets/monster-source/masters/art-stone-matriarch/master.png"
+    },
+    {
+      "family": "winged",
+      "role": "boss",
+      "id": "art-tempest-roc",
+      "name": "Phong Lôi Bằng Vương",
+      "origin": "mới — đề xuất",
+      "brief": "Đại bằng ngực dày, cánh rộng bản, mào cạnh đồng, vuốt lớn; lam thép/đồng/ngà, sét tách lớp.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-tempest-roc/generated/master-01.png",
+      "sha256": "d4a360244563a4bc22823b34f16736e044af67bdb671c230d569d39791988c70",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        27,
+        1254,
+        1236
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-7bc252d2-8946-4f00-aaf3-4863183375f3.png",
+      "visualReview": "Reviewed native generated full image: complete character silhouette, correct family limb/body structure, no text or scenery. Native alpha/zero solid-edge pixel check recorded. Image reference acceptance only; 3D is handled elsewhere.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-tempest-roc/master.png"
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "art-thunder-ape",
+      "name": "Lôi Viên",
+      "origin": "giữ thiết kế",
+      "brief": "Vượn tay dài, bờm cạnh, vòng đồng; subtype primate, không ép rig người tự động.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-thunder-ape/generated/master-01.png",
+      "sha256": "c1adb78b7e9fbe7c1fac6b8f36487453b52c9de29e2b0dc5564c2c81c261541d",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        7,
+        1240,
+        1208
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-db4bdfef-3ad2-4d05-ac01-9f4f633fe902.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/art-thunder-ape/master.png"
+    },
+    {
+      "family": "quadruped",
+      "role": "boss",
+      "id": "art-thunder-rhino-king",
+      "name": "Lôi Giáp Tê Vương",
+      "origin": "mới — đề xuất",
+      "brief": "Tê giác ngực/vai khổng lồ, hai sừng trước-sau, giáp đồng cạnh lớn; xám lam/đồng/trắng, không bake tia sét.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-thunder-rhino-king/generated/master-01.png",
+      "sha256": "8d49902154f46f5dc7b41150b464014976344ae216625d7d00ee71988523d51d",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "alphaBounds": [
+        0,
+        7,
+        1536,
+        1024
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-64ad9547-7abc-4c7d-a381-07ad3b359dbb.png",
+      "visualReview": "Reviewed native generated full image: complete character silhouette, correct family limb/body structure, no text or scenery. Native alpha/zero solid-edge pixel check recorded. Image reference acceptance only; 3D is handled elsewhere.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-thunder-rhino-king/master.png"
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "art-vine-stag",
+      "name": "Lộc Yêu Dây Leo",
+      "origin": "giữ thiết kế",
+      "brief": "Hươu bốn chân, gạc lệch, dây leo mảng lớn.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/art-vine-stag/generated/master-01.png",
+      "sha256": "a94e1ce73a2e29dd7e8b83c7a83fb02782b069ef222b0b6da26dc6eeb3ef1b4b",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        10,
+        1228,
+        1237
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-7b4a7367-7a4a-4ddb-a9a8-94ea5cfd5a54.png",
+      "visualReview": "Reviewed full image: four legs, deer face and distinctive vine antlers readable.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/art-vine-stag/master.png"
+    },
+    {
+      "family": "human",
+      "role": "boss",
+      "id": "b001",
+      "name": "Hắc Phong Hùng Vương",
+      "origin": "giữ thiết kế",
+      "brief": "Gấu đứng hai chân, vai đá/vòng giáp cổ, hai tay nện; giữ hình gấu.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "existing",
+      "route": "existing-reviewed-still",
+      "source": "assets/sprites/monster-motion/b001/source/export-frames-v1/idle/south/frame-00.png",
+      "sha256": "598729cdecc5ca8fc39a08cae6cf1bad4e4c5bc0b06ff6fa904ea729b7bc74dd",
+      "dimensions": [
+        700,
+        700
+      ],
+      "sourceKind": "derived-idle",
+      "visualReview": "Retained after full-image review; identity and full-body silhouette readable. No claim about resulting 3D model.",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "path": "assets/monster-source/masters/b001/master.png"
+    },
+    {
+      "family": "quadruped",
+      "role": "mob",
+      "id": "m001",
+      "name": "Thanh Lang Tiểu Yêu",
+      "origin": "giữ thiết kế",
+      "brief": "Sói bốn chân, bờm dựng/nanh/móng; không thành người sói.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/m001/generated/master-01.png",
+      "sha256": "8162e57f7ea462f1b042a861c9463c582824b9421f6e5a97f616ea991bef46e3",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        12,
+        1254,
+        1254
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-f35eed1f-34af-43ef-96cc-6760e9290481.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/m001/master.png"
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "m002",
+      "name": "Hắc Sơn Cốt Cung Thủ",
+      "origin": "giữ thiết kế",
+      "brief": "Xương gầy, nón lệch, cung xương; tách cung khỏi thân khi cần body reference.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        },
+        {
+          "path": "assets/monster-source/m002.png",
+          "sha256": "42c29b2a82107a48ec3a68ca62d8e4eea0c63f27c8171d1342deb79d43e9bf01"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/m002/generated/master-01.png",
+      "sha256": "d750a008dd20a48207382db1503b3737e1a64ef5e8bae9cbd8ee693a325fe243",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "alphaBounds": [
+        41,
+        21,
+        1014,
+        1516
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-249c2509-56b6-4aaa-afcf-c4d1880489e5.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/m002/master.png"
+    },
+    {
+      "family": "human",
+      "role": "mob",
+      "id": "m003",
+      "name": "Trư Yêu Thiết Giáp",
+      "origin": "giữ thiết kế",
+      "brief": "Lợn yêu hai chân, bụng/giáp tròn, chùy sắt; không đổi thành lợn bốn chân.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        },
+        {
+          "path": "assets/monster-source/m003.png",
+          "sha256": "333d05d19fd62a94241936d263d20715b2700142aa36b640455ec7e4d58e515d"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/m003/generated/master-01.png",
+      "sha256": "4b82f509e687386ed41ab661f5cd78424b06d8388730a34777747dc5c5d101d3",
+      "dimensions": [
+        1218,
+        1291
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        21,
+        1204,
+        1267
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-38257c83-e5f1-4dc9-bf22-94ec4b56da5a.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/m003/master.png"
+    },
+    {
+      "family": "winged",
+      "role": "mob",
+      "id": "m004",
+      "name": "Huyết Dơi Yêu",
+      "origin": "giữ thiết kế",
+      "brief": "Dơi cánh màng, tai nhọn/răng dài; subtype bat, không đổi thành lông chim.",
+      "schema": "monster-master-reference.v1",
+      "date": "2026-10-27",
+      "status": "accepted-reference",
+      "model": null,
+      "estimateUsd": null,
+      "master": "master.png",
+      "scope": "image reference only; 3D handled by another person",
+      "artSource": "host_image",
+      "route": "Codex image_gen",
+      "references": [
+        {
+          "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+          "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+        },
+        {
+          "path": "assets/monster-source/m004.png",
+          "sha256": "a1554cf40ba1bd28022a9b1d2be443959a2c08356c23b99b5aad71b71facaf10"
+        }
+      ],
+      "raw": "assets/monster-source/master-archive/m004/generated/master-01.png",
+      "sha256": "cb0b58469614b8eed9e65bafc7da90a3f13ac25654366332a8e7dfc27b6ac86e",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "alphaBounds": [
+        0,
+        15,
+        1528,
+        1024
+      ],
+      "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-39f9a4c7-6cef-4235-9e1e-3395fed310a2.png",
+      "qa": {
+        "solidPixelsOnImageEdge": 0,
+        "nativeMasterUnmodified": true,
+        "transparentBackground": true
+      },
+      "visualReview": "Full native image reviewed: one complete neutral master, correct creature/body anatomy and recognizable identity.",
+      "path": "assets/monster-source/masters/m004/master.png"
+    }
+  ]
+}

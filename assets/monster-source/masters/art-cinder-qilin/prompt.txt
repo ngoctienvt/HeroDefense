@@ -1,0 +1,1 @@
+Existing authored master/rest still retained byte-for-byte. Original source: assets/sprites/monster-motion/art-cinder-qilin/source/directions/east/master-candidate-v1.png

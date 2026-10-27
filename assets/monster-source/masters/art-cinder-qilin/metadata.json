@@ -1,0 +1,30 @@
+{
+  "family": "quadruped",
+  "role": "boss",
+  "id": "art-cinder-qilin",
+  "name": "Xích Diệm Lân Vương",
+  "origin": "giữ thiết kế",
+  "brief": "Lân bốn chân, giáp vảy/sừng chẻ/đuôi bó; lửa không che giải phẫu.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "existing",
+  "route": "existing-reviewed-still",
+  "source": "assets/sprites/monster-motion/art-cinder-qilin/source/directions/east/master-candidate-v1.png",
+  "sha256": "1d5d4f1f708409a3eb757a7e8fd494e46728b849d1cb1af3d281968f51b4dbac",
+  "dimensions": [
+    1323,
+    1189
+  ],
+  "sourceKind": "original-generated-master",
+  "visualReview": "Retained after full-image review; identity and full-body silhouette readable. No claim about resulting 3D model.",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  }
+}

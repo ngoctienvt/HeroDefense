@@ -1,0 +1,46 @@
+{
+  "family": "quadruped",
+  "role": "boss",
+  "id": "art-abyss-tortoise",
+  "name": "Quy Vương",
+  "origin": "giữ thiết kế",
+  "brief": "Rùa thấp rộng, mai tầng đá/ngà lớn; subtype shell/reptile.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-abyss-tortoise/generated/master-01.png",
+  "sha256": "dfec3d3a0fdb96b1f58c457d4af8227c07da8b1506426835d0c987f423db5490",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "alphaExtrema": [
+    0,
+    254
+  ],
+  "alphaBounds": [
+    24,
+    9,
+    1520,
+    992
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-7e49efc7-1dfb-4bb0-a8e0-6f4c91e51fca.png",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  },
+  "visualReview": "Reviewed native image and light/dark boss galleries: readable distinct identity, correct body/limbs, complete silhouette and held accessories. Neutral/reference pose; not a 3D-model validation."
+}

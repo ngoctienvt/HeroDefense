@@ -1,0 +1,787 @@
+{
+  "schema": "monster-master-preservation-audit.v1",
+  "date": "2026-10-27",
+  "scope": "old roster 39 plus rejected Fivefold history; assets/sprites/monster-motion and legacy assets/monster-source; filename/manifest audit, not visual approval",
+  "styleReferenceCandidate": {
+    "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+    "exists": true
+  },
+  "assets": [
+    {
+      "id": "m001",
+      "name": "Thanh Lang Tiểu Yêu — nâng cấp",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/monster-source/m001.png",
+          "sha256": "1315826d85afe3826724914d14afebc60974187e7f996f3c29e00f52fb5eda93",
+          "dimensions": [
+            1302,
+            1208
+          ],
+          "mode": "RGBA",
+          "role": "legacy-master-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "m002",
+      "name": "Hắc Sơn Cốt Cung Thủ — nâng cấp",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/monster-source/m002.png",
+          "sha256": "42c29b2a82107a48ec3a68ca62d8e4eea0c63f27c8171d1342deb79d43e9bf01",
+          "dimensions": [
+            1212,
+            1297
+          ],
+          "mode": "RGBA",
+          "role": "legacy-master-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "m003",
+      "name": "Trư Yêu Thiết Giáp — nâng cấp",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/monster-source/m003.png",
+          "sha256": "333d05d19fd62a94241936d263d20715b2700142aa36b640455ec7e4d58e515d",
+          "dimensions": [
+            1312,
+            1199
+          ],
+          "mode": "RGBA",
+          "role": "legacy-master-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "m004",
+      "name": "Huyết Dơi Yêu — nâng cấp",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/monster-source/m004.png",
+          "sha256": "a1554cf40ba1bd28022a9b1d2be443959a2c08356c23b99b5aad71b71facaf10",
+          "dimensions": [
+            1536,
+            1024
+          ],
+          "mode": "RGBA",
+          "role": "legacy-master-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-thorn-mantis",
+      "name": "Đường Lang Gai",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-root-puppet",
+      "name": "Khôi Lỗi Rễ",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-spore-toad",
+      "name": "Thiềm Thừ Nấm",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-vine-stag",
+      "name": "Lộc Yêu Dây Leo",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-shell-crab",
+      "name": "Giải Binh Giáp Đá",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-river-serpent",
+      "name": "Xà Yêu Thủy Vực",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-lantern-jelly",
+      "name": "Minh Đăng Thủy Mẫu",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-reef-spearman",
+      "name": "Ngư Yêu San Hô",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-stone-scorpion",
+      "name": "Hạt Yêu Hắc Nham",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-sand-beetle",
+      "name": "Sa Giáp Trùng",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-kiln-guardian",
+      "name": "Vệ Binh Lò Cổ",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-ash-vulture",
+      "name": "Kền Kền Tro",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-thunder-ape",
+      "name": "Lôi Viên",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-paper-wraith",
+      "name": "Phù Quỷ",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-bronze-owl",
+      "name": "Kiêu Đồng Cổ",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-void-larva",
+      "name": "Hư Không Giáp Trùng",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "b001",
+      "name": "Hắc Phong Hùng Vương — wave 5, nâng cấp",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/monster-source/b001.png",
+          "sha256": "22081f4cb5fd10a729618329e071f1a2bc3a8040c5355f3aa90b5519da69cee9",
+          "dimensions": [
+            1312,
+            1199
+          ],
+          "mode": "RGBA",
+          "role": "legacy-master-source"
+        }
+      ],
+      "derivedIdleCandidates": [
+        "assets/sprites/monster-motion/b001/source/export-frames-v1/idle/east/frame-00.png",
+        "assets/sprites/monster-motion/b001/source/export-frames-v1/idle/north/frame-00.png",
+        "assets/sprites/monster-motion/b001/source/export-frames-v1/idle/south/frame-00.png",
+        "assets/sprites/monster-motion/b001/source/export-frames-v1/idle/west/frame-00.png"
+      ],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-bloodroot-sovereign",
+      "name": "Thụ Yêu — Huyết Lâm",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-abyss-tortoise",
+      "name": "Quy Vương — Thủy Vực",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-stone-matriarch",
+      "name": "Thạch Cơ Nương Nương — Thạch Lâm",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-solar-hermit",
+      "name": "Lục Áp Đạo Quân — Tiên Môn",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-gold-horn",
+      "name": "Kim Giác — Lưỡng Giới",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/sprites/monster-motion/art-gold-horn/source/directions/north/master-v2/master.png",
+          "sha256": "b80f56a17c786778fe7f2798756fc20b2f09178a0f706a96aff515e8de05374a",
+          "dimensions": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-gold-horn/source/directions/north/master-v2/master_rgba.png",
+          "sha256": "093cf581fd9983888c7f4cb38aaf063afb4b078f7a44aae79e01f08ce256a889",
+          "dimensions": [
+            1024,
+            1024
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        }
+      ],
+      "derivedIdleCandidates": [
+        "assets/sprites/monster-motion/art-gold-horn/source/canonical-v1/idle-east-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-gold-horn/source/canonical-v1/idle-north-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-gold-horn/source/canonical-v1/idle-south-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-gold-horn/source/canonical-v1/idle-west-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-gold-horn/source/export-frames-v1/idle/east/frame-00.png",
+        "assets/sprites/monster-motion/art-gold-horn/source/export-frames-v1/idle/north/frame-00.png",
+        "assets/sprites/monster-motion/art-gold-horn/source/export-frames-v1/idle/south/frame-00.png",
+        "assets/sprites/monster-motion/art-gold-horn/source/export-frames-v1/idle/west/frame-00.png"
+      ],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-silver-horn",
+      "name": "Ngân Giác — Lưỡng Giới",
+      "directoryPresent": true,
+      "sourceImages": [],
+      "derivedIdleCandidates": [
+        "assets/sprites/monster-motion/art-silver-horn/source/canonical-v1/idle-east-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-silver-horn/source/canonical-v1/idle-north-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-silver-horn/source/canonical-v1/idle-south-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-silver-horn/source/canonical-v1/idle-west-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-silver-horn/source/export-frames-v1/idle/east/frame-00.png",
+        "assets/sprites/monster-motion/art-silver-horn/source/export-frames-v1/idle/north/frame-00.png",
+        "assets/sprites/monster-motion/art-silver-horn/source/export-frames-v1/idle/south/frame-00.png",
+        "assets/sprites/monster-motion/art-silver-horn/source/export-frames-v1/idle/west/frame-00.png"
+      ],
+      "referencedMissing": [
+        {
+          "direction": "south",
+          "path": "assets/sprites/monster-motion/art-silver-horn/source/master/master_rgba.png"
+        },
+        {
+          "direction": "west",
+          "path": "assets/sprites/monster-motion/art-silver-horn/source/directions/west/master-candidate-processed-v1/master_rgba.png"
+        },
+        {
+          "direction": "north",
+          "path": "assets/sprites/monster-motion/art-silver-horn/source/directions/north/master-candidate-processed-v1/master_rgba.png"
+        },
+        {
+          "direction": "east",
+          "path": "assets/sprites/monster-motion/art-silver-horn/source/directions/east/master-candidate-processed-v1/master_rgba.png"
+        }
+      ],
+      "status": "derived-only-original-not-found"
+    },
+    {
+      "id": "art-ma-sword",
+      "name": "Ma Gia — Kiếm, Bất Chu Thiên Quan",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/sprites/monster-motion/art-ma-sword/source/master-candidate-v1.png",
+          "sha256": "67690f99d2bb1ef00a25b3308f077bdbdd660403bbc49e313c77021c7acf9e81",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "master-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-ma-sword/source/master-candidate-v2.png",
+          "sha256": "8a9b03f816073334ee40a1251b991bd6571561f03c15a3e4bead9f4a27ca9f39",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "master-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-ma-sword/source/directions/east/master-candidate-v2.png",
+          "sha256": "97225d1d58c64032d67fae6499d600a8bc5a3e8991aafaa40314ac8245880490",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-ma-sword/source/directions/north/master-candidate-v2.png",
+          "sha256": "7f90c75d069e269999d795aad3af4da4e2d10084c6cfe30996275d0d4da6cd1b",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-ma-sword/source/directions/west/master-candidate-v2.png",
+          "sha256": "1b283faa815f65b0ebae3e8c8b438fe198db28cecb737f950a8acf434c697d8e",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        }
+      ],
+      "derivedIdleCandidates": [
+        "assets/sprites/monster-motion/art-ma-sword/source/canonical-v1/idle-east-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-ma-sword/source/canonical-v1/idle-north-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-ma-sword/source/canonical-v1/idle-south-master/frames/frame-00.png",
+        "assets/sprites/monster-motion/art-ma-sword/source/canonical-v1/idle-west-master/frames/frame-00.png"
+      ],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-ma-lute",
+      "name": "Ma Gia — Tỳ Bà, Bất Chu Thiên Quan",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-ma-parasol",
+      "name": "Ma Gia — Bảo Tán, Bất Chu Thiên Quan",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-ma-beast",
+      "name": "Ma Gia — Linh Thú, Bất Chu Thiên Quan",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-chaos-dijiang",
+      "name": "Đế Giang — Tinh Không",
+      "directoryPresent": true,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-cinder-qilin",
+      "name": "Xích Diệm Lân Vương — mới",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/sprites/monster-motion/art-cinder-qilin/source/directions/east/master-candidate-v1.png",
+          "sha256": "1d5d4f1f708409a3eb757a7e8fd494e46728b849d1cb1af3d281968f51b4dbac",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-cinder-qilin/source/directions/north/master-candidate-v1.png",
+          "sha256": "dae075e24d56bf285e4eccd505b0324442fdac24da860091410b98c370e33c57",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-cinder-qilin/source/directions/west/master-candidate-v1.png",
+          "sha256": "134a2a9ab3b50b64dc0cd2d5d76be59030088d0a08ca73f04387f3e8786a3fcb",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-bone-abbot",
+      "name": "Bạch Cốt Pháp Vương — mới",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/sprites/monster-motion/art-bone-abbot/source/directions/east/master-candidate-v1.png",
+          "sha256": "1f32c208e4be67ad90d31dd103f067caac7b0fe402f54d93107463784e0f0c2a",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-bone-abbot/source/directions/north/master-candidate-v1.png",
+          "sha256": "43e4a477e66232f99157c8b3de60c95443b9cd5d6f8b1667eb08b7f65987aa30",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-bone-abbot/source/directions/west/master-candidate-v1.png",
+          "sha256": "07f0f663caeb6d380e1bc3ee6aef101c1659e601632a182c8a57f4db7c8f726e",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-frost-wyrm",
+      "name": "Huyền Băng Ngư Giao — mới",
+      "directoryPresent": false,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-web-empress",
+      "name": "Thiên La Chu Hậu — mới",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/sprites/monster-motion/art-web-empress/source/master-generated-raw.png",
+          "sha256": "097bc66a627271a26dc9be11b0a52cd8c215322fecb7976da38924e9be529d82",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "master-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-web-empress/source/directions/east/master-candidate-v1.png",
+          "sha256": "781dceed206f9c44d9914ed34622f955f7fd9011ee05281fca177868a02a2147",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-web-empress/source/directions/north/master-candidate-v1.png",
+          "sha256": "47f7fa09219d8fbb900c423e9e85ee7276dc081b74564e154c6ac94ed0740286",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-web-empress/source/directions/west/master-candidate-v1.png",
+          "sha256": "cf70d1a715f9ea669ff938ca404b275766016d922fd567f31755fc9816b4b13d",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-eclipse-hound",
+      "name": "Thực Nguyệt Thiên Khuyển — mới",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/sprites/monster-motion/art-eclipse-hound/source/directions/east/master-candidate-v1.png",
+          "sha256": "a6975c5633c2080ae139b4550491eccf2cf11e9f73a89e6d1c4c9b4997c7fd5a",
+          "dimensions": [
+            1490,
+            1055
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-eclipse-hound/source/directions/north/master-candidate-v1.png",
+          "sha256": "67201afc7e4a95d39d54ed04e9c838278c593dc57b874932f43dd930f810f36e",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-eclipse-hound/source/directions/south/master-candidate-v1.png",
+          "sha256": "726f62377e309279c930e0bedfbd88781f2dc07e68fb406df4736b50ece5dc33",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-eclipse-hound/source/directions/west/master-candidate-v1.png",
+          "sha256": "4aad65d76944de7f76488c69b5eb250466dc0e9927bbf3789eb0c22b860c3276",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-storm-ray",
+      "name": "Vạn Lôi Thiên Diêu — mới",
+      "directoryPresent": true,
+      "sourceImages": [],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "no-master-found-in-current-asset-directory"
+    },
+    {
+      "id": "art-rift-colossus",
+      "name": "Hỗn Mang Liệt Giáp — mới",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/sprites/monster-motion/art-rift-colossus/source/master-generated-raw.png",
+          "sha256": "6ab91c9f0a50960c16596530d035494a2bbface54f5b1615316b2a680b0d623f",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "master-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-rift-colossus/source/directions/east/master-candidate-v1.png",
+          "sha256": "519ef20c09c6944ec6ffed576ad6616294a3c112f5f1b74f3c4f425fe148c5ee",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-rift-colossus/source/directions/north/master-candidate-v1.png",
+          "sha256": "0d5cdc8c8b895f0ef799962413fed6494f095072b0e283da5c7bb5dc67780887",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-rift-colossus/source/directions/west/master-candidate-v1.png",
+          "sha256": "4a95ff35b4c45889c3d310d09730c77119ea447552220fce4ba069ab3ed005e3",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "source-present-review-required"
+    },
+    {
+      "id": "art-fivefold-avatar",
+      "name": "Hiện thân Ngũ Hành — rejected",
+      "directoryPresent": true,
+      "sourceImages": [
+        {
+          "path": "assets/sprites/monster-motion/art-fivefold-avatar/source/master-generated-raw-v1.png",
+          "sha256": "c245d356fc7fa852f60504befdf5ce4f0cfa284e5ffa7f4cddf7262e480c7d5a",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "master-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-fivefold-avatar/source/master-generated-raw.png",
+          "sha256": "7fc04f483ecd4e7fdb01f904eb5735257379b877bc3781159e30a86d206ce433",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "master-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-fivefold-avatar/source/directions/east/master-candidate-v1.png",
+          "sha256": "d5a153c8fc7f2f42a296faecc8cbe9dd72e3269b166c2b5c02f61a76c7ef77ff",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-fivefold-avatar/source/directions/north/master-candidate-v1.png",
+          "sha256": "4a7e77ab07f606ecce157a4e960bb87f409288f14e3dcd4e864793a7a68693dd",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        },
+        {
+          "path": "assets/sprites/monster-motion/art-fivefold-avatar/source/directions/west/master-candidate-v1.png",
+          "sha256": "afe0c6dd6fdc9092478439444bd0904af1e4073c5ef2a11a0f3a4e7ec4710f2d",
+          "dimensions": [
+            1323,
+            1189
+          ],
+          "mode": "RGBA",
+          "role": "direction-source"
+        }
+      ],
+      "derivedIdleCandidates": [],
+      "referencedMissing": [],
+      "status": "rejected-archive-only"
+    }
+  ],
+  "summary": {
+    "rosterIds": 39,
+    "rejectedIds": 1,
+    "sourceImageFiles": 35,
+    "idsWithSourceImages": 12,
+    "derivedOnlyIds": 1,
+    "noMasterFoundIds": 26
+  }
+}

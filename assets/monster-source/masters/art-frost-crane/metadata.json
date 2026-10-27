@@ -1,0 +1,46 @@
+{
+  "family": "winged",
+  "role": "mob",
+  "id": "art-frost-crane",
+  "name": "Hàn Hạc",
+  "origin": "mới — đề xuất",
+  "brief": "Cổ dài, chân dài, lông trắng/chàm và mào băng nhỏ; phân biệt rõ chim săn mồi.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "accepted-reference",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-frost-crane/generated/master-01.png",
+  "sha256": "f978a144bde0867b20f75aab7b9ea61f3c5f1181e5ae467ccc1887e7747f830e",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    0,
+    0,
+    1240,
+    1254
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-08aeae71-efe1-4b8e-b05d-31af9858975c.png",
+  "visualReview": "Reviewed full image: crane long neck, two wings and two long legs; white icy-blue palette.",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  }
+}

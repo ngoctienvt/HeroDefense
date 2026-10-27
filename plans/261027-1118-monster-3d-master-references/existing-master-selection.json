@@ -1,0 +1,52 @@
+[
+  {
+    "id": "m001",
+    "source": "assets/monster-source/m001.png",
+    "origin": "existing"
+  },
+  {
+    "id": "m002",
+    "source": "assets/monster-source/m002.png",
+    "origin": "existing"
+  },
+  {
+    "id": "m003",
+    "source": "assets/monster-source/m003.png",
+    "origin": "existing"
+  },
+  {
+    "id": "m004",
+    "source": "assets/monster-source/m004.png",
+    "origin": "existing"
+  },
+  {
+    "id": "b001",
+    "source": "assets/monster-source/b001.png",
+    "origin": "existing"
+  },
+  {
+    "id": "art-gold-horn",
+    "source": "assets/sprites/monster-motion/art-gold-horn/source/directions/north/master-v2/master.png",
+    "origin": "existing"
+  },
+  {
+    "id": "art-silver-horn",
+    "source": "assets/sprites/monster-motion/art-silver-horn/source/canonical-v1/idle-south-master/frames/frame-00.png",
+    "origin": "derived"
+  },
+  {
+    "id": "art-ma-sword",
+    "source": "assets/sprites/monster-motion/art-ma-sword/source/master-candidate-v2.png",
+    "origin": "existing"
+  },
+  {
+    "id": "art-cinder-qilin",
+    "source": "assets/sprites/monster-motion/art-cinder-qilin/source/directions/east/master-candidate-v1.png",
+    "origin": "existing"
+  },
+  {
+    "id": "art-eclipse-hound",
+    "source": "assets/sprites/monster-motion/art-eclipse-hound/source/directions/south/master-candidate-v1.png",
+    "origin": "existing"
+  }
+]

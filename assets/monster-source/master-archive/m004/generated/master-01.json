@@ -1,0 +1,33 @@
+{
+  "family": "winged",
+  "role": "mob",
+  "id": "m004",
+  "name": "Huyết Dơi Yêu",
+  "origin": "giữ thiết kế",
+  "brief": "Dơi cánh màng, tai nhọn/răng dài; subtype bat, không đổi thành lông chim.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "pending",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    },
+    {
+      "path": "assets/monster-source/m004.png",
+      "sha256": "a1554cf40ba1bd28022a9b1d2be443959a2c08356c23b99b5aad71b71facaf10"
+    }
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-39f9a4c7-6cef-4235-9e1e-3395fed310a2.png",
+  "sha256": "cb0b58469614b8eed9e65bafc7da90a3f13ac25654366332a8e7dfc27b6ac86e",
+  "dimensions": [
+    1536,
+    1024
+  ]
+}

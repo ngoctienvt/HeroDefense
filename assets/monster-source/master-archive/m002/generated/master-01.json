@@ -1,0 +1,33 @@
+{
+  "family": "human",
+  "role": "mob",
+  "id": "m002",
+  "name": "Hắc Sơn Cốt Cung Thủ",
+  "origin": "giữ thiết kế",
+  "brief": "Xương gầy, nón lệch, cung xương; tách cung khỏi thân khi cần body reference.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "pending",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    },
+    {
+      "path": "assets/monster-source/m002.png",
+      "sha256": "42c29b2a82107a48ec3a68ca62d8e4eea0c63f27c8171d1342deb79d43e9bf01"
+    }
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-249c2509-56b6-4aaa-afcf-c4d1880489e5.png",
+  "sha256": "d750a008dd20a48207382db1503b3737e1a64ef5e8bae9cbd8ee693a325fe243",
+  "dimensions": [
+    1024,
+    1536
+  ]
+}

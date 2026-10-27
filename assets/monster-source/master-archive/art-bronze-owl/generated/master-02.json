@@ -1,0 +1,48 @@
+{
+  "family": "winged",
+  "role": "mob",
+  "id": "art-bronze-owl",
+  "name": "Kiêu Đồng Cổ",
+  "origin": "giữ thiết kế",
+  "brief": "Chim máy đồng, mắt tròn, cánh khớp cứng/đuôi quạt; subtype mechanical.",
+  "schema": "monster-master-reference.v1",
+  "date": "2026-10-27",
+  "status": "needs-edit",
+  "model": null,
+  "estimateUsd": null,
+  "master": "master.png",
+  "scope": "image reference only; 3D handled by another person",
+  "artSource": "host_image",
+  "route": "Codex image_gen",
+  "references": [
+    {
+      "path": "assets/hero-concepts/pangu-master/master_rgba.png",
+      "sha256": "c0109136ab1ed58ac8b0d6238c68cd4b15e9f8d0170b7952db556b88e8006a5a"
+    }
+  ],
+  "raw": "assets/monster-source/master-archive/art-bronze-owl/generated/master-01.png",
+  "sha256": "45919575ae2a390344698e26774c39da6c584138bff612385d23d38c10d3496e",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "alphaBounds": [
+    0,
+    28,
+    1242,
+    1254
+  ],
+  "sourceToolFile": "C:\\Users\\PC\\.codex\\generated_images\\01a15f74-3c4c-7dc0-82ed-3aaeea4c5b8f\\exec-d71c00a5-7e6e-47c8-b10b-7b5b3a195457.png",
+  "qa": {
+    "solidPixelsOnImageEdge": 0,
+    "nativeMasterUnmodified": true,
+    "transparentBackground": true
+  },
+  "visualReview": "Mechanical bird head reads as eagle/phoenix; change to unmistakable owl facial disc and two large forward round eyes.",
+  "editPrompt": "Edit only the head of this exact mechanical bronze bird into an unmistakable OWL head: broad rounded owl facial disc, two very large round forward-facing turquoise eyes both clearly visible, small short central hooked beak, short rounded head silhouette with no swept-back phoenix/eagle crest. Keep the existing hand-painted stylized rendering, bronze and turquoise materials, entire mechanical body, wing joints, two wings, two legs, fan tail, pose and full-body framing unchanged as much as possible. One isolated character, real transparent background. No text, scene, halo or ground.",
+  "parentMasterSha256": "a76dca2aef766869fd51830a4dcf54a8c7dd67a8de3fb27a8fd7147d1c024360"
+}
