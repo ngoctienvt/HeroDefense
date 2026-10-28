@@ -1,10 +1,12 @@
+import { HERO_BY_ID } from '../../../content/catalog.js';
 import type { Enemy, GameState, Unit, Vec } from '../../contracts/src/types.js';
+import { bondOnShield } from './bond-runtime.js';
 import { applyEnemyStatus, knockEnemyBack } from './combat-status.js';
 import { distance, event, isDeployed } from './rules.js';
 import { effectiveUnitAttack } from './stats.js';
 import { startTierBarrage } from './tier-skill-pulses.js';
 import { tryHardControl } from './crowd-control.js';
-import { empowerAllyMax, grantBlockBonus, hasteAllyMax, healAlly, supportAmount } from './ally-scaled-support.js';
+import { empowerAllyMax, hasteAllyMax, healAlly, supportAmount } from './ally-scaled-support.js';
 import { TIER3_TIER4_REWORK } from '../../../content/tier3-tier4-rework.js';
 
 type Hit = (enemy: Enemy, damage: number, penetration?: number, trueDamage?: boolean) => void;
@@ -24,7 +26,8 @@ function directionTo(origin: Vec, point: Vec): Vec {
 }
 
 export function resolveTier3Ability(state: GameState, unit: Unit, aim: Vec, hit: Hit): void {
-  const attack = effectiveUnitAttack(unit) * (1 + unit.equipment[2] * .25);
+  const attack = effectiveUnitAttack(unit);
+  const castScale = unit.gearRuntime?.castScale ?? 1;
   const enemies = Object.values(state.enemies).filter(e => e.zone === unit.zone && e.hp > 0);
   const allies = Object.values(state.units).filter(u => isDeployed(u) && u.zone === unit.zone && u.owner === unit.owner);
   const direction = directionTo(unit, aim);
@@ -38,14 +41,12 @@ export function resolveTier3Ability(state: GameState, unit: Unit, aim: Vec, hit:
 
   switch (unit.heroId) {
     case 'h00J': {
-      // Guardian, not a control specialist: a larger block cap pulls enemies onto
-      // Bát Giới every tick instead of a rolled taunt.
+      // Bát Giới pushes nearby enemies away and shields himself.
       for (const enemy of area(unit, 5)) {
         knockEnemyBack(state, enemy, .35, unit);
         affected.push(enemy.id);
       }
-      grantBlockBonus(unit, TIER3_TIER4_REWORK.h00J.blockBonusSeconds, TIER3_TIER4_REWORK.h00J.blockBonus);
-      const amount = attack * 2.5 + unit.maxHp * .18;
+      const amount = attack * 2.5 + unit.maxHp * .18 * castScale;
       const previous = unit.shield;
       unit.shield = Math.max(unit.shield, amount);
       if (unit.shield > previous) unit.tierShield = { remaining: 5, amount: unit.shield - previous, kind: 'water' };
@@ -55,7 +56,7 @@ export function resolveTier3Ability(state: GameState, unit: Unit, aim: Vec, hit:
       const recipients = allies.filter(u => u.id !== unit.id && distance(u, unit) <= 8)
         .sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp).slice(0, 3);
       for (const ally of recipients) {
-        healAlly(ally, supportAmount(attack * 2.6, ally, TIER3_TIER4_REWORK.h00K.recipientMaxHpRatio));
+        healAlly(ally, supportAmount(attack * 2.6, ally, TIER3_TIER4_REWORK.h00K.recipientMaxHpRatio * castScale), { state, source: unit });
         if (!ally.ward || ally.ward.reduction <= .3) ally.ward = { remaining: 4, reduction: .3 };
         ally.abilityCooldown = Math.max(0, ally.abilityCooldown - 2);
       }
@@ -122,7 +123,7 @@ export function resolveTier3Ability(state: GameState, unit: Unit, aim: Vec, hit:
         if (state.enemies[enemy.id]) applyEnemyStatus(enemy, unit, 0, 'sunder', 5, .35);
       }
       for (const ally of allies.filter(u => distance(u, unit) <= 6)) {
-        healAlly(ally, supportAmount(attack, ally, TIER3_TIER4_REWORK.h03Q.recipientMaxHpRatio));
+        healAlly(ally, supportAmount(attack, ally, TIER3_TIER4_REWORK.h03Q.recipientMaxHpRatio * castScale), { state, source: unit });
         empowerAllyMax(ally, 5, .2);
         supportTargets.push(ally.id);
       }
@@ -130,7 +131,7 @@ export function resolveTier3Ability(state: GameState, unit: Unit, aim: Vec, hit:
     }
     case 'h03R': {
       for (const ally of allies.filter(u => distance(u, unit) <= 9)) {
-        healAlly(ally, supportAmount(attack * 2.8, ally, TIER3_TIER4_REWORK.h03R.recipientMaxHpRatio));
+        healAlly(ally, supportAmount(attack * 2.8, ally, TIER3_TIER4_REWORK.h03R.recipientMaxHpRatio * castScale), { state, source: unit });
         ally.stun = 0;
         hasteAllyMax(ally, 5, .3);
         ally.tierBuff = { remaining: 5, kind: 'poison' };
@@ -144,8 +145,9 @@ export function resolveTier3Ability(state: GameState, unit: Unit, aim: Vec, hit:
         strike(enemy, attack * 2.2);
         if (state.enemies[enemy.id]) enemy.attackWeak = { remaining: 4, strength: .3 };
       }
-      for (const ally of allies.filter(u => distance(u, unit) <= 8 && (u.block ?? 0) > 0)) {
-        ally.shield = Math.max(ally.shield, attack * 2.6 + ally.maxHp * .15);
+      for (const ally of allies.filter(u => distance(u, unit) <= 8 && ['guardian', 'warrior'].includes(HERO_BY_ID[u.heroId]?.role))) {
+        ally.shield = Math.max(ally.shield, attack * 2.6 + ally.maxHp * .15 * castScale);
+        bondOnShield(state, unit, ally, attack * 2.6 + ally.maxHp * .15 * castScale);
         affected.push(ally.id);
       }
       if (hits.length >= 10 || hits.some(e => e.kind === 'boss')) state.players[unit.owner].gold += 25;

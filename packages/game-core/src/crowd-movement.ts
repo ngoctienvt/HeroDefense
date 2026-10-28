@@ -1,3 +1,4 @@
+import { HERO_BY_ID } from '../../../content/catalog.js';
 import type { Enemy, Unit, Vec } from '../../contracts/src/types.js';
 import { clampToZone } from './battlefield-layout.js';
 import { SpatialGrid } from './spatial-grid.js';
@@ -6,7 +7,7 @@ export const MONSTER_ROW_SPACING = 3.3;
 
 export function unitRadius(unit: Unit): number {
   if (unit.summonKind === 'ancient-tree') return 1.3;
-  return (unit.block && unit.block > 0) ? 0.9 : 0.7;
+  return unit.summonDuration === undefined && ['guardian', 'warrior'].includes(HERO_BY_ID[unit.heroId]?.role) ? .9 : .7;
 }
 
 export function unitSpacingRadius(unit: Unit): number {

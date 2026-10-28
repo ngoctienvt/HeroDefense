@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CRAFT_RECIPES, HERO_BY_ID } from '../../../content/catalog.js';
 import { handleCommand } from '../src/index.js';
+import { grantGearItem, rollGearItem } from '../src/gear-items.js';
 import { command, game, summon } from './fixtures.js';
 
 describe('source recipe crafting', () => {
@@ -20,17 +21,22 @@ describe('source recipe crafting', () => {
     expect(state.units[third.id]).toBe(third);
   });
 
-  it('crafts the selected result into the bench and preserves the highest gear in each category', () => {
+  it('crafts the selected result into the bench and returns every ingredient item to inventory', () => {
     const state = game();
     const ingredients = recipe.ingredients.map(id => summon(state, id));
-    ingredients[0].equipment = [2, 0, 1];
-    ingredients[1].equipment = [0, 3, 0];
-    ingredients[2].equipment = [1, 1, 4];
+    const items = ingredients.map(unit => {
+      const item = rollGearItem(state, { slot: 'weapon', rarity: 'white', level: 1 });
+      grantGearItem(state, 'p1', item, 'admin');
+      command(state, { type: 'equip-item', unitId: unit.id, itemId: item.id });
+      return item;
+    });
     expect(handleCommand(state, 'p1', { type: 'craft', heroId: recipe.heroId }).ok).toBe(true);
     expect(ingredients.every(unit => !state.units[unit.id])).toBe(true);
     const crafted = Object.values(state.units)[0];
-    expect(crafted).toMatchObject({ heroId: recipe.heroId, owner: 'p1', rank: 1, slot: -1, equipment: [2, 3, 4] });
-    expect(crafted.maxHp).toBeGreaterThan(HERO_BY_ID[recipe.heroId].hp);
+    expect(crafted).toMatchObject({ heroId: recipe.heroId, owner: 'p1', rank: 1, slot: -1 });
+    expect(crafted.maxHp).toBe(HERO_BY_ID[recipe.heroId].hp);
+    expect(items.every(item => item.unitId === null)).toBe(true);
+    expect(state.players.p1.gear).toEqual(items);
   });
 
   it('rejects unknown results and ingredients in an expedition', () => {

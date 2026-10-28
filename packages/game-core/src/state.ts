@@ -3,7 +3,7 @@ import { RUN_WAVES, slotPosition } from './rules.js';
 
 export function createGame(code: string, seed: number, difficulty: Difficulty = 'normal'): GameState {
   return {
-    version: CONTENT_VERSION, roomCode: code, host: '', seed: (seed >>> 0) || 1, tick: 0, serial: 0, elapsed: 0,
+    gearSeed: ((seed ^ 0x85ebca6b) >>> 0) || 1, version: CONTENT_VERSION, roomCode: code, host: '', seed: (seed >>> 0) || 1, tick: 0, serial: 0, elapsed: 0,
     phase: 'lobby', difficulty, wave: 0, maxWaves: RUN_WAVES,
     remaining: 0, baseHp: 100, maxBaseHp: 100, speed: 1, players: {}, units: {}, enemies: {},
     events: [], notice: 'Sẵn sàng lập đội bảo vệ Thiên Đạo.', stars: 0, spawned: 0, spawnBudget: 0, spawnTimer: 0,
@@ -17,10 +17,11 @@ export function addPlayer(state: GameState, id: string, name: string): CommandRe
   if (!safeName) return { ok: false, message: 'Hãy nhập tên.' };
   state.players[id] = {
     id, name: safeName, color: ['#7de2c1', '#f3cf81', '#b5a2fb', '#8bbff5'][Object.keys(state.players).length],
-    connected: true, ready: false, gold: 500, souls: 18, pellets: 0, kills: 0, damage: 0,
+    gear: [], gearDust: 0, gearDrought: 0, gearVersion: 0, connected: true, ready: false, gold: 500, souls: 18, pellets: 0, kills: 0, damage: 0,
     summonFailures: { tien: 0, thien: 0 }, pendingChoice: null,
     embryos: { tier3: 0, tier4: 0, tier4Purchased: false },
     formation: 1, formationLevels: Array(8).fill(0), formationPoints: 1, activeSynergies: [],
+    bondState: { souls: 0, longUy: 0, thanVi: 0, tamTai: 0, dienTich: 0, kiep: 0, dienHai: 0, usedThisWave: {} }, bondVersion: 0,
   };
   if (!state.host) state.host = id;
   return { ok: true };

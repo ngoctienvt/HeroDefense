@@ -46,7 +46,7 @@ export function congcongAbility(state: GameState, unit: Unit, hurt: Damage): voi
     x: unit.x, z: unit.z, zone: unit.zone, ability: 'nova', skillId: 'skill-h01G',
     value: attack * C.wavePower });
   for (const ally of allies) {
-    const amount = attack * C.shieldAttackPower + ally.maxHp * C.shieldHpRatio;
+    const amount = attack * C.shieldAttackPower + ally.maxHp * C.shieldHpRatio * (unit.gearRuntime?.castScale ?? 1);
     ally.shield = Math.max(ally.shield, amount);
     ally.ward = { remaining: C.shieldSeconds, reduction: C.wardReduction, kind: 'black-water' };
     event(state, { kind: 'ability', source: unit.id, target: ally.id, targets: [ally.id],

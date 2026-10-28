@@ -32,7 +32,8 @@ export function lanternAbility(state: GameState, caster: Unit): void {
     && unit.owner === caster.owner && unit.zone === caster.zone
     && distance(unit, caster) <= NHIEN_DANG.radius);
   for (const ally of allies) {
-    const amount = effectiveUnitAttack(caster) * NHIEN_DANG.shieldPower + ally.maxHp * NHIEN_DANG.shieldHp;
+    const amount = effectiveUnitAttack(caster) * NHIEN_DANG.shieldPower
+      + ally.maxHp * NHIEN_DANG.shieldHp * (caster.gearRuntime?.castScale ?? 1);
     if (ally.lanternShield) ally.shield = Math.max(0, ally.shield - ally.lanternShield.amount);
     ally.shield += amount;
     ally.lanternShield = { remaining: NHIEN_DANG.duration, amount, casterId: caster.id };

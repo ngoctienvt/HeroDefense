@@ -4,6 +4,7 @@ import { applyEnemyStatus, criticalDamageAgainst, knockEnemyBack } from './comba
 import { effectiveUnitAttack, solarCritMultiplier } from './stats.js';
 import { distance, event, isDeployed, nextId } from './rules.js';
 import { tryHardControl } from './crowd-control.js';
+import { markGearNativeCrit } from './gear-stats.js';
 
 type Hurt = (source: Unit, enemy: Enemy, damage: number, penetration?: number, direct?: boolean) => void;
 
@@ -15,7 +16,9 @@ function solarBossBonus(unit: Unit, enemy: Enemy): number {
 export function deTuanAttack(state: GameState, unit: Unit, target: Enemy, hurt: Hurt): void {
   const amount = effectiveUnitAttack(unit) * DE_TUAN.strikePower * (unit.berserk
     ? solarCritMultiplier(state, unit, DE_TUAN.critMultiplier) : 1);
-  hurt(unit, target, (unit.berserk ? criticalDamageAgainst(target, amount) : amount) * solarBossBonus(unit, target));
+  const hit = (unit.berserk ? criticalDamageAgainst(target, amount) : amount) * solarBossBonus(unit, target);
+  if (unit.berserk) markGearNativeCrit(unit, target, hit);
+  hurt(unit, target, hit);
   if (unit.berserk) {
     const nearby = Object.values(state.enemies).filter(enemy => enemy.zone === unit.zone && enemy.hp > 0
       && distance(enemy, target) <= 2.5);
@@ -79,7 +82,7 @@ export function nhuLaiAbility(state: GameState, caster: Unit, point: {x: number;
     casterId: caster.id, slowStrength: NHU_LAI.zoneSlow });
   for (const ally of Object.values(state.units)) {
     if (!isDeployed(ally) || ally.owner !== caster.owner) continue;
-    const amount = effectiveUnitAttack(caster) * NHU_LAI.shieldPower + ally.maxHp * NHU_LAI.shieldHp;
+    const amount = effectiveUnitAttack(caster) * NHU_LAI.shieldPower + ally.maxHp * NHU_LAI.shieldHp * (caster.gearRuntime?.castScale ?? 1);
     if (ally.divineShield) ally.shield = Math.max(0, ally.shield - ally.divineShield.amount);
     ally.shield += amount;
     ally.divineShield = { remaining: NHU_LAI.shieldSeconds, amount };

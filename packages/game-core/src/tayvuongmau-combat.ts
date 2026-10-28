@@ -41,7 +41,7 @@ export function tayvuongmauAbility(state: GameState, unit: Unit, point: Vec, hur
     .sort((a, b) => effectiveUnitAttack(b) - effectiveUnitAttack(a))
     .slice(0, T.peachCount);
   for (const ally of recipients) {
-    const heal = ally.maxHp * T.peachHealRatio;
+    const heal = ally.maxHp * T.peachHealRatio * (unit.gearRuntime?.castScale ?? 1);
     ally.hp = Math.min(ally.maxHp, ally.hp + heal);
     ally.empower = { remaining: T.peachSeconds,
       attackBonus: Math.max(T.peachAttackBonus, ally.empower?.attackBonus ?? 0),

@@ -9,7 +9,7 @@ describe('Kim Sí Đại Bằng', () => {
   it('strikes twice, stacks armor cuts, refreshes bleed, and gains rage per strike', () => {
     const state = game(), unit = deployed(state, K.id); state.seed = 1;
     expect(HERO_BY_ID[K.id]).toMatchObject({ hp: 8400, attack: 790, armor: 24,
-      range: 3, interval: .65, speed: 5.2, block: 10 });
+      range: 3, interval: .65, speed: 5.2 });
     const front = enemy(state, unit, { armor: 40 });
     const side = enemy(state, unit, { x: unit.x + 2, z: unit.z + 1, armor: 40 });
     const rear = enemy(state, unit, { x: unit.x - 1, armor: 40 });

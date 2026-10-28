@@ -1,4 +1,5 @@
 import type { Enemy, GameState, Unit, Vec } from '../../contracts/src/types.js';
+import { bondOnShield } from './bond-runtime.js';
 import { applyEnemyStatus, knockEnemyBack } from './combat-status.js';
 import { distance, event, isDeployed } from './rules.js';
 import { attackInterval, effectiveUnitAttack } from './stats.js';
@@ -23,7 +24,8 @@ function inLine(origin: Vec, direction: Vec, point: Vec, length: number, width: 
 }
 
 export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit: Hit): void {
-  const attack = effectiveUnitAttack(unit) * (1 + unit.equipment[2] * .25);
+  const attack = effectiveUnitAttack(unit);
+  const castScale = unit.gearRuntime?.castScale ?? 1;
   const enemies = Object.values(state.enemies).filter(enemy => enemy.zone === unit.zone && enemy.hp > 0);
   const allies = Object.values(state.units).filter(ally => isDeployed(ally) && ally.owner === unit.owner && ally.zone === unit.zone);
   const direction = directionTo(unit, aim);
@@ -55,8 +57,8 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
         clone.x = aim.x + (index ? 1.6 : -1.6); clone.z = aim.z;
         clone.guardPosition = { x: clone.x, z: clone.z }; clone.orderMode = 'hold';
         clone.summonKind = 'monkey-clone'; clone.summonerId = unit.id; clone.summonDuration = 6;
-        clone.maxHp = unit.maxHp * .5; clone.hp = clone.maxHp; clone.attack = attack * .45;
-        clone.energy = 0; clone.block = 0; state.units[clone.id] = clone;
+        clone.maxHp = unit.maxHp * .5 * castScale; clone.hp = clone.maxHp; clone.attack = attack * .45;
+        clone.energy = 0; state.units[clone.id] = clone;
       }
       break;
     }
@@ -104,7 +106,7 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
       }
       for (const ally of allies.filter(u => distance(u, unit) <= 8)) {
         const previous = ally.shield;
-        ally.shield = Math.max(ally.shield, attack * 2.8 + ally.maxHp * .2);
+        ally.shield = Math.max(ally.shield, attack * 2.8 + ally.maxHp * .2 * castScale);
         (ally.tierGoldShields ??= []).push({ remaining: 5, amount: ally.shield - previous });
         ids.push(ally.id);
       }
@@ -151,10 +153,11 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
       const recipients = allies.filter(u => u.id !== unit.id && distance(u, unit) <= 8.5)
         .sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp).slice(0, 4);
       for (const ally of recipients) {
-        healAlly(ally, supportAmount(attack * 2.7, ally, TIER3_TIER4_REWORK.h010.recipientMaxHpRatio));
+        healAlly(ally, supportAmount(attack * 2.7, ally, TIER3_TIER4_REWORK.h010.recipientMaxHpRatio * castScale), { state, source: unit });
         const previous = ally.shield;
         ally.shield = Math.max(ally.shield, attack * 2.7);
         (ally.tierGoldShields ??= []).push({ remaining: 5, amount: ally.shield - previous });
+        bondOnShield(state, unit, ally, attack * 2.7);
         ally.stun = 0; ally.tierBuff = { remaining: 5, kind: 'fire' };
         ids.push(ally.id);
       }
@@ -172,7 +175,7 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
       }
       for (const ally of allies.filter(u => distance(u, unit) <= 5.5)) {
         const previous = ally.shield;
-        ally.shield = Math.max(ally.shield, attack * 3 + ally.maxHp * .22);
+        ally.shield = Math.max(ally.shield, attack * 3 + ally.maxHp * .22 * castScale);
         (ally.tierGoldShields ??= []).push({ remaining: 5, amount: ally.shield - previous });
         ally.ward = { remaining: 5, reduction: .4, sourceSkillId: 'tier3-tier4-h03T' };
         ally.reflect = { amount: .6 };
@@ -184,7 +187,7 @@ export function resolveTier4Ability(state: GameState, unit: Unit, aim: Vec, hit:
       const recipients = allies.filter(u => u.id !== unit.id && distance(u, unit) <= 8.5)
         .sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp).slice(0, 4);
       for (const ally of recipients) {
-        healAlly(ally, supportAmount(attack * 3.2, ally, TIER3_TIER4_REWORK.h03U.recipientMaxHpRatio));
+        healAlly(ally, supportAmount(attack * 3.2, ally, TIER3_TIER4_REWORK.h03U.recipientMaxHpRatio * castScale), { state, source: unit });
         ally.tierImmortal = { remaining: 4, activeRemaining: 0 };
         ids.push(ally.id);
       }

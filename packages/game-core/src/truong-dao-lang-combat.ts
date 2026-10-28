@@ -1,4 +1,5 @@
 import { TRUONG_DAO_LANG as B } from '../../../content/truong-dao-lang-design.js';
+import { bondAreaScale } from './bond-runtime.js';
 import type { Enemy, GameState, Unit } from '../../contracts/src/types.js';
 import { applyEnemyStatus } from './combat-status.js';
 import { zoneControlled } from './crowd-control.js';
@@ -30,7 +31,7 @@ export function truongAttack(state: GameState, unit: Unit, first: Enemy, hurt: H
 
 export function truongAbility(state: GameState, unit: Unit, point: { x: number; z: number }): string[] {
   const hits = Object.values(state.enemies).filter(enemy => enemy.zone === unit.zone
-    && enemy.hp > 0 && distance(enemy, point) <= B.radius);
+    && enemy.hp > 0 && distance(enemy, point) <= B.radius * bondAreaScale(state, unit));
   for (const ally of Object.values(state.units)) {
     if (!isDeployed(ally) || ally.zone !== unit.zone) continue;
     if (!ally.haste || ally.haste.amount <= B.haste) ally.haste = { remaining: B.buffSeconds, amount: B.haste };
@@ -40,7 +41,7 @@ export function truongAbility(state: GameState, unit: Unit, point: { x: number; 
   }
   const beidou = {
     id: nextId(state, 'beidou'), kind: 'beidou' as const, x: point.x, z: point.z,
-    zone: unit.zone, radius: B.radius, remaining: B.freezeSeconds,
+    zone: unit.zone, radius: B.radius * bondAreaScale(state, unit), remaining: B.freezeSeconds,
     damagePerSecond: 0, casterId: unit.id, boltsRemaining: B.bolts,
     boltClock: 0, boltDamage: effectiveUnitAttack(unit) * B.damagePower / B.bolts,
     controlRolls: {} as Record<string, boolean>,

@@ -1,4 +1,5 @@
 import { DOUZHAN as D } from '../../../content/douzhan-design.js';
+import { bondExtraClones } from './bond-runtime.js';
 import type { Enemy, GameState, Unit, Vec } from '../../contracts/src/types.js';
 import { MELEE_CLEAVE_SECONDARY } from '../../contracts/src/combat-profiles.js';
 import { applyEnemyStatus, criticalDamageAgainst, effectiveEnemyArmor } from './combat-status.js';
@@ -6,6 +7,7 @@ import { panguDirection, inPanguRift } from './pangu-combat.js';
 import { distance, event, nextId, random } from './rules.js';
 import { effectiveUnitAttack } from './stats.js';
 import { createUnit } from './unit-factory.js';
+import { markGearNativeCrit } from './gear-stats.js';
 
 type Damage = (source: Unit, enemy: Enemy, damage: number, penetration?: number) => void;
 
@@ -20,8 +22,9 @@ export function douzhanAttack(state: GameState, unit: Unit, target: Enemy, hurt:
   unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + (critical ? D.rageOnCrit : D.rageOnAttack));
   for (const enemy of hits) {
     const share = enemy.id === target.id ? 1 : MELEE_CLEAVE_SECONDARY;
-    hurt(unit, enemy, critical ? criticalDamageAgainst(enemy, damage * share) : damage * share,
-      effectiveEnemyArmor(enemy) * D.armorPierce);
+    const hit = critical ? criticalDamageAgainst(enemy, damage * share) : damage * share;
+    if (critical) markGearNativeCrit(unit, enemy, hit);
+    hurt(unit, enemy, hit, effectiveEnemyArmor(enemy) * D.armorPierce);
     if (critical && state.enemies[enemy.id]) {
       hurt(unit, enemy, attack * D.critFollowUpPower * share);
       event(state, { kind: 'trait', source: unit.id, target: enemy.id, x: enemy.x, z: enemy.z,
@@ -58,8 +61,9 @@ export function douzhanAbility(state: GameState, unit: Unit, direction: Vec, hur
   for (const clone of Object.values(state.units)) {
     if (clone.summonKind === 'buddha-clone' && clone.summonerId === unit.id) delete state.units[clone.id];
   }
-  for (let index = 0; index < D.cloneCount; index++) {
-    const angle = Math.PI * 2 * index / D.cloneCount;
+  const cloneCount = D.cloneCount + bondExtraClones(state, unit);
+  for (let index = 0; index < cloneCount; index++) {
+    const angle = Math.PI * 2 * index / cloneCount;
     const position = { x: center.x + Math.cos(angle) * 1.8, z: center.z + Math.sin(angle) * 1.8 };
     const clone = createUnit(state, unit.owner, D.id);
     clone.id = nextId(state, 'clone'); clone.slot = -99; clone.zone = unit.zone;
@@ -67,14 +71,14 @@ export function douzhanAbility(state: GameState, unit: Unit, direction: Vec, hur
     clone.orderMode = 'hold'; clone.stopped = false;
     clone.summonKind = 'buddha-clone'; clone.summonerId = unit.id; clone.summonDuration = D.cloneSeconds;
     clone.attack = attack * D.cloneAttackRatio;
-    clone.maxHp = Math.max(1, unit.maxHp * D.cloneAttackRatio); clone.hp = clone.maxHp;
-    clone.armor = unit.armor; clone.block = 0; clone.energy = 0;
+    clone.maxHp = Math.max(1, unit.maxHp * D.cloneAttackRatio * (unit.gearRuntime?.castScale ?? 1)); clone.hp = clone.maxHp;
+    clone.armor = unit.armor; clone.energy = 0;
     state.units[clone.id] = clone;
   }
   event(state, { kind: 'ability', source: unit.id, targets: hits, x: unit.x, z: unit.z,
     zone: unit.zone, direction, ability: 'cleave', skillId: 'skill-h012', value: attack * D.staffPower });
   event(state, { kind: 'trait', source: unit.id, x: center.x, z: center.z, zone: unit.zone,
-    skillId: 'summon-h012', value: D.cloneCount });
+    skillId: 'summon-h012', value: cloneCount });
 }
 
 export function stepDouzhanClone(state: GameState, clone: Unit, hurt: Damage): void {

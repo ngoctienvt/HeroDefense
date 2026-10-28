@@ -17,7 +17,7 @@ describe('Hình Thiên Vũ Can Thích', () => {
   it('uses the supplied stats and cleaves the front with burn and one rage gain', () => {
     const { state, unit, hurt } = setup();
     expect(HERO_BY_ID[X.id]).toMatchObject({ hp: 9800, attack: 720, armor: 28,
-      range: 2.8, interval: .85, speed: 4.5, block: 14 });
+      range: 2.8, interval: .85, speed: 4.5 });
     const front = enemy(state, unit), side = enemy(state, unit, { x: unit.x + 2, z: unit.z + 2 });
     const behind = enemy(state, unit, { x: unit.x - 1 });
     executeAttackGeometry(state, unit, front, hurt);

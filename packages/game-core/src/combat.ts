@@ -1,9 +1,14 @@
 import { HERO_BY_ID } from '../../../content/catalog.js';
+import { onGearKillDrop } from './gear-items.js';
+import { gearModsOf, abilityCooldownFor, unitSpeed } from './gear-stats.js';
+import { gearBasicAttack, gearNormalHit } from './gear-attacks.js';
+import { onGearUniqueKill, resolveGearLightning, settleGearRecovery, tryGearMirror, tryGearRewind } from './gear-uniques.js';
+import { prepareGearTick, prepareGearDot, finishGearTick } from './gear-runtime.js';
 import type { AbilityEffect, Enemy, GameState, Unit } from '../../contracts/src/types.js';
 import { distance, event, isDeployed, MOVEMENT_SPEED_MULTIPLIER, slotPosition } from './rules.js';
 import { attackInterval, bonuses, effectiveUnitAttack, skillDamageMultiplier } from './stats.js';
 import { applyAbilityStatus, applyEnemyStatus, effectiveEnemyArmor, knockEnemyBack } from './combat-status.js';
-import { basicAttack, passiveTraits } from './combat-traits.js';
+import { passiveTraits } from './combat-traits.js';
 import { carryDamageTakenMultiplier } from './carry-passive.js';
 import { stepBoomerangs, stepOrbitAuras, triggerFollowUp } from './attack-geometry.js';
 import { contactDistance, resolveSoftCollisions, resolveUnitCollisions } from './crowd-movement.js';
@@ -12,6 +17,8 @@ import { enemyAttackReach, stepEnemyBehavior, type EnemyTickContext } from './en
 import { buildRings } from './enemy-engagement.js';
 import { stepEnemySkills } from './enemy-skill-runner.js';
 import { recordEnemyDeath, recordHeroDeath } from './combat-ttk-telemetry.js';
+import { bondDamageMultiplier, bondExecutes, bondOnCast, bondOnHeroDeath, bondOnHeroHit, bondOnHit, bondOnKill,
+  bondOnBasicAttack, bondOnShield, bondOnSummonEnd, bondRedirect, bondRescue, bondShieldMultiplier, bondTick } from './bond-runtime.js';
 import { SpatialGrid } from './spatial-grid.js';
 import { PANGU } from '../../../content/pangu-design.js';
 import { XINGTIAN } from '../../../content/xingtian-design.js';
@@ -62,34 +69,47 @@ import { NHIEN_DANG, BO_DE, DE_TUAN, NHU_LAI, NGUYEN_THUY } from '../../../conte
 import { bodhiAbility, stepLanternAura, lanternAbility } from './divine-support-combat.js';
 import { deTuanAbility, nguyenThuyAbility, nhuLaiAbility, stepSolarAura } from './divine-god-combat.js';
 
-export function hurtEnemy(state: GameState, unit: Unit, enemy: Enemy, damage: number, penetration = 0, isSoulLinkShare = false, trueDamage = false): void {
-  if (!state.enemies[enemy.id]) return;
+export function hurtEnemy(state: GameState, unit: Unit, enemy: Enemy, damage: number, penetration = 0, isSoulLinkShare = false, trueDamage = false, gearSecondary = false): void {
+  if (state.enemies[enemy.id] !== enemy || enemy.hp <= 0) return;
+  const gear = gearModsOf(state, unit);
+  if (!isSoulLinkShare) {
+    if (enemy.kind === 'boss') damage *= 1 + gear['boss-damage'];
+    if (enemy.hp < enemy.maxHp * .3) damage *= 1 + gear['execute-damage'];
+    if (gear.uniques.has('blood-pact')) damage *= 1 + 1.2 * Math.max(0, 1 - unit.hp / unit.maxHp);
+    damage *= bondDamageMultiplier(state, unit, enemy);
+  }
   if (enemy.bleed && !isSoulLinkShare && !trueDamage) damage *= (1 + enemy.bleed.bonusDamage);
   if (enemy.pureLand) damage *= 1 + enemy.pureLand.bonusDamage;
   const armor = trueDamage ? 0 : Math.max(0, effectiveEnemyArmor(enemy) - penetration
-    - (isSoulLinkShare ? 0 : effectiveEnemyArmor(enemy) * (unit.empower?.armorPierce ?? 0)));
+    - (isSoulLinkShare ? 0 : effectiveEnemyArmor(enemy) * Math.min(1, (unit.empower?.armorPierce ?? 0) + gear['armor-pierce'])));
   const marked = !trueDamage && !isSoulLinkShare && enemy.primordialMark?.owner === unit.owner
     && enemy.primordialMark.casterId !== unit.id
     ? damage * enemy.primordialMark.bonus : 0;
   const actual = Math.max(.01, damage * 100 / (100 + armor * 5) + marked);
-  const absorbed = Math.min(enemy.shield ?? 0, actual);
+  // A bond execute removes the shield and the remaining hp in this one hit (never bosses).
+  const dealt = !isSoulLinkShare && bondExecutes(state, unit, enemy) ? enemy.hp + (enemy.shield ?? 0) : actual;
+  const absorbed = Math.min(enemy.shield ?? 0, dealt);
   if (absorbed) enemy.shield = (enemy.shield ?? 0) - absorbed;
-  const hpDamage = Math.min(enemy.hp, actual - absorbed);
+  const hpDamage = Math.min(enemy.hp, dealt - absorbed);
   enemy.hp -= hpDamage; state.players[unit.owner].damage += hpDamage + absorbed;
 
   if (!isSoulLinkShare && enemy.soulLink && enemy.soulLink.remaining > 0) {
     const shared = hpDamage * enemy.soulLink.sharePercent;
     for (const linkedId of enemy.soulLink.group) {
       if (linkedId !== enemy.id && state.enemies[linkedId]) {
-        hurtEnemy(state, unit, state.enemies[linkedId], shared, 999, true);
+        hurtEnemy(state, unit, state.enemies[linkedId], shared, 999, true, false, gearSecondary);
       }
     }
   }
 
-  if (enemy.hp <= 0) {
+  if (enemy.hp <= 0 && state.enemies[enemy.id] === enemy) {
     recordEnemyDeath(state, enemy);
     delete state.enemies[enemy.id]; unit.kills++;
     state.players[unit.owner].kills++;
+    bondOnKill(state, unit, enemy);
+    onGearKillDrop(state, unit, enemy);
+    onGearUniqueKill(state, unit, enemy, (source, target, amount) =>
+      hurtEnemy(state, source, target, amount, 0, false, false, true));
     event(state, { kind: 'death', target: enemy.id, x: enemy.x, z: enemy.z });
     countBloodDeath(state, enemy.zone, enemy);
     const burnCaster = state.units[enemy.burn?.casterId ?? ''];
@@ -122,7 +142,7 @@ export function hurtEnemy(state: GameState, unit: Unit, enemy: Enemy, damage: nu
         if (nearby.zone === enemy.zone && distance(nearby, enemy) <= 2) hurtEnemy(state, burnCaster, nearby, 35);
       }
     }
-  }
+  } else if (!isSoulLinkShare && !gearSecondary && state.enemies[enemy.id] === enemy) bondOnHit(state, unit, enemy);
 }
 function hurtAbilityEnemy(state: GameState, unit: Unit, enemy: Enemy, damage: number,
   penetration = 0, trueDamage = false): void {
@@ -132,10 +152,17 @@ function hasBuddhaAura(state: GameState, owner: string): boolean {
   return Object.values(state.units).some(ally => ally.owner === owner
     && ally.heroId === NHU_LAI.id && isDeployed(ally));
 }
-export function hurtUnit(state: GameState, unit: Unit, damage: number, attacker?: Enemy): void {
-  if (unit.heroId === PANGU.id && unit.pendingAbility) return;
+export function hurtUnit(state: GameState, unit: Unit, damage: number, attacker?: Enemy, selfLoss = false): void {
+  if (unit.hp <= 0) return;
+  settleGearRecovery(state, unit);
+  const gear = gearModsOf(state, unit);
+  if (!selfLoss && tryGearMirror(state, unit, attacker, (source, target, amount) =>
+    hurtEnemy(state, source, target, amount, 0, false, false, true))) return;
+  if (!selfLoss && unit.heroId === PANGU.id && unit.pendingAbility) return;
   if (unit.phoenixEgg) return;
-  if ((unit.divineImmortal ?? 0) > 0) return;
+  if (!selfLoss && (unit.divineImmortal ?? 0) > 0) return;
+  // A bond may take part of the blow onto another hero (one way, so it never loops).
+  if (!selfLoss) damage -= bondRedirect(state, unit, damage, attacker);
   if (unit.heroId === PANGU.id) unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + 5);
   if (unit.energyType === 'rage_on_hit') {
     const gain = unit.heroId === 'h009' ? 7 : unit.heroId === CONGCONG.id ? CONGCONG.rageOnHit
@@ -149,7 +176,7 @@ export function hurtUnit(state: GameState, unit: Unit, damage: number, attacker?
     unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + TUONG_THAN.rageOnHit);
   if (unit.heroId === NHIEN_DANG.id)
     unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + 1);
-  const commandingGuardian = (unit.block ?? 0) > 0 && Object.values(state.units).some(ally =>
+  const commandingGuardian = ['guardian', 'warrior'].includes(HERO_BY_ID[unit.heroId]?.role) && Object.values(state.units).some(ally =>
     ally.owner === unit.owner && ally.zone === unit.zone && ally.heroId === 'h00W'
     && isDeployed(ally) && distance(ally, unit) <= 8);
   const armor = Math.max(0, unit.armor + (unit.bonusArmor?.amount ?? 0) + (commandingGuardian ? 8 : 0));
@@ -157,9 +184,13 @@ export function hurtUnit(state: GameState, unit: Unit, damage: number, attacker?
   let reduced = Math.max(1, damage * 100 / (100 + armor * 5) * (1 - (unit.ward?.reduction ?? 0))
     * (buddhaAura ? 1 - NHU_LAI.auraReduction : 1)
     * (commandingGuardian && attacker?.kind === 'boss' ? .85 : 1)
-    * carryDamageTakenMultiplier(state, unit));
-  if (unit.heroId === 'h007') reduced = Math.max(1, reduced - 5);
-  const absorbed = Math.min(unit.shield, reduced); unit.shield -= absorbed; unit.hp -= reduced - absorbed;
+    * carryDamageTakenMultiplier(state, unit) * (1 - Math.min(.75, gear['damage-reduction'])));
+  if (selfLoss) reduced = damage;
+  if (!selfLoss && unit.heroId === 'h007') reduced = Math.max(1, reduced - 5);
+  const absorbed = selfLoss ? 0 : Math.min(unit.shield, reduced); unit.shield -= absorbed; unit.hp -= reduced - absorbed;
+  if (unit.gearRuntime) { unit.gearRuntime.hpSeen = unit.hp; unit.gearRuntime.shieldSeen = unit.shield; }
+  if (attacker?.kind === 'melee' && gear['melee-reflect'] > 0)
+    hurtEnemy(state, unit, attacker, reduced * gear['melee-reflect'], 0, false, false, true);
   let trackedAbsorbed = absorbed;
   if (absorbed > 0 && unit.lanternShield) {
     const spent = Math.min(trackedAbsorbed, unit.lanternShield.amount);
@@ -203,7 +234,8 @@ export function hurtUnit(state: GameState, unit: Unit, damage: number, attacker?
     const spent = Math.min(unit.frostShield.amount, tierAbsorbed);
     unit.frostShield.amount -= spent; tierAbsorbed -= spent;
   }
-  if (unit.tierImmortal && (unit.tierImmortal.remaining > 0 || unit.tierImmortal.activeRemaining > 0) && unit.hp <= 1) {
+  settleGearRecovery(state, unit);
+  if (!selfLoss && unit.tierImmortal && (unit.tierImmortal.remaining > 0 || unit.tierImmortal.activeRemaining > 0) && unit.hp <= 1) {
     unit.hp = 1;
     if (unit.tierImmortal.activeRemaining <= 0) {
       unit.tierImmortal.remaining = 0;
@@ -215,12 +247,15 @@ export function hurtUnit(state: GameState, unit: Unit, damage: number, attacker?
   if (unit.tierShield?.kind === 'water' && unit.tierShield.amount <= 0) {
     burstTier3WaterShield(state, unit, (enemy, amount) => hurtEnemy(state, unit, enemy, amount));
   }
-  if (unit.berserk?.immortal) unit.hp = Math.max(XINGTIAN.minimumBerserkHp, unit.hp);
+  if (!selfLoss && unit.berserk?.immortal) unit.hp = Math.max(XINGTIAN.minimumBerserkHp, unit.hp);
+  if (tryGearRewind(state, unit)) return;
   if (unit.heroId === PHUONG_HOANG.id && unit.hp <= 0 && canPhoenixRebirth(unit)) {
     startPhoenixEgg(state, unit);
     return;
   }
   if (unit.hp <= 0 && tryStarGuard(state, unit)) return;
+  if (unit.hp <= 0 && bondRescue(state, unit)) return;
+  bondOnHeroHit(state, unit, attacker);
   if (attacker && distance(unit, attacker) <= 2.2) {
     if (unit.heroId === 'h007') {
       applyEnemyStatus(attacker, unit, 0, 'slow', 2.0, 0.30);
@@ -246,12 +281,14 @@ export function hurtUnit(state: GameState, unit: Unit, damage: number, attacker?
     recordHeroDeath(state, unit);
     unit.hp = 0; unit.deaths++;
     unit.waveDeaths = (unit.waveDeaths ?? 0) + 1;
-    unit.respawn = 5 + unit.waveDeaths - 1;
+    unit.respawn = (5 + unit.waveDeaths - 1) * (1 - Math.min(.8, gear['respawn-reduction']));
     unit.destination = null; unit.target = null; unit.orderMode = 'auto'; unit.engageAt = null; unit.shield = 0; unit.ward = undefined; unit.haste = undefined; unit.critBlessing = undefined;
     unit.pendingAbility = undefined; unit.empower = undefined; unit.bonusArmor = undefined; unit.reflect = undefined; unit.mistShield = undefined; unit.frostShield = undefined; unit.berserk = undefined;
     unit.tierShield = undefined; unit.tierGoldShields = undefined; unit.nuwaShields = undefined; unit.tierBuff = undefined; unit.tierImmortal = undefined; unit.fuxiBlessing = undefined;
     unit.thunderBlessing = undefined; unit.bodhiBlessing = undefined; unit.lanternShield = undefined;
     unit.divineShield = undefined; unit.divineImmortal = undefined; unit.primordialBlessing = undefined;
+    // After the death state is set so a bond handler can undo it (revive) by restoring hp and respawn.
+    bondOnHeroDeath(state, unit);
     event(state, { kind: 'death', target: unit.id, x: unit.x, z: unit.z });
     if (unit.summonDuration !== undefined) {
       delete state.units[unit.id];
@@ -277,7 +314,7 @@ function applyFriendlyStatus(ally: Unit, effect: AbilityEffect): void {
 const WINDUP_HEROES = new Set(['h015', 'h01B', 'h011', 'h012', 'h013', 'h016', 'h017', 'h018', 'h019', 'h01H', 'h01G', 'h01A', 'h01C', 'h01D', 'h01E', 'h01F', 'h01K', 'h03Y', 'h03Z', 'h041', 'h040', 'h03W', 'h03X', 'h01I', 'h01J', 'h014', 'h009', 'h00A', 'h00B', 'h00C', 'h00D', 'h00E', 'h00F', 'h00G', 'h00H', 'h00I', 'h03O', 'h03P']);
 const WINDUP_SECONDS = .25;
 
-export function castAbility(state: GameState, unit: Unit, targetId?: string): boolean {
+export function castAbility(state: GameState, unit: Unit, targetId?: string, bondTriggered = false, bondScale = 1): boolean {
   if (!isDeployed(unit) || unit.pendingAbility || unit.phoenixEgg) return false;
   const hero = HERO_BY_ID[unit.heroId];
   if (!hero.ability) return false;
@@ -288,7 +325,7 @@ export function castAbility(state: GameState, unit: Unit, targetId?: string): bo
     if (unit.abilityCooldown > 0) return false;
   }
   // Lobby has no simulation clock; keep its practice casts instantaneous.
-  if ((!WINDUP_HEROES.has(hero.id) && !isTier3Hero(hero.id) && !isTier4Hero(hero.id)) || state.phase === 'lobby') return resolveAbility(state, unit, targetId);
+  if ((!WINDUP_HEROES.has(hero.id) && !isTier3Hero(hero.id) && !isTier4Hero(hero.id)) || state.phase === 'lobby') return resolveAbility(state, unit, targetId, false, undefined, bondTriggered, bondScale);
   const effect = abilityEffect(hero.ability.kind, hero.ability.effect);
   const castReach = hero.id === XINGTIAN.id ? XINGTIAN.blastRadius
     : hero.id === DOUZHAN.id ? DOUZHAN.staffLength
@@ -318,9 +355,9 @@ export function castAbility(state: GameState, unit: Unit, targetId?: string): bo
   if (hero.ability.kind === 'shield' && !allies.length) return false;
   if (hero.ability.kind !== 'heal' && hero.ability.kind !== 'shield' && hero.id !== NUWA.id && !target) return false;
   if (isRage) {
-    unit.energy = 0;
+    unit.energy = 0; (unit.gearRuntime ??= {}).energySeen = 0;
   } else {
-    unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+    unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
   }
   const windup = hero.id === PANGU.id ? PANGU.windup : hero.id === BEIDOU.id ? BEIDOU.windup
     : hero.id === NHIEN_DANG.id ? NHIEN_DANG.windup : hero.id === BO_DE.id ? BO_DE.windup
@@ -330,7 +367,7 @@ export function castAbility(state: GameState, unit: Unit, targetId?: string): bo
     : hero.id === CONGCONG.id ? CONGCONG.windup : WINDUP_SECONDS;
   const point = { x: target?.x ?? unit.x, z: target?.z ?? unit.z };
   const direction = panguDirection(unit, point);
-  unit.pendingAbility = { remaining: windup, targetId: target?.id, zone: unit.zone, point, direction };
+  unit.pendingAbility = { remaining: windup, targetId: target?.id, zone: unit.zone, point, direction, ...(bondTriggered ? { bondTriggered, bondScale } : {}) };
   event(state, { kind: 'cast', source: unit.id, target: target?.id,
     x: hero.id === XINGTIAN.id || hero.id === KIMSI.id || hero.id === TUONG_THAN.id
       || hero.id === DE_TUAN.id || hero.id === NGUYEN_THUY.id || hero.id === CONGCONG.id ? unit.x : target?.x ?? unit.x,
@@ -340,7 +377,34 @@ export function castAbility(state: GameState, unit: Unit, targetId?: string): bo
   return true;
 }
 
-function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferred = false, locked?: Unit['pendingAbility']): boolean {
+function resolveGearAbility(state: GameState, unit: Unit, target: Enemy): void {
+  const next = state.enemies[target.id] ?? Object.values(state.enemies)
+    .filter(enemy => enemy.zone === unit.zone && enemy.hp > 0)
+    .sort((a, b) => distance(a, unit) - distance(b, unit))[0];
+  resolveAbilityCore(state, unit, next?.id, true, { remaining: 0, zone: unit.zone,
+    point: { x: target.x, z: target.z }, direction: panguDirection(unit, target) });
+}
+
+/** Resolves a skill, then lets the owner's bonds react; gear-proc re-casts use the core directly. */
+function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferred = false, locked?: Unit['pendingAbility'], bondTriggered = false, bondScale = 1): boolean {
+  // A bond cast is free: whatever the skill body does to the caster's Nộ or cooldown is undone.
+  const spent = bondTriggered ? { energy: unit.energy, cooldown: unit.abilityCooldown, seen: unit.gearRuntime?.energySeen } : undefined;
+  // Cast power factor (e.g. x0.5) rides the existing castScale for exactly this cast.
+  const runtime = bondTriggered && bondScale !== 1 ? (unit.gearRuntime ??= {}) : undefined;
+  const previousScale = runtime?.castScale;
+  if (runtime) runtime.castScale = (previousScale ?? 1) * bondScale;
+  const resolved = resolveAbilityCore(state, unit, targetId, deferred, locked);
+  if (runtime) runtime.castScale = previousScale;
+  if (spent) {
+    if (spent.energy !== undefined) unit.energy = spent.energy;
+    unit.abilityCooldown = spent.cooldown;
+    if (spent.seen !== undefined && unit.gearRuntime) unit.gearRuntime.energySeen = spent.seen;
+  }
+  if (resolved) bondOnCast(state, unit, targetId, bondTriggered);
+  return resolved;
+}
+
+function resolveAbilityCore(state: GameState, unit: Unit, targetId?: string, deferred = false, locked?: Unit['pendingAbility']): boolean {
   if (!isDeployed(unit) || unit.phoenixEgg) return false;
   const hero = HERO_BY_ID[unit.heroId];
   if (!hero.ability) return false;
@@ -369,7 +433,7 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
   if (!deferred) {
     if (isRage) {
       if ((unit.energy ?? 0) < (unit.maxEnergy ?? 100)) return false;
-      unit.energy = 0;
+      unit.energy = 0; (unit.gearRuntime ??= {}).energySeen = 0;
     } else {
       if (unit.abilityCooldown > 0) return false;
     }
@@ -408,7 +472,7 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
   }
   if (hero.id === NUWA.id) {
     nuwaAbility(state, unit, (enemy, damage) => hurtAbilityEnemy(state, unit, enemy, damage));
-    if (!deferred) unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+    if (!deferred) unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
     return true;
   }
   if (hero.id === HIENVIEN.id) {
@@ -448,7 +512,7 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
       Object.values(state.enemies).find(enemy => enemy.zone === unit.zone && distance(enemy, unit) <= unit.range + 5) ?? unit;
     resolveTier3Ability(state, unit, aimed, (enemy, damage, penetration, trueDamage) =>
       hurtAbilityEnemy(state, unit, enemy, damage, penetration, trueDamage));
-    if (!deferred && unit.energyType === 'cooldown') unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+    if (!deferred && unit.energyType === 'cooldown') unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
     return true;
   }
   if (isTier4Hero(hero.id)) {
@@ -456,7 +520,7 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
       Object.values(state.enemies).find(enemy => enemy.zone === unit.zone && distance(enemy, unit) <= unit.range + 5) ?? unit;
     resolveTier4Ability(state, unit, aimed, (source, enemy, damage, penetration, trueDamage) =>
       hurtAbilityEnemy(state, source, enemy, damage, penetration, trueDamage));
-    if (!deferred && unit.energyType === 'cooldown') unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+    if (!deferred && unit.energyType === 'cooldown') unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
     return true;
   }
   if (hero.id === KIMSI.id) {
@@ -482,29 +546,29 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
     const point = locked?.point ?? target;
     if (!point) return false;
     truongAbility(state, unit, point);
-    if (!deferred) unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+    if (!deferred) unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
     return true;
   }
   if (hero.id === NHIEN_DANG.id) {
     lanternAbility(state, unit);
-    if (!deferred) unit.energy = 0;
+    if (!deferred) { unit.energy = 0; (unit.gearRuntime ??= {}).energySeen = 0; }
     return true;
   }
   if (hero.id === THAIBACH.id) {
     if (!thaibachHasWork(state, unit)) return false;
     thaibachAbility(state, unit);
-    if (!deferred) unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+    if (!deferred) unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
     return true;
   }
   if (hero.id === BO_DE.id) {
     bodhiAbility(state, unit);
-    if (!deferred) unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+    if (!deferred) unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
     return true;
   }
   if (hero.id === DE_TUAN.id) {
     deTuanAbility(state, unit, (source, enemy, damage, penetration) =>
       hurtAbilityEnemy(state, source, enemy, damage, penetration));
-    if (!deferred) unit.energy = 0;
+    if (!deferred) { unit.energy = 0; (unit.gearRuntime ??= {}).energySeen = 0; }
     return true;
   }
   if (hero.id === NHU_LAI.id) {
@@ -512,13 +576,13 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
       ?? Object.values(state.enemies).find(enemy => enemy.zone === unit.zone) ?? unit;
     nhuLaiAbility(state, unit, point, (source, enemy, damage) =>
       hurtAbilityEnemy(state, source, enemy, damage));
-    if (!deferred) unit.energy = 0;
+    if (!deferred) { unit.energy = 0; (unit.gearRuntime ??= {}).energySeen = 0; }
     return true;
   }
   if (hero.id === NGUYEN_THUY.id) {
     nguyenThuyAbility(state, unit, (source, enemy, damage, penetration, direct) =>
       hurtAbilityEnemy(state, source, enemy, damage, penetration, direct));
-    if (!deferred) unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+    if (!deferred) unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
     return true;
   }
   if (hero.id === CHUCDUNG.id) {
@@ -583,7 +647,7 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
       : enemies[0]);
   const allies = Object.values(state.units).filter(u => isDeployed(u) && u.zone === unit.zone
     && (effect.target === 'self' ? u.id === unit.id : distance(u, unit) <= (effect.radius ?? 12)));
-  const power = effectiveUnitAttack(unit) * hero.ability.power * (1 + unit.equipment[2] * .25);
+  const power = effectiveUnitAttack(unit) * hero.ability.power;
   let affectedIds: string[] = [];
 
   // Hero-specific active abilities
@@ -598,7 +662,8 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
     const recipients = effect.shape === 'radius' ? (effect.maxTargets ? (injured.length ? injured : allies).slice(0, effect.maxTargets) : allies) : (injured.length ? injured : allies).slice(0,
       effect.shape === 'single' ? 1 : effect.jumps ?? 3);
     for (const ally of recipients) {
-      const overheal = healAlly(ally, supportAmount(power, ally, effect.recipientMaxHpRatio));
+      const healAmount = supportAmount(power, ally, (effect.recipientMaxHpRatio ?? 0) * (unit.gearRuntime?.castScale ?? 1));
+      const overheal = healAlly(ally, healAmount, { state, source: unit });
       if (effect.overhealShield && overheal > 0) {
         ally.shield = Math.max(ally.shield, overheal);
         if (hero.id === 'h03O') {
@@ -623,12 +688,14 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
     for (const ally of recipients) {
       // Kim Tra / Cự Linh Thần scale the HP part with the recipient, not the caster.
       const shieldAmount = effect.recipientMaxHpRatio
-        ? supportAmount(effectiveUnitAttack(unit) * hero.ability.power, ally, effect.recipientMaxHpRatio)
-        : effect.reflect ? power + unit.maxHp * .1 : hero.tier === 2 ? power : power * .6;
-      ally.shield = Math.max(ally.shield, shieldAmount);
+        ? supportAmount(effectiveUnitAttack(unit) * hero.ability.power, ally, (effect.recipientMaxHpRatio ?? 0) * (unit.gearRuntime?.castScale ?? 1))
+        : effect.reflect ? power + unit.maxHp * .1 * (unit.gearRuntime?.castScale ?? 1) : hero.tier === 2 ? power : power * .6;
+      const scaledShield = shieldAmount * bondShieldMultiplier(state, unit, ally);
+      ally.shield = Math.max(ally.shield, scaledShield);
       applyFriendlyStatus(ally, effect);
       if (effect.reflect) ally.reflect = { amount: effect.reflect };
       if (effect.bonusArmor) ally.bonusArmor = { remaining: effect.statusSeconds ?? 4.5, amount: effect.bonusArmor };
+      bondOnShield(state, unit, ally, scaledShield);
     }
     if (hero.id === 'h00E') {
       // Not a control specialist: the hammer quake slows instead of stunning.
@@ -728,20 +795,19 @@ function resolveAbility(state: GameState, unit: Unit, targetId?: string, deferre
           savedPosition: null,
           stopped: true,
           orderMode: 'hold',
-          equipment: [0, 0, 0],
+
           deaths: 0,
           respawn: 0,
           shield: 0,
           zone: unit.zone,
           kills: 0,
-          block: 3,
-          summonDuration: 6.0,
+          summonerId: unit.id, summonDuration: 6.0,
         };
       }
     }
   }
 
-  if (!deferred && !isRage) unit.abilityCooldown = hero.ability.cooldown / (1 + .1 * unit.equipment[2]);
+  if (!deferred && !isRage) unit.abilityCooldown = abilityCooldownFor(unit, hero.ability.cooldown, state);
   event(state, { kind: 'ability', source: unit.id, target: kind === 'heal' || kind === 'shield' ? affectedIds[0] : target?.id,
     targets: affectedIds, x: kind === 'heal' || kind === 'shield' ? unit.x : target?.x ?? unit.x,
     z: kind === 'heal' || kind === 'shield' ? unit.z : target?.z ?? unit.z,
@@ -763,7 +829,7 @@ function chainTargets(first: Enemy, candidates: Enemy[], limit: number, jumpRang
   return hits;
 }
 /**
- * Guardians (and anything with a block value) win close ties when enemies pick a hero.
+ * Guardians and warriors win close ties when enemies pick a hero.
  * How many enemies fight a hero at once is decided by free ring slots, not by this value.
  */
 /** Server-only: seconds a hero has been unable to close in on its chase target. */
@@ -786,7 +852,6 @@ function debugHeroRetarget(state: GameState, unit: Unit, from: string, to: strin
 const HERO_ACQUIRE_MARGIN = 3;
 
 function guardianPull(state: GameState, unit: Unit): boolean {
-  if ((unit.blockBonus?.amount ?? 0) > 0 || (unit.block ?? 0) > 0) return true;
   const role = HERO_BY_ID[unit.heroId]?.role;
   return state.phase === 'combat' && (role === 'guardian' || role === 'warrior');
 }
@@ -794,6 +859,8 @@ function guardianPull(state: GameState, unit: Unit): boolean {
 const loggedMovement = new WeakSet<GameState>();
 
 export function combatStep(state: GameState, dt: number): void {
+  prepareGearTick(state);
+  bondTick(state, dt);
   if (!loggedMovement.has(state)) {
     loggedMovement.add(state);
     console.debug(JSON.stringify({ event: 'movement.config', speedMultiplier: MOVEMENT_SPEED_MULTIPLIER,
@@ -826,7 +893,10 @@ export function combatStep(state: GameState, dt: number): void {
   stepCongcongAura(state);
   passiveTraits(state, dt);
   stepOrbitAuras(state, dt, (u, e, d, p) => hurtEnemy(state, u, e, d, p));
-  stepBoomerangs(state, dt, (u, e, d, p) => hurtEnemy(state, u, e, d, p));
+  stepBoomerangs(state, dt, (u, e, d, p, yin, multiplier) => {
+    gearNormalHit(state, u, e, d, p, (target, amount, pierce) => hurtEnemy(state, u, target, amount, pierce), yin, multiplier);
+    resolveGearLightning(state, u, (source, target, amount) => hurtEnemy(state, source, target, amount, 0, false, false, true));
+  });
   for (const unit of Object.values(state.units)) {
     unit.cooldown = Math.max(0, unit.cooldown - dt);
     unit.abilityCooldown = Math.max(0, unit.abilityCooldown - dt / (1 - Math.min(.75, Math.max(0, unit.haste?.cooldownReduction ?? 0))));
@@ -873,7 +943,6 @@ export function combatStep(state: GameState, dt: number): void {
     }
     if (unit.empower) { unit.empower.remaining -= dt; if (unit.empower.remaining <= 0) unit.empower = undefined; }
     if (unit.bonusArmor) { unit.bonusArmor.remaining -= dt; if (unit.bonusArmor.remaining <= 0) unit.bonusArmor = undefined; }
-    if (unit.blockBonus) { unit.blockBonus.remaining -= dt; if (unit.blockBonus.remaining <= 0) unit.blockBonus = undefined; }
     if (unit.reflect && unit.shield <= 0) unit.reflect = undefined;
     if (unit.mistShield) {
       unit.mistShield.remaining -= dt;
@@ -940,6 +1009,7 @@ export function combatStep(state: GameState, dt: number): void {
     if (unit.summonDuration !== undefined) {
       unit.summonDuration -= dt;
       if (unit.summonDuration <= 0) {
+        bondOnSummonEnd(state, unit);
         delete state.units[unit.id];
         continue;
       }
@@ -966,7 +1036,7 @@ export function combatStep(state: GameState, dt: number): void {
       pending.remaining -= dt;
       if (pending.remaining <= 1e-6) {
         unit.pendingAbility = undefined;
-        if (isDeployed(unit) && unit.zone === pending.zone) resolveAbility(state, unit, pending.targetId, true, pending);
+        if (isDeployed(unit) && unit.zone === pending.zone) resolveAbility(state, unit, pending.targetId, true, pending, pending.bondTriggered === true, pending.bondScale ?? 1);
       }
       continue;
     }
@@ -988,12 +1058,15 @@ export function combatStep(state: GameState, dt: number): void {
       continue;
     }
     const hero = HERO_BY_ID[unit.heroId], bonus = bonuses(state, unit.owner);
-    unit.hp = Math.min(unit.maxHp, unit.hp + bonus.regen * unit.maxHp * dt);
+    unit.hp = Math.min(unit.maxHp, unit.hp + (bonus.regen + gearModsOf(state, unit)['health-regen']) * unit.maxHp * dt);
+    if (gearModsOf(state, unit).uniques.has('sea-anchor')) unit.stun = 0;
     if ((unit.stun ?? 0) > 0 || unit.shadowAssault) continue;
+    if (gearModsOf(state, unit).uniques.has('sea-anchor')) unit.stun = 0;
+    if (gearModsOf(state, unit).uniques.has('seated-oblivion')) { unit.orderMode = 'hold'; unit.destination = null; unit.stopped = true; }
     const mode = unit.orderMode ?? (unit.stopped ? 'hold' : unit.destination ? 'move' : 'auto');
     if (unit.stopped && !unit.orderMode) continue;
     if (mode === 'move' && unit.destination) {
-      if (walkUnitWithPathing(unit, unit.destination, hero.speed * MOVEMENT_SPEED_MULTIPLIER * dt, Object.values(state.units), Object.values(state.enemies))) {
+      if (walkUnitWithPathing(unit, unit.destination, unitSpeed(unit) * MOVEMENT_SPEED_MULTIPLIER * dt, Object.values(state.units), Object.values(state.enemies))) {
         unit.guardPosition = { x: unit.x, z: unit.z }; unit.destination = null; unit.orderMode = 'auto';
       }
       continue;
@@ -1044,7 +1117,7 @@ export function combatStep(state: GameState, dt: number): void {
       if (inReach) { target = inReach; unit.target = inReach.id; }
     }
     if (!target && mode === 'attack-move' && unit.destination) {
-      if (walkUnitWithPathing(unit, unit.destination, hero.speed * MOVEMENT_SPEED_MULTIPLIER * dt, Object.values(state.units), Object.values(state.enemies))) {
+      if (walkUnitWithPathing(unit, unit.destination, unitSpeed(unit) * MOVEMENT_SPEED_MULTIPLIER * dt, Object.values(state.units), Object.values(state.enemies))) {
         unit.guardPosition = { x: unit.x, z: unit.z }; unit.destination = null; unit.orderMode = 'auto';
       }
       continue;
@@ -1063,7 +1136,7 @@ export function combatStep(state: GameState, dt: number): void {
         }
         if (unit.comboCount === 1) dash = 3.0;
       }
-      const step = hero.speed * MOVEMENT_SPEED_MULTIPLIER * dt * dash, fromX = unit.x, fromZ = unit.z;
+      const step = unitSpeed(unit) * MOVEMENT_SPEED_MULTIPLIER * dt * dash, fromX = unit.x, fromZ = unit.z;
       walkUnitWithPathing(unit, target, step, Object.values(state.units), Object.values(state.enemies));
       if ((mode === 'auto' || mode === 'attack-move')
         && heroChaseStalled(unit, Math.hypot(unit.x - fromX, unit.z - fromZ) < step * .2, dt)) {
@@ -1095,12 +1168,18 @@ export function combatStep(state: GameState, dt: number): void {
     }
     if (unit.pendingAbility) continue;
     if (target && state.enemies[target.id] && unit.cooldown <= 0) {
-      basicAttack(state, unit, target, (enemy, damage, penetration, source) => hurtEnemy(state, source ?? unit, enemy, damage, penetration));
+      gearBasicAttack(state, unit, target,
+        (enemy, damage, penetration, source) => hurtEnemy(state, source ?? unit, enemy, damage, penetration),
+        (source, enemy, damage) => hurtEnemy(state, source, enemy, damage, 0, false, false, true),
+        () => { if (target) resolveGearAbility(state, unit, target); });
       if (unit.bodhiBlessing && state.enemies[target.id])
-        basicAttack(state, unit, target, (enemy, damage, penetration, source) =>
-          hurtEnemy(state, source ?? unit, enemy, damage, penetration));
+        gearBasicAttack(state, unit, target,
+          (enemy, damage, penetration, source) => hurtEnemy(state, source ?? unit, enemy, damage, penetration),
+          (source, enemy, damage) => hurtEnemy(state, source, enemy, damage, 0, false, false, true),
+          () => { if (target) resolveGearAbility(state, unit, target); });
       triggerTruongBlessing(state, unit, target, (source, enemy, damage) =>
         hurtEnemy(state, source, enemy, damage));
+      if (state.enemies[target.id]) bondOnBasicAttack(state, unit, target);
       unit.cooldown = attackInterval(state, unit);
     }
   }
@@ -1146,8 +1225,9 @@ export function combatStep(state: GameState, dt: number): void {
       deployedUnits,
       enemyCtx.anchored,
       hurtUnit,
-      (s, u) => !hasBuddhaAura(s, u.owner),
+      (s, u) => !hasBuddhaAura(s, u.owner) && !gearModsOf(s, u).uniques.has('sea-anchor'),
     );
+    prepareGearDot(state, enemy);
     if (enemy.burn) {
       const caster = state.units[enemy.burn.casterId];
       const inLava = state.groundEffects?.some(ground => ground.kind === 'chucdung-lava'
@@ -1236,7 +1316,10 @@ export function combatStep(state: GameState, dt: number): void {
         if (ground.kind === 'tier-fire' || ground.kind === 'tier-gold') enemy.pureLand = {
           remaining: .2, bonusDamage: ground.kind === 'tier-fire' ? .2 : .25,
         };
-        if (ground.damagePerSecond > 0) hurtAbilityEnemy(state, caster, enemy, ground.damagePerSecond * dt);
+        if (ground.damagePerSecond > 0) {
+          if (ground.kind === 'gear-fire-trail') hurtEnemy(state, caster, enemy, ground.damagePerSecond * dt, 0, false, false, true);
+          else hurtAbilityEnemy(state, caster, enemy, ground.damagePerSecond * dt);
+        }
       }
       ground.remaining -= dt;
     }
@@ -1246,4 +1329,7 @@ export function combatStep(state: GameState, dt: number): void {
     hurtAbilityEnemy(state, source, enemy, damage));
   stepSolarAura(state, dt, (source, enemy, damage) =>
     hurtAbilityEnemy(state, source, enemy, damage));
+  finishGearTick(state, dt,
+    (source, enemy, damage) => hurtEnemy(state, source, enemy, damage, 0, false, false, true),
+    (unit, damage) => hurtUnit(state, unit, damage, undefined, true));
 }

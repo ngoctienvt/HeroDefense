@@ -9,7 +9,7 @@ describe('Cộng Công', () => {
   it('thrusts one target, gains rage and slows movement and attacks with his aura', () => {
     const state = game(), caster = deployed(state, C.id);
     expect(HERO_BY_ID[C.id]).toMatchObject({ hp: 14200, attack: 460, armor: 42,
-      range: 2.5, interval: 1.2, speed: 3.2, block: 25 });
+      range: 2.5, interval: 1.2, speed: 3.2 });
     const front = enemy(state, caster), side = enemy(state, caster,
       { x: caster.x + 2, z: caster.z + 1, speed: 0 });
     const back = enemy(state, caster, { x: caster.x - 1, speed: 0 });

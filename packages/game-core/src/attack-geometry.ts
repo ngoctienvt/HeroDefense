@@ -27,6 +27,7 @@ import { tayvuongmauAttack } from './tayvuongmau-combat.js';
 import { lucnhiAttack } from './lucnhi-combat.js';
 import { distance, event, isDeployed, random } from './rules.js';
 import { effectiveUnitAttack, solarCritMultiplier } from './stats.js';
+import { gearModsOf, markGearNativeCrit } from './gear-stats.js';
 
 export type Hurt = (enemy: Enemy, damage: number, penetration?: number, source?: Unit) => void;
 export type UnitHurt = (unit: Unit, enemy: Enemy, damage: number, penetration?: number) => void;
@@ -34,6 +35,8 @@ export type UnitHurt = (unit: Unit, enemy: Enemy, damage: number, penetration?: 
 interface AttackContext {
   isExtraStrike?: boolean;
   isFollowUp?: boolean;
+  /** A replacement attack deliberately suppresses the hero's native attack and on-hit kit. */
+  geometryOverride?: AttackGeometryConfig;
 }
 
 /** Check if point P is within a ray segment from start to start + dir*length with perpendicular width W. */
@@ -55,6 +58,7 @@ export function executeAttackGeometry(
   context: AttackContext = {},
 ): void {
   const hero = HERO_BY_ID[unit.heroId];
+  if (!context.geometryOverride) {
   if (unit.heroId === 'h01B') {
     if (panguAttack(state, unit, target, hurt) && !context.isFollowUp)
       triggerFollowUp(state, unit, target, 'crit', (u, e, d, p) => hurt(e, d, p, u));
@@ -170,18 +174,22 @@ export function executeAttackGeometry(
       hurt(enemy, damage, penetration, unit));
     return;
   }
-  const geometry: AttackGeometryConfig = unit.heroId === 'h00U' && unit.berserk
+  }
+  const mods = gearModsOf(state, unit);
+  const geometry: AttackGeometryConfig = context.geometryOverride ?? (unit.heroId === 'h00U' && unit.berserk
     ? { type: 'multishot', shots: 3 }
     : unit.heroId === 'h00V' && unit.tierBuff?.kind === 'nezha'
       ? { type: 'frontal_cleave', radius: 5, angle: Math.PI * 2 }
-      : hero.attackGeometry ?? { type: 'single' };
-  const trait: OnHitTraitConfig = unit.heroId === 'h00U' && unit.berserk
+      : hero.attackGeometry ?? { type: 'single' });
+  const trait: OnHitTraitConfig = context.geometryOverride ? { type: 'follow_up' } : unit.heroId === 'h00U' && unit.berserk
     ? { ...(hero.onHitTrait ?? {}), type: 'double_strike', percentArmorPierce: .4 }
     : hero.onHitTrait ?? { type: 'crit_pierce' };
 
-  unit.attackCount = (unit.attackCount ?? 0) + 1;
-  unit.comboCount = unit.comboTarget === target.id ? (unit.comboCount ?? 0) + 1 : 1;
-  unit.comboTarget = target.id;
+  if (!context.geometryOverride) {
+    unit.attackCount = (unit.attackCount ?? 0) + 1;
+    unit.comboCount = unit.comboTarget === target.id ? (unit.comboCount ?? 0) + 1 : 1;
+    unit.comboTarget = target.id;
+  }
 
   const baseAttack = effectiveUnitAttack(unit);
   const enemiesInZone = Object.values(state.enemies).filter(e => e.zone === unit.zone && e.hp > 0);
@@ -202,7 +210,7 @@ export function executeAttackGeometry(
     }
 
     case 'frontal_cleave': {
-      const radius = geometry.radius ?? 2.2;
+      const radius = (geometry.radius ?? 2.2) * (1 + mods['cleave-radius']);
       const angle = geometry.angle ?? Math.PI;
       const cosThreshold = Math.cos(angle / 2);
       const forwardX = target.x - unit.x;
@@ -230,7 +238,7 @@ export function executeAttackGeometry(
     }
 
     case 'linear_pierce': {
-      const length = geometry.length ?? unit.range;
+      const length = (geometry.length ?? unit.range) * (1 + mods['pierce-length']);
       const width = geometry.width ?? 0.95;
       const forwardX = target.x - unit.x;
       const forwardZ = target.z - unit.z;
@@ -246,7 +254,7 @@ export function executeAttackGeometry(
         hits = hits.slice(0, geometry.maxTargets);
       }
 
-      if (unit.heroId === 'h00D' && hits.length >= 2) {
+      if (!context.geometryOverride && unit.heroId === 'h00D' && hits.length >= 2) {
         unit.abilityCooldown = Math.max(0, unit.abilityCooldown - 0.5);
       }
 
@@ -267,7 +275,7 @@ export function executeAttackGeometry(
       let primaryHit = false;
       for (const enemy of allTargets) {
         if (geometry.knockback) knockEnemyBack(state, enemy, geometry.knockback, unit);
-        if (unit.heroId === 'h03V') {
+        if (!context.geometryOverride && unit.heroId === 'h03V') {
           const dx = enemy.x - unit.x, dz = enemy.z - unit.z, length = Math.hypot(dx, dz) || 1;
           const direction = { x: dx / length, z: dz / length };
           for (const pierced of enemiesInZone.filter(e => isPointOnRaySegment(unit, direction, unit.range, .55, e))
@@ -298,7 +306,7 @@ export function executeAttackGeometry(
         if (trait.poisonDps && state.enemies[splashEnemy.id]) {
           splashEnemy.poison = { remaining: trait.poisonDuration ?? 3.0, damagePerSecond: trait.poisonDps, casterId: unit.id };
         }
-        if (unit.heroId === 'h00G' && state.enemies[splashEnemy.id]) {
+        if (!context.geometryOverride && unit.heroId === 'h00G' && state.enemies[splashEnemy.id]) {
           applyEnemyStatus(splashEnemy, unit, 0, 'slow', 2.0, 0.25);
         }
         event(state, {
@@ -316,7 +324,7 @@ export function executeAttackGeometry(
     }
 
     case 'bounce': {
-      const charged = unit.heroId === 'h00T' && (target.slow > 0 || (target.frozen ?? 0) > 0);
+      const charged = !context.geometryOverride && unit.heroId === 'h00T' && (target.slow > 0 || (target.frozen ?? 0) > 0);
       processSingleHit(state, unit, target, baseAttack * (charged ? 1.4 : 1), trait, geometry, hurt, context);
 
       const maxBounces = charged ? 6 : Math.max(1, Math.min(3, geometry.bounces ?? 2));
@@ -345,17 +353,18 @@ export function executeAttackGeometry(
           z: next.z,
           value: bounceDamage,
           geometry: 'bounce',
-          skillId: `bounce-${unit.heroId}`,
+          skillId: context.geometryOverride ? 'gear-fate-defiance' : `bounce-${unit.heroId}`,
+          origin: { x: currentEnemy.x, z: currentEnemy.z },
         });
 
-        if (unit.heroId === 'h002' && state.enemies[next.id]) {
+        if (!context.geometryOverride && unit.heroId === 'h002' && state.enemies[next.id]) {
           next.poison = { remaining: 2.5, damagePerSecond: 15, casterId: unit.id };
           applyEnemyStatus(next, unit, 0, 'slow', 2.5, 0.10);
         }
-        if (unit.heroId === 'h00I' && state.enemies[next.id]) {
+        if (!context.geometryOverride && unit.heroId === 'h00I' && state.enemies[next.id]) {
           next.attackWeak = { remaining: 2.0, strength: 0.15 };
         }
-        if (unit.heroId === 'h010' && state.enemies[next.id]) {
+        if (!context.geometryOverride && unit.heroId === 'h010' && state.enemies[next.id]) {
           next.burn = { remaining: 2, damagePerSecond: unit.attack * .2, casterId: unit.id };
           next.fireMark = 3;
         }
@@ -366,7 +375,7 @@ export function executeAttackGeometry(
     }
 
     case 'boomerang': {
-      const length = Math.max(6.0, Math.min(12.0, geometry.length ?? unit.range));
+      const length = Math.max(6.0, Math.min(12.0, geometry.length ?? unit.range)) * (1 + mods['pierce-length']);
       const width = geometry.width ?? 1.0;
       const forwardX = target.x - unit.x;
       const forwardZ = target.z - unit.z;
@@ -392,13 +401,15 @@ export function executeAttackGeometry(
         penetration: 0,
         phase: 'return',
         hitIds: [],
+        gearYin: unit.gearRuntime?.currentYin,
+        gearMultiplier: unit.gearRuntime?.basicMultiplier,
       });
       break;
     }
   }
 
   // Berserk vine beams
-  if (unit.heroId === 'h00A' && unit.berserk && !context.isExtraStrike && !context.isFollowUp) {
+  if (!context.geometryOverride && unit.heroId === 'h00A' && unit.berserk && !context.isExtraStrike && !context.isFollowUp) {
     const vineTargets = enemiesInZone.filter(e => e.id !== target.id && distance(e, unit) <= 4.5).slice(0, 2);
     for (const vineTarget of vineTargets) {
       hurt(vineTarget, baseAttack * 0.5, 0);
@@ -422,6 +433,12 @@ function processSingleHit(
   isSecondaryTarget = false,
 ): void {
   if (!state.enemies[target.id]) return;
+  if (context.geometryOverride) {
+    hurt(target, baseDamage, 0);
+    event(state, { kind: 'attack', source: unit.id, target: target.id, x: target.x, z: target.z,
+      value: baseDamage, geometry: geometry.type, skillId: 'gear-fate-defiance', origin: { x: unit.x, z: unit.z } });
+    return;
+  }
 
   let damage = baseDamage;
   let penetration = trait.flatArmorPierce ?? 0;
@@ -646,6 +663,7 @@ function processSingleHit(
   }
 
   // Gây sát thương lên mục tiêu
+  if (isCrit) markGearNativeCrit(unit, target, damage);
   hurt(target, damage, penetration);
 
   event(state, {
@@ -684,6 +702,7 @@ export function triggerFollowUp(
 
   for (const unit of Object.values(state.units)) {
     if (!isDeployed(unit) || unit.id === ally.id || unit.owner !== ally.owner || unit.zone !== ally.zone) continue;
+    if (gearModsOf(state, unit).uniques.has('fate-defiance')) continue;
     const hero = HERO_BY_ID[unit.heroId];
     if (hero?.onHitTrait?.type !== 'follow_up') continue;
 
@@ -730,6 +749,7 @@ export function triggerFollowUp(
 export function stepOrbitAuras(state: GameState, dt: number, hurt: UnitHurt): void {
   for (const unit of Object.values(state.units)) {
     if (!isDeployed(unit)) continue;
+    if (gearModsOf(state, unit).uniques.has('fate-defiance')) continue;
     if (unit.heroId === 'h01G' || unit.heroId === 'h01H') continue;
     const hero = HERO_BY_ID[unit.heroId];
     if (hero?.onHitTrait?.type !== 'orbit_aura') continue;
@@ -776,7 +796,8 @@ export function stepOrbitAuras(state: GameState, dt: number, hurt: UnitHurt): vo
 }
 
 /** Quản lý đòn bay khứ hồi (boomerang): Khi quay về, cắt sát thương lần 2 vào tất cả quái trên đường bay ngược lại. */
-export function stepBoomerangs(state: GameState, dt: number, hurt: UnitHurt): void {
+export function stepBoomerangs(state: GameState, dt: number,
+  hurt: (unit: Unit, enemy: Enemy, damage: number, penetration?: number, yin?: boolean, multiplier?: number) => void): void {
   if (!state.boomerangs?.length) return;
 
   for (const b of state.boomerangs) {
@@ -794,7 +815,7 @@ export function stepBoomerangs(state: GameState, dt: number, hurt: UnitHurt): vo
       const returnHits = enemiesInZone.filter(e => isPointOnRaySegment(b.end, dir, returnLen, 1.0, e));
 
       for (const enemy of returnHits) {
-        if (caster) hurt(caster, enemy, b.damage, b.penetration);
+        if (caster) hurt(caster, enemy, b.damage, b.penetration, b.gearYin, b.gearMultiplier);
         if (caster && state.enemies[enemy.id] && (caster.heroId === 'h00K' || caster.heroId === 'h03U')) {
           applyEnemyStatus(enemy, caster, 0, 'sunder', 3, caster.heroId === 'h00K' ? 3 : .25);
         }

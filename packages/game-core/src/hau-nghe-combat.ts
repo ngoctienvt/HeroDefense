@@ -4,6 +4,8 @@ import { applyEnemyStatus, criticalDamageAgainst, effectiveEnemyArmor } from './
 import { inPanguRift, panguDirection } from './pangu-combat.js';
 import { distance, event, random } from './rules.js';
 import { effectiveUnitAttack, solarCritMultiplier } from './stats.js';
+import { markGearNativeCrit } from './gear-stats.js';
+import { bondOnAttack } from './bond-runtime.js';
 
 type Damage = (enemy: Enemy, damage: number, penetration?: number) => void;
 
@@ -14,12 +16,14 @@ export function haungheAttack(state: GameState, unit: Unit, target: Enemy, hurt:
     && inPanguRift(unit, direction, enemy, H.arrowLength, H.arrowHalfWidth * 2));
   unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + H.rageOnAttack);
   for (const enemy of hits) {
-    hurt(enemy, critical ? criticalDamageAgainst(enemy, damage) : damage,
-      effectiveEnemyArmor(enemy) * H.armorPierce);
+    const hit = critical ? criticalDamageAgainst(enemy, damage) : damage;
+    if (critical) markGearNativeCrit(unit, enemy, hit);
+    hurt(enemy, hit, effectiveEnemyArmor(enemy) * H.armorPierce);
     if (state.enemies[enemy.id]) enemy.burn = {
       remaining: H.normalBurnSeconds, damagePerSecond: H.normalBurnDps, casterId: unit.id,
     };
   }
+  bondOnAttack(state, unit, target, hits.map(enemy => enemy.id), damage, hurt);
   event(state, { kind: 'attack', source: unit.id, target: target.id,
     targets: hits.map(enemy => enemy.id), x: target.x, z: target.z, zone: unit.zone,
     direction, value: damage, geometry: 'linear_pierce', traitType: 'crit_pierce',

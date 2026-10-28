@@ -39,7 +39,7 @@ describe('Thần Nông', () => {
     const trees = Object.values(state.units).filter(value => value.summonKind === 'ancient-tree');
     expect(grove?.burnDps).toBeCloseTo(S.attack * S.zoneDpsPower);
     expect(trees).toHaveLength(3);
-    expect(trees.every(tree => tree.hp === 6000 && tree.block === 8)).toBe(true);
+    expect(trees.every(tree => tree.hp === 6000 && tree.summonKind === 'ancient-tree')).toBe(true);
     expect(target.root ?? 0).toBe(0);
     // 420% Công + 150% Công chuẩn; never a share of the boss's Máu.
     expect(target.maxHp - target.hp).toBeGreaterThan(S.attack * S.eruptionPower);

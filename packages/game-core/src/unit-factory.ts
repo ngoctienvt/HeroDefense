@@ -8,7 +8,7 @@ export function createUnit(state: GameState, owner: string, heroId: string): Uni
     id: nextId(state, 'u'), heroId, owner, rank: 1, slot: -1, x: 0, z: 0,
     hp: hero.hp, maxHp: hero.hp, attack: hero.attack, armor: hero.armor, range: scaledAttackRange(hero.range),
     cooldown: 0, abilityCooldown: 0, target: null, destination: null, savedPosition: null,
-    stopped: false, equipment: [0, 0, 0], deaths: 0, waveDeaths: 0, respawn: 0, shield: 0, zone: 0, kills: 0,
+    stopped: false,  deaths: 0, waveDeaths: 0, respawn: 0, shield: 0, zone: 0, kills: 0,
     attackType: hero.attackGeometry?.type ?? 'single',
     onHitTrait: hero.onHitTrait?.type ?? 'crit_pierce',
     orbitTimer: 0,
@@ -16,6 +16,5 @@ export function createUnit(state: GameState, owner: string, heroId: string): Uni
     energyType: hero.energyType ?? 'cooldown',
     energy: 0,
     maxEnergy: hero.maxEnergy ?? 100,
-    block: hero.block ?? 0,
   };
 }

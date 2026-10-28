@@ -1,9 +1,11 @@
 import { HIENVIEN as H } from '../../../content/hienvien-design.js';
+import { bondOnCrit } from './bond-runtime.js';
 import type { Enemy, GameState, Unit, Vec } from '../../contracts/src/types.js';
 import { applyEnemyStatus, criticalDamageAgainst, effectiveEnemyArmor } from './combat-status.js';
 import { distance, event, nextId, random } from './rules.js';
 import { effectiveUnitAttack, solarCritMultiplier } from './stats.js';
 import { startTierBarrage } from './tier-skill-pulses.js';
+import { markGearNativeCrit } from './gear-stats.js';
 
 type Damage = (enemy: Enemy, amount: number, penetration?: number) => void;
 
@@ -24,8 +26,9 @@ export function hienvienAttack(state: GameState, unit: Unit, target: Enemy, hurt
       hits.add(enemy.id);
       const critical = random(state) < (unit.critBlessing?.chance ?? 0);
       const amount = effectiveUnitAttack(unit) * (critical ? solarCritMultiplier(state, unit, 2) : 1);
-      hurt(enemy, critical ? criticalDamageAgainst(enemy, amount) : amount,
-        effectiveEnemyArmor(enemy) * H.armorPierce);
+      const hit = critical ? criticalDamageAgainst(enemy, amount) : amount;
+      if (critical) { markGearNativeCrit(unit, enemy, hit); bondOnCrit(state, unit, enemy); }
+      hurt(enemy, hit, effectiveEnemyArmor(enemy) * H.armorPierce);
     }
   }
   event(state, { kind: 'attack', source: unit.id, target: target.id,

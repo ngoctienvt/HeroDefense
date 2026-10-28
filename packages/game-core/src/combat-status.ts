@@ -2,11 +2,13 @@ import type { AbilityEffect, Enemy, GameState, Unit, Vec } from '../../contracts
 import { random, walk } from './rules.js';
 import { clampToZone, enemyRouteFor } from './battlefield-layout.js';
 import { tryHardControl } from './crowd-control.js';
+import { markGearNativeCrit, peekGearMods } from './gear-stats.js';
 
 type Status = NonNullable<AbilityEffect['status']>;
 export function applyEnemyStatus(enemy: Enemy, caster: Unit, power: number, status: Status,
   seconds: number, strength: number): void {
   if (seconds <= 0) return;
+  if (status === 'slow' || status === 'sunder') seconds *= 1 + peekGearMods(caster)['status-duration'];
   if (status === 'slow') {
     enemy.slows ??= enemy.slow > 0 ? [{ remaining: enemy.slow, strength: enemy.slowStrength ?? .5 }] : [];
     enemy.slows.push({ remaining: seconds, strength: Math.min(.95, strength) });
@@ -71,6 +73,8 @@ export function criticalDamageAgainst(enemy: Enemy, amount: number): number {
 /** Apply Hiên Viên's timed critical chance to a normal hit lacking its own crit roll. */
 export function blessedNormalDamage(state: GameState, caster: Unit, enemy: Enemy, amount: number): number {
   const chance = caster.critBlessing?.chance ?? 0;
-  return chance > 0 && random(state) < chance
-    ? criticalDamageAgainst(enemy, amount * 2) : amount;
+  if (chance <= 0 || random(state) >= chance) return amount;
+  const critical = criticalDamageAgainst(enemy, amount * 2);
+  markGearNativeCrit(caster, enemy, critical);
+  return critical;
 }

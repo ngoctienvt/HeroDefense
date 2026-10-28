@@ -3,9 +3,11 @@ import type { Command, CommandResult, GameState } from '../../contracts/src/type
 import { castAbility } from './combat.js';
 import { clampToZone, withinZone } from './battlefield-layout.js';
 import { event, RUN_WAVES, slotPosition } from './rules.js';
+import { gearCommand } from './gear-commands.js';
 import { rosterCommand } from './roster.js';
 import { beginWave } from './simulation.js';
 import { refreshStats } from './stats.js';
+import { bondActionCommand } from './bonds/bond-actions.js';
 import { createUnit } from './unit-factory.js';
 
 const fail = (message: string): CommandResult => ({ ok: false, message });
@@ -13,6 +15,8 @@ export function handleCommand(state: GameState, id: string, command: Command): C
   const player = state.players[id];
   if (!player || !player.connected) return fail('Phiên chơi không hợp lệ.');
   if (state.phase === 'won' || state.phase === 'lost') return fail('Trận đấu đã kết thúc.');
+  const gear = gearCommand(state, id, command);
+  if (gear) return gear;
   if (command.type === 'ready') { player.ready = command.ready; return { ok: true }; }
   if (command.type === 'difficulty') {
     if (state.host !== id || state.phase !== 'lobby') return fail('Chỉ chủ phòng đổi độ khó trong sảnh.');
@@ -75,6 +79,7 @@ export function handleCommand(state: GameState, id: string, command: Command): C
     event(state, { kind: 'info', text: 'Admin: Đã cộng tài nguyên thử nghiệm.' });
     return { ok: true, message: '[Admin] Đã cộng tài nguyên thử nghiệm.' };
   }
+  if (command.type === 'bond-action') return bondActionCommand(state, id, command);
   const roster = rosterCommand(state, id, command);
   if (roster) return roster;
   if (command.type === 'formation' || command.type === 'upgrade-formation') {
