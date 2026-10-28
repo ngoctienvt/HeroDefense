@@ -1,39 +1,27 @@
 import { HERO_BY_ID } from '../../../content/catalog.js';
 import type { Player, Unit } from '../../../packages/contracts/src/types.js';
-import { equipmentCost, sellRefund } from '../../../packages/game-core/src/rules.js';
+import { sellRefund } from '../../../packages/game-core/src/rules.js';
 import { debug } from './debug.js';
+import { selectGearItem, setGearSlotFilter, setGearTargetUnit } from './gear-panel.js';
+import { gearSlots } from './gear-ui.js';
 import { hpState } from './hero-status.js';
 import type { PanelContext } from './panel-context.js';
 import { ownUnits } from './panel-context.js';
 import { button, el, heading, heroPortrait, iconButton, meter, number } from './ui.js';
-import { ELEMENT_ICONS, GEAR_ICONS, icon, ROLE_ICONS } from './ui-icons.js';
-import { GEAR_MAX_LEVEL, GEAR_NAMES, slotLabel, SLOT_COUNT, starText, tierLabel } from './ui-labels.js';
+import { ELEMENT_ICONS, icon, ROLE_ICONS } from './ui-icons.js';
+import { slotLabel, SLOT_COUNT, starText, tierLabel } from './ui-labels.js';
 
-/**
- * Đội Hình: the only place to upgrade gear, deploy/recall, merge and sell. Gear buttons show the
- * next cost and lock when Linh Thạch is short; selling always asks first and shows the refund.
- */
+/** Deployment, merge and sale; each gear slot opens its owning inventory. */
 let benchTier = 0;
 let benchQuery = '';
 
 function gearButtons(unit: Unit, player: Player, ctx: PanelContext): HTMLElement {
-  const row = el('div', 'gear-row');
-  GEAR_NAMES.forEach((name, category) => {
-    const level = unit.equipment[category] ?? 0;
-    const maxed = level >= GEAR_MAX_LEVEL;
-    const cost = maxed ? 0 : equipmentCost(level);
-    const node = button('', () => ctx.send({ type: 'equip', unitId: unit.id, category }), 'gear-button', maxed || player.gold < cost);
-    node.append(icon(GEAR_ICONS[category], { size: 18 }), el('span', 'gear-level', `+${level}`));
-    const price = el('span', 'gear-price');
-    if (maxed) price.textContent = 'Tối đa';
-    else price.append(icon('linh-thach', { size: 12 }), el('span', '', number(cost)));
-    node.append(price);
-    node.setAttribute('aria-label', maxed ? `${name} +${level}, đã tối đa` : `Nâng ${name} lên +${level + 1} với ${number(cost)} Linh Thạch`);
-    row.append(node);
+  return gearSlots(unit, player, slot => {
+    setGearSlotFilter(slot); setGearTargetUnit(unit.id);
+    selectGearItem(player.gear.find(item => item.unitId === unit.id && item.slot === slot)?.id ?? '');
+    ctx.openPanel('gear');
   });
-  return row;
 }
-
 async function confirmSell(unit: Unit, ctx: PanelContext): Promise<void> {
   const hero = HERO_BY_ID[unit.heroId];
   const refund = sellRefund(unit);
@@ -64,6 +52,7 @@ function deployedCard(slot: number, unit: Unit | undefined, player: Player, ctx:
   }
   const hero = HERO_BY_ID[unit.heroId];
   card.dataset.tipUnit = unit.id; card.dataset.element = String(hero.element);
+  card.dataset.gearTargetUnitId = unit.id;
   const hp = hpState(unit.hp, unit.maxHp);
   const head = el('div', 'roster-head');
   head.append(heroPortrait(hero, 'portrait-md', false), unitSummary(unit));
@@ -78,6 +67,7 @@ function benchCard(unit: Unit, units: Unit[], player: Player, ctx: PanelContext)
   const canMerge = copies >= 3 && unit.rank < 10;
   const card = el('article', `roster-bench ${canMerge ? 'can-merge' : ''}`.trim());
   card.dataset.tipUnit = unit.id; card.dataset.element = String(hero.element);
+  card.dataset.gearTargetUnitId = unit.id;
   const head = el('div', 'roster-head');
   head.append(heroPortrait(hero, 'portrait-md', false), unitSummary(unit));
   if (canMerge) head.append(el('span', 'roster-badge', 'Hợp nhất được'));
@@ -96,12 +86,12 @@ function benchCard(unit: Unit, units: Unit[], player: Player, ctx: PanelContext)
 export function renderRoster(container: HTMLElement, ctx: PanelContext): void {
   const player = ctx.state.players[ctx.selfId];
   if (!player) return;
-  const units = ownUnits(ctx).filter(unit => !unit.summonKind);
+  const units = ownUnits(ctx).filter(unit => !unit.summonKind && !unit.summonerId && unit.summonDuration === undefined);
   const deployed = units.filter(unit => unit.slot >= 0);
   const bench = units.filter(unit => unit.slot < 0);
 
   const top = el('section', 'panel-section');
-  top.append(heading(`Xuất trận ${deployed.length}/${SLOT_COUNT}`, 'Nâng trang bị bằng Linh Thạch; mỗi cấp tăng công, giáp hoặc hồi chiêu.'));
+  top.append(heading(`Xuất trận ${deployed.length}/${SLOT_COUNT}`, 'Bấm ô trang bị để mở Kho Đồ. Đồ được trả về kho khi bán hoặc ghép tướng.'));
   const grid = el('div', 'roster-slots');
   for (let slot = 0; slot < SLOT_COUNT; slot++) grid.append(deployedCard(slot, deployed.find(unit => unit.slot === slot), player, ctx));
   top.append(grid);

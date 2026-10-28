@@ -1,0 +1,91 @@
+/* Equipment rarity has its own palette, separate from hero tiers. */
+[data-rarity="white"] { --gear-color: var(--c-gear-white); }
+[data-rarity="blue"] { --gear-color: var(--c-gear-blue); }
+[data-rarity="purple"] { --gear-color: var(--c-gear-purple); }
+[data-rarity="gold"] { --gear-color: var(--c-gear-gold); }
+[data-rarity="empty"] { --gear-color: var(--muted); }
+.gear-slots { display: flex; gap: 2px; }
+.gear-tile { --tile-size: 32px; position: relative; display: inline-flex; flex: 0 0 var(--tile-size); align-items: center; justify-content: center; box-sizing: border-box; width: var(--tile-size); min-width: var(--tile-size); max-width: var(--tile-size); height: var(--tile-size); min-height: var(--tile-size); padding: 1px; border: 2px solid var(--gear-color); border-radius: 4px; color: var(--gear-color); background: var(--ink-0); overflow: hidden; user-select: none; touch-action: none; }
+.gear-tile[data-size="44"] { --tile-size: 44px; }
+.gear-tile[data-size="48"] { --tile-size: 48px; }
+.gear-tile-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.gear-tile-fallback { pointer-events: none; }
+.gear-tile-fallback.is-hidden { visibility: hidden; }
+.gear-tile-enhance { position: absolute; right: 0; bottom: 0; padding: 0 1px; border-radius: 2px; color: var(--text-bright); background: rgb(0 0 0 / .8); font-size: .6rem; font-weight: 800; line-height: 1.1; pointer-events: none; }
+.gear-tile-unique { position: absolute; left: 0; top: 0; color: var(--gold); background: var(--ink-0); pointer-events: none; }
+.gear-tile-empty { position: absolute; bottom: 0; right: 1px; font-size: .6rem; }
+.gear-tile.is-empty { border-style: dashed; opacity: .7; }
+.gear-tile:hover { filter: brightness(1.2); }
+.gear-tile.is-selected { outline: 2px solid var(--text-bright); outline-offset: 1px; }
+.gear-tile.is-pending { opacity: .55; }
+.gear-tile.is-pending::after { content: '…'; position: absolute; inset: 0; display: grid; place-items: center; color: var(--text-bright); background: rgb(0 0 0 / .45); font-weight: 800; }
+.is-gear-drop-valid { outline: 2px solid var(--c-hp-high); outline-offset: 2px; }
+.is-gear-drop-invalid { outline: 2px solid var(--c-hp-low); outline-offset: 2px; }
+.gear-tile.is-gear-armed { box-shadow: 0 0 0 2px var(--c-selection); }
+.gear-drop-preview { z-index: 2; display: flex; flex-direction: column; gap: 5px; padding: 10px; max-height: min(460px, calc(100vh - 16px)); overflow: hidden; border: 1px solid var(--c-hp-high); border-radius: var(--radius); color: var(--text); background: var(--surface-strong); box-shadow: var(--shadow); font-size: var(--xs); }
+.gear-drop-preview.is-invalid { border-color: var(--c-hp-low); }
+.gear-drop-preview .gear-detail { font-size: .65rem; }
+.gear-drop-preview .gear-drop-delta { font-size: .65rem; }
+.card-gear.gear-slots { display: flex; gap: 2px; }
+.panel-content.panel-gear { height: 100%; min-height: 0; padding: 0; gap: 0; }
+.gear-panel { display: flex; flex-direction: column; gap: 6px; min-width: 0; height: 100%; min-height: 0; }
+.gear-panel > .section-heading { flex: 0 0 auto; }
+.gear-panel > .section-heading h2 { display: none; }
+.gear-panel > .section-heading p { margin: 0; font-size: .68rem; }
+.gear-title { color: var(--gear-color); overflow-wrap: anywhere; }
+.gear-detail { display: flex; flex-direction: column; gap: 5px; min-width: 0; font-size: var(--xs); }
+.gear-lines { display: flex; flex-direction: column; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.gear-base { color: var(--text-bright); }
+.gear-line.is-incompatible { color: var(--muted); }
+.gear-line.is-incompatible .gear-line-value { text-decoration: line-through; }
+.gear-fit-reason { display: block; color: var(--muted); text-decoration: none; font-size: .65rem; }
+.gear-unique { border-left: 2px solid var(--gold); padding: 5px 8px; background: rgb(243 203 106 / .06); }
+.gear-unique strong { color: var(--gold); }
+.gear-unique p { margin: 3px 0; line-height: 1.5; }
+.gear-unique small { display: block; }
+.gear-squad { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; flex: 0 0 auto; }
+.gear-squad-hero { display: flex; flex-direction: column; gap: 6px; padding: 7px; border: 1px solid var(--edge); border-radius: var(--radius); min-width: 0; }
+.gear-squad-hero.is-selected { border-color: var(--gold); }
+.gear-hero-pick { flex-direction: column; gap: 0; justify-content: center; padding: 2px; border: 1px solid var(--edge); background: var(--ink-2); font-size: .6rem; text-align: center; min-width: 0; }
+.gear-hero-pick.is-selected { border-color: var(--gold); background: var(--ink-3); }
+.gear-hero-pick span { min-width: 0; overflow-wrap: anywhere; }
+.gear-hero-pick .portrait { flex-shrink: 0; width: 36px; height: 40px; }
+.gear-target { display: flex; gap: 4px; align-items: center; justify-content: space-between; min-width: 0; }
+.gear-target > small { overflow-wrap: anywhere; font-size: .64rem; }
+.gear-target > button { flex: 0 0 auto; padding: 2px 4px; min-height: 24px; font-size: .62rem; }
+.gear-filters { display: flex; flex-direction: column; gap: 7px; }
+.gear-filters .segmented { flex-wrap: wrap; }
+.gear-filters [data-rarity] { color: var(--gear-color); }
+.gear-filter-selects { display: flex; gap: 6px; }
+.gear-filter-select { flex: 1; width: 0; min-width: 0; min-height: 28px; padding: 4px; font-size: .7rem; }
+.gear-filters .segmented button { min-height: 24px; padding: 3px 8px; font-size: .68rem; }
+.gear-inventory { display: flex; flex-direction: column; gap: 4px; min-height: 96px; flex: 0 1 226px; }
+.gear-inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, 48px); justify-content: space-between; align-content: start; gap: 6px; padding: 4px; min-height: 64px; overflow-y: auto; overscroll-behavior: contain; background: var(--ink-0); border: 1px solid var(--line); border-radius: var(--radius); }
+.gear-inventory-grid > .hint { grid-column: 1 / -1; margin: 6px; font-size: .7rem; }
+.gear-pager { display: flex; flex: 0 0 24px; align-items: center; justify-content: space-between; gap: 6px; }
+.gear-pager button { padding: 1px 8px; min-height: 24px; }
+.gear-selected-detail { flex: 1 1 170px; min-height: 80px; overflow-y: auto; overscroll-behavior: contain; }
+.gear-squad, .gear-target, .gear-filters, .gear-panel > button { flex-shrink: 0; }
+.gear-item { display: flex; flex-direction: column; gap: 8px; padding: 11px; border: 1px solid var(--gear-color); border-radius: var(--radius); background: var(--ink-2); min-width: 0; }
+.gear-comparison { display: flex; flex-wrap: wrap; gap: 3px 9px; padding-top: 6px; border-top: 1px solid var(--edge); font-size: var(--xs); }
+.gear-comparison > small { flex-basis: 100%; }
+.gear-comparison .is-better { color: var(--c-hp-high); }
+.gear-comparison .is-worse { color: var(--c-hp-low); }
+.gear-actions { display: flex; flex-wrap: wrap; gap: 5px; }
+.gear-action { display: inline-flex; max-width: 100%; }
+.gear-action button { white-space: normal; overflow-wrap: anywhere; max-width: 100%; }
+.admin-gear-section { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--edge); border-radius: var(--radius); }
+.admin-gear-section select { max-width: 100%; }
+.toast[data-rarity] { border-left-color: var(--gear-color, var(--gold)); }
+.toast[data-rarity="purple"], .toast[data-rarity="gold"] { color: var(--gear-color); border-color: var(--gear-color); }
+.hud-rail { max-height: calc(100dvh - var(--top-h) - 12px); overflow-y: auto; }
+.hud-gear-tray { flex: 0 0 208px; width: 208px; box-sizing: border-box; padding: 6px; display: flex; flex-direction: column; gap: 4px; border: 1px solid var(--edge); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+.gear-tray-header { display: flex; align-items: center; justify-content: space-between; gap: 2px; height: 20px; font-size: .64rem; }
+.gear-tray-header > strong { margin-right: auto; }
+.gear-tray-header button { min-height: 20px; min-width: 18px; padding: 0 3px; font-size: .7rem; }
+.gear-tray-header small { font-size: .6rem; }
+.gear-tray-grid { display: grid; grid-template-columns: repeat(4, 44px); grid-template-rows: repeat(2, 44px); gap: 6px; }
+.gear-tray-empty { grid-column: 1 / -1; grid-row: 1 / -1; display: grid; align-content: center; text-align: center; font-size: .68rem; }
+.gear-bag-drop { flex: 0 0 32px; min-height: 32px; display: grid; align-content: center; padding: 4px; border: 1px dashed var(--muted); border-radius: var(--radius); color: var(--muted); background: var(--ink-0); text-align: center; font-size: .65rem; }
+.hud-gear-tray.is-collapsed { align-self: flex-end; }
+

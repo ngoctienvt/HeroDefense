@@ -1,0 +1,62 @@
+{
+  "generatedDate": "2026-10-28",
+  "route": "OpenAI built-in image_gen.imagegen",
+  "model": null,
+  "modelNote": "The tool did not expose an explicit model identifier.",
+  "prompts": "prompts.txt",
+  "provenance": "SOURCE.txt",
+  "exportScript": "export-gear-icons.ps1",
+  "runtimeSizesCssPixels": [
+    32,
+    44,
+    48
+  ],
+  "rarityBorder": "CSS only; three images shared across white, blue, purple, gold",
+  "assets": [
+    {
+      "slot": "weapon",
+      "source": "weapon-master.png",
+      "sourceSha256": "c277b47f6e6f8a2a3966794583771bd92ee542852cb33d1e2e9c9927f48d5d53",
+      "runtime": "../../../apps/client/public/assets/gear/weapon.webp",
+      "runtimeSha256": "1c4ec6b38ef868084cf524aaeae88dfb6014f4f46b1b0aec9d32e1b1a57c3d68",
+      "width": 128,
+      "height": 128,
+      "format": "lossless WebP",
+      "bytes": 7170,
+      "transparentBackground": true,
+      "revision": 1
+    },
+    {
+      "slot": "armor",
+      "source": "armor-master.png",
+      "sourceSha256": "5cb58af391c0c7ab93783ba7660da752415dee6f8eb8aa2b62c8536930a297be",
+      "runtime": "../../../apps/client/public/assets/gear/armor.webp",
+      "runtimeSha256": "3d21a85512ddb676666daf4f51be9d21713600e60bd8e9925255d5ce30cb4bb8",
+      "width": 128,
+      "height": 128,
+      "format": "lossless WebP",
+      "bytes": 16158,
+      "transparentBackground": true,
+      "revision": 1
+    },
+    {
+      "slot": "talisman",
+      "source": "talisman-master.png",
+      "sourceSha256": "2c325da9235e3c7823070dc5de4ffbcbd3d29317524d1d0fe5870ae3073baeb1",
+      "runtime": "../../../apps/client/public/assets/gear/talisman.webp",
+      "runtimeSha256": "e6bdb3a11d036834556181fc8fcc47eb756e7c7465886718b4078459212d662c",
+      "width": 128,
+      "height": 128,
+      "format": "lossless WebP",
+      "bytes": 14166,
+      "transparentBackground": true,
+      "revision": 1
+    }
+  ],
+  "verification": {
+    "sourceAndAlphaInspected": true,
+    "static32pxPreview": "preview-32.png",
+    "inGameVisualAcceptance": false,
+    "buildExecuted": false
+  }
+}

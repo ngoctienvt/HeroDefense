@@ -38,7 +38,7 @@ function controls(container: HTMLElement): void {
     block.append(table);
     container.append(block);
   }
-  container.append(el('p', 'hint', 'Hợp nhất 3 bản sao cùng tướng, cùng sao để lên +1 sao (tối đa 10). Nâng trang bị trong Đội Hình bằng Linh Thạch.'));
+  container.append(el('p', 'hint', 'Hợp nhất 3 bản sao cùng tướng, cùng sao để lên +1 sao (tối đa 10). Kho Đồ [I]: mỗi tướng mặc một Vũ khí, Giáp và Pháp khí. Đồ rơi riêng cho từng người; cường hóa bằng Linh Thạch, tẩy một dòng bằng Huyền Tinh. Dòng không hợp cơ chế tướng được gạch mờ. Phân giải đồ trong kho nhận Huyền Tinh và hoàn một phần phí cường hóa. Bán hoặc ghép tướng trả đồ về kho.'));
 }
 
 function codex(container: HTMLElement): void {

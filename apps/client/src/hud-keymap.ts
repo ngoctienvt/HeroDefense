@@ -11,6 +11,7 @@ export const PANEL_KEYS: Record<string, PanelKey> = {
   b: { panel: 'shop' },
   c: { panel: 'craft' },
   p: { panel: 'roster' },
+  i: { panel: 'gear' },
   t: { panel: 'bonds', tab: 'synergy' },
   f: { panel: 'bonds', tab: 'formation' },
   k: { panel: 'admin' },
@@ -24,12 +25,13 @@ export const RAIL_ITEMS: readonly RailItem[] = [
   { panel: 'shop', label: 'Chiêu Mộ', keys: 'B', icon: 'chieu-mo' },
   { panel: 'craft', label: 'Ghép Tướng', keys: 'C', icon: 'ghep-tuong' },
   { panel: 'roster', label: 'Đội Hình', keys: 'P', icon: 'doi-hinh' },
+  { panel: 'gear', label: 'Kho Đồ', keys: 'I', icon: 'phap-khi' },
   { panel: 'bonds', label: 'Duyên & Trận', keys: 'T', icon: 'duyen-tran', tab: 'synergy' },
   { panel: 'guide', label: 'Cẩm Nang', keys: '?', icon: 'cam-nang', tab: 'controls' },
 ];
 
 export const PANEL_TITLES: Record<Panel, string> = {
-  shop: 'Chiêu Mộ', craft: 'Ghép Tướng', roster: 'Đội Hình', bonds: 'Duyên Phận & Trận Pháp', guide: 'Cẩm Nang', admin: 'Admin',
+  shop: 'Chiêu Mộ', craft: 'Ghép Tướng', roster: 'Đội Hình', gear: 'Kho Đồ', bonds: 'Duyên Phận & Trận Pháp', guide: 'Cẩm Nang', admin: 'Admin',
 };
 
 export interface GuideRow { keys: string[]; text: string }
@@ -75,7 +77,8 @@ export const GUIDE_SECTIONS: readonly GuideSection[] = [
     rows: [
       { keys: ['B'], text: 'Chiêu Mộ (các gói cũng có sẵn trên thanh phía trên dock)' },
       { keys: ['C'], text: 'Ghép Tướng' },
-      { keys: ['P'], text: 'Đội Hình: xuất trận, trang bị, hợp nhất, bán' },
+      { keys: ['P'], text: 'Đội Hình: xuất trận, hợp nhất, bán' },
+      { keys: ['I'], text: 'Kho Đồ: mặc, tháo, cường hóa, tẩy luyện và phân giải' },
       { keys: ['T'], text: 'Duyên Phận' },
       { keys: ['F'], text: 'Trận Pháp' },
       { keys: ['?', 'F1'], text: 'Cẩm Nang' },

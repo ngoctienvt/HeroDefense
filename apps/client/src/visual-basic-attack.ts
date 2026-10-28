@@ -1,7 +1,7 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector.js';
 import { HERO_COMBAT_PROFILES } from '../../../packages/contracts/src/combat-profiles.js';
 import type { AttackGeometryConfig, GameEvent } from '../../../packages/contracts/src/types.js';
-import { BASIC_ATTACK_PROFILES, skinnedEnemyProfile, type BasicAttackProfile } from './visual-basic-attack-profiles.js';
+import { BASIC_ATTACK_PROFILES, PREEMPTING_BASIC_ATTACKS, skinnedEnemyProfile, type BasicAttackProfile } from './visual-basic-attack-profiles.js';
 import type { TierSkillPainter } from './visual-tier-skills.js';
 
 const BODY_HEIGHT = 1.2;
@@ -13,6 +13,11 @@ const FLAT = new Vector3(1, 0, 0);
 export function basicAttackHeroId(skillId?: string): string {
   const match = /^(?:trait|bounce|splash|nth|boomerang-return)-(h[0-9A-Z]{3})$/.exec(skillId ?? '');
   return match && BASIC_ATTACK_PROFILES[match[1]] ? match[1] : '';
+}
+
+/** True when the profile must be painted before the hero's own module sees the event. */
+export function basicAttackPreempts(skillId?: string): boolean {
+  return PREEMPTING_BASIC_ATTACKS.has(basicAttackHeroId(skillId));
 }
 
 /** Sweep and lance are one motion per swing: the first event of a server tick (per attacker) draws it, the rest only impact. */
@@ -81,6 +86,9 @@ function paintThrust(fx: TierSkillPainter, profile: BasicAttackProfile, from: Ve
   const direction = aim(from, to);
   const end = from.add(direction.scale(Math.max(length, Vector3.Distance(from, to))));
   fx.beam(lift(from), lift(end), profile.color, .3 * scale, .22);
+  // A bright head runs down the line so the thrust is seen travelling to the monster instead of appearing all at once.
+  fx.travel(lift(from), lift(end), profile.accent, profile.size * scale, profile.texture,
+    Math.max(.1, Math.min(.24, Vector3.Distance(from, end) * .02)), () => undefined, { orient: true });
   fx.beam(lift(from), lift(to), profile.accent, .12 * scale, .18);
   fx.image(lift(to), profile.accent, profile.size * scale, .18, profile.texture);
 }

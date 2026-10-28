@@ -22,3 +22,7 @@
 .drawer-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; }
 
 /* Ghép Tướng overlay keeps its own full-screen layout (craft.css). */
+.hud-drawer:has(.gear-panel) .drawer-body { padding: 8px; overflow: hidden; min-height: 0; }
+@media (max-width: 1365px) {
+  .hud-drawer:has(.gear-panel) { width: min(340px, calc(100vw - var(--rail-w) - 24px)); }
+}

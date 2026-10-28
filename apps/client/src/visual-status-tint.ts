@@ -1,3 +1,7 @@
+// Side effect: registers the scene outline/overlay component and the `Mesh.renderOverlay` property. Without it the
+// ES-module build silently ignores `renderOverlay`, so neither the tint nor the white hit flash would ever draw.
+import '@babylonjs/core/Rendering/outlineRenderer.js';
+
 /**
  * Body tint for physical debuffs on an enemy: the model (or sprite) takes a soft pulsing colour overlay instead of a
  * floating icon or a sheet at its feet, so a crowded wave stays clean and the colour still says which effect it is.

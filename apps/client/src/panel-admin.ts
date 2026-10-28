@@ -3,6 +3,7 @@ import { ATTACK_GEOMETRY_NAMES, ON_HIT_TRAIT_NAMES } from '../../../packages/con
 import type { HeroDef, Unit } from '../../../packages/contracts/src/types.js';
 import { getIngredientTree } from './craft-board.js';
 import { debug } from './debug.js';
+import { renderGearAdmin } from './gear-admin.js';
 import { abilityCost, controlLine } from './hero-detail.js';
 import type { PanelContext } from './panel-context.js';
 import { scaledAttackRange } from '../../../packages/game-core/src/rules.js';
@@ -57,6 +58,7 @@ export function renderAdmin(container: HTMLElement, ctx: PanelContext): void {
   );
   resSection.append(resGrid);
   container.append(resSection);
+  container.append(renderGearAdmin(ctx));
 
   // --- SECTION: TƯỚNG ĐANG CÓ (ALWAYS VISIBLE) ---
   const ownedSection = el('section', 'admin-owned-section');

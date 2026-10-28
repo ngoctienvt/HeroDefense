@@ -59,9 +59,6 @@ export class Tier3Snapshot {
       if ((unit.slot >= 0 || unit.summonDuration !== undefined) && unit.respawn <= 0
         && unit.tierBuff?.kind === 'poison' && Number.isFinite(unit.tierBuff.remaining) && unit.tierBuff.remaining > 0)
         sink.markTier3('h03R', 'venom-plume', unit.id, actor.at, unit.tierBuff.remaining);
-      if (unit.slot < 0) continue;
-      const guard = unit.blockBonus?.remaining ?? 0;
-      if (unit.heroId === 'h00J' && guard > 0) sink.markTier3('h00J', 'guard', unit.id, actor.at, guard);
     }
     const warnings = new Map<string, { at: Vector3; seconds: number; radius: number }>();
     for (const pulse of this.state.tierPulses ?? []) {

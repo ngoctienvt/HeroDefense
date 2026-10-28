@@ -35,6 +35,11 @@ export const PALETTE = {
   'tier-4': '#a46ae0',
   'tier-5': '#e0a03a',
   'tier-6': '#e5534b',
+  // Equipment rarity is independent from the hero tier ladder.
+  'gear-white': '#d9dee3',
+  'gear-blue': '#6bbaf5',
+  'gear-purple': '#c99aff',
+  'gear-gold': '#f3cb6a',
 } as const;
 
 export type PaletteKey = keyof typeof PALETTE;
