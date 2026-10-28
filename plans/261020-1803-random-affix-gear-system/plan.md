@@ -1,10 +1,30 @@
 ---
-status: proposed
+title: Hệ thống đồ dòng ngẫu nhiên
+priority: P1
+effort: large
+branch: feat/ui-ux-overhaul
+tags: [gameplay, gear]
+status: in-progress
 created: 2026-10-20
 owner: user decisions in chat 2026-10-20
 ---
 
 # Hệ thống đồ dòng ngẫu nhiên (kiểu đồ xanh)
+
+## Trạng thái triển khai 28-10-2026
+
+Đề xuất UI/UX nối tiếp: [kho icon và kéo thả đồ lên tướng](../261028-1413-gear-drag-drop-ui/plan.md). Phần này đang ở trạng thái kế hoạch, không thay các kết quả triển khai đã ghi bên dưới.
+
+Đã triển khai nguồn cả 7 phase, test hồi quy và benchmark đã viết; đã rà mã độc lập. Chưa chạy typecheck/test/benchmark/build/game theo AGENTS.md. Trạng thái còn `in-progress` cho tới khi có kết quả kiểm tra của người dùng.
+
+Quyết định mới của người dùng trong tác vụ này có ưu tiên hơn các bảng đề xuất 45/60 wave bên dưới và trong các phase:
+
+- Giữ trận **20 wave**, điều chỉnh cấp món và kinh tế theo trận hiện tại. `levelScale` dùng mẫu số 20; giá cường hóa `3 × (k+1)²`, tổng +10 là 1.155; 15 món là 17.325 so với thu nhập wave 12.500.
+- Quái thường rớt 5%; phẩm/quà boss co theo tiến trình 20 wave; chống xui 3 wave. Mục tiêu khoảng 25–35 món, 2–5 vàng mỗi trận solo, chờ benchmark xác nhận.
+- Bỏ hoàn toàn chỉ số chặn và buff chặn. Định Hải Thần Châm chỉ giữ miễn choáng/đẩy lùi, không còn ×3 hoặc phạt tốc đánh. Vẫn đủ 17 dòng độc nhất.
+- Hấp Tinh tăng 0,25% Công mỗi lượt tính, boss tính 20, trần 60% (240 lượt).
+- Game không còn phụ bản: không tạo lại chế độ đã gỡ; helper thưởng theo người tham gia được giữ và có test.
+- Nguồn số liệu hiện hành: [gear-design.ts](../../content/gear-design.ts). Báo cáo [triển khai và bàn giao](../reports/implementation-261028-1343-random-affix-gear.md), [rà mã](../reports/code-review-261028-1309-random-affix-gear.md).
 
 ## Mục tiêu
 

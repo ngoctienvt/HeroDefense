@@ -13,6 +13,10 @@ created: 2026-10-23
 
 # Hoàn thiện UI/UX
 
+## Kế hoạch nối tiếp cho trang bị
+
+[Kho icon và kéo thả trang bị 28-10-2026](../261028-1413-gear-drag-drop-ui/plan.md) đề xuất cập nhật riêng khay đồ/dock, Kho I, tooltip và tương tác với chiến trường. Giữ phong cách/token và luồng RTS của kế hoạch này; không thiết kế lại toàn bộ HUD. Chỉ mới lập kế hoạch, chưa đổi source theo đề xuất mới.
+
 ## Kết quả mong muốn
 
 Người chơi mới nhìn một lần là biết: đang ở đợt mấy, còn bao lâu, Linh Trụ còn bao nhiêu máu, boss đang làm gì, tướng nào của mình, kỹ năng nào sẵn sàng, bấm đâu để chiêu mộ/ghép/xếp đội. Toàn bộ giao diện dùng chung một bảng màu, một bộ icon và một bộ thuật ngữ.

@@ -44,3 +44,10 @@
 - Hiệu năng: `hurtEnemy` chạy rất nhiều lần. `gearModsOf` phải O(1) khi cache còn đúng.
 - Chí mạng chung có thể cộng dồn với chí mạng riêng của tướng, khiến tướng chí mạng vốn đã mạnh còn mạnh hơn. Theo dõi trong benchmark.
 - Cách gắn qua `WeakSet`/`WeakMap` không nằm trong snapshot. Server giữ object sống nên vẫn đúng. Test nào clone state thì phải gọi `refreshStats` trước.
+
+
+## Triển khai 28-10-2026
+
+Đã tích hợp chỉ số thường, cache theo state/player/version/hero, thời gian trạng thái/triệu hồi, Nộ, hồi chiêu và hình học đòn đánh; không còn dòng chặn.
+
+- [x] Hoàn tất thay đổi nguồn của phase; đã rà tĩnh, chưa chạy kiểm thử.

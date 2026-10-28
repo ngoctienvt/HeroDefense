@@ -53,7 +53,7 @@ Replay: `__vfxReplay('<id>','attack')` (cần tướng đó đang trong khu). Te
 - 16 tướng bậc 3–4 còn lại có profile (thêm vật chất lá/đất/sét và `motif` Huyền ở điểm trúng); test cấm hai tướng trùng cùng hình+màu+texture.
 - Quái mặc skin tướng (thủ lĩnh, tinh anh, tà linh; server không gắn `skillId` cho đòn thường): `battlefield.ts` đặt `monster-attack-<skin>` chỉ ở lời gọi `effects.show`; `showMonster` dùng hình của tướng skin (nhỏ 15%, không chí mạng, giáo không quá mục tiêu); skin chưa có profile lấy hình từ hệ + tầm + hình học (`skinnedEnemyProfile`).
 - Không đổi: bậc 1–2 (bộ công thức riêng, có test định danh), bậc 5–6 (module riêng), quái gốc m001–m004/b001 (nhánh riêng sẵn). Quái 3D riêng chưa có id trong runtime nên chưa có gì để gắn.
-- Chưa làm / cần quyết: audit chất lượng từng module bậc 5–6 (cần ảnh replay); nâng cấp m001–m004/b001; Trầm Hương lệch tầm–hình học.
+- Chưa làm / cần quyết: bậc 5–6: đã rà code, 8 tướng (h011–h015, h03W, h01J, h041) chuyển sang profile, 18 tướng còn lại giữ module riêng — chờ ảnh replay để chỉnh; nâng cấp m001–m004/b001; Trầm Hương lệch tầm–hình học.
 
 Bước tiếp (đã làm ở phần thí điểm; giữ để tham khảo): người dùng xem thí điểm → chỉnh kích thước/palette/nhịp trong profile → nhân rộng sang 16 tướng còn lại của nhóm bậc 3–4 (h03Q, h03S, h03T, h00S, h00Y, h010, và các nhóm motif) rồi bậc 5–6 sau audit từng tướng.
 

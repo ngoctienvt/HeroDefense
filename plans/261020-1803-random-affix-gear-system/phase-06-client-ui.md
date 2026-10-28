@@ -1,5 +1,9 @@
 # Phase 6 — Giao diện client
 
+## Đề xuất cải thiện UI/UX tiếp theo
+
+[Kế hoạch kho icon và kéo thả 28-10-2026](../261028-1413-gear-drag-drop-ui/plan.md) đề xuất thay danh sách thẻ dài bằng lưới, ba ảnh đồ theo khe và kéo thả lên tướng/chân dung. Kế hoạch mới chỉ thay phần trình bày/thao tác, giữ nguyên lệnh và cơ chế đồ. Hiện mới lập kế hoạch; source/runtime chưa được đổi theo thiết kế này.
+
 ## File
 
 - Mới `apps/client/src/gear-panel.ts`: bảng Kho đồ. Không nhét thêm vào `panels.ts`, file đó đã 813 dòng.
@@ -53,3 +57,10 @@ VFX nằm cuối phase, sau khi gameplay đã đúng.
 ## Log client
 
 `debug('client.gear-*', { itemId, slot, rarity })` cho các thao tác. Không ghi tên người chơi.
+
+
+## Triển khai 28-10-2026
+
+Kho I, 3 khe, lọc/phẩm/so sánh, thao tác và admin; toast riêng chủ sở hữu, VFX sét/nổ/gương/hồi tố/bẫy/vệt lửa theo event/snapshot và có giới hạn.
+
+- [x] Hoàn tất thay đổi nguồn của phase; đã rà tĩnh, chưa chạy kiểm thử.

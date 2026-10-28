@@ -776,9 +776,31 @@ Runtime (`visual-douzhan{,-timeline,-staff-geometry,-staff,-lane,-strike,-impact
 ## VFX đánh thường theo profile (27-10-2026)
 
 - Mã: `apps/client/src/visual-basic-attack.ts` (painter) và `visual-basic-attack-profiles.ts` (bảng profile). `VisualEffects.show` gọi painter trước `paintTier34Attack`; id không có profile giữ đường cũ.
-- Phủ đủ 24 tướng bậc 3–4 (h00J–h010, h03Q–h03V). Bậc 1–2 dùng bộ công thức riêng (`visual-kit-recipes-tier12.ts`), bậc 5–6 có module riêng; hai nhóm này không đổi.
+- Phủ đủ 24 tướng bậc 3–4 (h00J–h010, h03Q–h03V). Bậc 1–2 dùng bộ công thức riêng (`visual-kit-recipes-tier12.ts`), bậc 5–6 có module riêng, chỉ 8 tướng bên dưới dùng profile; phần còn lại không đổi.
 - Kiểu: `arc` (quét), `thrust` (đâm/giáo), `bolt` (đạn bay, mỗi tia một event), `chain` (cung lan), `smash` (đập). Vật chất quyết định hình trúng: nước, lửa, mực, thép, linh hỏa, lá, đất, sét. Profile có thể kèm `motif` (flipbook Huyền) đặt lên điểm trúng, bỏ qua khi giảm chuyển động.
 - Bán kính/góc/độ dài lấy từ `HERO_COMBAT_PROFILES`. Quét và đâm chỉ vẽ một lần mỗi attacker mỗi tick (`event.source` + `event.at`); event phụ chỉ có điểm trúng. Chí mạng ×1,35 và chớp vàng. Reduced motion chỉ còn vòng + điểm trúng.
 - Quái mặc skin tướng (`skinHeroId`: thủ lĩnh, tinh anh, tà linh): server không gắn `skillId` cho đòn thường, nên `battlefield.ts` đặt `monster-attack-<skin>` chỉ ở lời gọi `effects.show`. Quái dùng hình đánh thường của tướng skin, nhỏ hơn 15%, không chớp chí mạng, giáo không dài quá mục tiêu. Skin chưa có profile (bậc 1–2, vài tướng bậc cao) lấy màu/vật chất theo hệ và hình theo tầm + hình học (`skinnedEnemyProfile`). Quái gốc m001–m004, b001 giữ nhánh riêng cũ.
 - Log `visual.basic.attack`, `visual.basic.enemy`, `visual.basic.replay`. Replay `?debug=1`: `__vfxReplay('<id>','attack')` cho h00J, h00K, h00L, h00M, h00N, h00O, h00P, h00Q, h03Q, h03R, h03S (bậc 3) và h00R–h00Z, h010, h03T–h03V (bậc 4): đòn thường, đòn chí mạng, rồi một nhát trúng ba quái cùng tick.
 - Giới hạn đã biết: đòn nảy/lan vẽ từ tướng tới từng mục tiêu (event không mang điểm nảy trước); Trầm Hương tầm 7 nhưng hình học `frontal_cleave` nên mỗi mục tiêu một lưỡi rìu riêng. Chưa build/chạy/nghiệm thu hình ảnh. Test: `apps/client/test/visual-basic-attack.test.ts`.
+
+### Bậc 5–6: tám tướng dùng profile thay hình đánh thường cũ (27-10-2026)
+
+- Rà module từng tướng: Hậu Nghệ, Tây Vương Mẫu, Kim Sí, Hiên Viên, Bàn Cổ, Cộng Công, Khương Tử Nha, Điện Mẫu, Chúc Dung, Hằng Nga, Bồ Đề, Lục Nhĩ, Tương Thần, Thần Nông… đã có hình đánh thường riêng có chuyển động, giữ nguyên.
+- Tám tướng chỉ có vòng nhỏ tại mục tiêu hoặc hình nguyên thủy, nay dùng profile: Hình Thiên h011 và Đấu Chiến h012 (quét theo quạt `frontal_cleave`), Kim Thiền Tử h013 (hoa sen bay), Nguyên Thủy h014 (kiếm khí bay thẳng), Thái Bạch h015 (sao bay cung cao), Nhiên Đăng h03W và Như Lai h01J (đập xuống), Phượng Hoàng h041 (lông lửa, mỗi tia một event).
+- Cơ chế: `PREEMPTING_BASIC_ATTACKS` trong `visual-basic-attack-profiles.ts`; `VisualEffects.show` vẽ profile trước `heroKit.ability` cho các id này, nên module riêng của tướng không còn vẽ `trait-` của họ (các sự kiện khác của module không đổi). Ngoài ra thêm `registerAttackReplay` trong `visual-kit-replay.ts`: `__vfxReplay('<id>','attack')` chạy replay đánh thường mà không đè replay kỹ năng của module.
+- Chưa build/chạy/nghiệm thu hình ảnh. Test: phần "tier 5–6" trong `visual-basic-attack.test.ts`.
+
+
+## VFX trang bị ngẫu nhiên
+
+Các module visual-gear.ts và visual-gear-traps.ts dùng lại painter/pool, texture trace_01/spark_01/circle_03 và motif lightning/soul/shield hiện có; không thêm nguồn ảnh bên ngoài. Thiên La là lưới mesh trên đất, giữ theo snapshot gearTraps (tối đa 6/tướng). Phong Hỏa dùng groundEffects và lớp lửa hiện có; Dẫn Lôi đi theo origin của từng nhịp nảy, không vẽ vùng nổ. Gương và hồi tố phát theo event trait đã xác nhận. Giảm chuyển động giữ điểm/phạm vi; đổi wave/trận dọn trạng thái và mesh dùng lại. Chưa chạy game hoặc nghiệm thu hình ảnh/FPS.
+
+## VFX duyên phận (bond)
+
+Mọi đòn thêm của duyên phận phát event `trait` với `skillId` `bond-strike-<arrow|bolt|slash|blast>`, kèm `origin` (nơi bắn), `x/z` (nạn nhân) và `bondId`; mỗi nạn nhân một event, tối đa 8 mỗi lần. Client (`visual-bond-trigger.ts`, `BondStrikeFx`) bay tên/cầu từ người bắn tới từng mục tiêu, vẽ tia chém hoặc vòng nổ, màu theo vật chất của duyên (`BOND_TRIGGER_KIND`). `bond-trigger` vẫn vẽ vòng sáng tại người kích hoạt. Chế độ giảm chuyển động bỏ chuyển động bay và chỉ giữ một vòng chớp tại mục tiêu. Đây là hình tối giản dùng mesh có sẵn, chưa có texture riêng; chưa nghiệm thu hình ảnh trong game.
+
+### Sửa nhịp bay đòn đánh thường (28-10-2026)
+
+- Hậu Nghệ h017: mũi tên đánh thường bay 12 đơn vị trong 0,1 giây nên mắt không theo kịp, trong khi server trừ máu cùng tick. Nay bay 0,24 giây (`BASIC_FLIGHT`). Server gửi một event cho mỗi quái bị xuyên, nên trước đây mỗi quái có một mũi tên riêng hướng về nó; nay chỉ event đầu của mỗi tick bắn mũi tên, các event sau chỉ thêm chớp trúng, trễ theo khoảng cách chiếu lên đường bắn.
+- Profile `thrust` (Long Vương, Dương Tiễn): thêm đầu giáo sáng chạy dọc đường đâm thay vì chỉ vẽ cả tia cùng lúc.
+- Giới hạn: sát thương và thanh máu vẫn đổi ngay khi server xử lý đòn; client chỉ trình bày, không trì hoãn máu. Chưa build/chạy/nghiệm thu.

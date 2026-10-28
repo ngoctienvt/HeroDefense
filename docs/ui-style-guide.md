@@ -9,12 +9,15 @@
 | Thanh trên | `hud-top.ts` | Trái: đợt, pha, đồng hồ. Giữa: thanh Linh Trụ. Phải: nút chính theo pha, độ khó (chủ phòng, ở sảnh), nhãn tốc độ khi khác 1×, ⚙ (đổi tốc độ nằm trong ⚙ vì thanh này dựng lại mỗi giây). Dòng phụ: mã phòng (chỉ ở sảnh), người chơi. |
 | Dải boss | `hud-top.ts` `renderBossStrip` | Mỗi boss còn sống một hàng: tên, thanh máu dày, chiêu kế, Tiến quân / Giao chiến / Cuồng Nộ. |
 | Dock (dưới trái) | `hud-summon-bar.ts`, `hud-dock.ts` | Thanh chiêu mộ nhanh 3 gói; badge tài nguyên; 5 thẻ tướng. |
+| Khay đồ nhanh | `hud-gear-tray.ts`, `gear-tile.ts` | 8 món chưa mặc/trang, 4 cột × 2 hàng; phân trang, thu gọn và mở `I`. Luôn hiện khi mở Kho Đồ; ở chiều ngang ≤1520px chuyển lên trên hàng thẻ tướng để không nằm dưới drawer. Chọn món trong khay không tự mở bảng lớn. |
 | Thanh hành động | `hud-action-bar.ts` | Nút kỹ năng `[Q]` có quạt hồi chiêu; Neo, Hợp nhất, Về bộ sưu tập. Không có nút Bán. |
 | Rail (phải) | `hud-rail.ts`, `hud-keymap.ts` | 5 nút: Chiêu Mộ, Ghép Tướng, Đội Hình, Duyên & Trận, Cẩm Nang. Chấm xanh khi có việc nên làm. |
-| Drawer | `panels.ts` → `panel-*.ts` | Chiêu Mộ, Đội Hình, Duyên & Trận (tab T/F), Cẩm Nang (Điều khiển / Tàng Kinh Các), Admin. |
+| Drawer | `panels.ts` → `panel-*.ts`, `gear-panel.ts` | Chiêu Mộ, Đội Hình, Kho Đồ (`I`), Duyên & Trận (tab T/F), Cẩm Nang (Điều khiển / Tàng Kinh Các), Admin. |
 | Lớp nổi | `hud-overlay.ts` | Menu ⚙ (bật/tắt âm thanh, thanh âm lượng Nhạc và Hiệu ứng: kéo thì nghe thử ngay, thả tay thì lưu), chọn tướng khi chiêu mộ, tooltip, hộp xác nhận. |
 
 Admin không có nút trên rail và không có trong Cẩm Nang; chỉ mở bằng phím `K`.
+
+`hud-render-guard.ts` giữ nguyên DOM của HUD trong lúc nhấn một control, qua bước nhả chuột/phím đến sự kiện `click`, để snapshot không thay mất nút đang nhấn. Sau thao tác, HUD cập nhật từ trạng thái mới nhất; cập nhật chiến trường vẫn tiếp tục. Hủy thao tác hoặc mất focus phải giải phóng guard; `pagehide` dọn listener và timer.
 
 ## Màu
 
@@ -82,6 +85,16 @@ Hàm định dạng nằm trong `ui-labels.ts` (`starText`, `tierLabel`, `gearLa
 - **Lớp nổi**: menu, tooltip và hộp xác nhận nằm trong `hud-overlay-layer`, ngoài các vùng mà `render()` dựng lại mỗi giây. Nhờ vậy chúng không bị đóng hay mất focus khi đồng hồ nhảy.
 - **Bàn phím khi có lớp nổi**: khi hộp xác nhận hoặc menu ⚙ đang mở, bàn phím chỉ nhận `Esc`, và `Esc` chỉ đóng lớp trên cùng.
 - **Chọn tướng khi chiêu mộ**: `Esc` thu khung chọn thành nút "Chọn tướng" trên thanh chiêu mộ, vì lựa chọn vẫn đang chờ.
+
+## Trang bị: khay, kho và kéo thả
+
+- `gear-tile.ts` dùng chung ba ảnh vũ khí, giáp, pháp khí ở mọi phẩm; viền CSS trắng / lam / tím / vàng, nhãn phẩm, `+N` và glyph độc nhất tách khỏi ảnh. Cỡ tile: dock 32px, khay 44px, lưới 48px. Ảnh lỗi có icon khe dự phòng và log `client.gear-art-fallback` một lần theo URL. Nguồn PNG gốc, prompt, manifest và script xuất WebP 128×128 nằm ở [`assets/ui/gear/`](../assets/ui/gear/SOURCE.txt); runtime chỉ tải ba WebP trong `apps/client/public/assets/gear/`.
+- Kho `I` có tối đa 40 món/trang và một chi tiết món đang chọn; tab **Trong kho** / **Đang mặc**, lọc khe/phẩm, phân trang. Dải năm chân dung nhận đồ tương ứng đội hình; **Chọn dự bị** mở Đội Hình để chọn tướng dự bị. Món chọn và tướng nhận đồ là state riêng; snapshot dựng lại HUD giữ focus và scroll khi còn mục tương ứng. Khay 8 món vẫn hiện khi kho mở; chọn món ở khay không tự mở bảng lớn. Drawer dùng 340px ở 1280px ngang và tối đa 460px từ 1366px; dock giữ ba khe mỗi tướng. Đây là cấu hình source, cần người dùng kiểm tra độ chồng/tràn ở viewport thật.
+- Kéo bằng chuột trái qua ngưỡng 6 CSS px từ khay/lưới/ô đang mặc đến thân tướng thực của mình, chân dung hoặc đúng khe. Thân tướng chỉ nhận khi actor còn hiện; tướng chết/hồi sinh vẫn nhận qua chân dung theo trạng thái server. Đồng đội, địch, summon, nền và sai khe không nhận. Preview ghi khe và món cũ về kho; chuyển giữa tướng không đổi chỗ hai món. Thả lên đúng người đang mặc không gửi lệnh.
+- Tháo bằng cách kéo đồ đang mặc vào dải có nhãn **Thả đồ đang mặc để tháo** hoặc khoảng trống lưới được đánh dấu. Fallback: nhấp món rồi nhấp mục tiêu; `Enter`/`Space` trên món/mục tiêu, hoặc nút **Mặc/Tháo** trong chi tiết. `Esc`, chuột phải, mất focus hoặc hủy pointer dọn preview trước khi gửi; sau khi gửi, hủy preview không hoàn tác lệnh server.
+- `gear-drag-controller.ts`, `gear-drop-policy.ts`, `gear-drag-pointer.ts` và `gear-pending-store.ts` dùng cùng policy cho drag/click/phím. Gear gesture chặn lệnh RTS/camera và tooltip thường; root capture giữ thao tác qua lần dựng lại source, top/boss vẫn được cập nhật. Cleanup theo `pagehide`, disconnect hoặc đổi phiên.
+- Lệnh `equip-item` / `unequip-item` giữ contract hiện có. Pending khóa item và khe đích, đối chiếu command ID + thế hệ phiên; ack thành công vẫn chờ snapshot. Sau khoảng 5 giây, yêu cầu sync một lần, không tự gửi lại lệnh mặc. Snapshot mới giải quyết trạng thái chưa chắc chắn; lỗi/mất mạng không tự sửa đồ trong client. Trong lúc món đang chờ chuyển, các thao tác kinh tế trên món đó bị khóa; phân giải vẫn có xác nhận và queue đồ trắng hiện có.
+- So sánh chỉ số/giá/fit warning giữ helpers hiện có. Không có chỉ số block; `sea-anchor` vẫn là unique miễn nhiễm riêng. Thay đổi này dành cho desktop chuột và bàn phím; chưa nghiệm thu thao tác touch hay hình ảnh trong game.
 
 ## Kiểm tra sau khi sửa giao diện
 
