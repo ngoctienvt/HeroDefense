@@ -23,7 +23,7 @@ function nonCriticalSeed(): number {
 
 describe('Khai Thiên Tổ Thần', () => {
   it('uses requested base stats and preserves the extracted recipe', () => {
-    expect(HERO_BY_ID[P.id]).toMatchObject({ hp: 14500, attack: 1150, armor: 36, range: 2.8, interval: .9, speed: 4.4, block: 10, element: 1, role: 'warrior' });
+    expect(HERO_BY_ID[P.id]).toMatchObject({ hp: 14500, attack: 1150, armor: 36, range: 2.8, interval: .9, speed: 4.4, element: 1, role: 'warrior' });
     expect(CRAFT_RECIPES.find(r => r.heroId === P.id)?.ingredients).toEqual(['h011', 'h012', 'h00Y']);
   });
   it('cleaves only the front semicircle and grants rage once per swing', () => {

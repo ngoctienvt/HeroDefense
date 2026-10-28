@@ -16,7 +16,7 @@ import { debug } from './debug.js';
 import { VisualMaterials } from './visual-materials.js';
 import { isFireSkill, VisualFire } from './visual-fire.js';
 import { TIER_VISUALS } from './visual-tier-profiles.js';
-import { basicAttackHeroId, paintBasicAttack, paintEnemyBasicAttack } from './visual-basic-attack.js';
+import { basicAttackHeroId, basicAttackPreempts, paintBasicAttack, paintEnemyBasicAttack } from './visual-basic-attack.js';
 import { extractHeroIdFromSkill, isTierSkill, paintTierAbility, paintTierAttack, paintTierCast,
   type TierSkillPainter } from './visual-tier-skills.js';
 import { VisualTierParticles } from './visual-tier-particles.js';
@@ -104,6 +104,8 @@ import { SharedStatusFx } from './visual-shared-status.js';
 import type { SharedMark } from './visual-shared-status.js';
 import { isSharedHoldKind } from './visual-shared-status-timeline.js';
 import type { GameState } from '../../../packages/contracts/src/types.js';
+import { paintGearProc } from './visual-gear.js';
+import { VisualGearTraps } from './visual-gear-traps.js';
 
 type EffectKind = 'ring' | 'orb' | 'beam' | 'halo' | 'spark' | 'flare' | 'glyph' | 'decal';
 type ActiveEffect = { mesh: AbstractMesh; age: number; duration: number; size: number; kind: EffectKind;
@@ -117,6 +119,7 @@ const ELEMENT_COLORS = ['#f59e0b', '#10b981', '#0284c7', '#ea580c', '#d97706'];
 
 /** Short, pooled feedback tied only to authoritative combat events. */
 export class VisualEffects {
+  private gearTraps?: VisualGearTraps;
   private pangu: VisualPangu;
   private panguUltimate: VisualPanguUltimate;
   private statusMarks: StatusMarks;
@@ -399,6 +402,10 @@ export class VisualEffects {
 
   show(event: GameEvent, position: Vector3, origin?: Vector3, targets: readonly Vector3[] = [], main?: Vector3,
     supportTargets?: readonly Vector3[], presentation?: Pick<AbilityExtra, 'resourceTarget' | 'displacements'>): void {
+    if (paintGearProc(this.tierPainter(), event, position, origin)) {
+      debug('visual.gear-proc', { eventId: event.id, skillId: event.skillId });
+      return;
+    }
     // Every revive (Nữ Oa h01C, Thái Bạch h015) looks the same: the shared revive sheet where each ally stands up.
     if (event.skillId?.startsWith('revive-')) {
       for (const at of (targets.length ? targets : [position]).slice(0, 8)) this.sharedStatus.play('revive', at, this.reduced.matches);
@@ -412,6 +419,11 @@ export class VisualEffects {
     }
     if (event.skillId?.startsWith('monster-') || isEnemySkillEvent(event.skillId)) {
       this.showMonster(event, position, origin, targets);
+      return;
+    }
+    if ((event.kind === 'attack' || event.kind === 'trait') && basicAttackPreempts(event.skillId)
+      && paintBasicAttack(this.tierPainter(), event, origin?.clone() ?? position.clone(), position.clone())) {
+      debug('visual.basic.attack', { eventId: event.id, skillId: event.skillId, geometry: event.geometry, crit: event.isCrit === true });
       return;
     }
     // Defensive events arrive once per ally: position = ally, origin = the caster.
@@ -1101,7 +1113,7 @@ export class VisualEffects {
     marker.mesh.scaling.setAll(radius * 2);
     const color = kind === 'tier-water' ? '#56cce3' : kind === 'tier-gold' ? '#e6c97b' : '#ff8d58';
     marker.mesh.material = this.palette.get(`ground-${kind ?? 'fire'}`, color, .5);
-    if (!kind || kind === 'tier-fire') this.fire.markGroundBurning(id, position);
+    if (!kind || kind === 'tier-fire' || kind === 'gear-fire-trail') this.fire.markGroundBurning(id, position);
   }
   markLongVuongPool(id: string, at: Vector3, radius: number, remaining: number): void {
     this.longVuong.markPool(id, at, radius, remaining, this.reduced.matches);
@@ -1267,6 +1279,7 @@ export class VisualEffects {
     return root;
   }
   clear(): void {
+    this.gearTraps?.clear();
     this.tier6Replay.clear();
     this.monsterProjectiles.clear();
     this.bossEarth.clear();
@@ -1291,6 +1304,9 @@ export class VisualEffects {
   }
   private release(fx: ActiveEffect): void {
     fx.mesh.setEnabled(false); fx.mesh.visibility = 1; this.pools[fx.kind].push(fx.mesh);
+  }
+  markGearTraps(traps: NonNullable<GameState['gearTraps']>, zone: number): void {
+    (this.gearTraps ??= new VisualGearTraps(this.scene)).update(traps, zone);
   }
   markPanguRift(ground: NonNullable<GameState['groundEffects']>[number]): void { this.panguUltimate.markRift(ground, this.reduced.matches); }
   replayPangu(kind: string, caster: Vector3, point: Vector3): boolean { return this.panguUltimate.replay(kind, caster, point, this.reduced.matches); }

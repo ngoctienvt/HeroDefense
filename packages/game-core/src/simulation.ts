@@ -1,6 +1,9 @@
 import { DIFFICULTIES } from '../../../content/catalog.js';
 import { BOSS_SPAWN, enemyRoute } from './battlefield-layout.js';
 import type { Enemy, GameState } from '../../contracts/src/types.js';
+import { beginGearWave } from './gear-uniques.js';
+import { bondOnWaveClear, bondOnWaveStart } from './bond-runtime.js';
+import { onWaveEndDrought } from './gear-items.js';
 import { combatStep } from './combat.js';
 import {
   flushWaveTtkSummary,
@@ -46,6 +49,8 @@ export function beginWave(state: GameState): void {
   state.wave++;
   state.phase = 'combat';
   for (const unit of Object.values(state.units)) unit.waveDeaths = 0;
+  beginGearWave(state);
+  bondOnWaveStart(state);
   state.spawned = 0;
   const plan = wavePlanFor(state.wave);
   state.spawnBudget = waveLaneBudget(plan) + (plan.bosses?.length ? 1 : 0);
@@ -172,6 +177,8 @@ function spawnBatch(state: GameState): void {
 
 function finishWave(state: GameState): void {
   flushWaveTtkSummary(state);
+  onWaveEndDrought(state);
+  bondOnWaveClear(state);
   resetWaveCombat(state);
   for (const player of Object.values(state.players)) {
     player.gold += 180 + state.wave * 40;

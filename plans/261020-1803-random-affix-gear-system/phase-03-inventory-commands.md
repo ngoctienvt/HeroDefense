@@ -59,3 +59,10 @@ Hồi máu và khiên vẫn mạnh lên theo đồ. Phần theo Công của ngư
   - Cường hóa trừ đúng tiền và dừng ở +10.
   - Tẩy luyện chỉ đổi đúng 1 dòng, không đụng dòng độc nhất, giá tăng theo `rerolls`.
   - Phân giải từ chối món đang mặc.
+
+
+## Triển khai 28-10-2026
+
+Đã nối mặc/tháo/chuyển/cường hóa/tẩy luyện/phân giải/admin; craft/merge/sell trả đồ về kho, bỏ lệnh equip cũ và bảo toàn tỷ lệ HP.
+
+- [x] Hoàn tất thay đổi nguồn của phase; đã rà tĩnh, chưa chạy kiểm thử.

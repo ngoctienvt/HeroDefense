@@ -16,11 +16,9 @@ export const SUMMON_PITY = { tien: 4, thien: 5 } as const;
 export const SUMMON_FAIL_PELLETS = { tien: 1, thien: 3 } as const;
 export const PELLET_PRICES = { 'chest-1': 2, 'chest-2': 5, 'embryo-3': 12, 'embryo-4': 25 } as const;
 export const summonWave = (state: GameState): number => state.phase === 'preparation' ? state.wave + 1 : Math.max(1, state.wave);
-export const equipmentCost = (level: number) => 80 * (level + 1) ** 2;
-/** What selling a hero returns: half its summon value in Đạo Duyên and half the Linh Thạch spent on its gear. */
-export function sellRefund(unit: Pick<Unit, 'rank' | 'equipment'>): { souls: number; gold: number } {
-  const gearSpent = unit.equipment.reduce((sum, level) => sum + Array.from({ length: level }, (_, i) => equipmentCost(i)).reduce((a, b) => a + b, 0), 0);
-  return { souls: Math.max(1, Math.floor(RANDOM_SUMMON_COST * 3 ** (unit.rank - 1) / 2)), gold: Math.floor(gearSpent / 2) };
+/** Selling returns summon value; items are returned to inventory separately. */
+export function sellRefund(unit: Pick<Unit, 'rank'>): { souls: number; gold: number } {
+  return { souls: Math.max(1, Math.floor(RANDOM_SUMMON_COST * 3 ** (unit.rank - 1) / 2)), gold: 0 };
 }
 export const distance = (a: Vec, b: Vec) => Math.hypot(a.x - b.x, a.z - b.z);
 /** Attack ranges above this are ranged attackers (heroes and monsters alike). */

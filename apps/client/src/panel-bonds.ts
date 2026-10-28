@@ -1,4 +1,6 @@
+import { BOND_DESIGN } from '../../../content/bond-design.js';
 import { FORMATIONS, HERO_BY_ID, SYNERGIES } from '../../../content/catalog.js';
+import { isBondMember } from '../../../packages/game-core/src/bond-mods.js';
 import type { PanelContext } from './panel-context.js';
 import { ownUnits } from './panel-context.js';
 import { button, el, heading, heroPortrait, iconButton } from './ui.js';
@@ -23,8 +25,8 @@ export function renderBonds(container: HTMLElement, ctx: PanelContext): void {
 
 function synergies(container: HTMLElement, ctx: PanelContext): void {
   const active = ctx.state.players[ctx.selfId]?.activeSynergies ?? [];
-  const deployed = new Set(ownUnits(ctx).filter(unit => unit.slot >= 0).map(unit => unit.heroId));
-  container.append(heading('Duyên Phận', 'Các tướng khác tên cùng xuất trận sẽ kích hoạt duyên. Đạt càng nhiều mốc, buff càng mạnh.'));
+  const deployed = new Set(ownUnits(ctx).filter(unit => unit.slot >= 0 && isBondMember(unit)).map(unit => unit.heroId));
+  container.append(heading('Duyên Phận', 'Các tướng khác tên cùng xuất trận sẽ kích hoạt duyên. Mỗi mốc mở thêm một hiệu ứng riêng; tướng thuộc từ hai duyên đang kích hoạt trở lên còn được Duyên Tụ (nhận Nộ nhanh hơn, +15 Nộ đầu đợt).'));
   const levelOf = (id: number) => active.find(item => item.id === id)?.level ?? 0;
   const list = [...SYNERGIES].sort((a, b) => levelOf(b.id) - levelOf(a.id)
     || b.members.filter(id => deployed.has(id)).length - a.members.filter(id => deployed.has(id)).length);
@@ -46,9 +48,27 @@ function synergies(container: HTMLElement, ctx: PanelContext): void {
       portrait.dataset.tipHero = id;
       members.append(portrait);
     }
-    row.append(head, el('p', 'bond-desc', definition.description), members);
+    row.append(head, members, bondTiers(definition.id, count));
+    const next = definition.thresholds.find(threshold => count < threshold);
+    if (next !== undefined && level) row.append(el('p', 'bond-next', `Mốc kế tiếp: ${next} tướng`));
+    row.append(el('p', 'bond-origin', `Map gốc: ${definition.description}`));
     container.append(row);
   }
+}
+
+/** Effect text for every threshold of one bond; reached tiers are highlighted. */
+function bondTiers(bondId: number, count: number): HTMLElement {
+  const list = el('ul', 'bond-tiers');
+  for (const tier of BOND_DESIGN[bondId]?.tiers ?? []) {
+    const item = el('li', `bond-tier ${count >= tier.at ? 'is-reached' : ''}`.trim());
+    const body = el('span', 'bond-tier-text');
+    if (tier.title) body.append(el('strong', '', `${tier.title}. `));
+    body.append(tier.text);
+    item.append(el('span', 'bond-tier-label', String(tier.at)), body,
+      el('span', 'bond-tier-origin', tier.provenance === 'adapted' ? 'phỏng theo map' : 'bản web'));
+    list.append(item);
+  }
+  return list;
 }
 
 function formations(container: HTMLElement, ctx: PanelContext): void {

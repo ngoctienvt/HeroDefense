@@ -4,6 +4,7 @@ import { applyEnemyStatus, criticalDamageAgainst } from './combat-status.js';
 import { panguDirection } from './pangu-combat.js';
 import { distance, event, isDeployed, random } from './rules.js';
 import { effectiveUnitAttack, solarCritMultiplier } from './stats.js';
+import { markGearNativeCrit } from './gear-stats.js';
 
 type Damage = (enemy: Enemy, amount: number, penetration?: number) => void;
 
@@ -21,7 +22,9 @@ export function lucnhiAttack(state: GameState, unit: Unit, target: Enemy, hurt: 
   const amount = effectiveUnitAttack(unit) * (critical ? solarCritMultiplier(state, unit, L.critMultiplier) : 1);
   for (const enemy of targets) {
     const vulnerable = Boolean(enemy.sunder && enemy.sunder.remaining > 0);
-    hurt(enemy, critical ? criticalDamageAgainst(enemy, amount) : amount);
+    const hit = critical ? criticalDamageAgainst(enemy, amount) : amount;
+    if (critical) markGearNativeCrit(unit, enemy, hit);
+    hurt(enemy, hit);
     if (vulnerable && state.enemies[enemy.id]) hurt(enemy, amount * L.sunderBonus, 999);
   }
   unit.energy = Math.min(unit.maxEnergy ?? 100, (unit.energy ?? 0) + L.ragePerAttack);
@@ -35,7 +38,7 @@ export function lucnhiAbility(state: GameState, unit: Unit, point: Vec): void {
   const targets = Object.values(state.enemies).filter(enemy => enemy.zone === unit.zone
     && enemy.hp > 0 && distance(enemy, point) <= L.strikeRadius).map(enemy => enemy.id);
   unit.shadowAssault = { remaining: L.strikeDuration, pulseTime: 0, pulses: 0,
-    point: { x: point.x, z: point.z }, zone: unit.zone, targets };
+    point: { x: point.x, z: point.z }, zone: unit.zone, targets, attackSnapshot: effectiveUnitAttack(unit) };
   event(state, { kind: 'ability', source: unit.id, x: point.x, z: point.z,
     zone: unit.zone, ability: 'nova', skillId: 'skill-h03Y' });
 }
@@ -53,7 +56,7 @@ export function stepLucnhiAssault(state: GameState, dt: number, hurt: (unit: Uni
       assault.pulses++;
       const targets = assault.targets.map(id => state.enemies[id])
         .filter((enemy): enemy is Enemy => Boolean(enemy && enemy.zone === assault.zone && enemy.hp > 0));
-      const amount = effectiveUnitAttack(unit) * L.strikePower;
+      const amount = (assault.attackSnapshot ?? effectiveUnitAttack(unit)) * L.strikePower;
       for (const enemy of targets) {
         hurt(unit, enemy, amount);
         if (!state.enemies[enemy.id]) continue;

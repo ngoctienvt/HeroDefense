@@ -105,18 +105,28 @@ export class VisualHauNghe implements HeroVfx {
     return this.preview.start(kind, at, reduced, origin);
   }
 
+  /** The latest basic shot (attacker + server tick + direction), so the later events of that tick reuse it. */
+  private shot?: { source: string; at: number; dir: { x: number; z: number } };
+
   /** One arrow along the server's pierce line, a flare on each target as the head passes it. */
   private basic(event: GameEvent, origin: Vector3, targets: readonly Vector3[], reduced: boolean): void {
-    const dir = unitDirection(event, origin);
+    // The server sends one event per pierced monster; the first of a tick shoots the arrow, the rest only add their flare.
+    const repeat = event.source !== undefined && event.at !== undefined && this.shot?.source === event.source && this.shot.at === event.at;
+    const dir = repeat ? this.shot!.dir : unitDirection(event, origin);
     if (!dir) { debug('visual.haunghe.arrow.skip', { eventId: event.id, reason: 'no-direction' }); return; }
-    const from = new Vector3(origin.x + dir.x * 1.4, NOCK_HEIGHT, origin.z + dir.z * 1.4);
-    const to = new Vector3(origin.x + dir.x * H.arrowLength, STRIKE_HEIGHT, origin.z + dir.z * H.arrowLength);
-    if (!reduced) {
-      this.arrows.launch(from, to, BASIC_FLIGHT, BASIC_ARROW_LENGTH, BASIC_ARROW_WIDTH, () => undefined);
-      this.bank.ribbon(from, to, 'solar', { life: .24, width: .9, taper: .7, height: NOCK_HEIGHT, maxSpan: 5 });
+    if (!repeat) {
+      this.shot = event.source !== undefined && event.at !== undefined ? { source: event.source, at: event.at, dir } : undefined;
+      const from = new Vector3(origin.x + dir.x * 1.4, NOCK_HEIGHT, origin.z + dir.z * 1.4);
+      const to = new Vector3(origin.x + dir.x * H.arrowLength, STRIKE_HEIGHT, origin.z + dir.z * H.arrowLength);
+      if (!reduced) {
+        this.arrows.launch(from, to, BASIC_FLIGHT, BASIC_ARROW_LENGTH, BASIC_ARROW_WIDTH, () => undefined);
+        this.bank.ribbon(from, to, 'solar', { life: BASIC_FLIGHT + .14, width: .9, taper: .7, height: NOCK_HEIGHT, maxSpan: 5 });
+      }
     }
     for (const target of targets.slice(0, MAX_BASIC_HITS)) {
-      const travel = Math.min(1, Math.hypot(target.x - origin.x, target.z - origin.z) / H.arrowLength);
+      // Distance along the shot line, so a monster off to the side is reached when the arrow head passes it.
+      const along = Math.max(0, (target.x - origin.x) * dir.x + (target.z - origin.z) * dir.z);
+      const travel = Math.min(1, along / H.arrowLength);
       // The arrow accelerates cubically, so its head reaches fraction x of the line at flight · x^(1/3).
       this.bank.after(reduced ? 0 : BASIC_FLIGHT * Math.cbrt(travel), () => {
         this.bank.ring(target, event.isCrit ? 1.9 : 1.2, event.isCrit ? 'gold' : 'solar',

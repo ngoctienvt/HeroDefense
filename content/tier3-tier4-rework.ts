@@ -12,7 +12,6 @@
 
 /** Numbers read by tier3-combat.ts / tier4-combat.ts / tier-skill-pulses.ts. */
 export const TIER3_TIER4_REWORK = {
-  h00J: { blockBonus: 8, blockBonusSeconds: 5 },
   h00K: { recipientMaxHpRatio: .09 },
   h00L: { slow: .6 },
   h00M: { slow: .7 },
@@ -34,7 +33,7 @@ type TextPatch = { field: BriefField; from: string; to: string };
 const TEXT_PATCHES: Readonly<Record<string, readonly TextPatch[]>> = {
   h00J: [{ field: 'skillEffect',
     from: 'đẩy lùi nhẹ và Khiêu khích (taunt) toàn bộ quái trong bán kính 5.0, ép chúng phải đánh mình.',
-    to: 'đẩy lùi nhẹ toàn bộ quái trong bán kính 5.0 và tăng thêm 8 giới hạn chặn trong 5 giây, hút quái xung quanh dồn vào đánh mình (không gieo tỷ lệ như khiêu khích).' }],
+    to: 'đẩy lùi nhẹ toàn bộ quái trong bán kính 5.0.' }],
   h00K: [
     { field: 'skillParameters', from: 'Hệ số Hồi máu: x2.6 ATK', to: 'Hồi máu: 260% ATK + 9% Máu tối đa người nhận' },
     { field: 'skillEffect', from: 'Hồi phục ngay 260% ATK thành máu', to: 'Hồi phục ngay 260% ATK + 9% Máu tối đa của người nhận' },

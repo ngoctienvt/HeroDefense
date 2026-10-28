@@ -9,7 +9,6 @@ export const BASE_NAME = 'Linh Trụ';
 export const ROLE_LABELS: Record<Role, string> = { warrior: 'Chiến sĩ', ranger: 'Xạ thủ', mage: 'Pháp sư', guardian: 'Hộ vệ', support: 'Hỗ trợ' };
 export const ELEMENT_LABELS = ['Vô', 'Kim', 'Mộc', 'Thủy', 'Hỏa', 'Thổ'] as const;
 export const GEAR_NAMES = ['Vũ khí', 'Giáp', 'Pháp khí'] as const;
-export const GEAR_MAX_LEVEL = 5;
 export const SLOT_COUNT = 5;
 
 export const TIER_TITLES: Record<number, string> = {

@@ -28,15 +28,16 @@ export function shennongAttack(state: GameState, unit: Unit, target: Enemy, hurt
 }
 
 function spawnTree(state: GameState, caster: Unit, point: Vec, index: number): Unit {
+  const hp = S.treeHp * (caster.gearRuntime?.castScale ?? 1);
   const angle = index * Math.PI * 2 / S.trees;
   const tree: Unit = {
     id: nextId(state, 'ancient-tree'), heroId: 'summon_shennong_tree', owner: caster.owner,
     rank: 1, slot: -99, x: point.x + Math.cos(angle) * 4.2,
-    z: point.z + Math.sin(angle) * 4.2, hp: S.treeHp, maxHp: S.treeHp,
+    z: point.z + Math.sin(angle) * 4.2, hp, maxHp: hp,
     attack: 0, armor: 18, range: 0, cooldown: 0, abilityCooldown: 0,
     target: null, destination: null, savedPosition: null, stopped: true,
-    orderMode: 'hold', equipment: [0, 0, 0], deaths: 0, respawn: 0,
-    shield: 0, zone: caster.zone, kills: 0, block: S.treeBlock,
+    orderMode: 'hold',  deaths: 0, respawn: 0,
+    shield: 0, zone: caster.zone, kills: 0,
     summonKind: 'ancient-tree', summonerId: caster.id, summonDuration: S.zoneSeconds,
   };
   state.units[tree.id] = tree;

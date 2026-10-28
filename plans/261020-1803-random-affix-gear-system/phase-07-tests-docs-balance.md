@@ -44,3 +44,14 @@ Kịch bản kiểm tra trong game:
 6. Chơi co-op 2 người: không thấy thông báo nhặt đồ của người kia, không mặc được đồ của người kia.
 
 Khi bàn giao, ghi rõ phần nào đã sửa nguồn, phần nào chưa build hoặc chưa chạy, và chưa nghiệm thu hình ảnh.
+
+
+## Triển khai 28-10-2026
+
+Đã viết test sinh đồ/lệnh/chỉ số/17 độc nhất/tương tác/UI/validation và benchmark 20 wave; cập nhật docs, log và rà nguồn độc lập. Chưa thực thi test, benchmark, build hoặc game.
+
+- [x] Hoàn tất thay đổi nguồn của phase; đã rà tĩnh, chưa chạy kiểm thử.
+
+- [ ] Người dùng chạy typecheck và toàn bộ test.
+- [ ] Người dùng chạy benchmark, kiểm tra cân bằng và gửi số liệu.
+- [ ] Người dùng build, chạy bản mới và nghiệm thu giao diện/VFX/co-op.

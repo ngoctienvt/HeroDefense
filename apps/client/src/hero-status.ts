@@ -1,9 +1,9 @@
-import type { HeroDef, Unit } from '../../../packages/contracts/src/types.js';
+import type { GameState, HeroDef, Unit } from '../../../packages/contracts/src/types.js';
+import { abilityCooldownFor } from '../../../packages/game-core/src/gear-stats.js';
 
 /**
  * HP and skill-energy readouts shared by the dock, action bar, tooltip and battlefield bars.
- * Mirrors the server rules: rage heroes fill Nộ by attacking/being hit; others recharge a cooldown
- * shortened 10% per Pháp khí level.
+ * Mirrors server energy and the shared gear cooldown calculation.
  */
 export type HpLevel = 'high' | 'mid' | 'low';
 export interface HpState { percent: number; level: HpLevel }
@@ -29,20 +29,21 @@ export function isRageHero(unit: Pick<Unit, 'energyType'>): boolean {
   return unit.energyType === 'rage_on_attack' || unit.energyType === 'rage_on_hit';
 }
 
-export function abilityCooldownMax(hero: Pick<HeroDef, 'ability'>, unit: Pick<Unit, 'equipment'>): number {
-  return hero.ability ? hero.ability.cooldown / (1 + .1 * (unit.equipment?.[2] ?? 0)) : 0;
+export function abilityCooldownMax(hero: Pick<HeroDef, 'ability'>, unit: Unit, state?: GameState): number {
+  return hero.ability ? abilityCooldownFor(unit, hero.ability.cooldown, state) : 0;
 }
 
 export function energyState(
-  unit: Pick<Unit, 'energyType' | 'energy' | 'maxEnergy' | 'abilityCooldown' | 'equipment'>,
+  unit: Unit,
   hero: Pick<HeroDef, 'ability'> | undefined,
+  state?: GameState,
 ): EnergyState {
   if (!hero?.ability) return { kind: 'none', percent: 0, ready: false, current: 0, max: 0, remaining: 0 };
   if (isRageHero(unit)) {
     const max = unit.maxEnergy ?? 100, current = Math.max(0, unit.energy ?? 0);
     return { kind: 'rage', percent: clampPercent((current / Math.max(1, max)) * 100), ready: current >= max, current, max, remaining: 0 };
   }
-  const max = abilityCooldownMax(hero, unit), remaining = Math.max(0, unit.abilityCooldown ?? 0);
+  const max = abilityCooldownMax(hero, unit, state), remaining = Math.max(0, unit.abilityCooldown ?? 0);
   return { kind: 'cooldown', percent: max > 0 ? clampPercent((1 - remaining / max) * 100) : 100, ready: remaining <= 0, current: max - remaining, max, remaining };
 }
 

@@ -47,3 +47,10 @@ Mỗi dòng có ít nhất 1 test cho luật chính và 1 test cho giới hạn.
 - Nghịch Thiên thay đòn riêng của Bàn Cổ bằng đòn nảy.
 - Thất Sát không làm mất Nộ hay hồi chiêu đang có.
 - Bát Quái chỉ chặn đòn của quái đánh xa và Boss.
+
+
+## Triển khai 28-10-2026
+
+Đủ 17 độc nhất. Định Hải chỉ miễn choáng/đẩy lùi, không phạt tốc đánh; Hấp Tinh 0,25% mỗi quái, boss 20, trần 60%. Đã sửa tương tác khiên, đòn trễ, chí mạng và tính hạ quái.
+
+- [x] Hoàn tất thay đổi nguồn của phase; đã rà tĩnh, chưa chạy kiểm thử.

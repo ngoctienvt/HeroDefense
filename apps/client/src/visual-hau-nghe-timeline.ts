@@ -20,7 +20,8 @@ export const ARROW_WIDTH = ARROW_LENGTH / ARROW_ASPECT;
 export const BASIC_ARROW_LENGTH = 6;
 export const BASIC_ARROW_WIDTH = BASIC_ARROW_LENGTH / ARROW_ASPECT;
 
-export const BASIC_FLIGHT = .1;
+/** The basic arrow crosses the 12-unit line in about a quarter second, slow enough to follow it to the monster it hits. */
+export const BASIC_FLIGHT = .24;
 /** After arrival the arrow dissolves into the blast. */
 export const ARROW_FADE = .1;
 /** Height the arrow nocks at beside the caster and the height of its head when it strikes. */

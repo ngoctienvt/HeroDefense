@@ -35,6 +35,13 @@ export class GameRoom extends Room {
     this.game.carryStats = {};
   }
 
+  private logGearStats(wave: number): void {
+    const stats = this.game.gearStats;
+    if (!stats) return;
+    debugLog('gear', { room: this.game.roomCode, count: wave, reason: JSON.stringify(stats) });
+    this.game.gearStats = undefined;
+  }
+
   private logEngagementStats(wave: number): void {
     const stats = this.game.engagementStats;
     if (!stats) return;
@@ -74,6 +81,7 @@ export class GameRoom extends Room {
         const resetBefore = this.game.combatResetEventId;
         stepGame(this.game, 0.05);
         if (this.game.combatResetEventId !== resetBefore) {
+          this.logGearStats(this.game.wave);
           debugLog('wave-combat-reset', { room: this.game.roomCode,
             count: Object.keys(this.game.units).length, reason: `wave ${this.game.wave}: heroes restored, skills cleared` });
         }
@@ -170,6 +178,8 @@ export class GameRoom extends Room {
     seq.acks.set(envelope.id, ack);
     if (seq.acks.size > 128) seq.acks.delete(seq.acks.keys().next().value!);
     client.send('ack', ack);
+    if (ack.ok && envelope.command.type.endsWith('-item'))
+      debugLog('gear-command', { room: this.game.roomCode, reason: envelope.command.type });
     if (ack.ok && envelope.command.type === 'cast') {
       const lastEvent = this.game.events.at(-1);
       if (lastEvent?.kind === 'ability' && lastEvent.source === envelope.command.unitId) {

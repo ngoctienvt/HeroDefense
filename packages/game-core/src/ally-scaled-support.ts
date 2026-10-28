@@ -1,4 +1,5 @@
-import type { Enemy, Unit } from '../../contracts/src/types.js';
+import type { Enemy, GameState, Unit } from '../../contracts/src/types.js';
+import { bondHealMultiplier, bondOnHeal } from './bond-runtime.js';
 
 /**
  * Support helpers for Huyền–Tiên heroes. Their own attack falls far behind
@@ -14,10 +15,14 @@ export function supportAmount(power: number, recipient: Pick<Unit, 'maxHp'>, rec
 }
 
 /** Heals the ally and returns the part that overflowed its max HP. */
-export function healAlly(ally: Unit, amount: number): number {
+export function healAlly(ally: Unit, amount: number, bond?: { state: GameState; source: Unit }): number {
+  if (bond) amount *= bondHealMultiplier(bond.state, bond.source, ally);
   const missing = Math.max(0, ally.maxHp - ally.hp);
   ally.hp = Math.min(ally.maxHp, ally.hp + amount);
-  return Math.max(0, amount - missing);
+  const overheal = Math.max(0, amount - missing);
+  // Optional so existing callers keep working; bonds only hear about heals that name their source.
+  if (bond) bondOnHeal(bond.state, bond.source, ally, amount, overheal);
+  return overheal;
 }
 
 /** Percentage attack buff: a stronger active bonus is left untouched. */
@@ -34,11 +39,6 @@ export function hasteAllyMax(ally: Unit, seconds: number, amount: number, attack
   ally.haste = attackBonus ? { remaining: seconds, amount, attackBonus } : { remaining: seconds, amount };
 }
 
-/** Extra block cap for a guardian; the larger bonus wins. */
-export function grantBlockBonus(unit: Unit, seconds: number, amount: number): void {
-  if (unit.blockBonus && unit.blockBonus.amount > amount) return;
-  unit.blockBonus = { remaining: seconds, amount };
-}
 
 /** "Takes more damage" debuff (stored as `pureLand`): the stronger bonus wins. */
 export function amplifyEnemyDamageMax(enemy: Enemy, seconds: number, bonusDamage: number): void {

@@ -1,0 +1,11 @@
+HeroDefense shared equipment icons, created 2026-10-28 (Asia/Bangkok).
+Route: Codex built-in image_gen, transparent-background generation.
+Model: tool default (the tool does not expose a model/version selector).
+Authoring: original AI-generated artwork for this project; no TFT or Warcraft art used.
+Usage: one master per slot, reused across all rarities. Rarity border and +N are rendered by the UI.
+Prompts: prompts.txt. Original tool files are retained; project copies are *-master.png.
+Weapon source: exec-87d15065-0ea3-4979-b3f0-f9b4320cc780.png
+Armor source: exec-bfdbcc0b-772e-49d8-b6d2-a005f310dc5f.png
+Talisman source: exec-1ca567de-f985-40ad-98dc-d7355d7ff210.png
+Export: export-gear-icons.ps1, alpha-aware ImageMagick Lanczos downscale to108px on transparent128px square, lossless WebP.
+These assets have no third-party downloaded license. This note records provenance, not a claim of exclusive copyright.

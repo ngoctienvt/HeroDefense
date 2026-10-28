@@ -21,20 +21,16 @@ describe('Bát Giới cold tide', () => {
     expect(tideGuard(3, .1, false, true).sink).toBeGreaterThan(0);
     expect(tideGuard(3, .1, true, true).scale).toBe(1);
   });
-  it('uses only the living Bát Giới blockBonus remaining and stops after clear', () => {
-    const state = game(), unit = deployed(state, 'h00J'), other = deployed(state, 'h00K', 1);
-    unit.blockBonus = { remaining: .27, amount: 3 }; other.blockBonus = { remaining: 4, amount: 3 };
+  it('does not invent a persistent guard from hero identity or shields', () => {
+    const state = game(), unit = deployed(state, 'h00J');
+    unit.shield = 500;
     const tracker = new Tier3Snapshot(); tracker.update(state);
     const sink = { markTier3: vi.fn() }, at = new Vector3(4, 0, 2);
-    tracker.draw(sink, unit.zone, id => ({ at, zone: unit.zone, alive: Boolean(state.units[id]?.hp) }));
-    expect(sink.markTier3).toHaveBeenCalledOnce();
-    expect(sink.markTier3).toHaveBeenCalledWith('h00J', 'guard', unit.id, at, .27);
-    unit.blockBonus = undefined; sink.markTier3.mockClear(); tracker.draw(sink, unit.zone, () => ({ at, zone: unit.zone, alive: true }));
-    expect(sink.markTier3).not.toHaveBeenCalled(); tracker.clear();
-    unit.blockBonus = { remaining: 5, amount: 3 }; tracker.draw(sink, unit.zone, () => ({ at, zone: unit.zone, alive: true }));
+    tracker.draw(sink, unit.zone, () => ({ at, zone: unit.zone, alive: true }));
     expect(sink.markTier3).not.toHaveBeenCalled();
-  });
-  it('keeps an intact water collar throughout a long guard instead of cycling dissolution poses', () => {
+    tracker.clear(); tracker.draw(sink, unit.zone, () => ({ at, zone: unit.zone, alive: true }));
+    expect(sink.markTier3).not.toHaveBeenCalled();
+  });  it('keeps an intact water collar throughout a long guard instead of cycling dissolution poses', () => {
     for (let age = 0; age < 20; age += .017) {
       expect([4, 5, 6, 7]).toContain(tideGuard(age, 3, false).frame);
       expect(tideGuard(age, 3, true).frame).toBe(5);

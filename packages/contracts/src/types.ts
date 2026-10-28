@@ -1,4 +1,6 @@
-export const CONTENT_VERSION = 'thien-dao-web-3';
+import type { GearCommand, GearItem, GearStats } from './gear-types.js';
+export type * from './gear-types.js';
+export const CONTENT_VERSION = 'thien-dao-web-4';
 export type Difficulty = 'normal' | 'nightmare' | 'hell' | 'supreme';
 export type Role = 'warrior' | 'ranger' | 'mage' | 'guardian' | 'support';
 export type AbilityKind = 'cleave' | 'chain' | 'nova' | 'shield' | 'heal';
@@ -158,7 +160,7 @@ export interface HeroDef {
   carryPassive?: CarryPassiveConfig;
   energyType?: EnergyType;
   maxEnergy?: number;
-  block?: number;
+
   source: { scriptLine: number; rawcode: string; adapted: boolean };
 }
 export interface SynergyDef {
@@ -170,13 +172,22 @@ export interface FormationDef { id: number; name: string; description: string; b
 export interface DifficultyDef { id: Difficulty; name: string; waves: number; attack: number; health: number }
 export interface DungeonDef { id: number; name: string; boss: string; wave: number; supremeOnly?: boolean }
 export interface Vec { x: number; z: number }
+/** Per-unit wave state; persistent stacks live on GearItem instead. */
+export interface GearRuntime {
+  attacks?: number; yin?: boolean; waveHp?: number; timeUsed?: boolean;
+  hpSeen?: number; shieldSeen?: number; energySeen?: number; souls?: number;
+  lastPosition?: Vec & { zone: number }; travel?: number; castScale?: number;
+  lightning?: { targetId: string; damage: number; point?: Vec }[];
+  basicActive?: boolean; nativeCritical?: { targetId: string; damage: number };
+  currentYin?: boolean; basicMultiplier?: number;
+}
 export interface Unit extends Vec {
   id: string; heroId: string; owner: string; rank: number; slot: number; hp: number; maxHp: number;
   attack: number; armor: number; range: number; cooldown: number; abilityCooldown: number;
-  energy?: number; maxEnergy?: number; energyType?: EnergyType; block?: number;
+  energy?: number; maxEnergy?: number; energyType?: EnergyType;
   target: string | null; destination: Vec | null; savedPosition: Vec | null; stopped: boolean;
   orderMode?: 'auto' | 'move' | 'attack' | 'attack-move' | 'hold'; engageAt?: Vec | null; guardPosition?: Vec | null;
-  equipment: [number, number, number]; deaths: number; respawn: number; shield: number;
+  gearRuntime?: GearRuntime; deaths: number; respawn: number; shield: number;
   /** Deaths in the current wave; deaths remains the whole-match statistic. */
   waveDeaths?: number;
   stun?: number;
@@ -191,16 +202,17 @@ export interface Unit extends Vec {
   divineShield?: { remaining: number; amount: number };
   divineImmortal?: number;
   empower?: { remaining: number; attackBonus: number; armorPierce: number; kind?: 'peach' };
-  pendingAbility?: { remaining: number; targetId?: string; zone: number; point?: Vec; direction?: Vec };
-  shadowAssault?: { remaining: number; pulseTime: number; pulses: number; point: Vec; zone: number; targets: string[] };
+  /** `bondTriggered` marks a bond-forced cast so its resolution cannot chain another bond cast. */
+  pendingAbility?: { remaining: number; targetId?: string; zone: number; point?: Vec; direction?: Vec; bondTriggered?: boolean;
+    /** Power factor of a bond-forced cast, applied when the cast resolves. */
+    bondScale?: number };
+  shadowAssault?: { remaining: number; pulseTime: number; pulses: number; point: Vec; zone: number; targets: string[]; attackSnapshot?: number };
   attackCount?: number; comboTarget?: string; comboCount?: number;
   attackType?: AttackGeometryType;
   onHitTrait?: OnHitTraitType;
   orbitTimer?: number;
   followUpCooldown?: number;
   bonusArmor?: { remaining: number; amount: number };
-  /** Temporary extra block cap: draws more enemies onto a guardian without a rolled taunt. */
-  blockBonus?: { remaining: number; amount: number };
   reflect?: { amount: number };
   mistShield?: { remaining: number; amount: number };
   frostShield?: { remaining: number; amount: number; attackSlow: number };
@@ -213,7 +225,7 @@ export interface Unit extends Vec {
   carryFocus?: { target: string; stacks: number };
   carryMomentum?: { remaining: number; amount: number };
   summonDuration?: number;
-  summonKind?: 'buddha-clone' | 'monkey-clone' | 'ancient-tree' | 'blood-warrior' | 'blood-general';
+  summonKind?: 'buddha-clone' | 'monkey-clone' | 'ancient-tree' | 'blood-warrior' | 'blood-general' | 'bond-summon';
   summonerId?: string;
   bloodDeathCount?: number;
   phoenixCycle?: number;
@@ -280,6 +292,7 @@ export interface Enemy extends Vec {
   windup?: { remaining: number; target: string };
 }
 export interface Player {
+  gear: GearItem[]; gearDust: number; gearDrought: number; gearVersion: number; gearLastDropWave?: number;
   id: string; name: string; color: string; connected: boolean; ready: boolean;
   gold: number; souls: number; pellets: number; kills: number; damage: number;
   summonFailures: { tien: number; thien: number };
@@ -287,8 +300,29 @@ export interface Player {
   embryos: { tier3: number; tier4: number; tier4Purchased: boolean };
   formation: number; formationLevels: number[]; formationPoints: number;
   activeSynergies: { id: number; count: number; level: number }[];
+  /** Server-owned counters and once-per-wave flags for the bond (duyên phận) mechanics. */
+  bondState: BondState;
+  /** Bumped whenever active bonds or bond counters change; part of the gear-mod cache key. */
+  bondVersion: number;
+}
+/**
+ * Bond counters live on the Player so they survive crafting and selling heroes.
+ * Per-wave counters reset at wave start; per-match counters (kiep, dienHai) never reset.
+ */
+export interface BondState {
+  /** Per-wave. */
+  souls: number; longUy: number; thanVi: number; tamTai: number; dienTich: number;
+  /** Per-match. */
+  kiep: number; dienHai: number;
+  /** Per-wave one-shot flags keyed `<bondId>:<tag>:<unitId>`. */
+  usedThisWave: Record<string, true>;
+  /** Phong Thần Bảng: the sealed monster and the game time until which its death grants a Thần Vị. */
+  thanViMark?: { enemyId: string; until: number };
+  /** U Minh rebirth is automatic unless the player switches it off to keep their Hồn. */
+  rebirthOff?: boolean;
 }
 export interface BoomerangState {
+  gearYin?: boolean; gearMultiplier?: number;
   id: number;
   casterId: string;
   start: Vec;
@@ -302,8 +336,12 @@ export interface BoomerangState {
   hitIds: string[];
 }
 export interface GameEvent {
+  origin?: Vec;
+  owner?: string;
   id: number;
-  kind: 'attack' | 'trait' | 'cast' | 'ability' | 'death' | 'reward' | 'wave' | 'info';
+  kind: 'attack' | 'trait' | 'cast' | 'ability' | 'death' | 'reward' | 'wave' | 'info' | 'bond-trigger';
+  /** Synergy id for `bond-trigger`; presentation only. */
+  bondId?: number;
   source?: string;
   target?: string;
   targets?: string[];
@@ -337,6 +375,9 @@ export interface GameEvent {
   telegraph?: EnemyTelegraphShape;
 }
 export interface GameState {
+  gearSeed?: number;
+  gearStats?: GearStats;
+  gearTraps?: { ownerUnitId: string; zone: number; x: number; z: number; remaining: number }[];
   version: string; roomCode: string; host: string; seed: number; tick: number; elapsed: number; serial: number;
   phase: 'lobby' | 'preparation' | 'combat' | 'won' | 'lost'; difficulty: Difficulty;
   wave: number; maxWaves: number; remaining: number; baseHp: number; maxBaseHp: number; speed: number;
@@ -346,7 +387,7 @@ export interface GameState {
   /** Events through this id belong to combat cleared on wave completion. */
   combatResetEventId?: number;
   groundEffects?: { x: number; z: number; zone: number; radius: number; remaining: number; damagePerSecond: number; casterId: string;
-    kind?: 'pangu-rift' | 'golden-bowl' | 'phong-than' | 'beidou' | 'lantern-cage' | 'five-finger' | 'chucdung-ember' | 'chucdung-lava' | 'xuanyuan-sword' | 'shennong-grove' | 'fuxi-bagua' | 'blood-sea' | 'phoenix-carpet' | 'tier-fire' | 'tier-water' | 'tier-gold'; id?: string; direction?: Vec; length?: number; width?: number; slowStrength?: number;
+    kind?: 'gear-fire-trail' | 'pangu-rift' | 'golden-bowl' | 'phong-than' | 'beidou' | 'lantern-cage' | 'five-finger' | 'chucdung-ember' | 'chucdung-lava' | 'xuanyuan-sword' | 'shennong-grove' | 'fuxi-bagua' | 'blood-sea' | 'phoenix-carpet' | 'tier-fire' | 'tier-water' | 'tier-gold'; id?: string; direction?: Vec; length?: number; width?: number; slowStrength?: number;
     healPerSecond?: number; pullSpeed?: number; controlRolls?: Record<string, boolean>; boltsRemaining?: number; boltClock?: number; boltDamage?: number; burnDps?: number; rainRemaining?: number }[];
   boomerangs?: BoomerangState[];
   tierPulses?: { casterId: string; heroId: string; zone: number; x: number; z: number; radius: number;
@@ -354,6 +395,8 @@ export interface GameState {
   solarPhases?: { casterId: string; zone: number; x: number; z: number; remaining: number; attack: number }[];
   /** Separate RNG stream for hard-control rolls (see game-core crowd-control). */
   controlSeed?: number;
+  /** Separate RNG stream for bond rolls so they never shift control or crit sequences. */
+  bondSeed?: number;
   /** Test/debug only: forces every hard-control roll to this chance. The server never sets it. */
   controlChanceOverride?: number;
   /** Hard-control rolls and successes per hero id, for debugging balance. */
@@ -364,6 +407,7 @@ export interface GameState {
   engagementStats?: { swings: number; cancelled: number; switched: number; overflow: number };
 }
 export type Command =
+  | GearCommand
   | { type: 'ready'; ready: boolean }
   | { type: 'start' }
   | { type: 'difficulty'; difficulty: Difficulty }
@@ -375,7 +419,6 @@ export type Command =
   | { type: 'merge'; unitId: string }
   | { type: 'craft'; heroId: string }
   | { type: 'sell'; unitId: string }
-  | { type: 'equip'; unitId: string; category: number }
   | { type: 'cast'; unitId: string; target?: string }
   | { type: 'move'; unitId: string; x: number; z: number }
   | { type: 'attack'; unitId: string; target: string }
@@ -385,6 +428,8 @@ export type Command =
   | { type: 'formation'; formation: number }
   | { type: 'upgrade-formation'; formation: number }
   | { type: 'next-wave' }
+  /** Bond actions the player chooses to spend resources on; `luan-hoi-auto` needs `enabled`. */
+  | { type: 'bond-action'; action: 'am-binh' | 'long-ngam' | 'luan-hoi-auto'; enabled?: boolean }
   | { type: 'speed'; speed: number }
   | { type: 'admin-get-hero'; heroId: string; rank?: number; deploy?: boolean }
   | { type: 'admin-resources'; gold?: number; souls?: number; pellets?: number; formationPoints?: number };

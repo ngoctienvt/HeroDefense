@@ -1,4 +1,4 @@
-import type { HeroDef, Unit } from '../../../packages/contracts/src/types.js';
+import type { GameState, HeroDef, Unit } from '../../../packages/contracts/src/types.js';
 import { ATTACK_GEOMETRY_DESCRIPTIONS, ATTACK_GEOMETRY_NAMES, ON_HIT_TRAIT_DESCRIPTIONS, ON_HIT_TRAIT_NAMES } from '../../../packages/contracts/src/combat-profiles.js';
 import { controlChance } from '../../../packages/game-core/src/crowd-control.js';
 import { scaledAttackRange } from '../../../packages/game-core/src/rules.js';
@@ -59,7 +59,7 @@ function activeBuffs(unit: Unit): string[] {
   return buffs;
 }
 
-export function heroDetail(hero: HeroDef, unit?: Unit, options: { compact?: boolean } = {}): HTMLElement {
+export function heroDetail(hero: HeroDef, unit?: Unit, options: { compact?: boolean; state?: GameState } = {}): HTMLElement {
   const root = el('div', 'hero-detail');
   root.append(heroIdentity(hero, unit));
 
@@ -69,7 +69,7 @@ export function heroDetail(hero: HeroDef, unit?: Unit, options: { compact?: bool
   }
 
   if (hero.ability) {
-    const energy = unit ? energyState(unit, hero) : null;
+    const energy = unit ? energyState(unit, hero, options.state) : null;
     root.append(section('ky-nang', hero.ability.name, hero.ability.description, energy ? `${energyLabel(energy)} · ${abilityCost(hero)}` : abilityCost(hero)));
   } else {
     root.append(el('p', 'hero-detail-note', 'Không có kỹ năng chủ động: sức mạnh nằm ở đòn đánh thường.'));

@@ -1,5 +1,7 @@
 import { HANGNGA as H } from '../../../content/hangnga-design.js';
 import type { Enemy, GameState, Unit } from '../../contracts/src/types.js';
+import { healAlly } from './ally-scaled-support.js';
+import { bondOnShield, bondShieldMultiplier } from './bond-runtime.js';
 import { applyEnemyStatus, blessedNormalDamage } from './combat-status.js';
 import { distance, event, isDeployed } from './rules.js';
 import { tryHardControl } from './crowd-control.js';
@@ -28,8 +30,10 @@ export function hangngaAbility(state: GameState, unit: Unit): void {
   for (const ally of Object.values(state.units)) {
     if (!isDeployed(ally) || ally.owner !== unit.owner || ally.zone !== unit.zone
       || distance(ally, unit) > H.allyRadius) continue;
-    ally.hp = Math.min(ally.maxHp, ally.hp + attack * H.healPower);
-    ally.shield = Math.max(ally.shield, attack * H.shieldPower);
+    healAlly(ally, attack * H.healPower, { state, source: unit });
+    const shield = attack * H.shieldPower * bondShieldMultiplier(state, unit, ally);
+    ally.shield = Math.max(ally.shield, shield);
+    bondOnShield(state, unit, ally, shield);
     allies.push(ally.id);
   }
   for (const enemy of Object.values(state.enemies)) {

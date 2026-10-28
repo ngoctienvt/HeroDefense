@@ -15,6 +15,11 @@ describe('network boundaries', () => {
     expect(commandEnvelope({ id: 1, command: { type: 'choose-hero', heroId: 'h001' } })).not.toBeNull();
     expect(commandEnvelope({ id: 1, command: { type: 'formation', formation: 8 } })).not.toBeNull();
     expect(commandEnvelope({ id: 1, command: { type: 'speed', speed: 4 } })).not.toBeNull();
+    expect(commandEnvelope({ id: 1, command: { type: 'bond-action', action: 'am-binh' } })).not.toBeNull();
+    expect(commandEnvelope({ id: 1, command: { type: 'bond-action', action: 'luan-hoi-auto', enabled: false } })).not.toBeNull();
+    expect(commandEnvelope({ id: 1, command: { type: 'bond-action', action: 'luan-hoi-auto' } })).toBeNull();
+    expect(commandEnvelope({ id: 1, command: { type: 'bond-action', action: 'am-binh', enabled: true } })).toBeNull();
+    expect(commandEnvelope({ id: 1, command: { type: 'bond-action', action: 'free-souls' } })).toBeNull();
     expect(commandEnvelope({ id: 1, command: { type: 'craft', heroId: 'h009' } })).not.toBeNull();
     expect(commandEnvelope({ id: 1, command: { type: 'craft', heroId: 'h009', unitIds: ['u1'] } })).toBeNull();
     expect(commandEnvelope({ id: 1, command: { type: 'admin-get-hero', heroId: 'h001', rank: 6, deploy: true } })).not.toBeNull();

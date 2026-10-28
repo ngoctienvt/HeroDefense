@@ -9,9 +9,9 @@ type SkillSettings = {
   cooldown: number;
   effect: AbilityEffect;
 };
-type TierStats = Pick<HeroDef, 'hp' | 'attack' | 'armor' | 'range' | 'interval' | 'speed'> & { block?: number };
+type TierStats = Pick<HeroDef, 'hp' | 'attack' | 'armor' | 'range' | 'interval' | 'speed'>;
 type TierDesign = Pick<HeroDef, 'hp' | 'attack' | 'armor' | 'range' | 'interval' | 'speed'
-  | 'role' | 'element' | 'block' | 'energyType' | 'maxEnergy' | 'ability' | 'trait'>;
+  | 'role' | 'element' | 'energyType' | 'maxEnergy' | 'ability' | 'trait'>;
 
 // Numeric combat values are transcribed from the player's design brief. The
 // descriptions stay alongside them so every runtime value has a source; the
@@ -61,10 +61,10 @@ export const TIER3_TIER4_DESIGNS: Readonly<Record<string, TierDesign>> = Object.
     effect: settings.effect,
   };
   return [hero.id, {
-    ...stats,
+    hp: stats.hp, attack: stats.attack, armor: stats.armor,
+    range: stats.range, interval: stats.interval, speed: stats.speed,
     role: settings.role,
     element: hero.element,
-    block: stats.block ?? 0,
     energyType: hero.energyType as EnergyType,
     maxEnergy: 100,
     ability,

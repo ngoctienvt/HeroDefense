@@ -3,8 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { HERO_COMBAT_PROFILES } from '../../../packages/contracts/src/combat-profiles.js';
 import type { GameEvent } from '../../../packages/contracts/src/types.js';
 import { HERO_BY_ID } from '../../../content/catalog.js';
-import { basicAttackHeroId, paintBasicAttack, paintEnemyBasicAttack } from '../src/visual-basic-attack.js';
-import { BASIC_ATTACK_PROFILES, skinnedEnemyProfile } from '../src/visual-basic-attack-profiles.js';
+import { basicAttackHeroId, basicAttackPreempts, paintBasicAttack, paintEnemyBasicAttack } from '../src/visual-basic-attack.js';
+import { BASIC_ATTACK_PROFILES, PREEMPTING_BASIC_ATTACKS, skinnedEnemyProfile } from '../src/visual-basic-attack-profiles.js';
 import type { TierSkillPainter } from '../src/visual-tier-skills.js';
 
 function painter(reduced = false) {
@@ -171,5 +171,46 @@ describe('hero-skinned enemies', () => {
     paintEnemyBasicAttack(fx, enemyEvent, from, hit, 'h00U');
     const end = (fx.beam as ReturnType<typeof vi.fn>).mock.calls[0][1] as Vector3;
     expect(end.x).toBeCloseTo(hit.x, 5);
+  });
+});
+
+describe('tier 5–6 heroes without a weapon picture of their own', () => {
+  const ids = ['h011', 'h012', 'h013', 'h014', 'h015', 'h03W', 'h01J', 'h041'];
+
+  it('are profiled, preempt the hero module and have catalog and combat entries', () => {
+    for (const heroId of ids) {
+      expect(BASIC_ATTACK_PROFILES[heroId], heroId).toBeDefined();
+      expect(PREEMPTING_BASIC_ATTACKS.has(heroId), heroId).toBe(true);
+      expect(basicAttackPreempts(`trait-${heroId}`), heroId).toBe(true);
+      expect(HERO_BY_ID[heroId], heroId).toBeDefined();
+      expect(HERO_COMBAT_PROFILES[heroId], heroId).toBeDefined();
+    }
+    expect(basicAttackPreempts('trait-h00V')).toBe(false);
+    expect(basicAttackPreempts('skill-h011')).toBe(false);
+  });
+
+  it('draw a main shape that travels or sweeps, and still mark the hit under reduced motion', () => {
+    for (const heroId of ids) {
+      const full = painter();
+      paintBasicAttack(full.fx, attack(heroId), from, hit);
+      full.scheduled.splice(0).forEach(run => run());
+      const drew = (full.fx.image as ReturnType<typeof vi.fn>).mock.calls.length + full.travel.mock.calls.length;
+      expect(drew, heroId).toBeGreaterThan(0);
+      const reduced = painter(true);
+      paintBasicAttack(reduced.fx, attack(heroId), from, hit);
+      expect(reduced.fx.shockwave, heroId).toHaveBeenCalled();
+      expect(reduced.travel, heroId).not.toHaveBeenCalled();
+    }
+  });
+
+  it('sweeps the cleave heroes across the server fan once per swing', () => {
+    for (const heroId of ['h011', 'h012']) {
+      expect(HERO_COMBAT_PROFILES[heroId].geometry.type).toBe('frontal_cleave');
+      const { fx, scheduled } = painter();
+      paintBasicAttack(fx, attack(heroId, { source: `s-${heroId}` }), from, hit);
+      paintBasicAttack(fx, attack(heroId, { id: 2, source: `s-${heroId}` }), from, new Vector3(2, 0, 1));
+      scheduled.splice(0).forEach(run => run());
+      expect(fx.image, heroId).toHaveBeenCalledTimes(3);
+    }
   });
 });

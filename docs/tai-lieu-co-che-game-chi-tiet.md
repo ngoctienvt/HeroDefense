@@ -12,19 +12,9 @@
 - **Triết lý bản Web:** Giữ nguyên danh tính 70 nhân vật, ngũ hành, 27 mối quan hệ Tiên Duyên, 8 Trận Pháp, 62 công thức Ghép Tướng và nhịp độ wave từ bản gốc. Các chỉ số chiến đấu và kỹ năng riêng biệt được thiết kế và cân bằng lại độc lập để tương thích hoàn hảo với môi trường trình duyệt web hiện đại.
 - **Quy mô:** 1 đến 4 người chơi trong một phòng (hỗ trợ Solo để luyện tập và Co-op 2-4 người phối hợp chiến thuật).
 
-### 1.2. Mục tiêu trận đấu & Điều kiện Thắng / Thua
-- **Mục tiêu tối thượng:** Toàn bộ người chơi dùng chung một thanh máu căn cứ gọi là **Linh Trụ** (Base HP ban đầu: `100`, tối đa: `100`). Bảo vệ Linh Trụ không bị quái vật xâm nhập cho đến khi tiêu diệt toàn bộ đợt quái cuối cùng.
-- **Điều kiện Thua (Defeat):** Linh Trụ bị tụt về `0 HP` tại bất kỳ thời điểm nào -> Thất bại ngay lập tức (`phase = 'lost'`).
-- **Điều kiện Thắng (Victory):** Vượt qua toàn bộ số Wave của độ khó đã chọn (45 đợt ở Thường/Ác Mộng/Địa Ngục; 60 đợt ở Tối Thượng) và Linh Trụ vẫn còn `HP > 0` -> Chiến thắng (`phase = 'won'`).
-- **Hệ thống Xếp hạng Đánh giá (1 đến 7 Sao):**
-  Khi chiến thắng, số sao được tính theo công thức xác định:
-  $$\text{Stars} = \min\Big(7,\; 1 + [\text{BaseHP} \ge 25] + [\text{BaseHP} \ge 60] + [\text{BaseHP} \ge 90] + \min\big(2, \lfloor \text{ClearedDungeons} / 3 \rfloor\big) + [\text{ElapsedSeconds} < \text{MaxWaves} \times 60]\Big)$$
-  - Cơ số mặc định: `1 sao`.
-  - Máu Linh Trụ $\ge 25$: `+1 sao`.
-  - Máu Linh Trụ $\ge 60$: `+1 sao`.
-  - Máu Linh Trụ $\ge 90$: `+1 sao`.
-  - Phá giải Phụ bản: Cứ mỗi 3 phụ bản hoàn thành được `+1 sao` (tối đa `+2 sao`).
-  - Tốc độ hoàn thành: Tổng thời gian trận đấu < $60 \times \text{MaxWaves}$ giây (tức trung bình dưới 60s/wave): `+1 sao`.
+### 1.2. Mục tiêu và thắng/thua
+
+Bảo vệ Linh Trụ chung 100 Máu qua đúng 20 wave ở mọi độ khó. Máu về 0 thì thua; dọn hết wave 20 và còn Máu thì thắng. Tối đa bảy sao: một sao nền, mỗi ngưỡng Máu 25/50/75/90/100 thêm một sao, hoàn thành dưới `20×65` giây thêm một sao. Luật chính xác ở [simulation.ts](../packages/game-core/src/simulation.ts).
 
 ### 1.3. Kiến trúc Mạng & Vòng lặp Mô phỏng (Simulation Loop)
 - **Mô hình Server-Authoritative:** Toàn bộ logic trò chơi (kinh tế, sinh quái, sát thương, hồi chiêu, di chuyển, va chạm) được xử lý tập trung trên Node.js server. Client (trình duyệt) chỉ là tầng hiển thị (renderer Babylon.js) và gửi các lệnh điều khiển (commands).
@@ -105,20 +95,22 @@ Người chơi có toàn quyền điều khiển vi mô các tướng do mình s
 
 ## 3. HỆ THỐNG KINH TẾ & QUẢN LÝ QUÂN (ECONOMY & ROSTER ENGINE)
 
-### 3.1. Ba Đơn vị Tiền tệ
+### 3.1. Tiền tệ và vật liệu
 1. **Linh Thạch (Gold):**
    - Tiền tệ công nghệ và trang bị.
    - Bắt đầu trận: Cấp cho mỗi người chơi **500 Linh Thạch**.
-   - Mục đích sử dụng: Nâng cấp 3 nhánh Trang bị tướng.
-   - Nguồn thu: Thưởng vượt qua Wave ($180 + \text{wave} \times 40$); Thưởng phá vỡ Phụ bản ($350 + \text{dungeonId} \times 100$); Bán tướng hoàn trả 50% tiền trang bị. *(Lưu ý: Tiêu diệt quái thường KHÔNG cộng Linh Thạch)*.
+   - Mục đích sử dụng: Cường hóa và tẩy luyện đồ.
+   - Nguồn thu: Thưởng wave `180+40×wave`, hoàn 50% đầu tư khi phân giải đồ và một số kỹ năng/dòng độc nhất. Hạ quái thường không có tiền cơ bản; Tụ Bảo Bồn có thưởng riêng. Bán tướng trả đồ về kho, không hoàn tiền cường hóa.
 2. **Đạo Duyên (Souls):**
    - Điểm nhân duyên chiêu mộ tiên nhân.
    - Bắt đầu trận: Cấp cho mỗi người chơi **18 Đạo Duyên**.
    - Mục đích sử dụng: Ba gói triệu hồi giá 2/4/8 Đạo Duyên.
-   - Nguồn thu: Thưởng vượt qua Wave ($4 + \lfloor \text{wave} / 10 \rfloor$); Thưởng phá vỡ Phụ bản ($4 + \text{dungeonId}$); Bán tướng hoàn trả theo bậc.
+   - Nguồn thu: Thưởng vượt qua Wave ($4 + \lfloor \text{wave} / 10 \rfloor$); Bán tướng hoàn trả theo bậc.
 3. **Linh Đan:**
    - Nhận 1 khi Tiên Chiêu thất bại, 3 khi Thiên Mệnh thất bại.
    - Dùng đổi rương tướng tự chọn hoặc Linh Phôi; không mua bằng Linh Thạch.
+
+4. **Huyền Tinh (gearDust):** Vật liệu tẩy luyện nhận từ phân giải đồ; không dùng để triệu hồi.
 
 ### 3.2. Ba Gói Triệu Hồi và Cửa Hàng Linh Đan
 - **Phàm Chiêu:** 2 Đạo Duyên, dùng được từ wave 1 (kể cả chuẩn bị trước wave đầu), thành công 100%; rơi tướng bậc 1/2 ngẫu nhiên theo 85%/15%.
@@ -130,32 +122,23 @@ Người chơi có toàn quyền điều khiển vi mô các tướng do mình s
 ### 3.3. Bộ Sưu Tập Tướng
 - Tướng triệu hồi hoặc ghép xong tích lũy không giới hạn trong bộ sưu tập/bảng ghép. Tối đa 5 tướng được triển khai cùng lúc.
 
-### 3.4. Hệ Thống 3 Nhánh Trang Bị (Equipment System)
-Mỗi nhân vật trên sân có thể nâng cấp độc lập 3 nhánh trang bị, từ cấp 0 đến tối đa **cấp 5**:
-1. **Nhánh 0: Công Kích (Weapon):** Tăng **+22%** sức tấn công cơ bản trên mỗi cấp trang bị.
-2. **Nhánh 1: Phòng Thủ (Armor):** Tăng **+25%** lượng máu tối đa và **+4 giáp** vật lý trên mỗi cấp trang bị.
-3. **Nhánh 2: Pháp Lực (Magic):**
-   - Tăng tốc độ tấn công cơ bản (giảm khoảng cách giữa 2 đòn đánh): $+4\%$ mỗi cấp trang bị.
-   - Tăng sức mạnh kỹ năng (Power): $+25\%$ mỗi cấp trang bị.
-   - Giảm thời gian hồi chiêu kỹ năng: Giảm theo công thức chia cho $(1 + 0.10 \times \text{gearLevel})$.
+### 3.4. Hệ thống đồ ngẫu nhiên (thiết kế bản web)
 
-**Bảng chi phí nâng cấp trang bị:**
-Công thức nâng từ cấp $n$ lên $n+1$:
-$$\text{Cost}(n) = 80 \times (n + 1)^2$$
-| Nâng cấp từ -> lên | Chi phí Linh Thạch | Tổng tích lũy để đạt cấp |
-|:---|:---:|:---:|
-| Cấp 0 -> Cấp 1 | 80 | 80 |
-| Cấp 1 -> Cấp 2 | 320 | 400 |
-| Cấp 2 -> Cấp 3 | 720 | 1.120 |
-| Cấp 3 -> Cấp 4 | 1.280 | 2.400 |
-| Cấp 4 -> Cấp 5 | 2.000 | 4.400 |
-*(Để nâng cấp cực đại 1 tướng đạt mốc [5, 5, 5] tốn tổng cộng: $4.400 \times 3 = 13.200$ Linh Thạch)*.
+Ba khe: vũ khí, giáp, pháp khí. Mỗi người có kho riêng không giới hạn; phím `I` mở Kho Đồ. Mặc/tháo/chuyển giữa tướng cùng chủ bất kỳ lúc nào; đơn vị triệu hồi không mặc đồ. Đổi Máu tối đa giữ nguyên tỷ lệ Máu. Trắng 0 dòng, xanh 1–2, tím 3–4, vàng 5–6 và 1 dòng độc nhất. Không có dòng trùng trên cùng món, không có Ngũ Hành hay dòng ẩn. Chỉ số chặn đã bỏ hoàn toàn; Định Hải Thần Châm chỉ miễn choáng/đẩy lùi, không giảm tốc đánh.
+
+Dữ liệu số dùng chung nằm tại [gear-design.ts](../content/gear-design.ts), hợp đồng tại [gear-types.ts](../packages/contracts/src/gear-types.ts). Mô tả đầy đủ và quy tắc 17 dòng độc nhất xem [hệ thống đồ](gameplay-spec.md#hệ-thống-đồ-thiết-kế-web-20-10-2026).
+
+- Nền: vũ khí +40% Công; giáp +45% Máu và +6 Giáp; pháp khí +8% tốc đánh và +20% sát thương kỹ năng.
+- Hệ số cấp `S=.5+.5×min(1.2,level/20)`, cấp món bằng wave rớt. Nền và dòng thường nhân thêm `E=1+.06×enhance`; dòng độc nhất không tăng theo cường hóa. Giá trị phần trăm trong `GearLine` là điểm phần trăm (12 nghĩa là 12%).
+- Roll dòng theo `min+(max−min)×r^(1/q)`, rồi nhân S. Quái thường q=1; Boss chung q tăng theo tiến trình. `gearSeed` riêng không làm lệch RNG chiến đấu/triệu hồi.
+- Quái có 5% rớt cho chủ tướng hạ. Sáu Boss chung ở các mốc 5/10/15/20 chắc chắn rớt ít nhất xanh. Ba wave trắng tay tự bù ít nhất xanh. Món rớt vào kho; thông báo chỉ gửi đúng chủ. Không có phụ bản đang hoạt động.
+- Cường hóa +0–10 không thất bại. Giá lên +k+1 là `3×(k+1)²`; một món +10 tốn 1.155 Linh Thạch, 15 món tốn 17.325. Thu nhập chắc chắn 20 wave là 12.500 gồm 500 ban đầu; phải ưu tiên đầu tư.
+- Tẩy luyện thay một dòng thường ngẫu nhiên, giữ dòng độc nhất; tốn `2+rerolls` Huyền Tinh và `50×(rerolls+1)` Linh Thạch. Phân giải chỉ món trong kho, trả 1/2/5/12 Huyền Tinh theo trắng/xanh/tím/vàng và 50% tiền cường hóa, làm tròn xuống.
 
 ### 3.5. Hợp Nhất Bản Sao (Star Merge - Nâng Bậc Tướng)
 - **Cơ chế:** Khi sở hữu **3 bản sao** của cùng một tướng ở cùng một bậc sao (và không đang ở trong phụ bản), người chơi có thể ra lệnh hợp nhất thành 1 bản sao ở bậc cao hơn (Bậc 1 -> Bậc 2 -> Bậc 3).
-- **Bậc tối đa:** **Bậc 3** (Rank 3).
-- **Kế thừa vị trí và trang bị:** Bản sao được chỉ định hợp nhất sẽ giữ nguyên vị trí trên sân. Cấp độ trang bị của từng nhánh sau khi ghép sẽ lấy **giá trị lớn nhất** trong 3 bản sao:
-  $$\text{Gear}_{\text{new}}[k] = \max\big(\text{Gear}_{1}[k], \text{Gear}_{2}[k], \text{Gear}_{3}[k]\big)$$
+- **Bậc tối đa:** **10 sao**.
+- **Vị trí và đồ:** Bản được chọn giữ ô và đồ đang mặc; đồ hai bản bị tiêu trở về kho, không mất cường hóa hoặc tầng tích.
 - **Luật Hạn Chế Triển Khai (Anti-Stacking Rule):**
   Không được phép triển khai đồng thời trên 5 ô chiến trường từ 2 bản sao bậc 2 trở lên của cùng một nhân vật. (Người chơi vẫn có thể giữ nhiều bản sao ở hàng dự bị, nhưng không thể cùng lúc đưa 2 con bậc 2 ra sân).
 - **Hệ số Tăng Trưởng Chỉ Số Khủng (Rank Scaling Multiplier):**
@@ -170,7 +153,7 @@ $$\text{Cost}(n) = 80 \times (n + 1)^2$$
 - Mọi tướng từ Bậc 2 đến Bậc 6 đều có công thức ghép cố định gồm đúng **3 tướng nguyên liệu theo ID và bậc ghi trong catalog** (có công thức đòi hỏi bản sao cùng tên). Công thức bậc cao dùng nguyên liệu bậc cao, không chỉ bậc 1.
 - **Điều kiện ghép:**
   - Sở hữu đủ 3 nguyên liệu đúng công thức (đang ở trên sân hoặc trong bộ sưu tập, không được ở trong phụ bản); có thể thay đúng 1 nguyên liệu bậc 3 hoặc 4 còn thiếu bằng Linh Phôi cùng bậc.
-- **Kết quả:** Tiêu thụ nguyên liệu và Linh Phôi nếu dùng, tạo tướng mới trong bộ sưu tập với cấp trang bị kế thừa mức cao nhất của các tướng nguyên liệu ở từng nhánh.
+- **Kết quả:** Tiêu thụ nguyên liệu và Linh Phôi nếu dùng, tạo tướng mới trong bộ sưu tập; toàn bộ đồ nguyên liệu trở về kho. Truyền Thừa Ấn hấp thụ 15% Công/Máu gốc theo sao của tướng bị tiêu.
 
 ### 3.7. Cơ Chế Bán Tướng (Sell Dynamics)
 - Không thể bán tướng khi đang ở trong phụ bản.
@@ -179,7 +162,7 @@ $$\text{Cost}(n) = 80 \times (n + 1)^2$$
   - Bán tướng Bậc 1: Nhận lại **1 Đạo Duyên**.
   - Bán tướng Bậc 2: Nhận lại **3 Đạo Duyên**.
   - Bán tướng Bậc 3: Nhận lại **9 Đạo Duyên**.
-- **Hoàn trả Linh Thạch:** Nhận lại đúng **50%** tổng chi phí Linh Thạch đã từng đầu tư nâng cấp toàn bộ trang bị trên tướng đó.
+- **Trang bị:** Trả về kho nguyên vẹn; không hoàn Linh Thạch, Truyền Thừa Ấn không hấp thụ khi bán. Phân giải đồ là thao tác riêng.
 
 ---
 
@@ -187,22 +170,17 @@ $$\text{Cost}(n) = 80 \times (n + 1)^2$$
 
 Mọi tính toán sát thương và thuộc tính đều được server thực thi theo các phương trình toán học chuẩn xác dưới đây:
 
-### 4.1. Máu Tối Đa (Maximum Health)
-$$\mathbf{MaxHP} = \text{round}\Big(HP_{\text{base}} \times 2.4^{\text{rank} - 1} \times \big(1 + 0.25 \times \text{Gear}_{\text{def}} + \text{Bonus}_{\text{health}}\big)\Big)$$
-- $HP_{\text{base}}$: Máu cơ sở của tướng trong catalog.
-- $\text{Gear}_{\text{def}}$: Cấp độ trang bị nhánh Thủ (0 đến 5).
-- $\text{Bonus}_{\text{health}}$: Tổng phần trăm tăng máu từ Tiên Duyên và Trận Pháp (dạng thập phân, ví dụ 0.16 là +16%).
-- *Bảo toàn tỉ lệ sinh lực:* Khi kích hoạt hoặc hủy kích hoạt buff máu, tỉ lệ phần trăm máu hiện tại của tướng được giữ nguyên ($HP_{\text{curr}} = \frac{HP_{\text{curr}}}{HP_{\text{oldMax}}} \times HP_{\text{newMax}}$), triệt tiêu hoàn toàn lỗi lợi dụng bật/tắt buff để hồi máu ảo.
+### 4.1. Máu tối đa
 
-### 4.2. Sức Tấn Công (Attack Power)
-$$\mathbf{Attack} = \text{round}\Big(ATK_{\text{base}} \times 2.4^{\text{rank} - 1} \times \big(1 + 0.22 \times \text{Gear}_{\text{atk}} + \text{Bonus}_{\text{attack}}\big)\Big)$$
-- $ATK_{\text{base}}$: Sát thương cơ sở của tướng.
-- $\text{Gear}_{\text{atk}}$: Cấp độ trang bị nhánh Công (0 đến 5).
-- $\text{Bonus}_{\text{attack}}$: Tổng phần trăm tăng sát thương từ Tiên Duyên và Trận Pháp.
+`MaxHP=round((HPbase×2.4^(rank−1)+absorbedHp)×(1+gearHealth+bonusHealth))`. `gearHealth` gộp nền giáp và dòng % Máu; `absorbedHp` là phần Truyền Thừa lưu trên món. Đổi đồ/buff giữ tỷ lệ Máu hiện tại, không hồi máu.
+
+### 4.2. Công
+
+`Attack=round((ATKbase×2.4^(rank−1)+absorbedAttack+healthAttack)×(1+gearAttack+bonusAttack+uniqueAttack))`. Càn Khôn Đảo Chuyển cho `healthAttack=.06×MaxHP`; Tọa Vong +40% Công, Tụ Bảo Bồn −25%. Các hệ số và thứ tự chính xác xem [stats.ts](../packages/game-core/src/stats.ts), [gear-stats.ts](../packages/game-core/src/gear-stats.ts).
 
 ### 4.3. Giáp & Công Thức Giảm Trừ Sát Thương (Armor & Damage Mitigation)
-$$\mathbf{Armor} = Armor_{\text{base}} + \text{Gear}_{\text{def}} \times 4 + \text{Bonus}_{\text{armor}}$$
-Mỗi điểm trang bị nhánh Thủ tăng trực tiếp **+4 Giáp**.
+`Armor=ArmorBase+gearArmor+bonusArmor`
+Giáp đồ gồm nền +6 đã nhân hệ số cấp/cường hóa, cộng dòng Giáp phẳng.
 
 Khi phải nhận một lượng sát thương thô ($Damage_{\text{raw}}$), lượng sát thương thực tế xuyên qua giáp được tính theo hệ số phi tuyến chuẩn Warcraft:
 $$\mathbf{DamageFactor} = \frac{100}{100 + \text{Armor} \times 5}$$
@@ -224,12 +202,9 @@ $$\mathbf{DamageFactor} = \frac{100}{100 + \text{Armor} \times 5}$$
 | 40 | 33.3% | 66.7% | 3.00x |
 | 60 | 25.0% | 75.0% | 4.00x |
 
-### 4.4. Tốc Độ Đánh & Khoảng Cách Giữa 2 Đòn Đánh (Attack Interval)
-$$\mathbf{AttackInterval} = \frac{\text{Interval}_{\text{base}}}{1 + \text{Bonus}_{\text{speed}} + 0.04 \times \text{Gear}_{\text{mag}} + \text{Haste}_{\text{amount}}}$$
-- $\text{Interval}_{\text{base}}$: Thời gian hồi giữa 2 đòn đánh cơ bản (ví dụ 0.8s, 1.0s, 1.2s).
-- $\text{Gear}_{\text{mag}}$: Cấp độ trang bị nhánh Pháp lực (tăng 4% tốc đánh/cấp).
-- $\text{Haste}_{\text{amount}}$: Hệ số buff tăng tốc từ kỹ năng hỗ trợ.
-- Carry có nội tại đánh tay cộng thêm tầng Chiến Ý và Thừa Thắng vào mẫu số (xem 4.4.1).
+### 4.4. Tốc độ đánh
+
+Nhịp đánh bằng nhịp gốc chia cho tổng `1+bonusSpeed+gearSpeed+haste+buff/nội tại`; Ma Tâm cộng 80% tốc đánh. Định Hải Thần Châm không giảm tốc đánh. Xem `attackInterval` trong [stats.ts](../packages/game-core/src/stats.ts).
 
 #### 4.4.1. Đánh Lan & Nội Tại Carry (bản web, 19-10-2026)
 - Đòn đánh thường không còn nổ lan quanh mục tiêu. Chỉ carry cận chiến giữ chém quét: mục tiêu chính 100%, quái bên cạnh 60% (Quỷ Sai, Mộc Tra: 50%).
@@ -258,14 +233,13 @@ Tám tướng Linh chỉ có đặc tính đòn đánh thường; 62 tướng c�
 - **Động tác lấy đà (Windup 0.25s):**
   Mười hai tướng Huyền có động tác lấy đà **0,25 giây** (`pendingAbility`). Nếu tướng tử trận hoặc rời chiến trường trong thời gian này, chiêu thức bị ngắt. Các tướng bậc cao hơn hiện xuất chiêu tức thời. Trong sảnh chờ, kỹ năng tác động ngay vì đồng hồ mô phỏng chưa chạy.
 
-### 5.2. Công Thức Sức Mạnh Kỹ Năng (Ability Power Scaling)
-$$\mathbf{SkillPower} = \mathbf{Attack} \times \text{PowerMultiplier} \times \big(1 + 0.25 \times \text{Gear}_{\text{mag}}\big)$$
-- Sức mạnh chiêu thức tỉ lệ thuận trực tiếp với chỉ số Sát thương tấn công của tướng tại thời điểm đó (tức hưởng lợi từ cả Rank sao, Trang bị nhánh Công, Tiên Duyên và Trận Pháp).
-- Mỗi cấp độ Trang bị nhánh Pháp lực tăng thêm **+25%** sát thương/hiệu lực cho kỹ năng.
+### 5.2. Sức mạnh kỹ năng
 
-### 5.3. Công Thức Giảm Hồi Chiêu Kỹ Năng (Ability Cooldown Reduction)
-$$\mathbf{Cooldown} = \frac{\text{Cooldown}_{\text{base}}}{1 + 0.10 \times \text{Gear}_{\text{mag}}}$$
-Mỗi cấp độ Trang bị nhánh Pháp lực giúp kỹ năng hồi nhanh hơn 10%. Tại cấp 5, thời gian hồi chiêu chỉ còn $\frac{1}{1.5} \approx 66.7\%$ so với ban đầu.
+Sát thương dùng Công thực của tướng và `skillDamageMultiplier`, gồm dòng sát thương kỹ năng. Hệ số pháp lực cũ ×(1+.25×cấp) đã bỏ. Hồi máu/khiên vẫn nhận phần theo Công đã tăng bởi vũ khí; phần theo % Máu tối đa người nhận không đổi. [ally-scaled-support.ts](../packages/game-core/src/ally-scaled-support.ts) giữ phép cộng hai phần.
+
+### 5.3. Hồi chiêu
+
+`Cooldown=base×(1−min(1,gearCooldownReduction))`, chỉ dòng hợp tướng dùng hồi chiêu. Dùng chung `abilityCooldownFor`; tướng dùng Nộ hưởng dòng Nộ nhận vào ở một điểm xử lý cuối tick.
 
 ### 5.4. Năm Bộ Xử Lý Kỹ Năng (The 5 Ability Handlers)
 1. **Quét Diện Rộng (Cleave):**
@@ -529,89 +503,15 @@ Người chơi có thể kích hoạt **1 trong 8 trận pháp**. Điểm trận
 
 ---
 
-## 8. TIẾN TRÌNH WAVE, ĐỘ KHÓ & QUÁI VẬT (WAVE PROGRESSION & ENEMIES)
+## 8. Tiến trình 20 wave hiện tại
 
-### 8.1. Bốn Cấp Độ Khó (Difficulties)
-| ID | Tên Độ Khó | Tổng Số Wave | Hệ Số Công Quái | Hệ Số Máu Quái | Đặc Điểm |
-|:---:|:---|:---:|:---:|:---:|:---|
-| `normal` | **Bình Thường** | 45 | **1.0x** | **1.0x** | Chế độ tiêu chuẩn cho người mới làm quen |
-| `nightmare`| **Ác Mộng** | 45 | **1.1x** | **1.3x** | Quái trâu hơn, yêu cầu tối ưu trang bị |
-| `hell` | **Địa Ngục** | 45 | **1.2x** | **1.6x** | Đòi hỏi phối hợp Tiên Duyên và Trận Pháp chuẩn xác |
-| `supreme` | **Tối Thượng** | 60 | **1.2x** | **1.6x** | Kéo dài 60 Wave, mở khóa Phụ bản thứ 8 (Ngũ Hành Linh Giới) |
+Mọi độ khó có 20 wave. Lịch sinh, số lượng từng nhóm, đầu lĩnh, Boss, nhịp và hệ số nằm tại [wave-plan.ts](../packages/game-core/src/wave-plan.ts), [balance-curve.ts](../packages/game-core/src/balance-curve.ts) và [hướng dẫn cân bằng](twenty-wave-balance.md). Có 456 quái mỗi làn trong toàn trận và sáu thực thể Boss chung: một ở wave 5, hai ở wave 10, một ở wave 15, hai ở wave 20. Boss chung co giãn theo số người chơi. Không dùng công thức sinh 6+floor(.6×wave) của bản cũ.
 
-### 8.2. Cấu Trúc Thời Gian Của Đợt Quái (Wave Timing)
-- **Giai đoạn Chuẩn Bị (Preparation Phase):**
-  - Wave đầu tiên: **35 giây**.
-  - Các wave tiếp theo: **25 giây**.
-  - Chủ phòng có quyền nhấn **Gọi Đợt Sớm (Next Wave)** để bỏ qua thời gian chờ.
-- **Giai đoạn Tấn Công (Combat Phase):**
-  - Wave thường: Giới hạn **50 giây**.
-  - Wave Boss (mỗi 5 wave: 5, 10, 15...): Giới hạn **70 giây**.
-  - **Hết giờ (Timeout Penalty):** Nếu hết thời gian mà quái vật trong làn chính vẫn chưa bị quét sạch, toàn bộ quái còn sót sẽ tự kích nổ và trừ thẳng vào máu Linh Trụ (Quái thường: -2 HP, Boss: -10 HP).
+Chuẩn bị đầu trận 35 giây, các wave sau 25 giây; chủ phòng có thể gọi sớm. Combat kết thúc khi sinh hết và không còn quái ở đường chính, không tự xóa quái theo timeout. Thưởng wave đều cho mọi người: `180+40×wave` Linh Thạch, `4+floor(wave/10)` Đạo Duyên; thêm một điểm trận pháp khi wave chia hết cho 4 hoặc 5. Tổng Linh Thạch chắc chắn 20 wave cộng vốn ban đầu là 12.500. Bảng độ khó lấy từ [catalog.ts](../content/catalog.ts).
 
-### 8.3. Số Lượng & Công Thức Chỉ Số Quái Vật Sinh Ra
-- **Tổng số quái sinh ra mỗi wave cho mỗi người chơi:**
-  $$\mathbf{SpawnBudget} = \min\big(30,\; 6 + \lfloor \text{wave} \times 0.6 \rfloor\big)$$
-  *(Wave 1: 6 con; Wave 10: 12 con; Wave 20: 18 con; Wave 30: 24 con; Wave 40 trở đi: Đạt trần 30 con)*.
-- **Nhịp sinh quái:** Cứ mỗi **0.9 giây** sinh ra một đợt gồm 1 con cho mỗi người chơi tại đầu làn.
-- **Tỉ lệ phân bố quái vật:**
-  - Nếu là đợt Wave chia hết cho 5 ($5, 10, 15...$) và là con quái cuối cùng trong Budget $\rightarrow$ Xuất hiện **Ma Tướng (Wave Boss)**.
-  - Các con quái khác: Có **22%** xác suất xuất hiện **Yêu Xạ (Ranged)** và **78%** xuất hiện **Ma Binh (Melee)**.
+## 9. Phụ bản đã ngừng hoạt động
 
-**Công thức chỉ số của Quái vật:**
-1. **Máu Quái Vật (HP):**
-   $$\mathbf{HP}_{\text{monster}} = \Big(65 + \text{wave}^{1.6} \times 5.5\Big) \times \text{DiffHealth} \times (\text{nếu là Boss} \times 5)$$
-2. **Sức Tấn Công (Attack):**
-   $$\mathbf{ATK}_{\text{monster}} = (8 + \text{wave} \times 2.5) \times \text{DiffAttack} \times (\text{nếu là Boss} \times 2.5)$$
-3. **Giáp Quái Vật (Armor):**
-   $$\mathbf{Armor}_{\text{monster}} = \text{wave} \times 0.25$$
-4. **Tốc Độ Di Chuyển (Speed):**
-   - Quái thường: $1.8 + \min(0.7, \text{wave} \times 0.012)$ (Tăng dần từ 1.81 lên tối đa 2.5).
-   - Boss: Cố định $1.5$ (chậm nhưng cực trâu).
-5. **Cơ Chế Tấn Công Của Boss Wave:**
-   - Đòn đánh của Boss có thời gian hồi $1.4$ giây (quái thường $1.2$ giây).
-   - Đòn đánh của Boss gây chấn động lan: Gây $100\%$ sát thương lên mục tiêu chính và **$35\%$ sát thương lan** lên toàn bộ tướng đồng minh đứng xung quanh mục tiêu trong phạm vi cận chiến!
-
-### 8.4. Phần Thưởng Vượt Wave (Wave Rewards)
-Khi dọn sạch quái hoặc kết thúc wave thành công, mỗi người chơi trong phòng nhận được:
-- **Linh Thạch:** $180 + \text{wave} \times 40$ (Ví dụ Wave 1: 220, Wave 10: 580, Wave 40: 1.780).
-- **Đạo Duyên:** $4 + \lfloor \text{wave} / 10 \rfloor$ (Wave 1-9: +4; Wave 10-19: +5; Wave 20-29: +6; ...).
-- **Điểm Trận Pháp:** Nhận $+1$ điểm vào các Wave chia hết cho 4 ($4, 8, 12, 16, 20...$).
-
----
-
-## 9. HỆ THỐNG 8 PHỤ BẢN BOSS / BÍ CẢNH (DUNGEONS SYSTEM)
-
-### 9.1. Danh Sách 8 Phụ Bản
-| ID | Tên Phụ Bản | Tên Boss Trấn Giữ | Mốc Wave Mở Khóa | Ghi Chú |
-|:---:|:---|:---|:---:|:---|
-| 1 | **Huyết Lâm** | Thụ Yêu | Wave 5 | Mở đầu, Boss thảo mộc |
-| 2 | **Thủy Vực** | Quy Vương | Wave 10 | Giáp dày |
-| 3 | **Thạch Lâm** | Thạch Cơ Nương Nương | Wave 15 | Sát thương diện rộng |
-| 4 | **Tiên Môn** | Lục Áp Đạo Quân | Wave 20 | Sát chiêu nguy hiểm |
-| 5 | **Lưỡng Giới** | Kim Giác và Ngân Giác | Wave 25 | Song quái liên kích |
-| 6 | **Bất Chu Thiên Quan**| Ma Gia Tứ Tướng | Wave 30 | Tứ đại thiên vương |
-| 7 | **Tinh Không** | Đế Giang | Wave 35 | Tốc độ và áp lực cực lớn |
-| 8 | **Ngũ Hành Linh Giới**| Ngũ Hành Linh Giới | Wave 40 | **Chỉ mở ở độ khó Tối Thượng (Supreme)** |
-
-### 9.2. Cơ Chế Tham Chiến & Rủi Ro Chiến Thuật
-- **Khu vực độc lập (Isolated Zone):** Phụ bản diễn ra tại một không gian đấu trường riêng biệt ứng với `zone = dungeonId`.
-- **Cơ chế Co-op:** Một người mở phụ bản, bất kỳ đồng đội nào cũng có thể gửi từ 1 đến 5 tướng đang sống của mình vào hợp lực đánh Boss chung.
-- **Thời hạn phụ bản:** Đếm ngược đúng **90 giây**.
-- **Chỉ Số Boss Phụ Bản:**
-  $$\mathbf{HP}_{\text{boss}} = \text{round}\Big((1200 + \text{wave}^2 \times 16) \times \text{DiffHealth}\Big)$$
-  $$\mathbf{ATK}_{\text{boss}} = (32 + \text{wave} \times 4) \times \text{DiffAttack}$$
-  $$\mathbf{Armor}_{\text{boss}} = \text{wave} \times 0.5$$
-  *(Đòn đánh lan 35% cho tất cả tướng đứng lân cận mục tiêu)*.
-- **Điều kiện Thất bại:** Toàn bộ tướng tham gia bị tử trận, HOẶC hết 90 giây mà Boss chưa chết $\rightarrow$ Thất bại. Tướng sống sót được đưa trở lại làn chính. Phụ bản không mất đi, người chơi có thể thử lại bất kỳ lúc nào.
-- **RỦI RO CHIẾN THUẬT LỚN:** Khi rút tướng vào phụ bản, các ô tương ứng trên làn chính sẽ **trống trơn**, khiến phòng tuyến bảo vệ Linh Trụ bị suy yếu nghiêm trọng. Nếu không căn thời gian dọn wave hợp lý, quái làn chính sẽ tràn vào Linh Trụ dẫn đến thua trận.
-- **Phần Thưởng Chiến Thắng Phụ Bản (Thưởng cho TOÀN BỘ người chơi):**
-  - **Linh Thạch:** $350 + \text{dungeonId} \times 100$ (Từ 450 đến 1.150 Linh Thạch).
-  - **Đạo Duyên:** $4 + \text{dungeonId}$ (Từ 5 đến 12 Đạo Duyên).
-  - **Điểm Trận Pháp:** **+1 Điểm Trận Pháp**.
-  - Toàn bộ tướng tham gia được dịch chuyển an toàn trở lại làn chính.
-
----
+Bản 20 wave không có mở/rút quân phụ bản hoặc thưởng phụ bản trong tiến trình. Dữ liệu gốc trong catalog được giữ để truy nguồn. `onDungeonGearReward` là helper chưa nối gameplay: với danh sách chủ tham gia do server xác định, mỗi chủ nhận một món ít nhất tím ở wave mở trong metadata; không tính nguồn này vào thu nhập hoặc kỳ vọng đồ của trận hiện tại.
 
 ## 10. BẢNG TRA CỨU CHI TIẾT TOÀN BỘ 70 TƯỚNG (HEROES ROSTER)
 
@@ -635,19 +535,19 @@ Dưới đây là danh sách toàn bộ 70 vị tướng được sắp xếp th
 | `h004` | **Thiên Binh** | Kim (Metal) | Chiến Binh (Warrior) | 680 | 50 | 7 | 2 | 1.05s | 4 | **Đặc tính: Trường Thương Phá Giáp** (không có kỹ năng chủ động) | 25% cơ hội chí mạng 150% sát thương; mũi thương quét thêm tối đa hai quái sát mục tiêu trong bán kính 2. |
 | `h005` | **Xạ Nhân** | Thổ (Earth) | Xạ Thủ (Ranger) | 240 | 58 | 4 | 7.5 | 1.05s | 3.5 | **Đặc tính: Trọng Tiễn Chấn Động** (không có kỹ năng chủ động) | Mỗi phát thứ ba làm choáng 0,4 giây và đẩy mục tiêu lùi 0,5 đơn vị. |
 | `h006` | **Tiên Nữ** | Mộc (Wood) | Pháp Sư (Mage) | 190 | 54 | 2 | 7 | 1.2s | 3.4 | **Đặc tính: Linh Hoa Tán Lộc** (không có kỹ năng chủ động) | Đánh một mục tiêu (support không đánh lan); hồi 15 HP cho đồng minh thấp máu nhất trong 6 đơn vị. |
-| `h007` | **Quy Thừa Tướng** | Thủy (Water) | Hộ Vệ (Guardian) | 1450 | 32 | 12 | 1.8 | 1.25s | 3 | **Đặc tính: Huyền Quy Hàn Giáp** (không có kỹ năng chủ động) | Chặn tối đa 5 quái, giảm cố định 10 sát thương nhận vào; kẻ đánh cận chiến bị chậm di chuyển và đánh 20% trong 2 giây. |
+| `h007` | **Quy Thừa Tướng** | Thủy (Water) | Hộ Vệ (Guardian) | 1450 | 32 | 12 | 1.8 | 1.25s | 3 | **Đặc tính: Huyền Quy Hàn Giáp** (không có kỹ năng chủ động) | Giảm cố định 10 sát thương nhận vào; kẻ đánh cận chiến bị chậm di chuyển và đánh 20% trong 2 giây. |
 | `h008` | **Thổ Hành Tôn** | Thổ (Earth) | Chiến Binh (Warrior) | 720 | 48 | 8 | 1.8 | 1s | 4.4 | **Đặc tính: Độn Thổ Xung Kích** (không có kỹ năng chủ động) | Lướt nhanh khi tiếp cận mục tiêu mới; mỗi đòn thứ tư nứt đất trong bán kính 2,5, gây 130% Công và tự tăng 4 Giáp trong 3 giây. |
 
 ### 10.2. Phẩm Chất Huyền (Tier 2) (12 Tướng)
 
 | ID | Tên Tướng | Hệ | Vai Trò | HP | Công | Giáp | Tầm | Giây/đòn | Tốc Chạy | Kỹ Năng (Tên - Loại - Hồi - Hệ số) | Đặc Tính & Hiệu Ứng |
 |:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---|:---|
-| `h009` | **Kim Tra** | Kim (Metal) | Hộ Vệ (Guardian) | 2400 | 65 | 16 | 1.8 | 1.15s | 3 | **Kim Quang Hộ Thể Trận** (`shield`, CD: 10s, x2.2) | Kim Cang Phản Kích: Chặn 6 quái; đòn đánh có 20% cơ hội phá 3 Giáp. Tạo khiên 2,2× Công + 10% Máu tối đa cho bản thân và đồng minh thấp máu nhất trong bán kính 5; khiên phản 35% sát thương cận chiến xuyên giáp. |
+| `h009` | **Kim Tra** | Kim (Metal) | Hộ Vệ (Guardian) | 2400 | 65 | 16 | 1.8 | 1.15s | 3 | **Kim Quang Hộ Thể Trận** (`shield`, CD: 10s, x2.2) | Kim Cang Phản Kích: đòn đánh có 20% cơ hội phá 3 Giáp. Tạo khiên 2,2× Công + 10% Máu tối đa cho bản thân và đồng minh thấp máu nhất trong bán kính 5; khiên phản 35% sát thương cận chiến xuyên giáp. |
 | `h00A` | **Mộc Tra** | Mộc (Wood) | Chiến Binh (Warrior) | 1250 | 92 | 10 | 2 | 0.95s | 4.2 | **Ngô Câu Mộc Khí Trảm** (`cleave`, CD: 8.5s, x2.3) | Song Kiếm Ngô Câu: Mỗi đòn đánh hồi cho bản thân 8 HP. Quét kiếm khí gây 230% Công trong bán kính 3,8; trói 1,8 giây và gây độc 30 sát thương mỗi giây trong 3 giây. |
 | `h00B` | **Thiết Phiến** | Thổ (Earth) | Xạ Thủ (Ranger) | 420 | 98 | 5 | 8.5 | 0.9s | 3.8 | **Ba Tiêu Cuồng Phong Toàn** (`chain`, CD: 10s, x2.1) | Ba Tiêu Trọng Phong: Đòn đánh đẩy lùi 0,2 đơn vị khi mục tiêu ở gần dưới 4 đơn vị. Lốc cát đá nảy qua 4 quái trong tầm 5,5, gây 210% Công, đẩy lùi 1,8 đơn vị và làm chậm 35% trong 3 giây. |
 | `h00C` | **Hồng Hài Nhi** | Hỏa (Fire) | Chiến Binh (Warrior) | 1180 | 96 | 9 | 2.2 | 1s | 4.3 | **Tam Muội Chân Hỏa Thương** (`cleave`, CD: 9s, x2.5) | Thương Lửa Tam Muội: Đòn đánh gây thêm 15% sát thương khi quái đang bị thiêu đốt. Quét lửa gây 250% Công trong bán kính 4; thiêu đốt thêm 120% Công thành sát thương chuẩn trong 4 giây. |
 | `h00D` | **Lã Động Tân** | Hỏa (Fire) | Pháp Sư (Mage) | 360 | 110 | 4 | 7.5 | 1.2s | 3.5 | **Thuần Dương Vạn Kiếm Quyết** (`nova`, CD: 9.5s, x2.35) | Phi Kiếm Thuần Dương: 20% cơ hội phóng thêm kiếm hỏa gây 50% sát thương. Cự kiếm rơi xuống mục tiêu, nổ 235% Công trong bán kính 4,2 và để lại kiếm hỏa 2,5 giây. |
-| `h00E` | **Cự Linh Thần** | Kim (Metal) | Hộ Vệ (Guardian) | 2550 | 68 | 17 | 2 | 1.25s | 3 | **Cự Linh Thiết Bích Trấn** (`shield`, CD: 12s, x2) | Cự Linh Song Chùy: Chặn 7 quái; đòn bổ búa chấn động quái trong bán kính 1,5. Dựng tường kim khí: tạo khiên cho đồng minh trong bán kính 4,5, tăng 6 Giáp và giảm 25% sát thương nhận trong 4 giây. |
+| `h00E` | **Cự Linh Thần** | Kim (Metal) | Hộ Vệ (Guardian) | 2550 | 68 | 17 | 2 | 1.25s | 3 | **Cự Linh Thiết Bích Trấn** (`shield`, CD: 12s, x2) | Cự Linh Song Chùy: đòn bổ búa chấn động quái trong bán kính 1,5. Dựng tường kim khí: tạo khiên cho đồng minh trong bán kính 4,5, tăng 6 Giáp và giảm 25% sát thương nhận trong 4 giây. |
 | `h00F` | **Mẫu Đơn Tiên Tử** | Mộc (Wood) | Hỗ Trợ (Support) | 620 | 75 | 6 | 7 | 1.15s | 3.8 | **Bách Hoa Hồi Xuân Khúc** (`heal`, CD: 10.5s, x2) | Hương Hoa Lan Tỏa: Đồng minh gần nhất được tăng 8% tốc độ đánh khi ở trong vùng ảnh hưởng. Hồi 200% Công cho tối đa 3 đồng minh thấp máu nhất trong bán kính 7,5 và tăng 25% tốc đánh trong 4 giây. |
 | `h00G` | **Hà Bá** | Thủy (Water) | Pháp Sư (Mage) | 380 | 105 | 4 | 7 | 1.25s | 3.4 | **Hoàng Hà Cuộn Sóng** (`nova`, CD: 10s, x2.15) | Thủy Cầu Thấm Ướt: Đòn đánh làm chậm quái 15% trong 1,5 giây. Xoáy nước đánh vào nơi quái đông nhất: gây 215% Công trong bán kính 4,5, hút về tâm và làm chậm 55% trong 3,5 giây. |
 | `h00H` | **Vô Thường** | Thổ (Earth) | Xạ Thủ (Ranger) | 410 | 102 | 5 | 8 | 0.9s | 3.6 | **Hắc Bạch Tỏa Hồn Xích** (`chain`, CD: 9.5s, x2.2) | Xích Câu Hồn: Đòn đánh gây thêm 20% sát thương khi mục tiêu còn dưới 40% Máu. Xích âm phủ nảy qua 4 quái gây 220% Công; giảm 4 Giáp và làm chậm 40% trong 3 giây. |
@@ -819,20 +719,15 @@ Mục này cung cấp các hướng dẫn chuyên sâu cho các mô hình AI ngh
    - Việc nâng một tướng lên Bậc 2 mang lại hệ số **$2.4\times$** cho cả Máu và Công (tương đương $+140\%$ sức mạnh tổng thể). Lên Bậc 3 mang lại hệ số **$5.76\times$**.
    - Tuy nhiên, để lên Bậc 2 cần 3 bản sao giống nhau. Chi phí Đạo Duyên cho nhiều lượt triệu hồi có thể làm chậm nhịp nâng cấp đội hình.
 2. **Hiệu Suất Đầu Tư Linh Thạch (Gold Efficiency):**
-   - Nâng nhánh Công từ cấp 0 lên cấp 1 tốn 80 vàng $\rightarrow$ Tăng 22% sát thương cơ bản (Hiệu suất: $0.275\%$ DPS / vàng).
-   - Nâng nhánh Công từ cấp 4 lên cấp 5 tốn 2.000 vàng $\rightarrow$ Cũng chỉ tăng 22% sát thương cơ bản (Hiệu suất: $0.011\%$ DPS / vàng).
-   - $\rightarrow$ **Kết luận chiến lược:** Phân bổ đều trang bị lên cấp 1-2 cho toàn bộ 5 tướng trên sân trước khi dồn tài nguyên đẩy trang bị lên cấp 4-5 cho chủ lực (Hyper-carry).
+   - Ưu tiên món phù hợp cơ chế tướng và chủ lực; cường hóa +0–10, phân giải đồ ở kho hoàn 50% đầu tư.
 
 ### 12.3. Chỉ Số Sống Sót Hiệu Dụng (Effective Health Points - EHP)
 $$\mathbf{EHP} = \frac{\mathbf{MaxHP}}{1 - \text{DamageReduction}} = \mathbf{MaxHP} \times \left(1 + \frac{\mathbf{Armor} \times 5}{100}\right)$$
 Khi tính toán giá trị chống chịu của các tướng Hộ Vệ (Guardian), AI cần tối ưu hóa tích số giữa MaxHP và Armor, kết hợp lớp Khiên ảo (`shield`) và Hộ giáp (`ward`).
 
-### 12.4. Chiến Thuật Đánh Phụ Bản Tối Ưu (Dungeon Timing Protocol)
-- Do phụ bản làm rút quân khỏi làn chính, thời điểm gửi quân tối ưu cho AI là:
-  1. Ngay khi Wave thường vừa kết thúc và bước vào **Thời gian chuẩn bị** (Preparation 25s).
-  2. Gửi nhóm tướng có DPS cao nhất vào phụ bản, dồn kỹ năng dứt điểm Boss trong vòng 10-15 giây.
-  3. Rút quân trở về làn chính trước khi đợt Wave tiếp theo bước sang giây thứ 10.
-  4. Tránh tuyệt đối việc mở phụ bản trong các Wave Boss (Wave 5, 10, 15, 20...) vì làn chính sẽ chịu áp lực cực lớn từ Boss đợt.
+### 12.4. Phụ bản
+
+Phụ bản đã gỡ; không có chiến thuật hoặc lệnh tham gia phụ bản trong chế độ hiện tại.
 
 ### 12.5. Giao Thức Lệnh Cho Bot Tự Động (Command Interface)
 Các bot AI có thể tương tác với Game Core thông qua hàm `handleCommand(state, playerId, command)` với các payload JSON chuẩn:
@@ -842,16 +737,14 @@ Các bot AI có thể tương tác với Game Core thông qua hàm `handleComman
 - Đổi Linh Đan: `{ type: 'redeem', item: 'chest-1' }` hoặc `chest-2`, `embryo-3`, `embryo-4`
 - Triển khai vào ô: `{ type: 'deploy', unitId: 'u1', slot: 0 }`
 - Đưa về dự bị: `{ type: 'bench', unitId: 'u1' }`
-- Hợp nhất 3 sao: `{ type: 'merge', unitId: 'u1' }`
+- Hợp nhất ba bản sao: `{ type: 'merge', unitId: 'u1' }`
 - Ghép theo công thức: `{ type: 'craft', heroId: 'h009' }`
 - Bán tướng: `{ type: 'sell', unitId: 'u1' }`
-- Nâng trang bị: `{ type: 'equip', unitId: 'u1', category: 0 }` (0: Công, 1: Thủ, 2: Pháp)
+- Kho đồ: `{ type: 'equip-item', itemId: 'g1', unitId: 'u1' }`; tháo/cường hóa/tẩy luyện/phân giải dùng `unequip-item`, `enhance-item`, `reroll-item`, `salvage-item` với `itemId`.
 - Kích hoạt trận pháp: `{ type: 'formation', formation: 1 }`
 - Nâng cấp trận pháp: `{ type: 'upgrade-formation', formation: 1 }`
-- Vào phụ bản: `{ type: 'dungeon', dungeonId: 1, unitIds: ['u1', 'u2'] }`
-- Rút khỏi phụ bản: `{ type: 'return', unitId: 'u1' }`
 - Ra lệnh quân: `{ type: 'order', unitIds: ['u1'], order: 'attack-move', x: 0, z: 10 }`
 - Bấm gọi đợt sớm: `{ type: 'next-wave' }`
 
 ---
-*Tài liệu được trích xuất và tạo tự động từ mã nguồn game engine chính thức của Thiên Đạo Web Co-op (Phiên bản: thien-dao-web-2).*
+*Các bảng hồ sơ nhân vật phía trên giữ thông tin lịch sử; chỉ số runtime hiện tại đọc từ content/catalog.ts và module thiết kế tương ứng. Hệ thống đồ là thiết kế bản web. Chưa chạy benchmark/typecheck/test/build hoặc nghiệm thu bản mới.*

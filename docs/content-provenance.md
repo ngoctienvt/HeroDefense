@@ -85,11 +85,9 @@ lists their source modules and current safeguards. It also distinguishes
 implemented limits from load and frame-rate targets that still require device
 measurements.
 
-Tiên Duyên retains the original description and appends a web adaptation label. Web
-bonuses activate at each count from 2 up to the exact membership size. Bonuses are
-attack/health/speed +8% per threshold, armor +3, or regeneration .015 per threshold;
-the combat engine defines application units. Original hero-specific procs, immunity,
-critical chance and spell interactions are not represented by these generic bonuses.
+Tiên Duyên retains the original description and appends a web adaptation label.
+From 2026-10-28 the flat bonuses are replaced by per-bond mechanics in `content/bond-design.ts`; each tier carries `adapted` (follows the map description, e.g. Lý Tịnh heals 50%, Hậu Nghệ hits 5 targets) or `original` (web design, e.g. Phật Quang Phổ Chiếu, because the map grants stun immunity). Members and thresholds still come from the catalog; the five replaced identities (h03W, h03X, h01I, h01J, h014) are substituted in five bonds by thematic successors listed in `SYNERGY_SUCCESSORS` (`content/catalog.ts`) - a web design decision, not map data - and tiers whose roster is too small to reach are not published.
+The earlier generic +8% / +3 armor / +0.015 regeneration bonuses were removed; the hero-specific procs and spell interactions now live in the bond handlers.
 
 Formation descriptions preserve source text for reference; the web engine maps their
 effects onto its supported attack/health/speed/armor fields. Tam Tài, Ngũ Hành, Thất

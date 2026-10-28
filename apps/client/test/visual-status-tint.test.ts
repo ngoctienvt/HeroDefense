@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
+import { Mesh } from '@babylonjs/core/Meshes/mesh.js';
 import { applyActorOverlay, STATUS_TINT_TURN, STATUS_TINTS, statusOverlay, statusTints } from '../src/visual-status-tint.js';
 
 describe('status body tint', () => {
+  it('registers the Babylon overlay renderer, without which renderOverlay draws nothing', () => {
+    const property = Object.getOwnPropertyDescriptor(Mesh.prototype, 'renderOverlay');
+    expect(property?.set, 'import @babylonjs/core/Rendering/outlineRenderer.js').toBeTypeOf('function');
+  });
+
   it('reads every kind from its own server field, in draw order', () => {
     expect(statusTints({})).toEqual([]);
     expect(statusTints({ slow: 1, root: 1, sunder: { remaining: 2 }, poison: { remaining: 2 }, burn: { remaining: 2 } }))

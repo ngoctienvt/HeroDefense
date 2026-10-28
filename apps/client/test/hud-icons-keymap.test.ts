@@ -43,8 +43,10 @@ describe('panel keys, rail and guide', () => {
     expect(tabRow?.text).toMatch(/góc nhìn/i);
   });
 
-  it('shows exactly five rail buttons, each with a key', () => {
-    expect(RAIL_ITEMS).toHaveLength(5);
+  it('exposes the gear inventory on the rail and I shortcut', () => {
+    expect(RAIL_ITEMS).toHaveLength(6);
+    expect(PANEL_KEYS.i).toEqual({ panel: 'gear' });
+    expect(RAIL_ITEMS.find(item => item.panel === 'gear')?.keys).toBe('I');
     for (const item of RAIL_ITEMS) expect(item.keys.length).toBeGreaterThan(0);
   });
 });

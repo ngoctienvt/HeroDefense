@@ -1,4 +1,5 @@
 import { XINGTIAN as X } from '../../../content/xingtian-design.js';
+import { bondAreaScale } from './bond-runtime.js';
 import type { Enemy, GameState, Unit } from '../../contracts/src/types.js';
 import { MELEE_CLEAVE_SECONDARY } from '../../contracts/src/combat-profiles.js';
 import { distance, event } from './rules.js';
@@ -53,7 +54,7 @@ function inFireWave(origin: Unit, direction: { x: number; z: number }, enemy: En
 export function xingtianAbility(state: GameState, unit: Unit, hurt: Damage): void {
   const attack = effectiveUnitAttack(unit), hits: string[] = [];
   for (const enemy of Object.values(state.enemies)) {
-    if (enemy.zone !== unit.zone || distance(enemy, unit) > X.blastRadius) continue;
+    if (enemy.zone !== unit.zone || distance(enemy, unit) > X.blastRadius * bondAreaScale(state, unit)) continue;
     const critical = (enemy.stun ?? 0) > 0 || Boolean(enemy.sunder);
     const damage = attack * X.blastPower * (critical
       ? solarCritMultiplier(state, unit, X.conditionalCritMultiplier) : 1);

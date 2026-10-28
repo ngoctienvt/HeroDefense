@@ -2,7 +2,7 @@ import type { HeroAbility } from '../packages/contracts/src/types';
 
 export const KIMSI = {
   id: 'h016', hp: 8400, attack: 790, armor: 24, range: 3,
-  interval: .65, speed: 5.2, block: 10,
+  interval: .65, speed: 5.2,
   cleaveRadius: 3.5, doubleChance: .35,
   armorCutPerStrike: 4, armorCutLimit: 28,
   bleedDps: 150, bleedSeconds: 3, ragePerStrike: 12,

@@ -4,6 +4,7 @@ import { MELEE_CLEAVE_SECONDARY } from '../../contracts/src/combat-profiles.js';
 import { criticalDamageAgainst, effectiveEnemyArmor } from './combat-status.js';
 import { distance, event, random } from './rules.js';
 import { effectiveUnitAttack, solarCritMultiplier } from './stats.js';
+import { markGearNativeCrit } from './gear-stats.js';
 
 type Damage = (enemy: Enemy, amount: number, penetration?: number) => void;
 
@@ -31,7 +32,9 @@ export function kimsiAttack(state: GameState, unit: Unit, target: Enemy, hurt: D
     for (const enemy of hits) {
       if (!state.enemies[enemy.id]) continue;
       const dealt = damage * (enemy.id === target.id ? 1 : MELEE_CLEAVE_SECONDARY);
-      hurt(enemy, critical ? criticalDamageAgainst(enemy, dealt) : dealt);
+      const hit = critical ? criticalDamageAgainst(enemy, dealt) : dealt;
+      if (critical) markGearNativeCrit(unit, enemy, hit);
+      hurt(enemy, hit);
       if (state.enemies[enemy.id]) cutAndBleed(enemy, unit);
     }
     event(state, { kind: 'attack', source: unit.id, target: target.id,

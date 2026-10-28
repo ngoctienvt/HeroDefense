@@ -122,3 +122,10 @@ Linh Thạch hiện chỉ dùng cho trang bị. Hệ cũ cần 13.200 cho một 
 ## Kiểm tra
 
 Đọc lại cho khớp strict TypeScript. Chưa chạy typecheck. Sẽ có lỗi biên dịch ở các chỗ dùng `equipment` cho tới khi xong phase 3–4.
+
+
+## Triển khai 28-10-2026
+
+Hợp đồng và dữ liệu: 23 dòng thường, 17 độc nhất; bỏ Unit.equipment, dùng kho riêng và RNG gearSeed. Cấp đồ theo 20 wave, cường hóa 3×(k+1)^2; chỉ số chặn đã bỏ.
+
+- [x] Hoàn tất thay đổi nguồn của phase; đã rà tĩnh, chưa chạy kiểm thử.

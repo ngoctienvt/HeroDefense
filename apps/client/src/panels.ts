@@ -5,6 +5,7 @@ import type { Panel, PanelContext } from './panel-context.js';
 import { renderGuide } from './panel-guide.js';
 import { renderRoster } from './panel-roster.js';
 import { renderShop } from './panel-shop.js';
+import { renderGear } from './gear-panel.js';
 import { el } from './ui.js';
 
 export type { Panel, PanelContext, PanelTab } from './panel-context.js';
@@ -16,6 +17,7 @@ export function renderPanel(panel: Panel, ctx: PanelContext): HTMLElement {
     case 'shop': renderShop(container, ctx); break;
     case 'craft': renderCraftBoard(container, ctx); break;
     case 'roster': renderRoster(container, ctx); break;
+    case 'gear': renderGear(container, ctx); break;
     case 'bonds': renderBonds(container, ctx); break;
     case 'guide': renderGuide(container, ctx); break;
     case 'admin': renderAdmin(container, ctx); break;

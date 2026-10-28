@@ -1,4 +1,5 @@
 import { TUONG_THAN as T } from '../../../content/tuong-than-design.js';
+import { bondSummonScale } from './bond-runtime.js';
 import type { Enemy, GameState, Unit } from '../../contracts/src/types.js';
 import { MELEE_CLEAVE_SECONDARY } from '../../contracts/src/combat-profiles.js';
 import { applyEnemyStatus, blessedNormalDamage } from './combat-status.js';
@@ -9,9 +10,10 @@ import { createUnit } from './unit-factory.js';
 
 type Damage = (caster: Unit, enemy: Enemy, amount: number, direct?: boolean) => void;
 
-function summon(state: GameState, caster: Unit, at: { x: number; z: number },
+export function summon(state: GameState, caster: Unit, at: { x: number; z: number },
   kind: 'blood-warrior' | 'blood-general', index: number): Unit {
   const general = kind === 'blood-general';
+  const castScale = general ? caster.gearRuntime?.castScale ?? 1 : 1;
   const soldier = createUnit(state, caster.owner, T.id);
   const angle = index * Math.PI * 2 / (general ? T.generalCount : T.warriorCap);
   soldier.id = nextId(state, 'blood');
@@ -22,10 +24,11 @@ function summon(state: GameState, caster: Unit, at: { x: number; z: number },
   soldier.orderMode = 'hold'; soldier.summonerId = caster.id;
   soldier.summonKind = kind;
   soldier.summonDuration = general ? T.generalSeconds : T.warriorSeconds;
-  soldier.maxHp = general ? T.generalHp : T.warriorHp;
+  const bondScale = bondSummonScale(state, caster);
+  soldier.maxHp = (general ? T.generalHp : T.warriorHp) * castScale * bondScale;
   soldier.hp = soldier.maxHp;
-  soldier.attack = general ? T.generalAttack : T.warriorAttack;
-  soldier.range = 2.8; soldier.block = 0; soldier.energy = 0;
+  soldier.attack = (general ? T.generalAttack : T.warriorAttack) * castScale * bondScale;
+  soldier.range = 2.8; soldier.energy = 0;
   state.units[soldier.id] = soldier;
   event(state, { kind: 'trait', source: caster.id, target: soldier.id,
     x: soldier.x, z: soldier.z, zone: caster.zone,
@@ -72,18 +75,19 @@ export function tuongThanAttack(state: GameState, caster: Unit, target: Enemy, h
 }
 
 export function tuongThanAbility(state: GameState, caster: Unit, hurt: Damage): void {
+  const castScale = caster.gearRuntime?.castScale ?? 1;
   const hits = Object.values(state.enemies).filter(enemy => enemy.zone === caster.zone
     && enemy.hp > 0 && distance(enemy, caster) <= T.seaRadius);
   for (const enemy of hits) {
     hurt(caster, enemy, effectiveUnitAttack(caster) * T.seaPower);
     if (state.enemies[enemy.id]) hurt(caster, enemy, effectiveUnitAttack(caster) * T.drainPower, true);
   }
-  caster.hp = caster.maxHp;
+  caster.hp += (caster.maxHp - caster.hp) * castScale;
   for (const ally of Object.values(state.units)) {
     if (!isDeployed(ally) || ally.zone !== caster.zone || ally.summonKind) continue;
-    ally.shield += T.teamShield;
+    ally.shield += T.teamShield * castScale;
     ally.mistShield = { remaining: T.seaSeconds,
-      amount: (ally.mistShield?.amount ?? 0) + T.teamShield };
+      amount: (ally.mistShield?.amount ?? 0) + T.teamShield * castScale };
   }
   for (const general of Object.values(state.units)) {
     if (general.summonKind === 'blood-general' && general.summonerId === caster.id)
@@ -94,7 +98,7 @@ export function tuongThanAbility(state: GameState, caster: Unit, hurt: Damage): 
   if (state.phase !== 'lobby') (state.groundEffects ??= []).push({
     id: nextId(state, 'blood-sea'), kind: 'blood-sea',
     x: caster.x, z: caster.z, zone: caster.zone, casterId: caster.id,
-    radius: T.seaRadius, remaining: T.seaSeconds, damagePerSecond: T.seaDps,
+    radius: T.seaRadius, remaining: T.seaSeconds, damagePerSecond: T.seaDps * castScale,
   });
   event(state, { kind: 'ability', source: caster.id, targets: hits.map(enemy => enemy.id),
     x: caster.x, z: caster.z, zone: caster.zone, ability: 'nova',

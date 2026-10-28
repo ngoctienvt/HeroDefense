@@ -2,7 +2,7 @@ import type { HeroAbility } from '../packages/contracts/src/types.js';
 
 /** Web adaptations from the supplied brief. IDs reuse retired catalog slots. */
 export const NHIEN_DANG = { id: 'h03W', hp: 11800, attack: 490, armor: 36,
-  range: 2.5, interval: 1.15, speed: 3.1, block: 18, radius: 7,
+  range: 2.5, interval: 1.15, speed: 3.1, radius: 7,
   auraRadius: 4, auraDps: .9, weak: .3, shieldPower: 3.4, shieldHp: .24,
   duration: 5.5, slow: .55, reflect: .8, burnDps: 180,
   cooldown: 10, windup: .45 } as const;
@@ -11,14 +11,14 @@ export const BO_DE = { id: 'h03X', hp: 4000, attack: 600, armor: 20,
   healRatio: .02, healPower: 2, buffSeconds: 5, attackBonus: .4,
   cooldown: 10, windup: .35 } as const;
 export const DE_TUAN = { id: 'h01I', hp: 12800, attack: 1180, armor: 35,
-  range: 3.5, interval: .8, speed: 4.5, block: 14,
+  range: 3.5, interval: .8, speed: 4.5,
   /** Single-target duelist: one heavy strike per attack. */
   strikePower: 1.3, auraRadius: 4.5, auraDps: 1,
   auraSunder: .4, skillRadius: 8.5, skillPower: 5.2, skillSplashPower: 2, skillPierce: .6,
   berserkSeconds: 6.5, critMultiplier: 2.2, bossBonus: .25,
   cooldown: 10, windup: .5 } as const;
 export const NHU_LAI = { id: 'h01J', hp: 19500, attack: 920, armor: 52,
-  range: 3.5, interval: 1.1, speed: 3.2, block: 30,
+  range: 3.5, interval: 1.1, speed: 3.2,
   splashRadius: 4, weak: .3, auraReduction: .2,
   skillRadius: 9.5, skillPower: 4.8, stunSeconds: 3,
   zoneSeconds: 5, zoneSlow: .7, zoneSunder: .4,

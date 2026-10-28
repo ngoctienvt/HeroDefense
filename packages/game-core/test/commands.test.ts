@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { FORMATIONS, HEROES, SYNERGIES } from '../../../content/catalog.js';
+import { gearEnhanceSpent } from '../../../content/gear-design.js';
+import { GEAR_SLOTS } from '../../contracts/src/gear-types.js';
 import { addPlayer, removePlayer, setPlayerConnected } from '../src/state.js';
 import { handleCommand as dispatch, stepGame } from '../src/index.js';
-import { equipmentCost, RANDOM_SUMMON_COST, RUN_WAVES, slotPosition } from '../src/rules.js';
+import { RANDOM_SUMMON_COST, RUN_WAVES, slotPosition } from '../src/rules.js';
+import { grantGearItem, rollGearItem } from '../src/gear-items.js';
 import { attackInterval } from '../src/stats.js';
 import { combatStep } from '../src/combat.js';
 import { command, deployed, enemy, game, start, summon } from './fixtures.js';
@@ -85,37 +88,48 @@ describe('roster and economy', () => {
     for (const slot of [-1, 5, 1.5, NaN]) expect(dispatch(state, 'p1', { type: 'deploy', unitId: reserve.id, slot }).ok).toBe(false);
     expect(Object.values(state.units).filter(u => u.slot < 0)).toHaveLength(22);
   });
-  it('merges exactly three equal copies, retains best gear and prevents rank-2 duplicates', () => {
+  it('merges exactly three equal copies, returns consumed gear and prevents rank-2 duplicates', () => {
     const state = game(), copies = Array.from({ length: 6 }, () => summon(state));
     expect(dispatch(state, 'p1', { type: 'merge', unitId: copies[0].id }).ok).toBe(true);
     expect(copies[0].rank).toBe(2); expect(Object.keys(state.units)).toHaveLength(4);
     state.players.p1.gold = 1000;
-    command(state, { type: 'equip', unitId: copies[4].id, category: 0 });
+    const item = rollGearItem(state, { slot: 'weapon', rarity: 'white', level: 1 });
+    grantGearItem(state, 'p1', item, 'admin');
+    command(state, { type: 'equip-item', unitId: copies[4].id, itemId: item.id });
     command(state, { type: 'merge', unitId: copies[3].id });
-    expect(copies[3].equipment[0]).toBe(1);
+    expect(item.unitId).toBeNull();
+    expect(state.players.p1.gear).toContain(item);
     command(state, { type: 'deploy', unitId: copies[0].id, slot: 0 });
     expect(dispatch(state, 'p1', { type: 'deploy', unitId: copies[3].id, slot: 1 }).ok).toBe(false);
     expect(dispatch(state, 'p1', { type: 'merge', unitId: copies[0].id }).ok).toBe(false);
   });
-  it('upgrades all gear groups to level five, charges exact costs and refunds on sale', () => {
+  it('enhances all three slots, retains items on sale and refunds investment on salvage', () => {
     const state = game(), unit = summon(state), initial = 100000;
     state.players.p1.gold = initial;
-    for (const category of [0, 1, 2]) for (let n = 0; n < 5; n++) command(state, { type: 'equip', unitId: unit.id, category });
-    const total = 3 * Array.from({ length: 5 }, (_, i) => equipmentCost(i)).reduce((a, b) => a + b, 0);
+    const items = GEAR_SLOTS.map(slot => {
+      const item = rollGearItem(state, { slot, rarity: 'white', level: 20 });
+      grantGearItem(state, 'p1', item, 'admin');
+      command(state, { type: 'equip-item', unitId: unit.id, itemId: item.id });
+      for (let n = 0; n < 10; n++) command(state, { type: 'enhance-item', itemId: item.id });
+      return item;
+    });
+    const total = 3 * gearEnhanceSpent(10);
     expect(state.players.p1.gold).toBe(initial - total);
     expect(unit.attack).toBeGreaterThan(HEROES[0].attack); expect(unit.maxHp).toBeGreaterThan(HEROES[0].hp);
-    expect(dispatch(state, 'p1', { type: 'equip', unitId: unit.id, category: 0 }).ok).toBe(false);
-    for (const category of [-1, 3, .5, NaN]) expect(dispatch(state, 'p1', { type: 'equip', unitId: unit.id, category }).ok).toBe(false);
+    expect(dispatch(state, 'p1', { type: 'enhance-item', itemId: items[0].id }).ok).toBe(false);
     const souls = state.players.p1.souls;
     command(state, { type: 'sell', unitId: unit.id });
-    expect(state.units[unit.id]).toBeUndefined(); expect(state.players.p1.gold).toBe(initial - total / 2);
+    expect(state.units[unit.id]).toBeUndefined(); expect(state.players.p1.gold).toBe(initial - total);
+    expect(items.every(item => item.unitId === null)).toBe(true);
     expect(state.players.p1.souls).toBe(souls + 1);
+    for (const item of items) command(state, { type: 'salvage-item', itemId: item.id });
+    expect(state.players.p1.gold).toBe(initial - total + 3 * Math.floor(gearEnhanceSpent(10) / 2));
   });
   it('rejects every command against another owner without state mutation', () => {
     const state = game(), unit = deployed(state);
     const commands = [
       { type: 'deploy', slot: 1 }, { type: 'bench' }, { type: 'sell' }, { type: 'merge' },
-      { type: 'equip', category: 0 }, { type: 'move', x: 0, z: 0 }, { type: 'stop' },
+      { type: 'equip-item', itemId: 'missing' }, { type: 'move', x: 0, z: 0 }, { type: 'stop' },
       { type: 'attack', target: 'missing' }, { type: 'cast' }, { type: 'save-position' },
     ];
     const before = JSON.stringify(state);
@@ -124,9 +138,11 @@ describe('roster and economy', () => {
   });
   it('refuses unaffordable equipment without charging and refuses unknown unit ids', () => {
     const state = game(), unit = summon(state);
-    state.players.p1.gold = 79;
+    const item = rollGearItem(state, { slot: 'weapon', rarity: 'white', level: 1 });
+    grantGearItem(state, 'p1', item, 'admin');
+    state.players.p1.gold = 0;
     const before = JSON.stringify(state);
-    expect(dispatch(state, 'p1', { type: 'equip', unitId: unit.id, category: 0 }).ok).toBe(false);
+    expect(dispatch(state, 'p1', { type: 'enhance-item', itemId: item.id }).ok).toBe(false);
     expect(dispatch(state, 'p1', { type: 'sell', unitId: 'missing' }).ok).toBe(false);
     expect(JSON.stringify(state)).toBe(before);
   });

@@ -2,7 +2,7 @@ import type { HeroAbility } from '../packages/contracts/src/types';
 
 export const TUONG_THAN = {
   id: 'h03Z', hp: 14000, attack: 1090, armor: 34, range: 2.8,
-  interval: .85, speed: 4.6, block: 16,
+  interval: .85, speed: 4.6,
   cleaveRadius: 3.6, rageOnAttack: 12, rageOnHit: 6,
   conversion: .35, shieldCapRatio: .5, bleedSeconds: 3,
   bleedDps: 180, burnDps: 180, deathThreshold: 6,

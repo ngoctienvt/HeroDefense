@@ -2,6 +2,7 @@ import { HEROES } from '../../../content/catalog.js';
 import type { Command, Difficulty, Enemy, GameState, Unit } from '../../contracts/src/types.js';
 import { addPlayer, createGame, handleCommand } from '../src/index.js';
 import { createUnit } from '../src/unit-factory.js';
+import { rollGearItem, grantGearItem } from '../src/gear-items.js';
 
 export function game(players = 2, difficulty: Difficulty = 'normal'): GameState {
   const state = createGame('TEST01', 123456, difficulty);
@@ -51,8 +52,11 @@ export function rankThree(state: GameState, heroId: string, slot: number, owner:
   command(state, { type: 'merge', unitId: unit.id }, owner);
   command(state, { type: 'deploy', unitId: unit.id, slot }, owner);
   state.players[owner].gold = 100000;
-  for (let category = 0; category < 3; category++) {
-    for (let level = 0; level < 5; level++) command(state, { type: 'equip', unitId: unit.id, category }, owner);
+  for (const slot of ['weapon', 'armor', 'talisman'] as const) {
+    const item = rollGearItem(state, { slot, rarity: 'purple', level: 20 });
+    grantGearItem(state, owner, item, 'admin');
+    command(state, { type: 'equip-item', itemId: item.id, unitId: unit.id }, owner);
+    for (let level = 0; level < 10; level++) command(state, { type: 'enhance-item', itemId: item.id }, owner);
   }
   return unit;
 }

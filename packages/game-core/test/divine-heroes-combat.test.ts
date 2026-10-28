@@ -21,8 +21,11 @@ describe('new saint and god heroes', () => {
       .toEqual(['h03W', 'h03X', 'h019']);
     expect(CRAFT_RECIPES.find(recipe => recipe.heroId === 'h01C')?.ingredients)
       .toEqual(['h018', 'h01G', 'h00X']);
-    expect(SYNERGIES.every(definition => definition.members.every(id =>
-      !['h03W', 'h03X', 'h01I', 'h01J', 'h014'].includes(id)))).toBe(true);
+    // Old source groups never carry the replaced identities; only deliberate thematic successors do
+    // (Đế Tuấn in Trục Nhật, Nguyên Thủy Thiên Tôn in Thiên Đình).
+    const placed = SYNERGIES.flatMap(definition => definition.members
+      .filter(id => ['h03W', 'h03X', 'h01I', 'h01J', 'h014'].includes(id)).map(id => `${definition.id}:${id}`));
+    expect(placed.sort()).toEqual(['11:h014', '19:h01I']);
   });
 
   it('reflects only damage absorbed by Nhiên Đăng’s shield', () => {

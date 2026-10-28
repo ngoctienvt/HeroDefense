@@ -16,7 +16,7 @@ describe('Tương Thần', () => {
       hp: 20000, maxHp: 20000, armor: 0 });
     executeAttackGeometry(state, unit, first, (hit, amount, penetration, source) =>
       hurtEnemy(state, source ?? unit, hit, amount, penetration));
-    expect(HERO_BY_ID[T.id]).toMatchObject({ hp: 14000, attack: 1090, block: 16 });
+    expect(HERO_BY_ID[T.id]).toMatchObject({ hp: 14000, attack: 1090 });
     expect(first.hp).toBeLessThan(first.maxHp);
     expect(second.hp).toBeLessThan(second.maxHp);
     expect(behind.hp).toBe(behind.maxHp);

@@ -17,7 +17,7 @@ export function renderActionBar(ctx: PanelContext): HTMLElement | null {
   const hero = HERO_BY_ID[unit.heroId];
   if (!hero) return null;
   const bar = el('div', 'action-bar');
-  const energy = energyState(unit, hero);
+  const energy = energyState(unit, hero, ctx.state);
 
   if (hero.ability) {
     const usable = energy.ready && unit.slot >= 0 && unit.hp > 0;

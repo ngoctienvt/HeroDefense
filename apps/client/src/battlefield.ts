@@ -1,4 +1,5 @@
 import { heroModelAttackDuration, heroModelSpec } from './hero-models.js';
+import { BondStrikeFx, BondTriggerRings, bondStrikeStyle } from './visual-bond-trigger.js';
 import { VisualWarmup } from './visual-warmup.js';
 import { attackInterval } from '../../../packages/game-core/src/stats.js';
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera.js';
@@ -43,7 +44,8 @@ import { replayVothuong, VothuongTracker } from './battlefield-vothuong.js';
 import { NhiepTracker, replayNhieptieuthien } from './battlefield-nhieptieuthien.js';
 import { HonghainhiTracker, replayHonghainhi } from './battlefield-honghainhi.js';
 import { CulinhTracker, replayCulinh } from './battlefield-culinh.js';
-import { installReplay, registerReplay } from './visual-kit-replay.js';
+import { installReplay, registerAttackReplay, registerReplay } from './visual-kit-replay.js';
+import { PREEMPTING_BASIC_ATTACKS } from './visual-basic-attack-profiles.js';
 import { truongChainTargets } from './visual-truong-dao-lang-timeline.js';
 import { TruongStatusTracker } from './battlefield-truong-dao-lang.js';
 import { replayTier12 } from './battlefield-tier12.js';
@@ -86,6 +88,7 @@ export class Battlefield {
   private combatResetEventId?: number;
   private selected = new Set<string>();
   private groundEffects: NonNullable<GameState['groundEffects']> = [];
+  private gearTraps: NonNullable<GameState['gearTraps']> = [];
   private tier6 = new Tier6Snapshot();
   private tier3 = new Tier3Snapshot();
   private tier4 = new Tier4Snapshot();
@@ -114,6 +117,8 @@ export class Battlefield {
   private frames = 0;
   private fpsAt = performance.now();
   private reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  private bondRings!: BondTriggerRings;
+  private bondStrikes!: BondStrikeFx;
   private keys = { up: false, down: false, left: false, right: false };
   private mousePos: { x: number; y: number } | null = null;
   private isInteracting = false;
@@ -127,6 +132,10 @@ export class Battlefield {
   onHover: (id: string | null, x: number, y: number) => void = () => {};
   private hovered: string | null = null;
   private hoverRing: ReturnType<typeof MeshBuilder.CreateTorus> | null = null;
+  private gearInteraction = false;
+  private gearDropTarget: string | null = null;
+  private gearDropValid = false;
+  private gearDropRing: ReturnType<typeof MeshBuilder.CreateTorus> | null = null;
   cancelDrag: () => void = () => {};
 
   constructor(private canvas: HTMLCanvasElement) {
@@ -150,6 +159,8 @@ export class Battlefield {
     this.clearTerrain = buildTerrain(this.scene, this.palette, 1, 0);
     this.laneCount = 1;
     this.effects = new VisualEffects(this.scene, this.palette);
+    this.bondRings = new BondTriggerRings(this.scene, this.palette);
+    this.bondStrikes = new BondStrikeFx(this.scene, this.palette, this.bondRings);
     this.warmup = new VisualWarmup(this.scene, this.palette, this.effects);
     const marquee = document.createElement('div'); marquee.className = 'selection-marquee'; marquee.hidden = true; document.body.append(marquee);
     let start: { x: number; y: number; append: boolean } | null = null;
@@ -157,13 +168,7 @@ export class Battlefield {
     let altRotateDrag: { x: number; y: number } | null = null;
     let middleDrag: { x: number; y: number } | null = null;
 
-    const pickAt = (event: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      // Only actor bodies count: VFX planes, bars and terrain under the cursor must not turn an attack into a move.
-      return this.scene.pick((event.clientX - rect.left) * this.engine.getRenderWidth() / rect.width,
-        (event.clientY - rect.top) * this.engine.getRenderHeight() / rect.height,
-        mesh => mesh.isPickable && mesh.isEnabled() && typeof mesh.metadata?.actorId === 'string');
-    };
+    const pickAt = (event: PointerEvent) => this.pickActorAt(event.clientX, event.clientY);
     const groundAt = (event: PointerEvent): Vector3 | null => {
       const rect = canvas.getBoundingClientRect();
       const ray = this.scene.createPickingRay(
@@ -177,6 +182,7 @@ export class Battlefield {
     };
 
     const down = (event: PointerEvent) => {
+      if (this.gearInteraction) { event.preventDefault(); return; }
       this.isInteracting = true;
       try { canvas.setPointerCapture(event.pointerId); } catch {}
       if (event.button === 0) {
@@ -208,11 +214,13 @@ export class Battlefield {
         if (point) this.onOrder(id && (this.actors.get(id)?.summonKind === 'buddha-clone'
           || this.actors.get(id)?.summonKind === 'ancient-tree'
           || this.actors.get(id)?.summonKind === 'blood-warrior'
-          || this.actors.get(id)?.summonKind === 'blood-general') ? null : id ?? null, point.x, point.z);
+          || this.actors.get(id)?.summonKind === 'blood-general'
+          || this.actors.get(id)?.summonKind === 'bond-summon') ? null : id ?? null, point.x, point.z);
       }
     };
 
     const move = (event: PointerEvent) => {
+      if (this.gearInteraction) return;
       if (ctrlPanDrag) {
         const dx = event.clientX - ctrlPanDrag.x;
         const dy = event.clientY - ctrlPanDrag.y;
@@ -246,6 +254,7 @@ export class Battlefield {
     // Hover picking is throttled (~16 picks/s) and skips summons, the dead and other islands.
     let hoverPickAt = 0;
     const hoverAt = (event: PointerEvent) => {
+      if (this.gearInteraction) return;
       const now = performance.now();
       if (now - hoverPickAt >= 60) {
         hoverPickAt = now;
@@ -269,6 +278,7 @@ export class Battlefield {
     };
 
     const up = (event: PointerEvent) => {
+      if (this.gearInteraction) { cancel(); return; }
       this.isInteracting = false;
       try { canvas.releasePointerCapture(event.pointerId); } catch {}
       if (event.button === 0) {
@@ -291,7 +301,8 @@ export class Battlefield {
             if (id && this.actors.get(id)?.summonKind !== 'buddha-clone'
               && this.actors.get(id)?.summonKind !== 'ancient-tree'
               && this.actors.get(id)?.summonKind !== 'blood-warrior'
-              && this.actors.get(id)?.summonKind !== 'blood-general') this.onSelect(id, start.append);
+              && this.actors.get(id)?.summonKind !== 'blood-general'
+              && this.actors.get(id)?.summonKind !== 'bond-summon') this.onSelect(id, start.append);
             else this.onAreaSelect([], start.append);
           }
           start = null; marquee.hidden = true;
@@ -312,6 +323,7 @@ export class Battlefield {
     this.cancelDrag = cancel;
 
     const onWheel = (event: WheelEvent) => {
+      if (this.gearInteraction) { event.preventDefault(); return; }
       event.preventDefault();
       this.zoom(event.deltaY < 0);
     };
@@ -323,6 +335,7 @@ export class Battlefield {
     };
 
     const keydown = (event: KeyboardEvent) => {
+      if (this.gearInteraction) return;
       if (isInputFocused() || event.metaKey || event.ctrlKey) return;
       const code = event.code;
       const key = event.key.toLowerCase();
@@ -449,6 +462,7 @@ export class Battlefield {
       unregisterCulinhReplay();
       for (const unregister of unregisterTier12Replays) unregister();
       for (const unregister of unregisterRemainingTier6) unregister();
+      for (const unregister of unregisterBasicReplays) unregister();
     };
     // ?debug=1: `__vfxReplay('h01G')` replays Cộng Công's ultimate VFX locally; `('h01G', 'cleave', x, z)` one basic swing, `('h01G', 'cage')` the ice cage.
     const unregisterCongcongReplay = registerReplay('h01G', (kind, x, z) => {
@@ -705,11 +719,44 @@ export class Battlefield {
       this.focusOn((caster.x + point.x) / 2, (caster.z + point.z) / 2);
       return this.effects.replayTier6(heroId, kind ?? 'ultimate', caster, point);
     }));
+    // ?debug=1: `__vfxReplay('<id>','attack')` for the tier 5–6 heroes whose basic attack is drawn by the shared profile.
+    const unregisterBasicReplays = [...PREEMPTING_BASIC_ATTACKS].map(heroId => registerAttackReplay(heroId, (_kind, x, z) => {
+      const actor = [...this.actors.values()].find(a => a.heroId === heroId && a.zone === this.zone && a.hp > 0 && !a.dying);
+      if ((x !== undefined && !Number.isFinite(x)) || (z !== undefined && !Number.isFinite(z))) return false;
+      if (!actor) return false;
+      const origin = actor.root.position.clone();
+      const at = x !== undefined && z !== undefined ? new Vector3(x, 0, z) : origin.add(new Vector3(4, 0, 0));
+      this.focusOn((origin.x + at.x) / 2, (origin.z + at.z) / 2);
+      return this.effects.replayBasicAttack(heroId, origin, at);
+    }));
     const removeReplay = installReplay(window);
     window.addEventListener('resize', this.resize); this.engine.runRenderLoop(() => this.render());
     debug('battlefield.created', { style: 'floating-island', effectsCap: 64 });
   }
 
+  /** Actor picking uses the same CSS-to-render scaling for RTS and equipment. */
+  private pickActorAt(clientX: number, clientY: number) {
+    const rect = this.canvas.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0 || clientX < rect.left || clientX > rect.right
+      || clientY < rect.top || clientY > rect.bottom) return null;
+    return this.scene.pick((clientX - rect.left) * this.engine.getRenderWidth() / rect.width,
+      (clientY - rect.top) * this.engine.getRenderHeight() / rect.height,
+      mesh => mesh.isPickable && mesh.isEnabled() && typeof mesh.metadata?.actorId === 'string');
+  }
+  pickGearTarget(clientX: number, clientY: number): string | null {
+    const id = this.pickActorAt(clientX, clientY)?.pickedMesh?.metadata?.actorId as string | undefined;
+    const actor = id ? this.actors.get(id) : undefined;
+    return id && actor && actor.zone === this.zone && actor.root.isEnabled() && actor.hp > 0 && !actor.dying ? id : null;
+  }
+  setGearInteraction(active: boolean, targetUnitId: string | null, valid: boolean): void {
+    if (active && !this.gearInteraction) {
+      this.cancelDrag(); this.keys = { up: false, down: false, left: false, right: false };
+      this.hovered = null; this.hoverRing?.setEnabled(false);
+      this.canvas.classList.remove('hover-enemy', 'hover-ally');
+    }
+    this.gearInteraction = active; this.gearDropTarget = active ? targetUnitId : null; this.gearDropValid = valid;
+    if (!active) this.gearDropRing?.setEnabled(false);
+  }
   setSfx(sink: SfxSink): void { this.sfx = sink; }
 
   update(state: GameState, selfId: string, selected: string[]): void {
@@ -721,6 +768,7 @@ export class Battlefield {
     this.tier4.update(state);
     this.selected = new Set(selected);
     this.groundEffects = state.groundEffects ?? [];
+    this.gearTraps = state.gearTraps ?? [];
     this.panguStatuses = [];
     this.vothuong.refresh(Object.values(state.enemies), Object.values(state.units), this.zone);
     // Armour break (sunder / armorCuts) is a red body tint now (statusTints below), not a head mark.
@@ -770,7 +818,7 @@ export class Battlefield {
     }
     for (const entity of [...Object.values(state.units).filter(unit => unit.slot >= 0 || unit.summonKind === 'buddha-clone'
       || unit.summonKind === 'ancient-tree' || unit.summonKind === 'blood-warrior'
-      || unit.summonKind === 'blood-general'), ...Object.values(state.enemies)]) {
+      || unit.summonKind === 'blood-general' || unit.summonKind === 'bond-summon'), ...Object.values(state.enemies)]) {
       present.add(entity.id);
       let actor = this.actors.get(entity.id);
       if (!actor) {
@@ -891,7 +939,7 @@ export class Battlefield {
 
       // Skill bar under the HP bar (heroes with an active skill): blue cooldown or orange Nộ, same rules as the HUD.
       if (actor.manaBar && 'heroId' in entity) {
-        const energy = energyState(entity, HERO_BY_ID[entity.heroId]);
+        const energy = energyState(entity, HERO_BY_ID[entity.heroId], state);
         const manaRatio = energy.kind === 'none' ? 0 : energy.percent / 100;
         actor.manaBar.scaling.x = Math.max(0.001, manaRatio);
         actor.manaBar.position.x = -actor.barWidth * (1 - manaRatio) * 0.5;
@@ -947,10 +995,33 @@ export class Battlefield {
   private handleEvent(event: GameEvent, state?: Pick<GameState, 'units'> & Partial<Pick<GameState, 'enemies'>>): void {
     this.tier6.record(event);
     this.truongStatus.record(event);
+    const strikeStyle = event.kind === 'trait' ? bondStrikeStyle(event.skillId) : undefined;
+    if (strikeStyle) {
+      // An extra hit dealt by a bond: fly the arrow or bolt from the shooter to this victim.
+      if (event.zone === this.zone && event.bondId !== undefined && event.origin && Number.isFinite(event.x) && Number.isFinite(event.z))
+        this.bondStrikes.spawn(strikeStyle, event.bondId, event.origin, { x: event.x!, z: event.z! }, this.reducedMotion.matches);
+      return;
+    }
     this.playEventCue(event, state);
+    if (event.kind === 'bond-trigger') {
+      if (event.bondId !== undefined && event.zone === this.zone && Number.isFinite(event.x) && Number.isFinite(event.z))
+        this.bondRings.spawn(event.x!, event.z!, event.bondId, this.reducedMotion.matches);
+      return;
+    }
     if (event.kind !== 'attack' && event.kind !== 'trait' && event.kind !== 'cast' && event.kind !== 'ability' && event.kind !== 'death') return;
     const source = this.actors.get(event.source ?? '');
     const target = this.actors.get(event.target ?? '');
+    if (event.skillId?.startsWith('gear-')) {
+      if ((event.zone ?? source?.zone) !== this.zone || (event.kind !== 'trait' && event.kind !== 'attack')) return;
+      const spot = new Vector3(event.x ?? 0, 0, event.z ?? 0);
+      if (event.kind === 'attack' && source && !source.dying) {
+        source.action = 'attack'; source.actionTime = .25; source.actionDuration = .25;
+        faceActorTowards(source, spot.x, spot.z);
+      }
+      const from = event.origin ? new Vector3(event.origin.x, .8, event.origin.z) : source?.root.position;
+      this.effects.show(event, spot, from);
+      return;
+    }
     // Auxiliary confirmed poison application: no second attacker pose, hurt feedback, support accent or audio.
     if (event.kind === 'trait' && event.skillId === 'peacock-poison-hit-h03R') {
       if (event.zone !== this.zone) return;
@@ -1387,7 +1458,7 @@ export class Battlefield {
     void preloadMonsterEncounterVisuals(this.palette, zone, () => !this.disposed && this.zone === zone);
     this.truongStatus.clear();
     if ((zone === 0) !== (this.terrainZone === 0)) this.rebuildTerrain();
-    this.effects.clear(); this.vothuong.clear();this.congcong.clear(); this.kimtra.clear(); this.moctra.clear(); this.thietphien.clear(); this.baoquatu.clear(); this.mandon.clear(); this.manhba.clear(); this.ladongtan.clear(); this.nhiep.clear(); this.honghainhi.clear(); this.culinh.clear();
+    this.effects.clear(); this.bondRings.clear(); this.bondStrikes.clear(); this.vothuong.clear();this.congcong.clear(); this.kimtra.clear(); this.moctra.clear(); this.thietphien.clear(); this.baoquatu.clear(); this.mandon.clear(); this.manhba.clear(); this.ladongtan.clear(); this.nhiep.clear(); this.honghainhi.clear(); this.culinh.clear();
     this.camera.targetScreenOffset.set(0, 0);
     for (const actor of this.actors.values()) {
       if (actor.zone === zone && actor.sprite && 'activate' in actor.sprite
@@ -1423,11 +1494,11 @@ export class Battlefield {
     this.combatResetEventId = boundary;
     this.eventId = Math.max(this.eventId, boundary);
     this.tier6.clear(); this.tier3.clear(); this.tier4.clear();
-    this.effects.clear(); this.truongStatus.clear(); this.vothuong.clear();
+    this.effects.clear(); this.bondRings.clear(); this.bondStrikes.clear(); this.truongStatus.clear(); this.vothuong.clear();
     this.congcong.clear(); this.kimtra.clear(); this.moctra.clear(); this.thietphien.clear();
     this.baoquatu.clear(); this.mandon.clear(); this.manhba.clear(); this.ladongtan.clear();
     this.nhiep.clear(); this.honghainhi.clear(); this.culinh.clear();
-    this.groundEffects = []; this.summonedPlants = []; this.soulLinks = []; this.panguStatuses = [];
+    this.groundEffects = []; this.gearTraps = []; this.summonedPlants = []; this.soulLinks = []; this.panguStatuses = [];
     for (const [id, actor] of this.actors) {
       if (!state.units[id]) {
         this.disposeActorVisuals(actor);
@@ -1441,6 +1512,7 @@ export class Battlefield {
   }
   resizeCanvas(): void { this.engine.resize(); }
   clear(): void {
+    this.setGearInteraction(false, null, false);
     this.combatResetEventId = undefined;
     releaseMonsterEncounterVisuals(this.palette);
     this.tier6.clear();
@@ -1448,7 +1520,7 @@ export class Battlefield {
     this.tier4.clear();
     this.truongStatus.clear();
     for (const actor of this.actors.values()) this.disposeActorVisuals(actor);
-    this.actors.clear(); this.effects.clear(); this.vothuong.clear();this.congcong.clear(); this.kimtra.clear(); this.moctra.clear(); this.thietphien.clear(); this.baoquatu.clear(); this.mandon.clear(); this.manhba.clear(); this.ladongtan.clear(); this.nhiep.clear(); this.honghainhi.clear(); this.culinh.clear(); this.eventId = 0; this.zone = 0; if (this.terrainZone !== 0) this.rebuildTerrain(); this.hasSnapshot = false; this.selected.clear(); this.groundEffects = []; this.summonedPlants = []; this.soulLinks = [];
+    this.actors.clear(); this.effects.clear(); this.bondRings.clear(); this.bondStrikes.clear(); this.vothuong.clear();this.congcong.clear(); this.kimtra.clear(); this.moctra.clear(); this.thietphien.clear(); this.baoquatu.clear(); this.mandon.clear(); this.manhba.clear(); this.ladongtan.clear(); this.nhiep.clear(); this.honghainhi.clear(); this.culinh.clear(); this.eventId = 0; this.zone = 0; if (this.terrainZone !== 0) this.rebuildTerrain(); this.hasSnapshot = false; this.selected.clear(); this.groundEffects = []; this.gearTraps = []; this.summonedPlants = []; this.soulLinks = [];
   }
   pan(dx: number, dy: number): void {
     const lookDirX = -Math.cos(this.camera.alpha);
@@ -1524,7 +1596,7 @@ export class Battlefield {
     if (this.keys.left) { moveX -= rightDirX; moveZ -= rightDirZ; }
 
     // 2. Rê chuột viền màn hình (Edge scrolling) chuẩn Warcraft 3
-    if (!this.isInteracting && this.mousePos && this.canvas.dataset.vfxReviewBusy !== 'true') {
+    if (!this.gearInteraction && !this.isInteracting && this.mousePos && this.canvas.dataset.vfxReviewBusy !== 'true') {
       const margin = 20;
       let edgeX = 0, edgeZ = 0;
       if (this.mousePos.x <= margin) edgeX -= 1;
@@ -1548,6 +1620,8 @@ export class Battlefield {
     }
 
     this.sky.update(dt, this.camera.position, this.reducedMotion.matches);
+    this.bondRings.update(dt);
+    this.bondStrikes.update(dt);
     const cameraFacing = this.camera.position.subtract(this.camera.target);
     const motionNow = performance.now() / 1000 - this.snapshotClock.extraDelay;
     for (const [id, actor] of this.actors) {
@@ -1672,6 +1746,7 @@ export class Battlefield {
         this.effects.markXingtianShell(id, actor.root.position, actor.xingtianBerserk!);
     }
     for (const [id, ring] of this.rings) if (!this.selected.has(id) || !this.actors.has(id)) { ring.dispose(); this.rings.delete(id); }
+    this.effects.markGearTraps(this.gearTraps, this.zone);
     for (const ground of this.groundEffects) if (ground.zone === this.zone) {
       if (ground.kind === 'pangu-rift') this.effects.markPanguRift(ground);
       else if (ground.kind === 'golden-bowl' && ground.id)
@@ -1745,6 +1820,14 @@ export class Battlefield {
       this.hoverRing.setEnabled(true);
       this.hoverRing.position.set(hoveredActor.root.position.x, .18, hoveredActor.root.position.z);
     } else this.hoverRing?.setEnabled(false);
+    const gearTarget = this.gearDropTarget ? this.actors.get(this.gearDropTarget) : undefined;
+    if (this.gearInteraction && gearTarget && gearTarget.zone === this.zone && gearTarget.hp > 0 && !gearTarget.dying) {
+      this.gearDropRing ??= MeshBuilder.CreateTorus('gear-drop-target', { diameter: 3.6, thickness: .13, tessellation: 32 }, this.scene);
+      this.gearDropRing.isPickable = false;
+      this.gearDropRing.material = this.palette.get(`gear-drop-${this.gearDropValid}`, this.gearDropValid ? PALETTE['hp-high'] : PALETTE['hp-low'], .8);
+      this.gearDropRing.position.set(gearTarget.root.position.x, .23, gearTarget.root.position.z);
+      this.gearDropRing.setEnabled(true);
+    } else this.gearDropRing?.setEnabled(false);
     this.effects.tick(dt);
     const shake = this.effects.cameraShake(); this.camera.targetScreenOffset.set(shake.x, shake.y);
     this.scene.render();

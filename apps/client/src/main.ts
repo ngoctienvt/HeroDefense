@@ -7,6 +7,7 @@ import { GameSession, type SessionView } from './game-session.js';
 import { renderPanel } from './panels.js';
 import type { Panel, PanelContext, PanelTab } from './panel-context.js';
 import { renderActionBar } from './hud-action-bar.js';
+import { HudRenderGuard, installHudRenderGuard } from './hud-render-guard.js';
 import { renderDock } from './hud-dock.js';
 import { PANEL_KEYS, PANEL_TITLES } from './hud-keymap.js';
 import { closeButton, HudOverlay } from './hud-overlay.js';
@@ -19,6 +20,14 @@ import { icon } from './ui-icons.js';
 import { BASE_NAME } from './ui-labels.js';
 import { applyPaletteToCss } from './ui-palette.js';
 import { debug } from './debug.js';
+import { GearRewardCursor } from './gear-rewards.js';
+import { GearDragController } from './gear-drag-controller.js';
+import { configureGearTilePending } from './gear-tile.js';
+import { renderGearTray } from './hud-gear-tray.js';
+import { captureGearHudState } from './gear-hud-state.js';
+import { getGearPresentationKey, selectGearItem, setGearSlotFilter, setGearTargetUnit, subscribeGearPresentation } from './gear-panel.js';
+import { BondToastCursor } from './bond-trigger-toasts.js';
+import { gearItemName } from '../../../content/gear-design.js';
 import { Selection } from './selection.js';
 import { installReplayReview } from './visual-kit-review.js';
 import { maybeShowIconPreview } from './icon-preview.js';
@@ -34,6 +43,8 @@ installAssetManifest(assetManifestData);
 Tools.PreprocessUrl = assetUrl;
 debug('visual.asset-manifest', { version: assetManifestData.version, files: Object.keys(assetManifestData.files).length });
 const app = document.querySelector<HTMLDivElement>('#app')!;
+const hudRenderGuard = new HudRenderGuard(() => render(true));
+const uninstallHudRenderGuard = installHudRenderGuard(app, hudRenderGuard);
 const canvas = el('canvas', 'battlefield'); canvas.setAttribute('aria-label', 'Chiến trường Thiên Đạo. Chuột trái chọn tướng, chuột phải ra lệnh.'); canvas.tabIndex = 0;
 app.append(canvas); const battlefield = new Battlefield(canvas); const session = new GameSession();
 /** Music and SFX for the whole session; sound starts on the first click or key press (browser autoplay rule). */
@@ -50,6 +61,7 @@ let hover: HoverTarget | null = null, hoverTimer = 0;
 /** The hovered element and its permanent container: the anchor is re-found there after a rebuild. */
 let hoverAnchor: Element | null = null, hoverRegion: ParentNode = document;
 const selection = new Selection();
+let gearDrag: GearDragController | undefined;
 
 const lobby = el('main', 'lobby'); const game = el('main', 'game'); game.hidden = true;
 
@@ -67,6 +79,7 @@ const drawerHeader = el('div', 'drawer-header');
 const drawerTitle = el('h2', 'drawer-title', '');
 drawerHeader.append(drawerTitle, closeButton('Đóng bảng', () => setPanel(null)));
 const drawerBody = el('div', 'drawer-body');
+drawerBody.addEventListener('focusout', event => { if (event.target instanceof HTMLSelectElement) queueMicrotask(() => render(true)); });
 hudDrawer.append(drawerHeader, drawerBody);
 
 const craftOverlay = el('div', 'craft-overlay'); craftOverlay.hidden = true;
@@ -80,6 +93,27 @@ const result = el('section', 'result-screen'); result.hidden = true;
 game.append(hudTop, bossHolder, hudDock, actionHolder, rail.root, hudDrawer, craftOverlay, result);
 app.append(lobby, game, connection, toast);
 const overlay = new HudOverlay(app);
+gearDrag = new GearDragController({
+  root: app, overlayLayer: overlay.layer, canvas,
+  getView: () => ({ ...session.view, generation: session.sessionGeneration }),
+  send: command => session.send(command), subscribeAck: listener => session.subscribeAck(listener),
+  requestSync: () => session.requestSync(), pickGearTarget: (x, y) => battlefield.pickGearTarget(x, y),
+  setGearInteraction: (active, target, valid) => battlefield.setGearInteraction(active, target, valid),
+  releaseRenderGuard: () => hudRenderGuard.end(), hideHover: () => setHover(null),
+  isBlocking: () => overlay.blocking || panel === 'craft',
+  onChanged: () => { hudSignature = ''; panelSignature = ''; render(true); }, onMessage: message => showToast(message),
+  onSelectItem: (itemId, openInventory) => {
+    selectGearItem(itemId);
+    const item = session.view.state?.players[session.view.selfId]?.gear.find(item => item.id === itemId);
+    if (item?.unitId) { setGearTargetUnit(item.unitId); setGearSlotFilter(item.slot); }
+    if (openInventory) setPanel('gear');
+  },
+  onSelectTarget: unitId => setGearTargetUnit(unitId),
+});
+configureGearTilePending(itemId => gearDrag?.isItemPending(itemId) ?? false, (unitId, slot) => gearDrag?.isSlotPending(unitId, slot) ?? false);
+const unsubscribeGearPresentation = subscribeGearPresentation(() => {
+  hudSignature = ''; panelSignature = ''; render(true);
+});
 
 // The toast sits just above the dock whatever its height (summon bar, two-row badge…).
 const dockObserver = new ResizeObserver(() => document.documentElement.style.setProperty('--dock-h', `${Math.ceil(hudDock.getBoundingClientRect().height)}px`));
@@ -118,9 +152,13 @@ void preloader.start();
 maybeShowIconPreview();
 
 function context(state: GameState): PanelContext {
-  return { state, selfId: session.view.selfId, selected, tab: panelTab, send, select: id => select(id, true), openPanel: (next, tab) => setPanel(next, tab), confirm: options => overlay.confirm(options) };
+  return { state, selfId: session.view.selfId, selected, tab: panelTab, send, salvageItems: ids => session.queueWhiteSalvage(ids, id => !gearDrag?.isItemPending(id)), select: id => select(id, true), openPanel: (next, tab) => setPanel(next, tab), confirm: options => overlay.confirm(options) };
 }
-function send(command: Command): void { session.send(command); }
+function send(command: Command): void {
+  if (command.type === 'equip-item') { gearDrag?.commit(command.itemId, { kind: 'unit', unitId: command.unitId }); return; }
+  if (command.type === 'unequip-item') { gearDrag?.commit(command.itemId, { kind: 'bag' }); return; }
+  session.send(command);
+}
 function select(id: string, preserveGroup = false): void { const state = session.view.state, unit = state?.units[id]; if (unit && unit.owner === session.view.selfId) { selected = id; if (state && unit.slot >= 0) { if (preserveGroup) selection.focus(id, state, session.view.selfId, zone); else selection.set([id], state, session.view.selfId, zone); } render(true); } }
 
 const defaultTab = (target: Panel): PanelTab | undefined => target === 'bonds' ? 'synergy' : target === 'guide' ? 'controls' : undefined;
@@ -129,6 +167,7 @@ function togglePanel(target: Panel, tab?: PanelTab): void {
   else setPanel(target, tab);
 }
 function setPanel(next: Panel | null, tab?: PanelTab): void {
+  if (next === 'craft') gearDrag?.cancel('blocking-panel');
   const previous = panel;
   panel = next; panelTab = next ? tab ?? (next === previous ? panelTab : undefined) ?? defaultTab(next) : undefined; panelSignature = '';
   if (next !== previous) debug('ui.panel', { panel: next, tab: panelTab });
@@ -148,6 +187,7 @@ battlefield.onSelect = (id, append) => { const state = session.view.state; if (!
 battlefield.onAreaSelect = (ids, append) => { const state = session.view.state; if (!state) return; selection.set(ids, state, session.view.selfId, zone, append); selected = selection.ids[0] ?? ''; render(true); };
 battlefield.onOrder = (target, x, z) => { const state = session.view.state; if (!state) return; if (target && state.enemies[target]) sendOrder('attack', undefined, undefined, target); else sendOrder(attackMode ? 'attack-move' : 'move', x, z); setAttackMode(false); };
 battlefield.onHover = (id, x, y) => {
+  if (gearDrag?.active) return;
   if (id && hover?.kind === 'world' && hover.id === id) { hover = { ...hover, x, y }; overlay.positionTooltip({ x, y }); return; }
   if (id) setHover({ kind: 'world', id, x, y }, 150);
   else if (hover?.kind === 'world') setHover(null);
@@ -155,12 +195,14 @@ battlefield.onHover = (id, x, y) => {
 
 // --- Hover tooltip (DOM delegation + battlefield picking) ---
 function setHover(next: HoverTarget | null, delay = 250): void {
+  if (next && gearDrag?.active) return;
   window.clearTimeout(hoverTimer);
   if (!next) { hover = null; hoverAnchor = null; overlay.hideTooltip(); return; }
   hover = next;
   if (delay <= 0) refreshTooltip(); else hoverTimer = window.setTimeout(refreshTooltip, delay);
 }
 function refreshTooltip(): void {
+  if (gearDrag?.active) { overlay.hideTooltip(); return; }
   const state = session.view.state;
   if (!hover || !state) { overlay.hideTooltip(); return; }
   const content = tooltipContent(hover, state);
@@ -243,18 +285,20 @@ function renderSummonChoice(state: GameState): void {
 
 function render(force = false): void {
   const view = session.view, state = view.state; if (!state) return;
+  if (hudRenderGuard.defer()) return;
   if (!force && performance.now() - lastRender < 200) { if (!renderTimer) renderTimer = window.setTimeout(() => { renderTimer = 0; render(true); }, 200); return; }
   const activeBosses = Object.values(state.enemies).filter(enemy => enemy.kind === 'boss' && enemy.hp > 0);
-  const hudKey = JSON.stringify([preloadPercent, selected, selection.ids, panel, panelTab, zone, audioEnabled, choiceMinimized, overlay.isOpen(SETTINGS_POPOVER), state.roomCode, state.phase, state.wave, Math.ceil(state.remaining), state.baseHp, state.speed, state.difficulty, state.stars,
+  const hudKey = JSON.stringify([getGearPresentationKey(), preloadPercent, selected, selection.ids, panel, panelTab, zone, audioEnabled, choiceMinimized, overlay.isOpen(SETTINGS_POPOVER), state.roomCode, state.phase, state.wave, Math.ceil(state.remaining), state.baseHp, state.speed, state.difficulty, state.stars,
     activeBosses.map(enemy => [enemy.id, enemy.name, Math.floor(enemy.hp), enemy.maxHp, enemy.enraged, Math.round(enemy.z), (enemy.skills ?? []).map(s => Math.ceil(s.cooldown))]),
-    Object.values(state.players).map(p => [p.id, p.name, p.connected, p.ready, p.gold, p.souls, p.pellets, p.summonFailures, p.pendingChoice, p.embryos, p.formation, p.formationLevels, p.formationPoints, p.activeSynergies]),
-    Object.values(state.units).filter(u => u.owner === view.selfId).map(u => [u.id, u.heroId, u.slot, u.rank, Math.floor(u.hp), u.maxHp, u.attack, u.armor, Math.ceil(u.abilityCooldown), Math.floor(u.energy ?? 0), Math.ceil(u.respawn), u.equipment, u.zone, u.orderMode, u.savedPosition, u.kills, Math.floor(u.shield), u.ward && Math.ceil(u.ward.remaining), u.haste && Math.ceil(u.haste.remaining)])]);
+    Object.values(state.players).map(p => [p.id, p.name, p.connected, p.ready, p.gold, p.souls, p.pellets, p.gearVersion, p.gearDust, p.summonFailures, p.pendingChoice, p.embryos, p.formation, p.formationLevels, p.formationPoints, p.activeSynergies, p.bondVersion, p.bondState]),
+    Object.values(state.units).filter(u => u.owner === view.selfId).map(u => [u.id, u.heroId, u.slot, u.rank, Math.floor(u.hp), u.maxHp, u.attack, u.armor, Math.ceil(u.abilityCooldown), Math.floor(u.energy ?? 0), Math.ceil(u.respawn), u.zone, u.orderMode, u.savedPosition, u.kills, Math.floor(u.shield), u.ward && Math.ceil(u.ward.remaining), u.haste && Math.ceil(u.haste.remaining)])]);
   if (!force && hudKey === hudSignature) { refreshTooltip(); return; }
   hudSignature = hudKey;
   lastRender = performance.now(); lobby.hidden = true; game.hidden = false;
   if (!canvas.classList.contains('playing')) { canvas.classList.add('playing'); battlefield.resizeCanvas(); }
   const player = state.players[view.selfId]; if (!player) return;
   const ctx = context(state);
+  const restoreGearHudState = captureGearHudState(app);
 
   // Skip the rebuild while a native <select> on the bar (difficulty) is open, or it would snap shut.
   const topSelectOpen = document.activeElement instanceof HTMLSelectElement && hudTop.contains(document.activeElement);
@@ -266,7 +310,8 @@ function render(force = false): void {
   bossHolder.hidden = !boss; bossHolder.replaceChildren(...(boss ? [boss] : []));
 
   summonHolder.replaceChildren(renderSummonBar(state, player, send, () => togglePanel('shop'), () => { choiceMinimized = false; render(true); }, choiceMinimized));
-  dockHolder.replaceChildren(renderDock(ctx));
+  const dockLayout = el('div', `dock-layout${panel === 'gear' ? ' is-inventory-open' : ''}`);
+  dockLayout.append(renderGearTray(ctx), renderDock(ctx)); dockHolder.replaceChildren(dockLayout);
   const actionBar = renderActionBar(ctx);
   actionHolder.hidden = !actionBar; actionHolder.replaceChildren(...(actionBar ? [actionBar] : []));
   rail.update(state, view.selfId, panel);
@@ -275,14 +320,16 @@ function render(force = false): void {
   const ownRoster = Object.values(state.units).filter(u => u.owner === view.selfId);
   const panelState = panel === 'shop' ? [player.souls, player.pellets, player.summonFailures, player.pendingChoice, player.embryos, state.wave, state.phase]
     : panel === 'craft' ? [player.embryos, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot, u.zone])]
-    : panel === 'roster' ? [player.gold, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot, u.zone, u.equipment, Math.floor((u.hp / Math.max(1, u.maxHp)) * 10), u.attack, u.armor])]
-    : panel === 'bonds' ? [player.activeSynergies, player.formation, player.formationLevels, player.formationPoints, state.wave >= 16, ownRoster.map(u => [u.heroId, u.slot])]
-    : panel === 'admin' ? [player.gold, player.souls, player.pellets, player.formationPoints, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot])] : null;
+    : panel === 'roster' ? [player.gold, player.gearVersion, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot, u.zone, Math.floor((u.hp / Math.max(1, u.maxHp)) * 10), u.attack, u.armor])]
+    : panel === 'gear' ? [getGearPresentationKey(), selected, player.gold, player.gearDust, player.gearVersion, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot])]
+    : panel === 'bonds' ? [player.activeSynergies, player.bondVersion, player.formation, player.formationLevels, player.formationPoints, state.wave >= 16, ownRoster.map(u => [u.heroId, u.slot])]
+    : panel === 'admin' ? [player.gold, player.souls, player.pellets, player.formationPoints, player.gearVersion, ownRoster.map(u => [u.id, u.heroId, u.rank, u.slot])] : null;
   const signature = JSON.stringify([panel, panelTab, panelState]);
   craftOverlay.hidden = panel !== 'craft';
   hudDrawer.hidden = panel === null || panel === 'craft';
   hudDrawer.dataset.panel = panel ?? '';
-  if (signature !== panelSignature) {
+  const drawerSelectOpen = document.activeElement instanceof HTMLSelectElement && drawerBody.contains(document.activeElement);
+  if (signature !== panelSignature && !drawerSelectOpen) {
     panelSignature = signature;
     try {
       if (panel === 'craft') craftOverlay.replaceChildren(renderPanel(panel, ctx));
@@ -306,7 +353,9 @@ function render(force = false): void {
 
   renderSettings(state);
   renderSummonChoice(state);
+  restoreGearHudState();
   refreshTooltip();
+  gearDrag?.update();
 
   const finished = state.phase === 'won' || state.phase === 'lost'; result.hidden = !finished;
   if (finished) {
@@ -327,12 +376,17 @@ function render(force = false): void {
 }
 
 let toastTimer = 0, lastMessage = '';
-function showToast(message: string): void { toast.textContent = message; toast.hidden = false; window.clearTimeout(toastTimer); toastTimer = window.setTimeout(() => { toast.hidden = true; }, 5000); }
+function showToast(message: string, rarity = ''): void { toast.textContent = message; toast.dataset.rarity = rarity; toast.hidden = false; window.clearTimeout(toastTimer); toastTimer = window.setTimeout(() => { toast.hidden = true; }, 5000); }
+const gearRewardCursor = new GearRewardCursor();
+const bondToastCursor = new BondToastCursor();
+let rewardSnapshot: GameState | null = null;
 let activeIdentity = '';
 const unsubscribe = session.subscribe((view: SessionView) => {
+  gearDrag?.update();
   const identity = view.state ? `${view.selfId}:${view.state.roomCode}` : '';
   if (!view.state || view.status === 'disconnected' || identity !== activeIdentity) setAttackMode(false);
   activeIdentity = identity;
+  if (!view.state || view.status === 'disconnected') { gearRewardCursor.reset(); bondToastCursor.reset(); }
   const busy = view.status === 'connecting'; create.disabled = busy; join.disabled = busy; reconnect.disabled = busy; create.textContent = busy ? 'Đang kết nối…' : 'Tạo phòng';
   lobbyError.textContent = !view.state ? view.message : ''; reconnect.hidden = !session.canReconnect;
   if (view.message && view.message !== lastMessage && view.state) showToast(view.message); lastMessage = view.message;
@@ -343,11 +397,28 @@ const unsubscribe = session.subscribe((view: SessionView) => {
     setPanel(null); selected = ''; selection.clear(); panelSignature = ''; canvas.classList.remove('playing'); battlefield.clear(); battlefield.resizeCanvas(); battlefield.resetCamera();
     audio.update({ phase: 'lobby', enemies: {} }); return;
   }
+  if (view.status === 'connected' && view.state !== rewardSnapshot) {
+    const rewards = gearRewardCursor.observe(view.state, view.selfId)
+      .flatMap(event => { const item = view.state?.players[view.selfId]?.gear.find(item => item.id === event.target); return item ? [item] : []; });
+    if (rewards.length) {
+      const rarity = rewards.some(item => item.rarity === 'gold') ? 'gold' : rewards.some(item => item.rarity === 'purple') ? 'purple' : rewards[0].rarity;
+      showToast(`Nhặt được ${rewards.map(item => `${gearItemName(item)} (cấp ${item.level})`).join(', ')}`, rarity);
+      for (const item of rewards) debug('client.gear-reward', { itemId: item.id, slot: item.slot, rarity: item.rarity });
+    }
+  }
+  if (view.status === 'connected' && view.state !== rewardSnapshot) {
+    for (const bondToast of bondToastCursor.observe(view.state, view.selfId)) {
+      showToast(bondToast.message, 'bond');
+      debug('visual.bond-trigger', { bondId: bondToast.bondId });
+    }
+  }
+  rewardSnapshot = view.state;
   selection.prune(view.state, view.selfId, zone);
   battlefield.update(view.state, view.selfId, selection.ids); audio.update(view.state); render();
 });
 
 const keyboard = (event: KeyboardEvent) => {
+  if (gearDrag?.active) { if (event.key !== 'Tab') event.preventDefault(); return; }
   if (!session.view.state || event.metaKey) return;
   const state = session.view.state; const key = event.key.toLowerCase();
 
@@ -372,6 +443,7 @@ const keyboard = (event: KeyboardEvent) => {
   const isTyping = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || (event.target instanceof HTMLElement && event.target.isContentEditable);
   if (isTyping) return;
   if (event.target instanceof HTMLSelectElement && (key === 'arrowup' || key === 'arrowdown' || key === 'enter')) return;
+  if ((key === ' ' || key === 'enter') && event.target instanceof Element && event.target.closest('button,a,[role="button"]')) return;
   if (event.altKey && !event.ctrlKey) return;
 
   // In the craft overlay Tab cycles its buttons instead of changing the camera view.
@@ -436,6 +508,8 @@ const keyboard = (event: KeyboardEvent) => {
 
 window.addEventListener('keydown', keyboard);
 window.addEventListener('pagehide', () => {
+  gearDrag?.dispose(); unsubscribeGearPresentation(); configureGearTilePending(() => false);
+  uninstallHudRenderGuard();
   uninstallReplayReview(); unsubscribe(); unsubscribePreload(); window.removeEventListener('keydown', keyboard);
   window.clearTimeout(renderTimer); window.clearTimeout(toastTimer); window.clearTimeout(hoverTimer);
   dockObserver.disconnect(); overlay.dispose(); battlefield.dispose(); audio.dispose(); debug('client.disposed');

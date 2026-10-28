@@ -16,7 +16,7 @@ describe('Đấu Chiến Thắng Phật', () => {
   it('uses the supplied stats and one rage gain for a frontal cleave', () => {
     const { state, unit, hurt } = setup();
     expect(HERO_BY_ID[D.id]).toMatchObject({ hp: 9200, attack: 760, armor: 26,
-      range: 3.2, interval: .75, speed: 4.8, block: 12 });
+      range: 3.2, interval: .75, speed: 4.8 });
     const front = enemy(state, unit), side = enemy(state, unit, { x: unit.x + 2, z: unit.z + 2 });
     const behind = enemy(state, unit, { x: unit.x - 1 });
     executeAttackGeometry(state, unit, front, hurt);

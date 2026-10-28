@@ -58,3 +58,10 @@ Không giới hạn. Mọi món rớt đều vào kho.
 - Số dòng đúng theo phẩm, dòng không trùng, giá trị nằm trong khoảng nhân hệ số cấp.
 - Boss luôn rớt từ phẩm xanh trở lên. Phụ bản trao đúng một món cho mỗi người tham gia, không trao cho người không tham gia.
 - Chống xui kích hoạt sau 3 wave trắng tay, không kích hoạt sớm hơn.
+
+
+## Triển khai 28-10-2026
+
+RNG riêng, rớt đồ từ quái 5%, boss bảo đảm, chống xui sau 3 wave; helper thưởng phụ bản có test nhưng không kích hoạt vì game hiện không còn phụ bản.
+
+- [x] Hoàn tất thay đổi nguồn của phase; đã rà tĩnh, chưa chạy kiểm thử.

@@ -2,7 +2,7 @@ import type { HeroAbility } from '../packages/contracts/src/types';
 
 export const CONGCONG = {
   id: 'h01G', hp: 14200, attack: 460, armor: 42,
-  range: 2.5, interval: 1.2, speed: 3.2, block: 25,
+  range: 2.5, interval: 1.2, speed: 3.2,
   cleaveRadius: 3.8, auraRadius: 3.8, auraSlow: .45, auraAttackSlow: .25,
   rageOnAttack: 10, rageOnHit: 7,
   wavePower: 3.2, waveRadius: 7.5, knockback: 3,

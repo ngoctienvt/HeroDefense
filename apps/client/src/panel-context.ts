@@ -2,7 +2,7 @@ import type { Command, GameState } from '../../../packages/contracts/src/types.j
 import type { ConfirmOptions } from './hud-overlay.js';
 
 /** Drawers and overlays reachable from the rail or the keyboard. `admin` has no rail button (key K only). */
-export type Panel = 'shop' | 'craft' | 'roster' | 'bonds' | 'guide' | 'admin';
+export type Panel = 'shop' | 'craft' | 'roster' | 'gear' | 'bonds' | 'guide' | 'admin';
 /** Tabs inside the combined panels: Duyên & Trận (`bonds`) and Cẩm Nang (`guide`). */
 export type PanelTab = 'synergy' | 'formation' | 'controls' | 'codex';
 
@@ -12,6 +12,7 @@ export interface PanelContext {
   selected: string;
   tab?: PanelTab;
   send: (command: Command) => void;
+  salvageItems: (itemIds: readonly string[]) => void;
   select: (id: string) => void;
   openPanel: (panel: Panel | null, tab?: PanelTab) => void;
   confirm: (options: ConfirmOptions) => Promise<boolean>;

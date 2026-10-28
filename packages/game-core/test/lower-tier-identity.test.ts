@@ -43,16 +43,17 @@ describe('Huyền–Tiên hard control', () => {
     }
   });
 
-  it('turns Trư Bát Giới taunt into a timed block bonus', () => {
+  it('keeps Trư Bát Giới timed water shield without applying hard control', () => {
     const state = game(), pig = deployed(state, 'h00J');
     const target = enemy(state, pig, { attack: 0 });
     pig.energy = 100;
     expect(castAbility(state, pig, target.id)).toBe(true);
-    expect(pig.blockBonus).toEqual({ remaining: 5, amount: 8 });
+    expect(pig.tierShield).toMatchObject({ remaining: 5, kind: 'water' });
+    expect(pig.shield).toBeGreaterThan(0);
     expect(state.controlStats?.h00J?.rolls ?? 0).toBe(0);
     state.phase = 'combat'; pig.orderMode = 'hold';
     for (let step = 0; step < 52; step++) combatStep(state, .1);
-    expect(pig.blockBonus).toBeUndefined();
+    expect(pig.tierShield).toBeUndefined();
   });
 });
 

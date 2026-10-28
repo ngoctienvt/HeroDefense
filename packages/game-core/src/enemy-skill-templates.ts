@@ -1,4 +1,5 @@
 import type { Enemy, EnemySkillState, GameState, Unit, Vec } from '../../contracts/src/types.js';
+import { peekGearMods } from './gear-stats.js';
 import { BALANCE_SCALE } from './balance-curve.js';
 import { clampToZone } from './battlefield-layout.js';
 import { distance, event, isDeployed } from './rules.js';
@@ -60,6 +61,7 @@ export function unitsInCone(
 }
 
 export function pushHeroFrom(unit: Unit, origin: Vec, amount: number): void {
+  if (peekGearMods(unit).uniques.has('sea-anchor')) return;
   const dx = unit.x - origin.x;
   const dz = unit.z - origin.z;
   const len = Math.hypot(dx, dz) || 1;

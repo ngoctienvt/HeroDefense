@@ -3,10 +3,10 @@ import { slotPosition } from './rules.js';
 
 /** Every temporary hero status/counter ends with its wave, including passive cooldowns. */
 const TRANSIENT_FIELDS = [
-  'stun', 'ward', 'haste', 'critBlessing', 'fuxiBlessing', 'thunderBlessing',
+  'gearRuntime', 'stun', 'ward', 'haste', 'critBlessing', 'fuxiBlessing', 'thunderBlessing',
   'bodhiBlessing', 'primordialBlessing', 'lanternShield', 'divineShield', 'divineImmortal',
   'empower', 'pendingAbility', 'shadowAssault', 'attackCount', 'comboTarget', 'comboCount',
-  'orbitTimer', 'followUpCooldown', 'bonusArmor', 'blockBonus', 'reflect', 'mistShield',
+  'orbitTimer', 'followUpCooldown', 'bonusArmor', 'reflect', 'mistShield',
   'frostShield', 'berserk', 'heatStacks', 'carryFervor', 'carryFocus', 'carryMomentum',
   'bloodDeathCount', 'phoenixCycle', 'phoenixEgg', 'starGuardCooldown', 'tierShield',
   'tierGoldShields', 'nuwaShields', 'tierBuff', 'tierImmortal', 'tierSoulCount', 'tierPetTimer',
@@ -14,6 +14,7 @@ const TRANSIENT_FIELDS = [
 
 export function resetWaveCombat(state: GameState): void {
   state.groundEffects = [];
+  state.gearTraps = [];
   state.boomerangs = [];
   state.tierPulses = [];
   state.solarPhases = [];

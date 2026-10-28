@@ -2,7 +2,7 @@ import type { HeroAbility } from '../packages/contracts/src/types';
 
 export const DOUZHAN = {
   id: 'h012', hp: 9200, attack: 760, armor: 26, range: 3.2,
-  interval: .75, speed: 4.8, block: 12,
+  interval: .75, speed: 4.8,
   cleaveRadius: 3.8, critChance: .35, critMultiplier: 2.2,
   armorPierce: .30, critFollowUpPower: .8,
   rageOnAttack: 16, rageOnCrit: 28,

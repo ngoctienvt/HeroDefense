@@ -1,5 +1,6 @@
 import type { Command, CommandEnvelope, Difficulty } from '../../../packages/contracts/src/types.js';
 import { withinArena } from '../../../packages/game-core/src/battlefield-layout.js';
+import { GEAR_RARITIES, GEAR_SLOTS, GEAR_UNIQUE_IDS } from '../../../packages/contracts/src/gear-types.js';
 
 export const difficulties: Difficulty[] = ['normal', 'nightmare', 'hell', 'supreme'];
 const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -25,7 +26,15 @@ export function commandEnvelope(value: unknown): CommandEnvelope | null {
     case 'redeem': keys = ['item']; valid = ['chest-1', 'chest-2', 'embryo-3', 'embryo-4'].includes(c.item as string); break;
     case 'craft': keys = ['heroId']; valid = identifier(c.heroId); break;
     case 'deploy': keys = ['unitId', 'slot']; valid = identifier(c.unitId) && integer(c.slot, 0, 4); break;
-    case 'equip': keys = ['unitId', 'category']; valid = identifier(c.unitId) && integer(c.category, 0, 2); break;
+    case 'equip-item': keys = ['itemId', 'unitId']; valid = identifier(c.itemId) && identifier(c.unitId); break;
+    case 'unequip-item': case 'enhance-item': case 'reroll-item': case 'salvage-item':
+      keys = ['itemId']; valid = identifier(c.itemId); break;
+    case 'admin-item':
+      keys = ['slot', 'rarity', 'unique'];
+      valid = (c.slot === undefined || GEAR_SLOTS.some(slot => slot === c.slot)) &&
+        (c.rarity === undefined || GEAR_RARITIES.some(rarity => rarity === c.rarity)) &&
+        (c.unique === undefined || GEAR_UNIQUE_IDS.some(unique => unique === c.unique));
+      break;
     case 'cast': keys = ['unitId', 'target']; valid = identifier(c.unitId) && (c.target === undefined || identifier(c.target)); break;
     case 'move': keys = ['unitId', 'x', 'z']; valid = identifier(c.unitId) && typeof c.x === 'number' && typeof c.z === 'number' && withinArena(c.x, c.z); break;
     case 'attack': keys = ['unitId', 'target']; valid = identifier(c.unitId) && identifier(c.target); break;
@@ -41,6 +50,11 @@ export function commandEnvelope(value: unknown): CommandEnvelope | null {
     }
     case 'save-position': keys = ['unitId', 'clear']; valid = identifier(c.unitId) && (c.clear === undefined || typeof c.clear === 'boolean'); break;
     case 'formation': case 'upgrade-formation': keys = ['formation']; valid = integer(c.formation, 1, 8); break;
+    case 'bond-action':
+      keys = ['action', 'enabled'];
+      valid = ['am-binh', 'long-ngam', 'luan-hoi-auto'].includes(c.action as string)
+        && (c.action === 'luan-hoi-auto' ? typeof c.enabled === 'boolean' : c.enabled === undefined);
+      break;
     case 'speed': keys = ['speed']; valid = typeof c.speed === 'number' && [1, 2, 4].includes(c.speed); break;
     case 'bench': case 'merge': case 'sell': case 'stop': keys = ['unitId']; valid = identifier(c.unitId); break;
     case 'admin-get-hero':

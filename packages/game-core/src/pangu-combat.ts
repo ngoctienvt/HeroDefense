@@ -4,6 +4,7 @@ import { MELEE_CLEAVE_SECONDARY } from '../../contracts/src/combat-profiles.js';
 import { applyEnemyStatus, criticalDamageAgainst, effectiveEnemyArmor, knockEnemyBack } from './combat-status.js';
 import { distance, event, isDeployed, nextId, random } from './rules.js';
 import { effectiveUnitAttack } from './stats.js';
+import { markGearNativeCrit } from './gear-stats.js';
 
 type Damage = (enemy: Enemy, damage: number, penetration?: number) => void;
 export function panguDirection(from: Vec, to: Vec): Vec {
@@ -27,8 +28,9 @@ export function panguAttack(state: GameState, unit: Unit, target: Enemy, hurt: D
   for (const enemy of hits) {
     // Normal sweeps favour the chosen target; the third-strike rift keeps full damage along its line.
     const dealt = damage * (third || enemy.id === target.id ? 1 : MELEE_CLEAVE_SECONDARY);
-    hurt(enemy, critical ? criticalDamageAgainst(enemy, dealt) : dealt,
-      effectiveEnemyArmor(enemy) * P.armorPierce);
+    const hit = critical ? criticalDamageAgainst(enemy, dealt) : dealt;
+    if (critical) markGearNativeCrit(unit, enemy, hit);
+    hurt(enemy, hit, effectiveEnemyArmor(enemy) * P.armorPierce);
     if (third && state.enemies[enemy.id]) {
       enemy.bleed = { remaining: 3, bonusDamage: .1 };
       knockEnemyBack(state, enemy, .6, unit);

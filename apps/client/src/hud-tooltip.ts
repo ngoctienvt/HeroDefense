@@ -1,6 +1,7 @@
 import { HERO_BY_ID } from '../../../content/catalog.js';
 import type { Enemy, GameState } from '../../../packages/contracts/src/types.js';
 import { heroDetail } from './hero-detail.js';
+import { gearDetail, gearSlots } from './gear-ui.js';
 import { hpState } from './hero-status.js';
 import { packTooltip } from './hud-summon-bar.js';
 import { el, meter, number } from './ui.js';
@@ -15,12 +16,14 @@ export type HoverTarget =
   | { kind: 'unit'; id: string }
   | { kind: 'pack'; id: SummonPackId }
   | { kind: 'hero'; id: string }
+  | { kind: 'gear'; id: string }
   | { kind: 'world'; id: string; x: number; y: number };
 
-export const TIP_SELECTOR = '[data-tip-unit],[data-tip-pack],[data-tip-hero]';
+export const TIP_SELECTOR = '[data-tip-unit],[data-tip-pack],[data-tip-hero],[data-tip-gear]';
 
 export function targetFromElement(node: Element): HoverTarget | null {
   const html = node as HTMLElement;
+  if (html.dataset.tipGear) return { kind: 'gear', id: html.dataset.tipGear };
   if (html.dataset.tipUnit) return { kind: 'unit', id: html.dataset.tipUnit };
   if (html.dataset.tipPack) return { kind: 'pack', id: html.dataset.tipPack as SummonPackId };
   if (html.dataset.tipHero) return { kind: 'hero', id: html.dataset.tipHero };
@@ -32,7 +35,7 @@ export const TIP_REGION_SELECTOR = '.hud-dock, .action-holder, .hud-drawer, .cra
 
 export function anchorFor(target: HoverTarget, scope: ParentNode = document): Element | null {
   if (target.kind === 'world') return null;
-  const attribute = target.kind === 'unit' ? 'data-tip-unit' : target.kind === 'pack' ? 'data-tip-pack' : 'data-tip-hero';
+  const attribute = target.kind === 'unit' ? 'data-tip-unit' : target.kind === 'pack' ? 'data-tip-pack' : target.kind === 'gear' ? 'data-tip-gear' : 'data-tip-hero';
   return scope.querySelector(`[${attribute}="${CSS.escape(target.id)}"]`);
 }
 
@@ -60,9 +63,18 @@ function enemyDetail(enemy: Enemy): HTMLElement {
 /** Tooltip body for a target, or null when the target no longer exists in the snapshot. */
 export function tooltipContent(target: HoverTarget, state: GameState): HTMLElement | null {
   if (target.kind === 'pack') return packTooltip(target.id);
+  if (target.kind === 'gear') {
+    const item = Object.values(state.players).flatMap(player => player.gear).find(item => item.id === target.id);
+    return item ? gearDetail(item, item.unitId ? state.units[item.unitId] : undefined) : null;
+  }
   if (target.kind === 'hero') { const hero = HERO_BY_ID[target.id]; return hero ? heroDetail(hero, undefined, { compact: true }) : null; }
   const unit = state.units[target.id];
-  if (unit) { const hero = HERO_BY_ID[unit.heroId]; return hero ? heroDetail(hero, unit, { compact: true }) : null; }
+  if (unit) {
+    const hero = HERO_BY_ID[unit.heroId]; if (!hero) return null;
+    const detail = heroDetail(hero, unit, { compact: true, state });
+    const player = state.players[unit.owner]; if (player && !unit.summonKind && !unit.summonerId && unit.summonDuration === undefined) detail.append(gearSlots(unit, player));
+    return detail;
+  }
   const enemy = target.kind === 'world' ? state.enemies[target.id] : undefined;
   return enemy && enemy.hp > 0 ? enemyDetail(enemy) : null;
 }

@@ -84,7 +84,29 @@ export const BASIC_ATTACK_PROFILES: Readonly<Record<string, BasicAttackProfile>>
   h03U: { form: 'bolt', matter: 'steel', color: '#f0c850', accent: '#fff6cf', size: 1.1, texture: 'circle_03', pace: .03, arc: .2, motif: { kind: 'wheel', size: 1.7 } },
   // Bát Bộ Thiên Long: deep emerald dragon darts.
   h03V: { form: 'bolt', matter: 'wood', color: '#2fbf75', accent: '#d9ffe8', size: .85, texture: 'trace_01', pace: .026, arc: .2, motif: { kind: 'dragon', size: 1.8 } },
+
+  // --- Bậc 5–6: only the heroes whose own module drew no weapon motion, just a ring on the target. ---
+  // Hình Thiên: the war axe sweeps the whole half circle in fire.
+  h011: { form: 'arc', matter: 'fire', color: '#e23b1c', accent: '#ffc27a', size: 2.1, texture: 'slash_01', motif: { kind: 'fire-sweep', size: 2.4 } },
+  // Đấu Chiến Thắng Phật: the Buddha-shadow staff cuts a wide earthen golden arc.
+  h012: { form: 'arc', matter: 'earth', color: '#c98a3b', accent: '#ffe9a8', size: 2.1, texture: 'slash_01', motif: { kind: 'rock', size: 1.9 } },
+  // Kim Thiền Tử: a golden lotus flies to the one target.
+  h013: { form: 'bolt', matter: 'wood', color: '#f2c94c', accent: '#fff6c9', size: 1.1, texture: 'twirl_01', pace: .032, arc: .3, motif: { kind: 'flower', size: 1.6 } },
+  // Nguyên Thủy Thiên Tôn: a pale sword-qi that flies flat.
+  h014: { form: 'bolt', matter: 'steel', color: '#b9d4ff', accent: '#ffffff', size: 1.1, texture: 'trace_01', pace: .024, arc: .05, motif: { kind: 'sword', size: 1.8 } },
+  // Thái Bạch Kim Tinh: a star bolt in a high arc.
+  h015: { form: 'bolt', matter: 'steel', color: '#ffe08a', accent: '#ffffff', size: 1, texture: 'spark_01', pace: .028, arc: .4 },
+  // Nhiên Đăng: the lamp-fire slams down on the struck monster.
+  h03W: { form: 'smash', matter: 'fire', color: '#ffe3a0', accent: '#ffffff', size: 1.5, texture: 'circle_03' },
+  // Như Lai: a Buddha palm presses the target down.
+  h01J: { form: 'smash', matter: 'earth', color: '#e3b755', accent: '#fff3c4', size: 1.9, texture: 'circle_03', motif: { kind: 'seal', size: 2 } },
+  // Phượng Hoàng: burning feathers, one per shot.
+  h041: { form: 'bolt', matter: 'fire', color: '#ff7a2f', accent: '#ffe08a', size: .9, texture: 'trace_01', pace: .026, arc: .3, motif: { kind: 'fire-sweep', size: 1.6 } },
 };
+
+/** Heroes whose own module also handles `trait-` events: the profile is painted first and replaces that module's basic-attack picture. */
+export const PREEMPTING_BASIC_ATTACKS: ReadonlySet<string> =
+  new Set(['h011', 'h012', 'h013', 'h014', 'h015', 'h03W', 'h01J', 'h041']);
 
 const ELEMENT_LOOK = [
   { matter: 'steel', color: '#f5c85b', accent: '#fff4c9' },
